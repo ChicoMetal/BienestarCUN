@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Bienestar CUN</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="name_navDrawer">CUN</string>
+    <string name="web_direction">www.cun.edu.co</string>
+
+    <!-- Menu text-->
+    <string name="item_home">Inicio</string>
+    <string name="item_activities">Circulos</string>
+    <string name="item_desertion"> Desercion</string>
+    <string name="item_History_laboral">Laboral </string>
+    <string name="item_notifications"> Notificaciones</string>
+    <string name="item_chat"> Chat Psicologia</string>
+    <string name="item_circle_administration"> Administrar </string>
+    <string name="item_section_login"> Usuario </string>
+    <string name="item_login"> Ingresar </string>
+    <string name="item_logout"> Salir </string>
+
+</resources>

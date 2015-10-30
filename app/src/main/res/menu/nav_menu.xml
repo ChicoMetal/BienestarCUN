@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@android:drawable/ic_media_next"
+            android:checked="true"
+            android:title="@string/item_home" />
+        <!--android:icon="@drawable/ic_home"-->
+        <item
+            android:id="@+id/nav_activities"
+            android:icon="@android:drawable/ic_media_next"
+            android:title="@string/item_activities" />
+        <item
+            android:id="@+id/nav_desertion"
+            android:icon="@android:drawable/ic_media_next"
+            android:title="@string/item_desertion" />
+        <item
+            android:id="@+id/nav_history_laboral"
+            android:icon="@android:drawable/ic_media_next"
+            android:title="@string/item_History_laboral" />
+        <item
+            android:id="@+id/nav_notifications"
+            android:icon="@android:drawable/ic_media_next"
+            android:title="@string/item_notifications" />
+
+        <item
+            android:id="@+id/nav_chat"
+            android:icon="@android:drawable/ic_media_next"
+            android:title="@string/item_chat" />
+
+        <item
+            android:id="@+id/nav_circle_administration"
+            android:icon="@android:drawable/ic_media_next"
+            android:title="@string/item_circle_administration" />
+
+        <!-- Sección de configuración -->
+        <item
+            android:id="@+id/nav_section_login"
+            android:title="@string/item_section_login">
+            <menu>
+                <item
+                    android:id="@+id/nav_login"
+                    android:icon="@android:drawable/ic_lock_power_off"
+                    android:title="@string/item_login" />
+                <item
+                    android:id="@+id/nav_logout"
+                    android:icon="@android:drawable/ic_lock_power_off"
+                    android:title="@string/item_logout" />
+            </menu>
+        </item>
+    </group>
+</menu>

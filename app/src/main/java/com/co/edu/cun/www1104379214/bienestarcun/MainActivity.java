@@ -5,8 +5,6 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -15,20 +13,16 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Adapter;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.Metodos;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-
+    ServicesPeticion services = new ServicesPeticion();
     Metodos metodos = new Metodos();//clase con metodos para usar
 
     DBManager db;
@@ -44,7 +38,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setToolbar(); // Setear Toolbar como action bar
 
-        Ejecutar();
+        try {
+            Ejecutar();
+        } catch (InterruptedException e) {
+            Log.i("ERROR","eroor");
+            e.printStackTrace();
+        }
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);//instancio menu lateral
         navigationView = (NavigationView) findViewById(R.id.nav_view);//instancio contenedor de menu lateral
@@ -205,7 +204,8 @@ public class MainActivity extends AppCompatActivity {
     //********************************************fin Base de datos
     //********************************************
 
-    private void Ejecutar(){
+    private void Ejecutar() throws InterruptedException {
         BDManager();
+        services.ListPerson(getApplicationContext());
     }
 }

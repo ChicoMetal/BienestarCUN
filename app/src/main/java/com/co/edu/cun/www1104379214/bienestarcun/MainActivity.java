@@ -22,7 +22,17 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
+import com.co.edu.cun.www1104379214.bienestarcun.Metodos.Metodos;
+import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
+
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
+
+    Metodos metodos = new Metodos();//clase con metodos para usar
+
+    DBManager db;
+    Cursor result;
 
     NavigationView navigationView;
     private DrawerLayout drawerLayout;
@@ -34,17 +44,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setToolbar(); // Setear Toolbar como action bar
 
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        Ejecutar();
+
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);//instancio menu lateral
+        navigationView = (NavigationView) findViewById(R.id.nav_view);//instancio contenedor de menu lateral
 
         PrepareMenuUser(); // ocultar items de menu a los que el usuario actual no tenga acceso
 
-        if (navigationView != null) {
+        if (navigationView != null) { //Agregar fragments dependiendo del ciclo de vida de la app
             setupDrawerContent(navigationView);
         }
 
         drawerTitle = "Inicio";
-        if (savedInstanceState == null) {
+        if (savedInstanceState == null) {//Seleccionar item de menu por default o agregar el que tenia si existe
             int id = R.id.nav_home;
             selectItem(drawerTitle, id);
         }
@@ -115,12 +127,85 @@ public class MainActivity extends AppCompatActivity {
 
     private void selectItem(String title, int id) {
         // Enviar título como arguemento del fragmento
+        /* abrir fragments
+            // Enviar título como arguemento del fragmento
+            Bundle args = new Bundle();
+            args.putString(mx.platzi.navdrawersample.PlaceholderFragment.ARG_SECTION_TITLE, title);
 
+            Fragment fragment;
+
+            if (id == R.id.nav_Example){
+                fragment =  second.newInstance(title,"solo ejemplos");
+            }else {
+                fragment = PlaceholderFragment.newInstance(title);
+            }
+
+            fragment.setArguments(args);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager
+                    .beginTransaction()
+                    .replace(R.id.main_content, fragment)
+                    .commit();
+         */
         drawerLayout.closeDrawers(); // Cerrar drawer
         setTitle(title); // Setear título actual
     }
 
     //********************************************
-    //********************************************fin DrawerLayouts
+    //********************************************Base de datos local
     //********************************************
+
+
+
+    public void BDManager(){
+
+        db = new DBManager(getApplicationContext());//crea la base de datos
+
+        new BuscarTask().execute();
+
+    }
+
+    private class BuscarTask extends AsyncTask<Void, Void, Void>{
+        @Override
+        protected void onPreExecute() {
+            Toast.makeText(getApplicationContext(), "Ejecutando...", Toast.LENGTH_SHORT).show();
+        }
+
+
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            result = db.SearchDB();
+            return null;
+        }
+
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            ArrayList<String> mArrayList = new ArrayList<String>();
+            result.moveToFirst();
+            while(!result.isAfterLast()) {
+               /* mArrayList.add(result.getString(
+                        result.getColumnIndex(db.CN_COD_NOTIFICACION)
+                )); //add the item
+                */
+                Log.i("RESULT",result.getString(result.getColumnIndex(db.CN_COD_NOTIFICACION)));
+                Log.i("RESULT",result.getString(result.getColumnIndex(db.CN_TIPE_NOTIFICATION)));
+                result.moveToNext();
+            }
+            result.close();
+            Toast.makeText(getApplicationContext(), "Finalizado...", Toast.LENGTH_SHORT).show();
+
+        }
+    } //realizar acciones en segundo plano
+
+    //********************************************
+    //********************************************fin Base de datos
+    //********************************************
+
+    private void Ejecutar(){
+        BDManager();
+    }
 }

@@ -27,13 +27,13 @@ public class httpHandler {
 
     public static final String modo = "POST";
     public static final String insert = "insert";
-    public static final String search = "insert";
+    public static final String search = "search";
 
     CodMessajes messajes = new CodMessajes();
 
     private Activity activity;
 
-    private static final String Server = "http://10.0.3.2/service/core/";
+    private static final String Server = "http://10.0.3.2/service/core/android/";
 
 
     //Metodo para realizar peticiones al server

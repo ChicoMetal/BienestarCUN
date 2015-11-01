@@ -77,7 +77,7 @@ public class ServicesPeticion {
 
             }
             Log.i("ARRAYDATOS", array.toString());
-            Toast.makeText(v, array.toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(v, array[0].toString(), Toast.LENGTH_SHORT).show();
             ArrayAdapter<String> adaptador;
             //adaptador = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, array );
 

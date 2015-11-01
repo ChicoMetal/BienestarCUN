@@ -1,10 +1,7 @@
 package com.co.edu.cun.www1104379214.bienestarcun.WebServices;
 
 import android.app.Activity;
-import android.util.Log;
-
 import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -21,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by IpsFullsalud on 05/10/2015.
+ * Created by Krlos guzman on 05/10/2015.
  */
 public class httpHandler {
 
@@ -69,7 +66,7 @@ public class httpHandler {
 
                     httpPost.setEntity(new UrlEncodedFormEntity(params));
                     final HttpResponse response = httpClient.execute(httpPost, localContext);
-                    Log.i("Final", "antes");
+
                     HttpEntity res1 = response.getEntity();
                     res = EntityUtils.toString(res1);
                     result[0] = res;
@@ -91,7 +88,6 @@ public class httpHandler {
             nt.join();
         }
 
-        Log.i("Final", "despues");
         return result[0];
 
     }

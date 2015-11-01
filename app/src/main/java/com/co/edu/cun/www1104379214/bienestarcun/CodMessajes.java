@@ -1,8 +1,37 @@
 package com.co.edu.cun.www1104379214.bienestarcun;
 
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by root on 31/10/15.
  */
 public class CodMessajes {
+
+    //****************************************
+    //****************************************Services
+    //****************************************
+
+    public static final JSONObject msmServices = new JSONObject();
+
+    static{
+        try {
+            msmServices.put("0000", "error al conectar");
+            msmServices.put("0001", "error al ejecutar el query");
+            msmServices.put("0010", "No existen datos");
+            msmServices.put("1000", "Query ejecutado correctamente");
+            msmServices.put("0100", "error al seleccionar la tabla");
+            msmServices.put("0011", "Error en la instruccion");
+            msmServices.put("1100", "Instruccion ejecutada correctamente");
+            msmServices.put("1101", "Peticion indeterminada");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
     public String ErrorServicesPeticion = "Error al realizar la peticion al server";
 }

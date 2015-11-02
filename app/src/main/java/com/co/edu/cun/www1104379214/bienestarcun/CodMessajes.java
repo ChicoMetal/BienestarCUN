@@ -9,6 +9,7 @@ import org.json.JSONObject;
  */
 public class CodMessajes {
 
+    public static final String TAG = "CONTROL";
     //****************************************
     //****************************************Services
     //****************************************
@@ -17,6 +18,7 @@ public class CodMessajes {
 
     static{
         try {
+
             msmServices.put("0000", "error al conectar");
             msmServices.put("0001", "error al ejecutar el query");
             msmServices.put("0010", "No existen datos");
@@ -33,5 +35,8 @@ public class CodMessajes {
 
 
 
-    public String ErrorServicesPeticion = "Error al realizar la peticion al server";
+    public static final String ErrorServicesPeticion = "Error al realizar la peticion al server";
+    public static final String LocalInsertError = "Error al insertar los datos";
+    public static final String LocalInsert = "Se han insertado los datos";
+
 }

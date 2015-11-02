@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class DBHelper extends SQLiteOpenHelper { //creacion de la base de datos
 
-    public static final String DB_NAME = "StatusNotification.sqlite";
+    public static final String DB_NAME = "BienestarLocal.sqlite";
     public static final int DB_SCHEMA_VERSION = 1;
 
     public DBHelper(Context context ) {
@@ -20,6 +20,7 @@ public class DBHelper extends SQLiteOpenHelper { //creacion de la base de datos
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(DBManager.CREATE_TABLE_NOTIFICATIONS);
+        sqLiteDatabase.execSQL(DBManager.CREATE_TABLE_USER);
     }
 
     @Override

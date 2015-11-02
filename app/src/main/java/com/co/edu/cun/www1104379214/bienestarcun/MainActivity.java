@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
                 getApplication()
                 ).execute(); //insercion
 */
-/*
+
         String[] camposSeacrh = new String[]{db.CN_TIPE_NOTIFICATION, db.CN_COD_NOTIFICACION};
 
         new TaskExecuteSQL(db.TABLE_NAME_NOTIFICATION,
@@ -189,16 +189,16 @@ public class MainActivity extends AppCompatActivity {
                 getApplication()
         ).execute(); //busqueda
 
-*/
 
 
+/*
         new TaskExecuteSQL(db.TABLE_NAME_NOTIFICATION,
                 null,
                 null,
                 db.SQ_ACTION_DELETE,
                 getApplication()
-        ).execute(); //busqueda
-
+        ).execute(); //Eliminacion
+*/
     }
 
 
@@ -265,7 +265,11 @@ public class MainActivity extends AppCompatActivity {
 
                         switch (TABLA){
                             case DBManager.TABLE_NAME_NOTIFICATION:
-                                ProcedureNotifications(); //procedimientos para las consultas de notificaciones
+                                try {
+                                    ProcedureNotifications(); //procedimientos para las consultas de notificaciones
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                                 break;
                             case DBManager.TABLE_NAME_USER:
                                 ProcedureUsers();//procedimientos para las consultas de usuarios
@@ -311,18 +315,23 @@ public class MainActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                    result.moveToNext();
                 }
-                result.moveToNext();
+
             }
 
             //metodos para realizar las acciones correspondientes a las busquedas de usuaro o notificaciones
             //***************************
             //***************************
 
-            private void ProcedureNotifications() { //procedimientos despues de buscar notificaciones
+            private void ProcedureNotifications() throws JSONException { //procedimientos despues de buscar notificaciones
 
                 if (result.getCount() > 0) { //verifico si se encontraron registros
                     CreateObjectResultSQL(); //creo objeto con los resultados de consulta
+                    String s = SQL_RESULT_SEARCH.getString("0");
+                    JSONObject ss = new JSONObject(s);
+                    Toast.makeText(CONTEXT.getApplicationContext(),ss.getString(db.CN_TIPE_NOTIFICATION) , Toast.LENGTH_SHORT).show();
+                    //TODO ACCIONES
                 }else{
                     //TODO acciones si no encuentra notificaciones
                 }
@@ -333,7 +342,7 @@ public class MainActivity extends AppCompatActivity {
              if (result.getCount() > 0) { //verifico si se encontraron registros
 
                  CreateObjectResultSQL(); //creo objeto con los resultados de consulta
-
+                //TODO ACCIONES
              }else{
                  //TODO acciones si no encuentra usuarios
              }

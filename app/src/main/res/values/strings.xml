@@ -17,4 +17,10 @@
     <string name="item_login"> Ingresar </string>
     <string name="item_logout"> Salir </string>
 
+<!-- texto de interfaz login-->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="login_text_view">INGRESAR</string>
+    <string name="ed_usuario">Usuario:</string>
+    <string name="ed_pass_user">Contraseña:</string>
+
 </resources>

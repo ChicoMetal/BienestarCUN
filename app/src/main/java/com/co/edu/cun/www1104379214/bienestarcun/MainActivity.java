@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
                 getApplication()
                 ).execute(); //insercion
 */
-
+/*
         String[] camposSeacrh = new String[]{db.CN_TIPE_NOTIFICATION, db.CN_COD_NOTIFICACION};
 
         new TaskExecuteSQL(db.TABLE_NAME_NOTIFICATION,
@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
                 getApplication()
         ).execute(); //busqueda
 
-
+*/
 
 /*
         new TaskExecuteSQL(db.TABLE_NAME_NOTIFICATION,
@@ -357,6 +357,7 @@ public class MainActivity extends AppCompatActivity {
     //********************************************
 
     private void Ejecutar() throws InterruptedException {
+        metodos
         BDManager();
         services.ListPerson(getApplicationContext());
     }

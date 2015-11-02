@@ -2,4 +2,7 @@
 <resources>
     <color name="colorPrimary">#42b74e</color>
     <color name="colorPrimaryDark">#309125</color>
+
+    <color name="backgroundColor">#9bb196</color>
+    <color name="bacgroundBotton">#183312</color>
 </resources>

@@ -1,6 +1,7 @@
 package com.co.edu.cun.www1104379214.bienestarcun.WebServices;
 
 import android.content.Context;
+import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -106,20 +107,18 @@ public class ServicesPeticion {
 
     }
 
-    public void Login(Context context) throws InterruptedException {
-
-        EditText usuario;
+    public void ConfirmarUser(Context context, String user, String pass) throws InterruptedException {
 
 
         final String service = "user/login.php";
 
         parametros = new String[][]{ //array parametros a enviar
-                {"modo",BD.modo},
-                {"accion",BD.search}
+                {"user",user},
+                {"password",pass}
         };
 
 
-        result = BD.BuscarBD(service, parametros);
+        result = BD.HttpRequestServer(service, parametros);
 
 
         try {
@@ -128,7 +127,7 @@ public class ServicesPeticion {
 
             if( arrayResponse.getString(0).toString().equals("msm")  ){
 
-                Toast.makeText(v.getApplicationContext(),
+                Toast.makeText(context.getApplicationContext(),
                         mss.msmServices.getString( arrayResponse.getString(1).toString() ) ,
                         Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
 
@@ -161,11 +160,7 @@ public class ServicesPeticion {
 
                 }
 
-                Toast.makeText(v, array[0].toString(), Toast.LENGTH_SHORT).show();
-                ArrayAdapter<String> adaptador;
-                //adaptador = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, array );
-
-                //listPerson.setAdapter(adaptador);
+                Toast.makeText(context, array[0].toString(), Toast.LENGTH_SHORT).show();
             }
 
         } catch (JSONException e) {

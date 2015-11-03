@@ -40,6 +40,7 @@ public class DBManager { //Creacion de tablas
     public static final String CN_USER = "Usuario";
     public static final String CN_PASSWORD = "Password";
     public static final String CN_TIPE_USER = "Tipo_usuario";
+    public static final String CN_TOKEN_LOGIN = "Token";
 
     //tipos de notificaciones
     public static final int TN_EGRESADO = 1;
@@ -57,6 +58,7 @@ public class DBManager { //Creacion de tablas
             CN_USER+" text not null,"+
             CN_PASSWORD+" text not null"+
             CN_TIPE_USER+" text not null"+
+            CN_TOKEN_LOGIN+" text not null"+
             ");"; //string de creacion de tables
 
 

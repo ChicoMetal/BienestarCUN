@@ -22,5 +22,7 @@
     <string name="login_text_view">INGRESAR</string>
     <string name="ed_usuario">Usuario:</string>
     <string name="ed_pass_user">Contraseña:</string>
+    <string name="msm_btn_login_send">Enviar</string>
+    <string name="msm_btn_login_cancel">Cancelar</string>
 
 </resources>

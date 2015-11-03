@@ -7,6 +7,8 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -15,6 +17,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.Metodos;
@@ -132,18 +136,28 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void selectItem(String title, int id) {
+
+        ChangeFragment(id);
+
+        drawerLayout.closeDrawers(); // Cerrar drawer
+        setTitle(title); // Setear título actual
+    }
+
+    private void ChangeFragment(int id){
         // Enviar título como arguemento del fragmento
-        /* abrir fragments
+        //abrir fragments
             // Enviar título como arguemento del fragmento
+
             Bundle args = new Bundle();
-            args.putString(mx.platzi.navdrawersample.PlaceholderFragment.ARG_SECTION_TITLE, title);
+            args.putString("", "");
 
             Fragment fragment;
 
-            if (id == R.id.nav_Example){
-                fragment =  second.newInstance(title,"solo ejemplos");
+            if (id == R.id.nav_login){
+                fragment =  LoginUser.newInstance("", "");
+
             }else {
-                fragment = PlaceholderFragment.newInstance(title);
+                fragment = LoginUser.newInstance("", "");
             }
 
             fragment.setArguments(args);
@@ -152,9 +166,8 @@ public class MainActivity extends AppCompatActivity {
                     .beginTransaction()
                     .replace(R.id.main_content, fragment)
                     .commit();
-         */
-        drawerLayout.closeDrawers(); // Cerrar drawer
-        setTitle(title); // Setear título actual
+
+
     }
 
     //********************************************
@@ -357,8 +370,26 @@ public class MainActivity extends AppCompatActivity {
     //********************************************
 
     private void Ejecutar() throws InterruptedException {
-        metodos
+
         BDManager();
-        services.ListPerson(getApplicationContext());
+        //services.ListPerson(getApplicationContext());
+    }
+
+    public void Login(View v){
+
+        EditText user, pass;
+
+        user = (EditText) findViewById(R.id.et_user_login);
+        pass = (EditText) findViewById(R.id.et_password_login);
+
+        try {
+
+            services.ConfirmarUser(getApplication(),
+                    user.getText().toString(),
+                    pass.getText().toString()); //Peticion login
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

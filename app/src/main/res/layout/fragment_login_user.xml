@@ -42,7 +42,7 @@
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/editText"
+                android:id="@+id/et_user_login"
                 android:inputType="none"
                 android:layout_weight="0.89" />
         </LinearLayout>
@@ -70,7 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
-                android:id="@+id/editText2"
+                android:id="@+id/et_password_login"
                 android:layout_weight="0.64" />
         </LinearLayout>
 
@@ -84,20 +84,23 @@
             <ImageButton
                 android:layout_width="100dp"
                 android:layout_height="40dp"
-                android:id="@+id/imageButton"
+                android:id="@+id/btn_login_send"
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/abc_btn_radio_to_on_mtrl_015"
                 android:background="@color/bacgroundBotton"
-                android:layout_marginRight="4dp" />
+                android:layout_marginRight="4dp"
+                android:contentDescription="@string/msm_btn_login_send"
+                android:onClick="Login" />
 
             <ImageButton
                 android:layout_width="100dp"
                 android:layout_height="40dp"
-                android:id="@+id/imageButton2"
+                android:id="@+id/btn_login_cancel"
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/abc_btn_radio_to_on_mtrl_000"
                 android:background="@color/bacgroundBotton"
-                android:layout_marginLeft="4dp" />
+                android:layout_marginLeft="4dp"
+                android:contentDescription="@string/msm_btn_login_cancel" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

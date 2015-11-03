@@ -30,7 +30,7 @@ public class httpHandler {
 
     private Activity activity;
 
-    private static final String Server = "http://10.0.3.2/service/core/android/";
+    private static final String Server = "http://10.0.3.2/BienestarCun/service/core/android/";
 
 
     //Metodo para realizar peticiones al server
@@ -147,5 +147,58 @@ public class httpHandler {
 
     }
 
+    public String HttpRequestServer( final String services, final String[][] campos ) throws InterruptedException {
+
+        final String[] result = new String[1];
+
+        Thread nt = new Thread() {
+            String res;
+
+            HttpClient httpClient = new DefaultHttpClient();
+            HttpContext localContext = new BasicHttpContext();
+            HttpPost httpPost = new HttpPost( Server + services);
+            HttpResponse response = null;
+
+            @Override
+            public void run() {
+
+                try{
+
+                    List<NameValuePair> params = new ArrayList<NameValuePair>(3);
+
+                    for(int c = 0; c < campos.length; c++ ){
+
+                        params.add(
+                                new BasicNameValuePair(
+                                        campos[c][0],
+                                        campos[c][1]
+                                )
+                        );
+                    }
+
+                    httpPost.setEntity(new UrlEncodedFormEntity(params));
+                    response = httpClient.execute(httpPost, localContext);
+                    HttpEntity res1 = response.getEntity();
+                    res = EntityUtils.toString(res1);
+
+                    result[0] = res;
+
+
+                }catch(Exception e){
+                    result[0] = messajes.ErrorServicesPeticion;
+                }
+
+            }
+
+        };
+
+        synchronized (nt) {
+            nt.start();
+            nt.join();
+        }
+
+        return result[0];
+
+    }
 
 }

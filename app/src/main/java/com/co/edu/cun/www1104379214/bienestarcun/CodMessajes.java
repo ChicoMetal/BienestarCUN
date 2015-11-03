@@ -28,10 +28,22 @@ public class CodMessajes {
             msmServices.put("1100", "Instruccion ejecutada correctamente");
             msmServices.put("1101", "Peticion indeterminada");
 
+            //mensajes de login
+            msmServices.put("11111", "Usuario activo");
+            msmServices.put("10000", "El usuario no existe");
+            msmServices.put("10001", "Usuario bloqueado");
+            msmServices.put("10010", "Combinacion de datos erronea");
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
+
+
+
+    //*****************************************
+    //*****************************************
+    //*****************************************
 
 
 

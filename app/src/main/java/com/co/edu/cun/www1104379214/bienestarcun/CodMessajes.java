@@ -50,5 +50,6 @@ public class CodMessajes {
     public static final String ErrorServicesPeticion = "Error al realizar la peticion al server";
     public static final String LocalInsertError = "Error al insertar los datos";
     public static final String LocalInsert = "Se han insertado los datos";
+    public static final String LoginWell = " Felicidades, has ingresado ";
 
 }

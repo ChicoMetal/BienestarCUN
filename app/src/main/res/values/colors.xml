@@ -4,5 +4,6 @@
     <color name="colorPrimaryDark">#309125</color>
 
     <color name="backgroundColor">#9bb196</color>
-    <color name="bacgroundBotton">#2e9b64</color>
+    <color name="backgroundBotton">#2e9b64</color>
+    <color name="BackgroundEDText">#cfd9d4</color>
 </resources>

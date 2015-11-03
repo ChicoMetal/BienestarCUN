@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.Metodos;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
+import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.LoginUser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     Cursor result;
 
     JSONObject SQL_RESULT_SEARCH = new JSONObject();
-
+    Boolean someBoolean = true;
     NavigationView navigationView;
     private DrawerLayout drawerLayout;
     private String drawerTitle;
@@ -55,6 +56,9 @@ public class MainActivity extends AppCompatActivity {
             Log.i("ERROR","eroor");
             e.printStackTrace();
         }
+
+
+
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);//instancio menu lateral
         navigationView = (NavigationView) findViewById(R.id.nav_view);//instancio contenedor de menu lateral
@@ -178,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void BDManager(){
 
-        db = new DBManager(getApplicationContext());//crea la base de datos
+        db = new DBManager(getApplicationContext());//crea la base de datos local
 /*
         String[][] valores = new String[][]{
                 {db.CN_TIPE_NOTIFICATION,db.TN_EGRESADO+""},
@@ -204,14 +208,14 @@ public class MainActivity extends AppCompatActivity {
 
 */
 
-/*
-        new TaskExecuteSQL(db.TABLE_NAME_NOTIFICATION,
+
+        new TaskExecuteSQL(db.TABLE_NAME_USER,
                 null,
                 null,
                 db.SQ_ACTION_DELETE,
                 getApplication()
         ).execute(); //Eliminacion
-*/
+
     }
 
 
@@ -242,7 +246,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             protected void onPreExecute() {
-                Toast.makeText(CONTEXT.getApplicationContext(), "Ejecutando...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CONTEXT.getApplicationContext(), "Procesando...", Toast.LENGTH_SHORT).show();
+                someBoolean = true;
             }
 
 
@@ -283,7 +288,9 @@ public class MainActivity extends AppCompatActivity {
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
+
                                 break;
+
                             case DBManager.TABLE_NAME_USER:
                                 ProcedureUsers();//procedimientos para las consultas de usuarios
                                 break;
@@ -298,7 +305,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
 
-
+                someBoolean = false;//saber cuando finaliza la ejecucion en segundo plano
             }
 
             private void CreateObjectResultSQL(){
@@ -330,6 +337,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     result.moveToNext();
                 }
+
 
             }
 
@@ -377,6 +385,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void Login(View v){
 
+        String[][] values;
+
         EditText user, pass;
 
         user = (EditText) findViewById(R.id.et_user_login);
@@ -384,12 +394,52 @@ public class MainActivity extends AppCompatActivity {
 
         try {
 
-            services.ConfirmarUser(getApplication(),
+            values = services.ConfirmarUser(getApplication(),
                     user.getText().toString(),
                     pass.getText().toString()); //Peticion login
 
+            if ( values != null){ //si el logueo fue correcto
+
+                Toast.makeText(MainActivity.this, "Primero", Toast.LENGTH_SHORT).show();
+                new TaskExecuteSQL(db.TABLE_NAME_USER,
+                        db.GenerateValues( values ),
+                        null,
+                        db.SQ_ACTION_INSERT,
+                        getApplication()
+                ).execute(); //insercion del usuario logueado
+
+                while(someBoolean){
+                    //Perform some repeating action.
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                Toast.makeText(MainActivity.this, "Segundo", Toast.LENGTH_SHORT).show();
+                String[] camposSeacrh = new String[]{
+                        db.CN_ID_USER_BD,
+                        db.CN_TOKEN_LOGIN,
+                        db.CN_USER
+                };
+
+                new TaskExecuteSQL(db.TABLE_NAME_USER,
+                        null,
+                        camposSeacrh,
+                        db.SQ_ACTION_SEARCH,
+                        getApplication()
+                ).execute(); //busqueda
+
+                String ejem = SQL_RESULT_SEARCH.getString(db.CN_USER);
+                Log.i(mss.TAG, ejem);
+            }
+
         } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
             e.printStackTrace();
         }
     }
+
+
 }

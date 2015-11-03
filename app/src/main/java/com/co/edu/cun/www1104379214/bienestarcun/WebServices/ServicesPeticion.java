@@ -1,5 +1,6 @@
 package com.co.edu.cun.www1104379214.bienestarcun.WebServices;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.text.Editable;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
+import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.httpHandler;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -107,8 +109,9 @@ public class ServicesPeticion {
 
     }
 
-    public void ConfirmarUser(Context context, String user, String pass) throws InterruptedException {
+    public String[][] ConfirmarUser(Context context, String user, String pass) throws InterruptedException {
 
+        String[][] values = null;
 
         final String service = "user/login.php";
 
@@ -131,6 +134,7 @@ public class ServicesPeticion {
                         mss.msmServices.getString( arrayResponse.getString(1).toString() ) ,
                         Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
 
+                return values;
 
             }else {
 
@@ -143,8 +147,14 @@ public class ServicesPeticion {
                 //String[] arrayResult = new String[]{ arrayResponse.getJSONArray(0) }; //obtengo el array con los resultados
 
 
-                String[] array = new String[arrayResult.length()];
+                //String[] array = new String[arrayResult.length()];
 
+                values = GenerateUserLoginValue(arrayResponse,
+                        objectIndex,
+                        arrayResult); //genero los valores de la insercion
+
+                return values;
+/*
                 for (int c = 0; c < arrayResult.length(); c++) {
 
                     JSONObject registro = arrayResult.getJSONObject(c);
@@ -161,10 +171,74 @@ public class ServicesPeticion {
                 }
 
                 Toast.makeText(context, array[0].toString(), Toast.LENGTH_SHORT).show();
+
+*/
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+
+        return values;
+    }
+
+    private String[][] GenerateUserLoginValue(JSONArray arrayResponse,
+                                                 JSONObject objectIndex,
+                                                 JSONArray arrayResult) throws JSONException {
+                                                 //crear matrix para insercion de usuario en sqlite
+
+
+        String[][] values = new String[][]{
+                {
+                    DBManager.CN_ID_USER_BD,
+                    arrayResult.getJSONObject(0).getString(
+                            objectIndex.getString("0")
+                    )
+                },                {
+                DBManager.CN_USER,
+                    arrayResult.getJSONObject(0).getString(
+                            objectIndex.getString("1")
+                    )
+                },
+                {
+                    DBManager.CN_PASSWORD,
+                    arrayResult.getJSONObject(0).getString(
+                            objectIndex.getString("2")
+                    )
+                },
+                {
+                    DBManager.CN_TIPE_USER,
+                    arrayResult.getJSONObject(0).getString(
+                            objectIndex.getString("3")
+                    )
+                },
+                {
+                    DBManager.CN_TOKEN_LOGIN,
+                    arrayResponse.getString(2)
+                }
+        };
+
+
+        return values;
+
+    }
+
+    public Boolean SaveLog(String[][] values) throws InterruptedException, JSONException {
+
+        final String service = "user/log_save.php";
+
+        String result = BD.HttpRequestServer(service, values);
+
+        JSONArray arrayResponse = new JSONArray( result ); // obtengo el array con la result del server
+
+        if( arrayResponse.getString(1).toString().equals("1000")  ){//compruebo si se guardo correctamente el log
+
+            return true;
+
+        }else{
+
+            return false;
+
         }
 
     }

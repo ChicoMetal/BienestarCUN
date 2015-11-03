@@ -1,4 +1,4 @@
-package com.co.edu.cun.www1104379214.bienestarcun;
+package com.co.edu.cun.www1104379214.bienestarcun.frragmentContent;
 
 import android.app.Activity;
 import android.net.Uri;
@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.co.edu.cun.www1104379214.bienestarcun.R;
 
 
 /**

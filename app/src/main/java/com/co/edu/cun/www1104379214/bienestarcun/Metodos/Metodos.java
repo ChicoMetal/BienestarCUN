@@ -10,5 +10,4 @@ package com.co.edu.cun.www1104379214.bienestarcun.Metodos;
 public class Metodos {
 
 
-
 }

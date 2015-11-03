@@ -37,6 +37,7 @@ public class DBManager { //Creacion de tablas
 
     //campos tabla usuario
     public static final String CN_ID_USER = "_id";
+    public static final String CN_ID_USER_BD = "id_user";
     public static final String CN_USER = "Usuario";
     public static final String CN_PASSWORD = "Password";
     public static final String CN_TIPE_USER = "Tipo_usuario";
@@ -55,9 +56,10 @@ public class DBManager { //Creacion de tablas
 
     public static final String CREATE_TABLE_USER = " create table "+ TABLE_NAME_USER +
             "( " + CN_ID_USER +" integer primary key autoincrement,"+
+            CN_ID_USER_BD+" text not null,"+
             CN_USER+" text not null,"+
-            CN_PASSWORD+" text not null"+
-            CN_TIPE_USER+" text not null"+
+            CN_PASSWORD+" text not null,"+
+            CN_TIPE_USER+" text not null,"+
             CN_TOKEN_LOGIN+" text not null"+
             ");"; //string de creacion de tables
 

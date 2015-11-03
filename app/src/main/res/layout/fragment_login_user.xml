@@ -1,14 +1,18 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.co.edu.cun.www1104379214.bienestarcun.LoginUser">
+    tools:context="com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.LoginUser">
 
     <!-- TODO: Update blank fragment layout -->
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="false"
+        android:layout_alignWithParentIfMissing="false"
+        android:layout_alignParentLeft="false"
+        android:layout_centerVertical="true">
 
         <TextView
             android:layout_width="wrap_content"
@@ -18,7 +22,7 @@
             android:layout_gravity="center_horizontal"
             android:textStyle="bold"
             android:textSize="30sp"
-            android:layout_marginTop="50dp" />
+            android:layout_marginBottom="20dp" />
 
         <LinearLayout
             android:orientation="horizontal"
@@ -29,22 +33,14 @@
             android:paddingLeft="3dp"
             android:layout_marginTop="5dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView4"
-                android:textSize="20sp"
-                android:text="@string/ed_usuario"
-                android:layout_weight="0.07"
-                android:width="100dp"
-                android:layout_gravity="bottom" />
-
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/et_user_login"
                 android:inputType="none"
-                android:layout_weight="0.89" />
+                android:layout_weight="0.89"
+                android:hint="@string/ed_usuario"
+                android:background="@color/BackgroundEDText" />
         </LinearLayout>
 
         <LinearLayout
@@ -56,22 +52,14 @@
             android:paddingLeft="3dp"
             android:layout_marginTop="5dp">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/ed_pass_user"
-                android:id="@+id/textView"
-                android:textSize="20sp"
-                android:layout_weight="0.32"
-                android:width="100dp"
-                android:layout_gravity="bottom" />
-
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
                 android:id="@+id/et_password_login"
-                android:layout_weight="0.64" />
+                android:layout_weight="0.64"
+                android:hint="@string/ed_pass_user"
+                android:background="@color/BackgroundEDText" />
         </LinearLayout>
 
         <LinearLayout
@@ -87,10 +75,10 @@
                 android:id="@+id/btn_login_send"
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/abc_btn_radio_to_on_mtrl_015"
-                android:background="@color/bacgroundBotton"
                 android:layout_marginRight="4dp"
                 android:contentDescription="@string/msm_btn_login_send"
-                android:onClick="Login" />
+                android:onClick="Login"
+                android:background="@color/backgroundBotton" />
 
             <ImageButton
                 android:layout_width="100dp"
@@ -98,9 +86,9 @@
                 android:id="@+id/btn_login_cancel"
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/abc_btn_radio_to_on_mtrl_000"
-                android:background="@color/bacgroundBotton"
                 android:layout_marginLeft="4dp"
-                android:contentDescription="@string/msm_btn_login_cancel" />
+                android:contentDescription="@string/msm_btn_login_cancel"
+                android:background="@color/backgroundBotton" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

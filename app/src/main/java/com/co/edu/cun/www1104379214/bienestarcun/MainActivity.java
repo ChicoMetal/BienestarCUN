@@ -1,10 +1,7 @@
 package com.co.edu.cun.www1104379214.bienestarcun;
 
 
-import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -22,12 +19,17 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.Metodos;
+import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLDelete;
+import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLInsert;
+import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLSearch;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.LoginUser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,10 +38,13 @@ public class MainActivity extends AppCompatActivity {
     CodMessajes mss = new CodMessajes();
 
     DBManager db;
-    Cursor result;
+    Cursor result_search;
 
     JSONObject SQL_RESULT_SEARCH = new JSONObject();
-    Boolean someBoolean = true;
+    TaskExecuteSQLInsert sqliteInsert;
+    TaskExecuteSQLSearch sqliteSearch;
+    TaskExecuteSQLDelete sqliteDelete;
+
     NavigationView navigationView;
     private DrawerLayout drawerLayout;
     private String drawerTitle;
@@ -189,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
                 {db.CN_COD_NOTIFICACION,"1"}
         };
 
-         new TaskExecuteSQL(db.TABLE_NAME_NOTIFICATION,
+         new TaskExecuteSQLInsert(db.TABLE_NAME_NOTIFICATION,
                 db.GenerateValues(valores),
                 null,
                 db.SQ_ACTION_INSERT,
@@ -199,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
 /*
         String[] camposSeacrh = new String[]{db.CN_TIPE_NOTIFICATION, db.CN_COD_NOTIFICACION};
 
-        new TaskExecuteSQL(db.TABLE_NAME_NOTIFICATION,
+        new TaskExecuteSQLInsert(db.TABLE_NAME_NOTIFICATION,
                 null,
                 camposSeacrh,
                 db.SQ_ACTION_SEARCH,
@@ -208,18 +213,17 @@ public class MainActivity extends AppCompatActivity {
 
 */
 
+        sqliteDelete = new TaskExecuteSQLDelete(db.TABLE_NAME_USER,
+                getApplication(),
+                db
+        ); //Eliminacion
 
-        new TaskExecuteSQL(db.TABLE_NAME_USER,
-                null,
-                null,
-                db.SQ_ACTION_DELETE,
-                getApplication()
-        ).execute(); //Eliminacion
+        sqliteDelete.execute();
 
     }
 
-
-     private class TaskExecuteSQL extends AsyncTask<Void, Void, Void> {
+/*
+     private class TaskExecuteSQLInsert extends AsyncTask<Void, Void, Void> {
 
             private String TABLA;
             private ContentValues VALORES;
@@ -227,9 +231,9 @@ public class MainActivity extends AppCompatActivity {
             private String[] CAMPOS; //Array para la busqueda de registros
             private Context CONTEXT;
 
-            private String result_search;
+            private String result_insert;
 
-            public TaskExecuteSQL(String tb,//nombre de la tabla
+            public TaskExecuteSQLInsert(String tb,//nombre de la tabla
                                   ContentValues values, //Valores para insercion
                                   String[] colunms,//Campos a buscar
                                   String action,//accion a realizar
@@ -246,8 +250,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             protected void onPreExecute() {
+
                 Toast.makeText(CONTEXT.getApplicationContext(), "Procesando...", Toast.LENGTH_SHORT).show();
-                someBoolean = true;
+
             }
 
 
@@ -260,11 +265,11 @@ public class MainActivity extends AppCompatActivity {
                         Log.i(mss.TAG, resultado + "");
                         break;
                     case DBManager.SQ_ACTION_INSERT:
-                        result_search = db.InsertBD(VALORES, TABLA);
+                        result_insert = db.InsertBD(VALORES, TABLA);
 
                         break;
                     case DBManager.SQ_ACTION_SEARCH:
-                        result = db.SearchDB(TABLA, CAMPOS);
+                        result_search = db.SearchDB(TABLA, CAMPOS);
                         break;
                 }
 
@@ -277,6 +282,7 @@ public class MainActivity extends AppCompatActivity {
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
 
+                Log.i(mss.TAG, "Termina");
                 switch (ACCION) { //en caso de ser insercion realizo esta accion
                     //al terminar la ejecucion
                     case DBManager.SQ_ACTION_SEARCH:
@@ -299,19 +305,21 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case DBManager.SQ_ACTION_INSERT:
                         Toast.makeText(CONTEXT.getApplicationContext(),
-                                result_search,
+                                result_insert,
                                 Toast.LENGTH_SHORT).show();
                         break;
 
                 }
 
-                someBoolean = false;//saber cuando finaliza la ejecucion en segundo plano
+
             }
 
             private void CreateObjectResultSQL(){
-                result.moveToFirst();
+
+                result_search.moveToFirst();
+
                 int contador = 0;
-                while (!result.isAfterLast()) {
+                while (!result_search.isAfterLast()) {
 
                     try { //creo objeto de resultados consulta
 
@@ -321,7 +329,7 @@ public class MainActivity extends AppCompatActivity {
 
                         for (int c = 0; c < size; c++) {//itero por cada campo enviado para la consulta
                             SubObject = SubObject + CAMPOS[c] + ":" +
-                                    result.getString(result.getColumnIndex(CAMPOS[c])); //agrego clave y valor
+                                    result_search.getString(result_search.getColumnIndex(CAMPOS[c])); //agrego clave y valor
 
                             if (!(c == (size - 1))) {//confirmo si no es la ultima columna
                                 SubObject = SubObject + ","; //añado una coma al final del subObjeto para agregar el siguiente
@@ -335,7 +343,8 @@ public class MainActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    result.moveToNext();
+
+                    result_search.moveToNext();
                 }
 
 
@@ -347,7 +356,7 @@ public class MainActivity extends AppCompatActivity {
 
             private void ProcedureNotifications() throws JSONException { //procedimientos despues de buscar notificaciones
 
-                if (result.getCount() > 0) { //verifico si se encontraron registros
+                if (result_search.getCount() > 0) { //verifico si se encontraron registros
                     CreateObjectResultSQL(); //creo objeto con los resultados de consulta
                     String s = SQL_RESULT_SEARCH.getString("0");
                     JSONObject ss = new JSONObject(s);
@@ -356,21 +365,21 @@ public class MainActivity extends AppCompatActivity {
                 }else{
                     //TODO acciones si no encuentra notificaciones
                 }
-                result.close();//cierro el cursor
+                result_search.close();//cierro el cursor
             }
 
             private void ProcedureUsers() { //procedimientos despues de buscar usuarios
-             if (result.getCount() > 0) { //verifico si se encontraron registros
+             if (result_search.getCount() > 0) { //verifico si se encontraron registros
 
                  CreateObjectResultSQL(); //creo objeto con los resultados de consulta
                 //TODO ACCIONES
              }else{
                  //TODO acciones si no encuentra usuarios
              }
-             result.close();//cierro el cursor
+             result_search.close();//cierro el cursor
          }
         } //realizar acciones en segundo plano Notificaciones
-
+*/
 
 
     //********************************************
@@ -400,45 +409,106 @@ public class MainActivity extends AppCompatActivity {
 
             if ( values != null){ //si el logueo fue correcto
 
-                Toast.makeText(MainActivity.this, "Primero", Toast.LENGTH_SHORT).show();
-                new TaskExecuteSQL(db.TABLE_NAME_USER,
+                sqliteInsert = new TaskExecuteSQLInsert(db.TABLE_NAME_USER,
                         db.GenerateValues( values ),
-                        null,
-                        db.SQ_ACTION_INSERT,
-                        getApplication()
-                ).execute(); //insercion del usuario logueado
+                        getApplication(),
+                        db
+                ); //insertar usuario logueado en sqlite
 
-                while(someBoolean){
-                    //Perform some repeating action.
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                Toast.makeText(MainActivity.this, "Segundo", Toast.LENGTH_SHORT).show();
-                String[] camposSeacrh = new String[]{
-                        db.CN_ID_USER_BD,
-                        db.CN_TOKEN_LOGIN,
-                        db.CN_USER
-                };
+                sqliteInsert.execute();
 
-                new TaskExecuteSQL(db.TABLE_NAME_USER,
-                        null,
-                        camposSeacrh,
-                        db.SQ_ACTION_SEARCH,
-                        getApplication()
-                ).execute(); //busqueda
 
-                String ejem = SQL_RESULT_SEARCH.getString(db.CN_USER);
-                Log.i(mss.TAG, ejem);
             }
 
         } catch (InterruptedException e) {
             e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
+    }
+
+    public void Comprobar( View v) throws JSONException, ExecutionException, InterruptedException {
+
+        String[] camposSeacrh = new String[]{
+                db.CN_ID_USER_BD,
+                db.CN_TOKEN_LOGIN,
+                db.CN_USER
+        };
+
+        sqliteSearch = new TaskExecuteSQLSearch(db.TABLE_NAME_USER,
+                camposSeacrh,
+                getApplication(),
+                db
+        ); //busqueda
+
+        Cursor result = sqliteSearch.execute().get();
+
+        ProcedureUsers(result, camposSeacrh);
+
+        Log.i(mss.TAG,  SQL_RESULT_SEARCH.getString("0") );
+
+
+    }
+
+    private void CreateObjectResultSQL(Cursor result, String[] campos){
+
+        int numero = result.getCount();
+
+
+        int contador = 0;
+        while ( result.moveToNext() ) {
+
+            try { //creo objeto de resultados consulta
+
+                String SubObject = "{"; //inicio la construccion del subobjeto
+
+                int size = campos.length;//numero de campos
+
+                for (int c = 0; c < size; c++) {//itero por cada campo enviado para la consulta
+                    SubObject = SubObject + campos[c] + ":" +
+                            result.getString(result.getColumnIndex(campos[c])); //agrego clave y valor
+
+                    if (!(c == (size - 1))) {//confirmo si no es la ultima columna
+                        SubObject = SubObject + ","; //añado una coma al final del subObjeto para agregar el siguiente
+                    }
+
+                }
+                SubObject = SubObject + "}";//finalizo subojeto
+
+                SQL_RESULT_SEARCH.put(contador + "", SubObject);
+
+                //Log.i(mss.TAG, SQL_RESULT_SEARCH.getString("0"));
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+    }
+
+    private void ProcedureNotifications(Cursor result, String[] campos) throws JSONException { //procedimientos despues de buscar notificaciones
+
+        if (result_search.getCount() > 0) { //verifico si se encontraron registros
+            CreateObjectResultSQL(result, campos); //creo objeto con los resultados de consulta
+            String s = SQL_RESULT_SEARCH.getString("0");
+            JSONObject ss = new JSONObject(s);
+            Toast.makeText(getApplicationContext(), ss.getString(db.CN_TIPE_NOTIFICATION), Toast.LENGTH_SHORT).show();
+            //TODO ACCIONES
+        }else{
+            //TODO acciones si no encuentra notificaciones
+        }
+        result_search.close();//cierro el cursor
+    }
+
+    private void ProcedureUsers( Cursor result, String[] campos ) { //procedimientos despues de buscar usuarios
+        if (result.getCount() > 0) { //verifico si se encontraron registros
+
+            CreateObjectResultSQL(result, campos); //creo objeto con los resultados de consulta
+            //TODO ACCIONES
+        }else{
+            //TODO acciones si no encuentra usuarios
+        }
+        result.close();//cierro el cursor
     }
 
 

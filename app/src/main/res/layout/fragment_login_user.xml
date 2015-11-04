@@ -25,7 +25,7 @@
             android:layout_marginBottom="20dp" />
 
         <LinearLayout
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:weightSum="1"
@@ -40,17 +40,9 @@
                 android:inputType="none"
                 android:layout_weight="0.89"
                 android:hint="@string/ed_usuario"
-                android:background="@color/BackgroundEDText" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="1"
-            android:paddingRight="3dp"
-            android:paddingLeft="3dp"
-            android:layout_marginTop="5dp">
+                android:background="@color/BackgroundEDText"
+                android:text="krlos"
+                android:layout_marginBottom="5dp" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -59,7 +51,9 @@
                 android:id="@+id/et_password_login"
                 android:layout_weight="0.64"
                 android:hint="@string/ed_pass_user"
-                android:background="@color/BackgroundEDText" />
+                android:background="@color/BackgroundEDText"
+                android:layout_marginTop="5dp"
+                android:text="123" />
         </LinearLayout>
 
         <LinearLayout
@@ -88,7 +82,8 @@
                 android:src="@drawable/abc_btn_radio_to_on_mtrl_000"
                 android:layout_marginLeft="4dp"
                 android:contentDescription="@string/msm_btn_login_cancel"
-                android:background="@color/backgroundBotton" />
+                android:background="@color/backgroundBotton"
+                android:onClick="Comprobar" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

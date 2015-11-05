@@ -22,7 +22,7 @@ public class CodMessajes {
             msmServices.put("0000", "error al conectar");
             msmServices.put("0001", "error al ejecutar el query");
             msmServices.put("0010", "No existen datos");
-            msmServices.put("1000", "Query ejecutado correctamente");
+            msmServices.put("1000", "Ejecucion exitosa");
             msmServices.put("0100", "error al seleccionar la tabla");
             msmServices.put("0011", "Error en la instruccion");
             msmServices.put("1100", "Instruccion ejecutada correctamente");

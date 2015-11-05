@@ -109,7 +109,8 @@ public class ServicesPeticion {
 
     }
 
-    public String[][] ConfirmarUser(Context context, String user, String pass) throws InterruptedException {
+    public String[][] ConfirmarUser(Context context, String user, String pass)
+            throws InterruptedException {
 
         String[][] values = null;
 
@@ -223,23 +224,39 @@ public class ServicesPeticion {
 
     }
 
-    public Boolean SaveLog(String[][] values) throws InterruptedException, JSONException {
+    public String SaveLog( JSONObject valuesJSON, String[] campos)
+            throws JSONException, InterruptedException {
 
         final String service = "user/log_save.php";
+
+        String[][] values = JSONObjectToMatrix(valuesJSON, campos); //obtener matrix desde objeto
 
         String result = BD.HttpRequestServer(service, values);
 
         JSONArray arrayResponse = new JSONArray( result ); // obtengo el array con la result del server
 
-        if( arrayResponse.getString(1).toString().equals("1000")  ){//compruebo si se guardo correctamente el log
+        return arrayResponse.getString(1).toString();
 
-            return true;
 
-        }else{
+    }
 
-            return false;
+    public String[][] JSONObjectToMatrix(JSONObject arrayResult, String[] campos)
+            throws JSONException {
+
+        String[][] Matrix = new String[campos.length][2];
+
+        Log.i(mss.TAG, arrayResult.getString( campos[0] ));
+
+        for (int c = 0; c < campos.length; c++) {//pasar JSONArray a matrix
+
+
+            Matrix[c][0] = campos[c].toString(); //campo
+            Matrix[c][1] = arrayResult.getString( campos[c] );//valor
 
         }
+
+        return Matrix;
+
 
     }
 }

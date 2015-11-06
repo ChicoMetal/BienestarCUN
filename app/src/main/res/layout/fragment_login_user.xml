@@ -83,7 +83,8 @@
                 android:layout_marginLeft="4dp"
                 android:contentDescription="@string/msm_btn_login_cancel"
                 android:background="@color/backgroundBotton"
-                android:onClick="Comprobar" />
+                android:nestedScrollingEnabled="false"
+                android:onClick="Logout" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

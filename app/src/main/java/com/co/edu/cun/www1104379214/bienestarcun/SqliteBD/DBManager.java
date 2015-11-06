@@ -64,14 +64,14 @@ public class DBManager { //Creacion de tablas
             ");"; //string de creacion de tables
 
 
-    public String InsertBD(ContentValues valores, String TABLA){ //inserta registro en la BD
+    public Boolean InsertBD(ContentValues valores, String TABLA){ //inserta registro en la BD
 
        Long result = BD.insert(TABLA, null,valores);
 
         if(result == -1){
-            return mss.LocalInsertError;
+            return false;
         }else{
-            return mss.LocalInsert;
+            return true;
         }
 
     }

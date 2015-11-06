@@ -36,16 +36,19 @@ public class Metodos {
     TaskExecuteSQLDelete sqliteDelete;
     CodMessajes mss = new CodMessajes();
 
-    Cursor result_search;
+    Cursor result;
 
+    //<editor-fold desc="Constructor">
     public Metodos(Context contexto, DBManager db) {
 
         this.CONTEXTO = contexto;
         this.DB = db;
 
     }
+    //</editor-fold>
 
-    public  void ejemplo(EditText user, EditText pass ){
+    //<editor-fold desc="Login">
+    public  void ProcessLogin(EditText user, EditText pass){
 
         String[][] values;
 
@@ -56,7 +59,9 @@ public class Metodos {
                     user.getText().toString(),
                     pass.getText().toString()); //Peticion login
 
-            if ( values != null){ //si el logueo fue correcto
+            if ( values != null  ){ //si el logueo fue correcto
+
+                DeleteUser();
 
                 sqliteInsert = new TaskExecuteSQLInsert(DB.TABLE_NAME_USER,
                         DB.GenerateValues( values ),
@@ -64,25 +69,53 @@ public class Metodos {
                         DB
                 ); //insertar usuario logueado en sqlite
 
-                sqliteInsert.execute();
+                if ( sqliteInsert.execute().get() ){//verifico el guardado del usuario
 
-                try {
-                    Save_log();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    try {
+
+                       if ( Save_log() ) { //envio el registro de login
+
+                           Toast.makeText(CONTEXTO,
+                                   mss.LoginWell,
+                                   Toast.LENGTH_SHORT).show();
+
+                           //TODO Modificar el menu del usuario
+
+                       }
+
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        String contenido = "Error desde android #!#";
+                        contenido += " Funcion: ProcessLogin try 2 #!#";
+                        contenido += "Clase : Metodos.java #!#";
+                        contenido += e.getMessage();
+                        services.SaveError(contenido);
+
+                    }
+
                 }
-
 
             }
 
         } catch (InterruptedException e) {
             e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }catch (Exception e){
+            String contenido = "Error desde android #!#";
+            contenido += " Funcion: ProcessLogin try 1 #!#";
+            contenido += "Clase : Metodos.java #!#";
+            contenido += e.getMessage();
+            services.SaveError(contenido);
         }
     }
+    //</editor-fold>
 
-    public void Save_log() throws ExecutionException, InterruptedException, JSONException {
+    //<editor-fold desc="Save log">
+    public Boolean Save_log() throws ExecutionException, InterruptedException, JSONException {
+                            //Guardar el registro de un procesos de login en mysql
 
         String[] camposSeacrh = new String[]{
                 DB.CN_ID_USER_BD,
@@ -95,61 +128,84 @@ public class Metodos {
                 DB
         ); //busqueda
 
-        Cursor result = sqliteSearch.execute().get();
+        result = sqliteSearch.execute().get();
 
         JSONObject user_log = CreateObjectResultSQL(result, camposSeacrh);//recupero el usuario logueado
-        //{"0":{"Usuario":"krlos","id_user":"1104379","Token":"ec4698a66a5096801b66ebeed3eb0064ee6525cb"}}
+        //{"ROW0":{"Usuario":"krlos","id_user":"1104379","Token":"ec4698a66a5096801b66ebeed3eb0064ee6525cb"}}
 
-        Log.i(mss.TAG, user_log.toString());
+        if ( user_log.length() > 0 ){
 
-        JSONObject arrayResult = user_log.getJSONObject( "0");
+            JSONObject arrayResult = user_log.getJSONObject( "ROW0");
 
+            String resultLog = services.SaveLog(arrayResult, camposSeacrh);
 
-        String resultLog = services.SaveLog(arrayResult, camposSeacrh);
+            return true;
 
-        Toast.makeText(CONTEXTO, mss.msmServices.getString(resultLog),
-                Toast.LENGTH_SHORT).show();
-
-    }
-/*
-    private void ProcedureNotifications(Cursor result, String[] campos) throws JSONException { //procedimientos despues de buscar notificaciones
-
-        JSONObject SQL_RESULT_SEARCH_NOTIFICATIONS = new JSONObject();
-
-        if (result_search.getCount() > 0) { //verifico si se encontraron registros
-            SQL_RESULT_SEARCH_NOTIFICATIONS = CreateObjectResultSQL(result, campos); //creo objeto con los resultados de consulta
-            String s = SQL_RESULT_SEARCH_NOTIFICATIONS.getString("0");
-            JSONObject ss = new JSONObject(s);
-            Toast.makeText(CONTEXTO, ss.getString(DB.CN_TIPE_NOTIFICATION), Toast.LENGTH_SHORT).show();
-            //TODO ACCIONES
-        }else{
-            //TODO acciones si no encuentra notificaciones
         }
-        result_search.close();//cierro el cursor
+
+        return false;
 
     }
+    //</editor-fold>
 
-    private void ProcedureUsers( Cursor result, String[] campos ) { //procedimientos despues de buscar usuarios
+    //<editor-fold desc="Logout">
+    public void ProcessLogout(){
 
-        JSONObject SQL_RESULT_SEARCH_NOTIFICATIONS = new JSONObject();
+        String[] camposSeacrh = new String[]{
+                DB.CN_ID_USER_BD,
+                DB.CN_TOKEN_LOGIN
+        };
 
-        if (result.getCount() > 0) { //verifico si se encontraron registros
+        sqliteSearch = new TaskExecuteSQLSearch(DB.TABLE_NAME_USER,
+                camposSeacrh,
+                CONTEXTO,
+                DB
+        ); //busqueda
 
-            SQL_RESULT_SEARCH_NOTIFICATIONS = CreateObjectResultSQL(result, campos); //creo objeto con los resultados de consulta
-            //TODO ACCIONES
-        }else{
-            //TODO acciones si no encuentra usuarios
+        try {
+
+            result = sqliteSearch.execute().get();
+
+            JSONObject result_object = CreateObjectResultSQL(result, camposSeacrh);
+
+            if( result_object.length() > 0 ){
+
+                String result_service = services.LogoutUser( result_object );
+                //TODO verificar que en mysql se registre el logout y cambiar menu
+                DeleteUser();
+
+                Toast.makeText(CONTEXTO,
+                        mss.msmServices.getString( result_service ),
+                        Toast.LENGTH_SHORT).show();
+            }
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+
+
+            String contenido = "Error desde android #!#";
+            contenido += " Funcion: ProcessLogout #!#";
+            contenido += "Clase : Metodos.java #!#";
+            contenido += e.getMessage();
+            services.SaveError(contenido);
+
         }
-        result.close();//cierro el cursor
+
     }
-*/
+    //</editor-fold>
+
+    //<editor-fold desc="Crear objeto con resultados consulta sqlite">
     private JSONObject CreateObjectResultSQL(Cursor result, String[] campos) throws JSONException { //crear JSONObject con los resultados de sqlite
 
         JSONObject SQL_RESULT_SEARCH = new JSONObject();
         JSONObject subobject = new JSONObject();
 
         int numero = result.getCount();
-
+        String nameRow = "ROW";
         int contador = 0;
 
         while ( result.moveToNext() ) {
@@ -159,23 +215,63 @@ public class Metodos {
                 int size = campos.length;//numero de campos
 
                 for (int c = 0; c < size; c++) {//itero por cada campo enviado para la consulta
+
                     subobject.put(campos[c],
-                            result.getString(result.getColumnIndex(campos[c])));
+                            result.getString(
+                                    result.getColumnIndex(campos[c])
+                            )
+                    );
 
                 }
 
-                SQL_RESULT_SEARCH.put(contador + "", subobject);
-
-                //Log.i(mss.TAG, SQL_RESULT_SEARCH.getString("0"));
+                SQL_RESULT_SEARCH.put(nameRow+contador + "", subobject);
 
             } catch (JSONException e) {
                 e.printStackTrace();
+
+
+                String contenido = "Error desde android #!#";
+                contenido += " Funcion: CreateObjectResultSQL #!#";
+                contenido += "Clase : Metodos.java #!#";
+                contenido += e.getMessage();
+                services.SaveError(contenido);
+
             }
 
+            contador++;
         }
 
         return SQL_RESULT_SEARCH;
 
     }
+    //</editor-fold>
 
+    //<editor-fold desc="Eliminar usuario sqlite">
+    private void DeleteUser(){
+
+
+        sqliteDelete = new TaskExecuteSQLDelete(DB.TABLE_NAME_USER,
+                CONTEXTO,
+                DB
+        ); //Eliminacion posibles usuarios logueados
+
+
+        try {
+
+            sqliteDelete.execute().get();
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }catch (Exception e){
+            String contenido = "Error desde android #!#";
+            contenido += " Funcion: DeleteUser #!#";
+            contenido += "Clase : Metodos.java #!#";
+            contenido += e.getMessage();
+            services.SaveError(contenido);
+        }
+
+    }
+    //</editor-fold>
 }

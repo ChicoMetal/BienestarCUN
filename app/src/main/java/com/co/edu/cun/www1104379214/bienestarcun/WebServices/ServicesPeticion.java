@@ -105,10 +105,18 @@ public class ServicesPeticion {
 
         } catch (JSONException e) {
             e.printStackTrace();
+
+            String contenido = "Error desde android #!#";
+            contenido += " Funcion: ListPerson #!#";
+            contenido += "Clase : ServicesPeticion.java #!#";
+            contenido += e.getMessage();
+            SaveError(contenido);
+
         }
 
     }
 
+    //<editor-fold desc="Verificar el usuario en la BD remota">
     public String[][] ConfirmarUser(Context context, String user, String pass)
             throws InterruptedException {
 
@@ -135,7 +143,7 @@ public class ServicesPeticion {
                         mss.msmServices.getString( arrayResponse.getString(1).toString() ) ,
                         Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
 
-                return values;
+                return null;
 
             }else {
 
@@ -145,43 +153,29 @@ public class ServicesPeticion {
 
                 JSONArray arrayResult = arrayResponse.getJSONArray(0);//obtengo el array de objetos con los registros
 
-                //String[] arrayResult = new String[]{ arrayResponse.getJSONArray(0) }; //obtengo el array con los resultados
-
-
-                //String[] array = new String[arrayResult.length()];
-
                 values = GenerateUserLoginValue(arrayResponse,
                         objectIndex,
                         arrayResult); //genero los valores de la insercion
 
                 return values;
-/*
-                for (int c = 0; c < arrayResult.length(); c++) {
 
-                    JSONObject registro = arrayResult.getJSONObject(c);
-
-                    array[c] =
-                            objectIndex.getString("1") + ": " +
-                                    registro.getString(objectIndex.getString("1")) + "\r\n" +
-                                    objectIndex.getString("2") + ": " +
-                                    registro.getString(objectIndex.getString("2")) + "\r\n" +
-                                    objectIndex.getString("3") + ": " +
-                                    registro.getString(objectIndex.getString("3")); //obtengo el array con los resultados
-
-
-                }
-
-                Toast.makeText(context, array[0].toString(), Toast.LENGTH_SHORT).show();
-
-*/
             }
 
         } catch (JSONException e) {
+
             e.printStackTrace();
+
+        }catch (Exception e){
+            String contenido = "Error desde android #!#";
+            contenido += " Funcion: ConfirmarUser #!#";
+            contenido += "Clase : ServicesPeticion.java #!#";
+            contenido += e.getMessage();
+            SaveError(contenido);
         }
 
         return values;
     }
+    //</editor-fold>
 
     private String[][] GenerateUserLoginValue(JSONArray arrayResponse,
                                                  JSONObject objectIndex,
@@ -259,4 +253,40 @@ public class ServicesPeticion {
 
 
     }
+
+    public String LogoutUser( JSONObject valuesJSON)
+            throws JSONException, InterruptedException {
+
+        final String service = "user/logout.php";
+
+        String[][] values = new String[][]{
+                {"json",valuesJSON.toString()}
+        };
+
+        String result = BD.HttpRequestServer(service, values);
+
+        JSONArray arrayResponse = new JSONArray( result ); // obtengo el array con la result del server
+
+        return arrayResponse.getString(1).toString();
+
+
+    }
+
+    //<editor-fold desc="Enviar reporte de error">
+    public void SaveError( String contenido ) {
+
+        final String service = "saveFatalError.php";
+
+        String[][] values = new String[][]{
+                {"contenido",contenido}
+        };
+
+        try {
+            BD.HttpRequestServer(service, values);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
+    //</editor-fold>
 }

@@ -1,7 +1,6 @@
 package com.co.edu.cun.www1104379214.bienestarcun;
 
 
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -16,26 +15,23 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.Metodos;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLDelete;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLInsert;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLSearch;
-import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.LoginUser;
 
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
 
 
     Metodos metodos;//clase con metodos para usar
     CodMessajes mss = new CodMessajes();
+    ServicesPeticion services = new ServicesPeticion();
 
     DBManager db;
 
@@ -58,8 +54,13 @@ public class MainActivity extends AppCompatActivity {
         try {
             Ejecutar();
         } catch (InterruptedException e) {
-
             e.printStackTrace();
+        }catch (Exception e){
+            String contenido = "Error desde android #!#";
+            contenido += " Funcion: onCreate #!#";
+            contenido += "Clase : MainActivity.java #!#";
+            contenido += e.getMessage();
+            services.SaveError(contenido);
         }
 
         metodos = new Metodos( getApplicationContext(), db );
@@ -189,13 +190,6 @@ public class MainActivity extends AppCompatActivity {
 
         db = new DBManager(getApplicationContext());//crea la base de datos local
 
-        sqliteDelete = new TaskExecuteSQLDelete(db.TABLE_NAME_USER,
-                getApplication(),
-                db
-        ); //Eliminacion
-
-        sqliteDelete.execute();
-
     }
 
 
@@ -212,23 +206,19 @@ public class MainActivity extends AppCompatActivity {
         //services.ListPerson(getApplicationContext());
     }
 
-    public void Login(View v){
+    public void Login(View v){ //ingresar usuario
 
         EditText user, pass;
 
         user = (EditText) findViewById(R.id.et_user_login);
         pass = (EditText) findViewById(R.id.et_password_login);
 
-        metodos.ejemplo(user, pass );
+        metodos.ProcessLogin(user, pass);
     }
 
-    public void Comprobar( View v) throws JSONException, ExecutionException, InterruptedException {
+    public void Logout(View v){//Borrar usuario registrado
 
-
-
-
+        metodos.ProcessLogout();
     }
-
-
 
 }

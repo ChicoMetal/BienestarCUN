@@ -15,7 +15,7 @@ import org.json.JSONObject;
 /**
  * Created by root on 4/11/15.
  */
-public class TaskExecuteSQLInsert extends AsyncTask<Void, Void, Void> {
+public class TaskExecuteSQLInsert extends AsyncTask<Void, Void, Boolean> {
 
 
     CodMessajes mss = new CodMessajes();
@@ -24,8 +24,6 @@ public class TaskExecuteSQLInsert extends AsyncTask<Void, Void, Void> {
     private ContentValues VALORES;
     private Context CONTEXT;
     private DBManager db;
-
-    private String result_insert;
 
     public TaskExecuteSQLInsert(String tb,//nombre de la tabla
                                 ContentValues values, //Valores para insercion
@@ -49,22 +47,17 @@ public class TaskExecuteSQLInsert extends AsyncTask<Void, Void, Void> {
 
 
     @Override
-    protected Void doInBackground(Void... voids) {
+    protected Boolean doInBackground(Void... voids) {
 
-        result_insert = db.InsertBD(VALORES, TABLA);
-
-        return null;
+        return db.InsertBD(VALORES, TABLA);
 
     }
 
 
     @Override
-    protected void onPostExecute(Void aVoid) {
-        super.onPostExecute(aVoid);
+    protected void onPostExecute( Boolean result) {
+        super.onPostExecute( result );
 
-        Toast.makeText(CONTEXT.getApplicationContext(),
-                result_insert,
-                Toast.LENGTH_SHORT).show();
     }
 
 

@@ -19,20 +19,22 @@ public class CodMessajes {
     static{
         try {
 
-            msmServices.put("0000", "error al conectar");
-            msmServices.put("0001", "error al ejecutar el query");
+            msmServices.put("0000", "Error al conectar");
+            msmServices.put("0001", "Error al ejecutar el query");
             msmServices.put("0010", "No existen datos");
             msmServices.put("1000", "Ejecucion exitosa");
-            msmServices.put("0100", "error al seleccionar la tabla");
+            msmServices.put("0100", "Error al seleccionar la tabla");
             msmServices.put("0011", "Error en la instruccion");
             msmServices.put("1100", "Instruccion ejecutada correctamente");
             msmServices.put("1101", "Peticion indeterminada");
+            msmServices.put("0000000000", "Error en el servidor x_x, trabajaremos en ello");
 
             //mensajes de login
             msmServices.put("11111", "Usuario activo");
             msmServices.put("10000", "El usuario no existe");
             msmServices.put("10001", "Usuario bloqueado");
             msmServices.put("10010", "Combinacion de datos erronea");
+            msmServices.put("10110", "Sesion finalizada");
 
         } catch (JSONException e) {
             e.printStackTrace();

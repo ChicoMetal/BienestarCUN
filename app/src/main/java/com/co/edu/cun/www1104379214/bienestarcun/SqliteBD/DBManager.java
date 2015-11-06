@@ -16,11 +16,15 @@ public class DBManager { //Creacion de tablas
     private SQLiteDatabase BD;
     CodMessajes mss = new CodMessajes();
 
+
+
     public DBManager(Context context) {
 
         helper = new DBHelper( context );
 
         BD = helper.getWritableDatabase();
+
+
     }
     //acciones a realizar a la BD local
     public static final String SQ_ACTION_SEARCH = "search";

@@ -8,8 +8,36 @@ import org.json.JSONObject;
  * Created by root on 31/10/15.
  */
 public class CodMessajes {
+    //*************************************
+    //*************************************Constantes
+    //*************************************
 
     public static final String TAG = "CONTROL";
+
+    public static final String UsrSuperAd = "1111";
+    public static final String UsrAd = "1110";
+    public static final String UsrAdCircle = "1101";
+    public static final String UsrDocente = "1100";
+    public static final String UsrStudent = "1011";
+    public static final String UsrExStudent = "1010";
+    public static final String UsrPsicologa = "1001";
+    public static final String UsrLoginOff = "1000";
+
+    //datos usuario por default
+
+    public static final String DftUsrId = "1000000000";
+    public static final String DftUsrName = "usuario";
+    public static final String DftUsrPass = "usuario";
+    public static final String DftUsrToken = "default";
+
+    //1111 = Super Administrador
+    //1110 = Administrador
+    //1101 = Administrador de circulo
+    //1100 = Docente CUN
+    //1011 = Estudiante
+    //1010 = Estudiante egresado
+
+
     //****************************************
     //****************************************Services
     //****************************************

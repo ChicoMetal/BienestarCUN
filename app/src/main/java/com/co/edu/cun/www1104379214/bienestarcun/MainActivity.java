@@ -118,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void PrepareMenuUser(){
+        metodos.ComproveUser( navigationView );
         //navigationView.getMenu().findItem(R.id.nav_cart).setVisible(false);
         //navigationView.getMenu().findItem(R.id.nav_products).setVisible(false);
     }
@@ -201,8 +202,6 @@ public class MainActivity extends AppCompatActivity {
 
         BDManager();
 
-
-
         //services.ListPerson(getApplicationContext());
     }
 
@@ -213,12 +212,14 @@ public class MainActivity extends AppCompatActivity {
         user = (EditText) findViewById(R.id.et_user_login);
         pass = (EditText) findViewById(R.id.et_password_login);
 
-        metodos.ProcessLogin(user, pass);
+        metodos.ProcessLogin(user, pass, navigationView);
+
     }
 
     public void Logout(View v){//Borrar usuario registrado
 
-        metodos.ProcessLogout();
+        metodos.ProcessLogout(navigationView);
+
     }
 
 }

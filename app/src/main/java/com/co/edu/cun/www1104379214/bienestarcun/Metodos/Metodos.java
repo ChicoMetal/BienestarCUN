@@ -81,7 +81,6 @@ public class Metodos {
                                    mss.LoginWell,
                                    Toast.LENGTH_SHORT).show();
 
-
                        }
 
                     } catch (ExecutionException e) {
@@ -365,7 +364,6 @@ public class Metodos {
 
     //<editor-fold desc="Ocutacion de items de menu segun el usuario">
     public void PrepareMenuUser( String targetUser, NavigationView menu ){//adapto el menu del usuario
-    // TODO no solo ocultar los menus que no usaran los usuarios, tambien mostrar los que esten ocultos y puedan usar
         switch ( targetUser ){
             case CodMessajes.UsrLoginOff:
                     MenuLoginOf(menu);
@@ -391,54 +389,104 @@ public class Metodos {
                 MenuAdCircle(menu);
                 break;
 
+            case CodMessajes.UsrAd:
+                MenuAd(menu);
+                break;
+
+            case CodMessajes.UsrSuperAd:
+                MenuAd(menu);
+                break;
+
         }
 
     }
 
     private void MenuLoginOf(NavigationView menu){
+
+
         menu.getMenu().findItem(R.id.nav_activities).setVisible(false);
         menu.getMenu().findItem(R.id.nav_desertion).setVisible(false);
         menu.getMenu().findItem(R.id.nav_history_laboral).setVisible(false);
+        menu.getMenu().findItem(R.id.nav_notifications).setVisible(true);
         menu.getMenu().findItem(R.id.nav_chat).setVisible(false);
         menu.getMenu().findItem(R.id.nav_circle_administration).setVisible(false);
-        menu.getMenu().findItem(R.id.nav_logout).setVisible(false);
+        menu.getMenu().findItem(R.id.nav_login).setEnabled(true);
+        menu.getMenu().findItem(R.id.nav_logout).setEnabled(false);
+
     }
 
     private void MenuPsicologa(NavigationView menu){
+
         menu.getMenu().findItem(R.id.nav_activities).setVisible(false);
         menu.getMenu().findItem(R.id.nav_desertion).setVisible(false);
         menu.getMenu().findItem(R.id.nav_history_laboral).setVisible(false);
+        menu.getMenu().findItem(R.id.nav_notifications).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_chat).setVisible(true);
         menu.getMenu().findItem(R.id.nav_circle_administration).setVisible(false);
-        menu.getMenu().findItem(R.id.nav_logout).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_login).setEnabled(false);
+        menu.getMenu().findItem(R.id.nav_logout).setEnabled(true);
     }
 
     private void MenuStudent(NavigationView menu){
+
+        menu.getMenu().findItem(R.id.nav_activities).setVisible(true);
         menu.getMenu().findItem(R.id.nav_desertion).setVisible(false);
         menu.getMenu().findItem(R.id.nav_history_laboral).setVisible(false);
+        menu.getMenu().findItem(R.id.nav_notifications).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_chat).setVisible(true);
         menu.getMenu().findItem(R.id.nav_circle_administration).setVisible(false);
-        menu.getMenu().findItem(R.id.nav_logout).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_login).setEnabled(false);
+        menu.getMenu().findItem(R.id.nav_logout).setEnabled(true);
     }
 
     private void MenuExStudent(NavigationView menu){
+
+        menu.getMenu().findItem(R.id.nav_activities).setVisible(true);
         menu.getMenu().findItem(R.id.nav_desertion).setVisible(false);
+        menu.getMenu().findItem(R.id.nav_history_laboral).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_notifications).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_chat).setVisible(true);
         menu.getMenu().findItem(R.id.nav_circle_administration).setVisible(false);
-        menu.getMenu().findItem(R.id.nav_logout).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_login).setEnabled(false);
+        menu.getMenu().findItem(R.id.nav_logout).setEnabled(true);
     }
 
     private void MenuDocente(NavigationView menu){
+
         menu.getMenu().findItem(R.id.nav_activities).setVisible(false);
+        menu.getMenu().findItem(R.id.nav_desertion).setVisible(true);
         menu.getMenu().findItem(R.id.nav_history_laboral).setVisible(false);
+        menu.getMenu().findItem(R.id.nav_notifications).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_chat).setVisible(true);
         menu.getMenu().findItem(R.id.nav_circle_administration).setVisible(false);
-        menu.getMenu().findItem(R.id.nav_logout).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_login).setEnabled(false);
+        menu.getMenu().findItem(R.id.nav_logout).setEnabled(true);
     }
 
     private void MenuAdCircle(NavigationView menu){
+
         menu.getMenu().findItem(R.id.nav_activities).setVisible(false);
         menu.getMenu().findItem(R.id.nav_desertion).setVisible(false);
         menu.getMenu().findItem(R.id.nav_history_laboral).setVisible(false);
-        menu.getMenu().findItem(R.id.nav_logout).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_notifications).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_chat).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_circle_administration).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_login).setEnabled(false);
+        menu.getMenu().findItem(R.id.nav_logout).setEnabled(true);
     }
 
+
+    private void MenuAd(NavigationView menu){
+
+        menu.getMenu().findItem(R.id.nav_activities).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_desertion).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_history_laboral).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_notifications).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_chat).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_circle_administration).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_login).setEnabled(false);
+        menu.getMenu().findItem(R.id.nav_logout).setEnabled(true);
+    }
 
     //</editor-fold>
 

@@ -22,7 +22,14 @@ import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLInsert;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLSearch;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
+import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Activities_app;
+import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.ChatPsicologa_app;
+import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.CircleAdministration_app;
+import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Desertion_app;
+import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.HistoryLaboral_app;
+import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Home_app;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.LoginUser;
+import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Notifications_app;
 
 import org.json.JSONObject;
 
@@ -118,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void PrepareMenuUser(){
-        metodos.ComproveUser( navigationView );
+        metodos.ComproveUser(navigationView);
         //navigationView.getMenu().findItem(R.id.nav_cart).setVisible(false);
         //navigationView.getMenu().findItem(R.id.nav_products).setVisible(false);
     }
@@ -163,12 +170,47 @@ public class MainActivity extends AppCompatActivity {
             args.putString("", "");
 
             Fragment fragment;
+            fragment =  Home_app.newInstance("", "");
 
-            if (id == R.id.nav_login){
-                fragment =  LoginUser.newInstance("", "");
+            switch ( id ){
+                case R.id.nav_home:
+                    fragment =  Home_app.newInstance("", "");
+                    break;
 
-            }else {
-                fragment = LoginUser.newInstance("", "");
+                case R.id.nav_activities:
+                    fragment =  Activities_app.newInstance("", "");
+                    break;
+
+                case R.id.nav_desertion:
+                    fragment =  Desertion_app.newInstance("", "");
+                    break;
+
+                case R.id.nav_history_laboral:
+                    fragment =  HistoryLaboral_app.newInstance("", "");
+                    break;
+
+                case R.id.nav_notifications:
+                    fragment =  Notifications_app.newInstance("", "");
+                    break;
+
+                case R.id.nav_chat:
+                    fragment =  ChatPsicologa_app.newInstance("", "");
+                    break;
+
+                case R.id.nav_circle_administration:
+                    fragment =  CircleAdministration_app.newInstance("", "");
+                    break;
+
+                case R.id.nav_login:
+                    fragment =  LoginUser.newInstance("", "");
+                    break;
+
+                case R.id.nav_logout:
+                    metodos.ProcessLogout(navigationView);
+                    drawerTitle = "Inicio";
+                    selectItem(drawerTitle,  R.id.nav_home);
+                    break;
+
             }
 
             fragment.setArguments(args);
@@ -214,12 +256,10 @@ public class MainActivity extends AppCompatActivity {
 
         metodos.ProcessLogin(user, pass, navigationView);
 
-    }
-
-    public void Logout(View v){//Borrar usuario registrado
-
-        metodos.ProcessLogout(navigationView);
+        drawerTitle = "Inicio";
+        selectItem(drawerTitle, R.id.nav_home);
 
     }
+
 
 }

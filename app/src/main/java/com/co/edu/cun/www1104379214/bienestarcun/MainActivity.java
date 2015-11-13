@@ -255,14 +255,11 @@ public class MainActivity extends AppCompatActivity {
     //********************************************Base de datos local
     //********************************************
 
-
-
     public void BDManager(){
 
         db = new DBManager(getApplicationContext());//crea la base de datos local
 
     }
-
 
     //********************************************
     //********************************************fin Base de datos
@@ -283,15 +280,12 @@ public class MainActivity extends AppCompatActivity {
         user = (EditText) findViewById(R.id.et_user_login);
         pass = (EditText) findViewById(R.id.et_password_login);
 
-
-
         if ( metodos.ProcessLogin(user, pass, navigationView) ){
 
             drawerTitle = "Inicio";
             selectItem(drawerTitle, R.id.nav_home);
 
         }
-
 
     }
 

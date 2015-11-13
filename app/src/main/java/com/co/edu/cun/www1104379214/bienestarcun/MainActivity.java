@@ -1,7 +1,11 @@
 package com.co.edu.cun.www1104379214.bienestarcun;
 
 
+
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.design.internal.NavigationMenuItemView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,7 +19,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.co.edu.cun.www1104379214.bienestarcun.Metodos.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.Metodos;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLDelete;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLInsert;
@@ -31,7 +38,10 @@ import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Home_app;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.LoginUser;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Notifications_app;
 
+
 import org.json.JSONObject;
+
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     Metodos metodos;//clase con metodos para usar
     CodMessajes mss = new CodMessajes();
     ServicesPeticion services = new ServicesPeticion();
+    IconManager icon;
 
     DBManager db;
 
@@ -51,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
     NavigationView navigationView;
     private DrawerLayout drawerLayout;
     private String drawerTitle;
+
+    MenuItem mPreviousMenuItem=null;//item seleccionado
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,11 +95,14 @@ public class MainActivity extends AppCompatActivity {
             setupDrawerContent(navigationView);
         }
 
+
         drawerTitle = "Inicio";
         if (savedInstanceState == null) {//Seleccionar item de menu por default o agregar el que tenia si existe
             int id = R.id.nav_home;
             selectItem(drawerTitle, id);
+
         }
+
     }
 
     //********************************************
@@ -97,6 +113,8 @@ public class MainActivity extends AppCompatActivity {
         if (!drawerLayout.isDrawerOpen(GravityCompat.START)) {
 
             getMenuInflater().inflate(R.menu.main, menu);
+
+
             return true;
         }
         return super.onCreateOptionsMenu(menu);
@@ -125,7 +143,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void PrepareMenuUser(){
-        metodos.ComproveUser(navigationView);
+
+        icon = new IconManager( getApplicationContext() );
+        icon.SetIconMenu(navigationView);
+
+        metodos.ComproveUser(navigationView);//verficar si existe un usuario logueado
         //navigationView.getMenu().findItem(R.id.nav_cart).setVisible(false);
         //navigationView.getMenu().findItem(R.id.nav_products).setVisible(false);
     }
@@ -137,9 +159,10 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        // Marcar item presionado
-                        menuItem.setChecked(true);
+
+                        // menuItem.setChecked(true);// Marcar item presionado
                         // Crear nuevo fragmento
+
                         String title = menuItem.getTitle().toString();
                         int id = menuItem.getItemId();
                         selectItem(title,id);
@@ -155,16 +178,26 @@ public class MainActivity extends AppCompatActivity {
 
     private void selectItem(String title, int id) {
 
-        ChangeFragment(id);
+        if( id != R.id.nav_logout){ //si se selecciona salir no llama fragmento, solo ejecuta es logout
 
-        drawerLayout.closeDrawers(); // Cerrar drawer
-        setTitle(title); // Setear título actual
+            ChangeFragment(id);
+
+
+            drawerLayout.closeDrawers(); // Cerrar drawer
+
+            setTitle(title); // Setear título actual
+
+
+        }else{
+            Logout();
+        }
+
     }
 
     private void ChangeFragment(int id){
         // Enviar título como arguemento del fragmento
         //abrir fragments
-            // Enviar título como arguemento del fragmento
+        // Enviar título como arguemento del fragmento
 
             Bundle args = new Bundle();
             args.putString("", "");
@@ -177,27 +210,27 @@ public class MainActivity extends AppCompatActivity {
                     fragment =  Home_app.newInstance("", "");
                     break;
 
-                case R.id.nav_activities:
+                case R.id.nav_add_activities:
                     fragment =  Activities_app.newInstance("", "");
                     break;
 
-                case R.id.nav_desertion:
+                case R.id.nav_add_desertion:
                     fragment =  Desertion_app.newInstance("", "");
                     break;
 
-                case R.id.nav_history_laboral:
+                case R.id.nav_add_laboral:
                     fragment =  HistoryLaboral_app.newInstance("", "");
                     break;
 
-                case R.id.nav_notifications:
+                case R.id.nav_show_notifications:
                     fragment =  Notifications_app.newInstance("", "");
                     break;
 
-                case R.id.nav_chat:
+                case R.id.nav_new_chat:
                     fragment =  ChatPsicologa_app.newInstance("", "");
                     break;
 
-                case R.id.nav_circle_administration:
+                case R.id.nav_new_itinerario:
                     fragment =  CircleAdministration_app.newInstance("", "");
                     break;
 
@@ -205,11 +238,6 @@ public class MainActivity extends AppCompatActivity {
                     fragment =  LoginUser.newInstance("", "");
                     break;
 
-                case R.id.nav_logout:
-                    metodos.ProcessLogout(navigationView);
-                    drawerTitle = "Inicio";
-                    selectItem(drawerTitle,  R.id.nav_home);
-                    break;
 
             }
 
@@ -244,6 +272,7 @@ public class MainActivity extends AppCompatActivity {
 
         BDManager();
 
+
         //services.ListPerson(getApplicationContext());
     }
 
@@ -254,11 +283,23 @@ public class MainActivity extends AppCompatActivity {
         user = (EditText) findViewById(R.id.et_user_login);
         pass = (EditText) findViewById(R.id.et_password_login);
 
-        metodos.ProcessLogin(user, pass, navigationView);
 
+
+        if ( metodos.ProcessLogin(user, pass, navigationView) ){
+
+            drawerTitle = "Inicio";
+            selectItem(drawerTitle, R.id.nav_home);
+
+        }
+
+
+    }
+
+    public void Logout(){
+        metodos.ProcessLogout(navigationView);
+        int id = R.id.nav_home;
         drawerTitle = "Inicio";
-        selectItem(drawerTitle, R.id.nav_home);
-
+        selectItem(drawerTitle, id);
     }
 
 

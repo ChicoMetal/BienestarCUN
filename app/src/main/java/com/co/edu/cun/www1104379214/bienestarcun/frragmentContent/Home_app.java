@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 
@@ -60,13 +62,26 @@ public class Home_app extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home_app, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_home_app, container, false);
+
+        // Ubicar argumento en el text view de section_fragment.xml
+
+        TextView titulo = (TextView) view.findViewById(R.id.hometitle);
+        titulo.setText("nuevo text");
+
+        ImageView img = (ImageView) view.findViewById(R.id.svgimg);
+        img.setImageResource(R.drawable.cunnegro);
+
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -48,8 +48,8 @@ public class Metodos {
     //</editor-fold>
 
     //<editor-fold desc="Login">
-    public  void ProcessLogin(EditText user, EditText pass, NavigationView menu){
-
+    public  boolean ProcessLogin(EditText user, EditText pass, NavigationView menu){
+        boolean status = false;
         String[][] values;
 
 
@@ -81,6 +81,8 @@ public class Metodos {
                                    mss.LoginWell,
                                    Toast.LENGTH_SHORT).show();
 
+                           status = true;
+
                        }
 
                     } catch (ExecutionException e) {
@@ -110,6 +112,8 @@ public class Metodos {
             contenido += e.getMessage();
             services.SaveError(contenido);
         }
+
+        return status;
     }
     //</editor-fold>
 
@@ -366,7 +370,7 @@ public class Metodos {
     public void PrepareMenuUser( String targetUser, NavigationView menu ){//adapto el menu del usuario
         switch ( targetUser ){
             case CodMessajes.UsrLoginOff:
-                    MenuLoginOf(menu);
+                MenuLoginOf(menu);
                 break;
 
             case CodMessajes.UsrStudent:
@@ -401,15 +405,15 @@ public class Metodos {
 
     }
 
+
     private void MenuLoginOf(NavigationView menu){
 
-
-        menu.getMenu().findItem(R.id.nav_activities).setVisible(false);
-        menu.getMenu().findItem(R.id.nav_desertion).setVisible(false);
-        menu.getMenu().findItem(R.id.nav_history_laboral).setVisible(false);
-        menu.getMenu().findItem(R.id.nav_notifications).setVisible(true);
-        menu.getMenu().findItem(R.id.nav_chat).setVisible(false);
-        menu.getMenu().findItem(R.id.nav_circle_administration).setVisible(false);
+        menu.getMenu().findItem(R.id.nav_group_activities).setVisible(false);
+        menu.getMenu().findItem(R.id.nav_group_desertion).setVisible(false);
+        menu.getMenu().findItem(R.id.nav_group_laboral).setVisible(false);
+        menu.getMenu().findItem(R.id.nav_group_notifications).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_group_chat).setVisible(false);
+        menu.getMenu().findItem(R.id.nav_group_circle).setVisible(false);
         menu.getMenu().findItem(R.id.nav_login).setEnabled(true);
         menu.getMenu().findItem(R.id.nav_logout).setEnabled(false);
 
@@ -417,60 +421,60 @@ public class Metodos {
 
     private void MenuPsicologa(NavigationView menu){
 
-        menu.getMenu().findItem(R.id.nav_activities).setVisible(false);
-        menu.getMenu().findItem(R.id.nav_desertion).setVisible(false);
-        menu.getMenu().findItem(R.id.nav_history_laboral).setVisible(false);
-        menu.getMenu().findItem(R.id.nav_notifications).setVisible(true);
-        menu.getMenu().findItem(R.id.nav_chat).setVisible(true);
-        menu.getMenu().findItem(R.id.nav_circle_administration).setVisible(false);
+        menu.getMenu().findItem(R.id.nav_group_activities).setVisible(false);
+        menu.getMenu().findItem(R.id.nav_group_desertion).setVisible(false);
+        menu.getMenu().findItem(R.id.nav_group_laboral).setVisible(false);
+        menu.getMenu().findItem(R.id.nav_group_notifications).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_group_chat).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_group_circle).setVisible(false);
         menu.getMenu().findItem(R.id.nav_login).setEnabled(false);
         menu.getMenu().findItem(R.id.nav_logout).setEnabled(true);
     }
 
     private void MenuStudent(NavigationView menu){
 
-        menu.getMenu().findItem(R.id.nav_activities).setVisible(true);
-        menu.getMenu().findItem(R.id.nav_desertion).setVisible(false);
-        menu.getMenu().findItem(R.id.nav_history_laboral).setVisible(false);
-        menu.getMenu().findItem(R.id.nav_notifications).setVisible(true);
-        menu.getMenu().findItem(R.id.nav_chat).setVisible(true);
-        menu.getMenu().findItem(R.id.nav_circle_administration).setVisible(false);
+        menu.getMenu().findItem(R.id.nav_group_activities).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_group_desertion).setVisible(false);
+        menu.getMenu().findItem(R.id.nav_group_laboral).setVisible(false);
+        menu.getMenu().findItem(R.id.nav_group_notifications).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_group_chat).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_group_circle).setVisible(false);
         menu.getMenu().findItem(R.id.nav_login).setEnabled(false);
         menu.getMenu().findItem(R.id.nav_logout).setEnabled(true);
     }
 
     private void MenuExStudent(NavigationView menu){
 
-        menu.getMenu().findItem(R.id.nav_activities).setVisible(true);
-        menu.getMenu().findItem(R.id.nav_desertion).setVisible(false);
-        menu.getMenu().findItem(R.id.nav_history_laboral).setVisible(true);
-        menu.getMenu().findItem(R.id.nav_notifications).setVisible(true);
-        menu.getMenu().findItem(R.id.nav_chat).setVisible(true);
-        menu.getMenu().findItem(R.id.nav_circle_administration).setVisible(false);
+        menu.getMenu().findItem(R.id.nav_group_activities).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_group_desertion).setVisible(false);
+        menu.getMenu().findItem(R.id.nav_group_laboral).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_group_notifications).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_group_chat).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_group_circle).setVisible(false);
         menu.getMenu().findItem(R.id.nav_login).setEnabled(false);
         menu.getMenu().findItem(R.id.nav_logout).setEnabled(true);
     }
 
     private void MenuDocente(NavigationView menu){
 
-        menu.getMenu().findItem(R.id.nav_activities).setVisible(false);
-        menu.getMenu().findItem(R.id.nav_desertion).setVisible(true);
-        menu.getMenu().findItem(R.id.nav_history_laboral).setVisible(false);
-        menu.getMenu().findItem(R.id.nav_notifications).setVisible(true);
-        menu.getMenu().findItem(R.id.nav_chat).setVisible(true);
-        menu.getMenu().findItem(R.id.nav_circle_administration).setVisible(false);
+        menu.getMenu().findItem(R.id.nav_group_activities).setVisible(false);
+        menu.getMenu().findItem(R.id.nav_group_desertion).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_group_laboral).setVisible(false);
+        menu.getMenu().findItem(R.id.nav_group_notifications).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_group_chat).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_group_circle).setVisible(false);
         menu.getMenu().findItem(R.id.nav_login).setEnabled(false);
         menu.getMenu().findItem(R.id.nav_logout).setEnabled(true);
     }
 
     private void MenuAdCircle(NavigationView menu){
 
-        menu.getMenu().findItem(R.id.nav_activities).setVisible(false);
-        menu.getMenu().findItem(R.id.nav_desertion).setVisible(false);
-        menu.getMenu().findItem(R.id.nav_history_laboral).setVisible(false);
-        menu.getMenu().findItem(R.id.nav_notifications).setVisible(true);
-        menu.getMenu().findItem(R.id.nav_chat).setVisible(true);
-        menu.getMenu().findItem(R.id.nav_circle_administration).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_group_activities).setVisible(false);
+        menu.getMenu().findItem(R.id.nav_group_desertion).setVisible(false);
+        menu.getMenu().findItem(R.id.nav_group_laboral).setVisible(false);
+        menu.getMenu().findItem(R.id.nav_group_notifications).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_group_chat).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_group_circle).setVisible(true);
         menu.getMenu().findItem(R.id.nav_login).setEnabled(false);
         menu.getMenu().findItem(R.id.nav_logout).setEnabled(true);
     }
@@ -478,15 +482,16 @@ public class Metodos {
 
     private void MenuAd(NavigationView menu){
 
-        menu.getMenu().findItem(R.id.nav_activities).setVisible(true);
-        menu.getMenu().findItem(R.id.nav_desertion).setVisible(true);
-        menu.getMenu().findItem(R.id.nav_history_laboral).setVisible(true);
-        menu.getMenu().findItem(R.id.nav_notifications).setVisible(true);
-        menu.getMenu().findItem(R.id.nav_chat).setVisible(true);
-        menu.getMenu().findItem(R.id.nav_circle_administration).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_group_activities).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_group_desertion).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_group_laboral).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_group_notifications).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_group_chat).setVisible(true);
+        menu.getMenu().findItem(R.id.nav_group_circle).setVisible(true);
         menu.getMenu().findItem(R.id.nav_login).setEnabled(false);
         menu.getMenu().findItem(R.id.nav_logout).setEnabled(true);
     }
+
 
     //</editor-fold>
 

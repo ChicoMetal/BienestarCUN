@@ -34,7 +34,7 @@ public class httpHandler {
 
 
     //Metodo para realizar peticiones al server
-    public String BuscarBD( final String service, final String[][] parametros) throws InterruptedException {
+    public String BuscarBD1( final String service, final String[][] parametros) throws InterruptedException {
 
         final String[] result = new String[1];
 
@@ -93,7 +93,7 @@ public class httpHandler {
     }
 
 
-    public String GuardarBD( final String[][] campos, final String services ) throws InterruptedException {
+    public String GuardarBD1( final String[][] campos, final String services ) throws InterruptedException {
 
         final String[] result = new String[1];
 
@@ -194,7 +194,7 @@ public class httpHandler {
 
         synchronized (nt) {
             nt.start();
-            nt.join();
+            nt.join(4000);//espera maximo 4 segundos
         }
 
         return result[0];

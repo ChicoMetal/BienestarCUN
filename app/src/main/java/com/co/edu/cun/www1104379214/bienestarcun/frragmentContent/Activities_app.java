@@ -4,11 +4,20 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.R;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.Activities;
+import com.co.edu.cun.www1104379214.bienestarcun.ui.adapter.HypedActivitiesAdapter;
+
+import java.util.ArrayList;
 
 
 /**
@@ -20,6 +29,15 @@ import com.co.edu.cun.www1104379214.bienestarcun.R;
  * create an instance of this fragment.
  */
 public class Activities_app extends Fragment {
+
+    ArrayList<Activities> activities;
+
+    public static final String LOG_TAG = Activities_app.class.getName();
+    public static final int NUM_COLUMNS = 1;
+
+    private RecyclerView mHyperdActivitiesList;
+    private HypedActivitiesAdapter adapter;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -60,15 +78,28 @@ public class Activities_app extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        adapter = new HypedActivitiesAdapter(getActivity());
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_activities_app, container, false);
+        View root = inflater.inflate(R.layout.fragment_activities_app,container,false);
+
+        mHyperdActivitiesList = (RecyclerView) root.findViewById(R.id.hyper_activities_list);
+
+        SetudActivitiesList();
+
+        SetDummyContent();
+
+        return root;
     }
 
+    /**
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -102,5 +133,29 @@ public class Activities_app extends Fragment {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
+
+
+    private void SetudActivitiesList(){
+
+        mHyperdActivitiesList.setLayoutManager(
+                new GridLayoutManager(getActivity(),
+                        NUM_COLUMNS) );
+
+
+
+        mHyperdActivitiesList.setAdapter(adapter);
+    }
+
+    private void SetDummyContent(){
+        ArrayList<Activities> artists = new ArrayList<>();
+
+        for (int i=0; i <= 10; i++){
+
+            artists.add( new Activities("Artists"+ i));
+
+        }
+        adapter.AddAll(artists);
+    }
+
 
 }

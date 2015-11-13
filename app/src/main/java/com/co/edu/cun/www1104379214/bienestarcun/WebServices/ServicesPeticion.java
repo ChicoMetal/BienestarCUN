@@ -27,95 +27,6 @@ public class ServicesPeticion {
     CodMessajes mss = new CodMessajes();
 
 
-    public void GuardarPerson(String name, String lastname, String edad) throws InterruptedException {
-
-        final String Service = "services.php";
-        String respuesta;
-
-        String[][] Datos = new String[][]{
-                {"nombres", name},
-                {"apellidos", lastname},
-                {"edad", edad},
-                {"modo", BD.modo},
-                {"accion",BD.insert}
-        };
-
-        respuesta = BD.GuardarBD(Datos, Service);
-
-    }
-
-    public void ListPerson(Context v) throws InterruptedException {
-
-        final String service = "services.php";
-
-        parametros = new String[][]{ //array parametros a enviar
-                {"modo",BD.modo},
-                {"accion",BD.search}
-        };
-
-
-        result = BD.BuscarBD(service, parametros);
-
-
-        try {
-
-            JSONArray arrayResponse = new JSONArray( result ); // obtengo el array con la result del server
-
-            if( arrayResponse.getString(0).toString().equals("msm")  ){
-
-                Toast.makeText(v.getApplicationContext(),
-                        mss.msmServices.getString( arrayResponse.getString(1).toString() ) ,
-                        Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
-
-
-            }else {
-
-
-                JSONObject objectIndex = arrayResponse.getJSONObject(1); //obtengo los indices de la consulta
-
-
-                JSONArray arrayResult = arrayResponse.getJSONArray(0);//obtengo el array de objetos con los registros
-
-                //String[] arrayResult = new String[]{ arrayResponse.getJSONArray(0) }; //obtengo el array con los resultados
-
-
-                String[] array = new String[arrayResult.length()];
-
-                for (int c = 0; c < arrayResult.length(); c++) {
-
-                    JSONObject registro = arrayResult.getJSONObject(c);
-
-                    array[c] =
-                            objectIndex.getString("1") + ": " +
-                                    registro.getString(objectIndex.getString("1")) + "\r\n" +
-                            objectIndex.getString("2") + ": " +
-                                    registro.getString(objectIndex.getString("2")) + "\r\n" +
-                            objectIndex.getString("3") + ": " +
-                                    registro.getString(objectIndex.getString("3")); //obtengo el array con los resultados
-
-
-                }
-
-                Toast.makeText(v, array[0].toString(), Toast.LENGTH_SHORT).show();
-                ArrayAdapter<String> adaptador;
-                //adaptador = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, array );
-
-                //listPerson.setAdapter(adaptador);
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: ListPerson #!#";
-            contenido += "Clase : ServicesPeticion.java #!#";
-            contenido += e.getMessage();
-            SaveError(contenido);
-
-        }
-
-    }
-
     //<editor-fold desc="Verificar el usuario en la BD remota">
     public String[][] ConfirmarUser(Context context, String user, String pass)
             throws InterruptedException {
@@ -177,6 +88,7 @@ public class ServicesPeticion {
     }
     //</editor-fold>
 
+    //<editor-fold desc="Obtiene los datos del usuario que se loguea">
     private String[][] GenerateUserLoginValue(JSONArray arrayResponse,
                                                  JSONObject objectIndex,
                                                  JSONArray arrayResult) throws JSONException {
@@ -217,7 +129,9 @@ public class ServicesPeticion {
         return values;
 
     }
+    //</editor-fold>
 
+    //<editor-fold desc="Guarda el login ralizado">
     public String SaveLog( JSONObject valuesJSON, String[] campos)
             throws JSONException, InterruptedException {
 
@@ -233,7 +147,9 @@ public class ServicesPeticion {
 
 
     }
+    //</editor-fold>
 
+    //<editor-fold desc="Generar objeto a partir de una matrix">
     public String[][] JSONObjectToMatrix(JSONObject arrayResult, String[] campos)
             throws JSONException {
 
@@ -253,7 +169,9 @@ public class ServicesPeticion {
 
 
     }
+    //</editor-fold>
 
+    //<editor-fold desc="Cerrar la sesion del usuario">
     public String LogoutUser( JSONObject valuesJSON)
             throws JSONException, InterruptedException {
 
@@ -271,6 +189,7 @@ public class ServicesPeticion {
 
 
     }
+    //</editor-fold>
 
     //<editor-fold desc="Enviar reporte de error">
     public void SaveError( String contenido ) {
@@ -289,4 +208,95 @@ public class ServicesPeticion {
 
     }
     //</editor-fold>
+
+/*
+    public void GuardarPerson(String name, String lastname, String edad) throws InterruptedException {
+
+        final String Service = "services.php";
+        String respuesta;
+
+        String[][] Datos = new String[][]{
+                {"nombres", name},
+                {"apellidos", lastname},
+                {"edad", edad},
+                {"modo", BD.modo},
+                {"accion",BD.insert}
+        };
+
+        respuesta = BD.HttpRequestServer(Service, Datos);
+
+    }
+
+    public void ListPerson(Context v) throws InterruptedException {
+
+        final String service = "services.php";
+
+        parametros = new String[][]{ //array parametros a enviar
+                {"modo",BD.modo},
+                {"accion",BD.search}
+        };
+
+
+        result = BD.HttpRequestServer(service, parametros);
+
+
+        try {
+
+            JSONArray arrayResponse = new JSONArray( result ); // obtengo el array con la result del server
+
+            if( arrayResponse.getString(0).toString().equals("msm")  ){
+
+                Toast.makeText(v.getApplicationContext(),
+                        mss.msmServices.getString( arrayResponse.getString(1).toString() ) ,
+                        Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
+
+
+            }else {
+
+
+                JSONObject objectIndex = arrayResponse.getJSONObject(1); //obtengo los indices de la consulta
+
+
+                JSONArray arrayResult = arrayResponse.getJSONArray(0);//obtengo el array de objetos con los registros
+
+                //String[] arrayResult = new String[]{ arrayResponse.getJSONArray(0) }; //obtengo el array con los resultados
+
+
+                String[] array = new String[arrayResult.length()];
+
+                for (int c = 0; c < arrayResult.length(); c++) {
+
+                    JSONObject registro = arrayResult.getJSONObject(c);
+
+                    array[c] =
+                            objectIndex.getString("1") + ": " +
+                                    registro.getString(objectIndex.getString("1")) + "\r\n" +
+                            objectIndex.getString("2") + ": " +
+                                    registro.getString(objectIndex.getString("2")) + "\r\n" +
+                            objectIndex.getString("3") + ": " +
+                                    registro.getString(objectIndex.getString("3")); //obtengo el array con los resultados
+
+
+                }
+
+                Toast.makeText(v, array[0].toString(), Toast.LENGTH_SHORT).show();
+                ArrayAdapter<String> adaptador;
+                //adaptador = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, array );
+
+                //listPerson.setAdapter(adaptador);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+
+            String contenido = "Error desde android #!#";
+            contenido += " Funcion: ListPerson #!#";
+            contenido += "Clase : ServicesPeticion.java #!#";
+            contenido += e.getMessage();
+            SaveError(contenido);
+
+        }
+
+    }
+*/
 }

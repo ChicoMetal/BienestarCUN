@@ -46,7 +46,10 @@ public class CodMessajes {
 
     static{
         try {
+            //local mensaje
+            msmServices.put("0", "Ocurrio un error, verifica tu conexion");
 
+            //mensajes php
             msmServices.put("0000", "Error al conectar");
             msmServices.put("0001", "Error al ejecutar el query");
             msmServices.put("0010", "No existen datos");
@@ -77,7 +80,7 @@ public class CodMessajes {
 
 
 
-    public static final String ErrorServicesPeticion = "Error al realizar la peticion al server";
+    public static final String ErrorServicesPeticion = "['msm', '0']";
     public static final String LocalInsertError = "Error al insertar los datos";
     public static final String LocalInsert = "Se han insertado los datos";
     public static final String LoginWell = " Felicidades, has ingresado ";

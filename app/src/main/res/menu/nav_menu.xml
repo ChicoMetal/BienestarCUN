@@ -1,39 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <group android:checkableBehavior="single" android:id="@+id/principal_menu">
         <item
             android:id="@+id/nav_home"
-            android:icon="@android:drawable/ic_media_next"
-            android:checked="true"
             android:title="@string/item_home" />
         <!--android:icon="@drawable/ic_home"-->
         <item
-            android:id="@+id/nav_activities"
-            android:icon="@android:drawable/ic_media_next"
-            android:title="@string/item_activities" />
+            android:id="@+id/nav_group_activities"
+            android:title="@string/item_activities">
+
+            <menu>
+                <item
+                    android:id="@+id/nav_add_activities"
+                    android:title="+ actividades"/>
+                <item
+                    android:id="@+id/nav_itinerarios"
+                    android:title="Ver itinerarios"/>
+
+            </menu>
+
+        </item>
         <item
-            android:id="@+id/nav_desertion"
-            android:icon="@android:drawable/ic_media_next"
-            android:title="@string/item_desertion" />
+            android:id="@+id/nav_group_desertion"
+            android:title="@string/item_desertion">
+
+            <menu>
+                <item
+                    android:id="@+id/nav_add_desertion"
+                    android:title="+ Desercion"/>
+
+            </menu>
+
+        </item>
         <item
-            android:id="@+id/nav_history_laboral"
-            android:icon="@android:drawable/ic_media_next"
-            android:title="@string/item_History_laboral" />
+            android:id="@+id/nav_group_laboral"
+            android:title="@string/item_History_laboral">
+
+            <menu>
+                <item
+                    android:id="@+id/nav_add_laboral"
+                    android:title="Agregar experiencia"/>
+                <item
+                    android:id="@+id/nav_update_laboral_state"
+                    android:title="Actualizar estado laboral"/>
+
+            </menu>
+
+        </item>
         <item
-            android:id="@+id/nav_notifications"
-            android:icon="@android:drawable/ic_media_next"
-            android:title="@string/item_notifications" />
+            android:id="@+id/nav_group_notifications"
+            android:title="@string/item_notifications">
+
+            <menu>
+                <item
+                    android:id="@+id/nav_show_notifications"
+                    android:title=" Ver notificaciones"/>
+
+            </menu>
+        </item>
 
         <item
-            android:id="@+id/nav_chat"
-            android:icon="@android:drawable/ic_media_next"
-            android:title="@string/item_chat" />
+            android:id="@+id/nav_group_chat"
+            android:title="@string/item_chat">
+
+            <menu>
+                <item
+                    android:id="@+id/nav_new_chat"
+                    android:title="Psicologia"/>
+
+            </menu>
+
+        </item>
 
         <item
-            android:id="@+id/nav_circle_administration"
-            android:icon="@android:drawable/ic_media_next"
-            android:title="@string/item_circle_administration" />
+            android:id="@+id/nav_group_circle"
+            android:title="@string/item_circle_administration">
+
+            <menu>
+                <item
+                    android:id="@+id/nav_new_itinerario"
+                    android:title="+ itinerario"/>
+                <item
+                    android:id="@+id/nav_asistencia"
+                    android:title="Asistencia"/>
+                <item
+                    android:id="@+id/nav_evidencias"
+                    android:title="Evidencias"/>
+
+            </menu>
+
+        </item>
 
         <!-- Sección de configuración -->
         <item
@@ -42,11 +99,9 @@
             <menu>
                 <item
                     android:id="@+id/nav_login"
-                    android:icon="@android:drawable/ic_lock_power_off"
                     android:title="@string/item_login" />
                 <item
                     android:id="@+id/nav_logout"
-                    android:icon="@android:drawable/ic_lock_power_off"
                     android:title="@string/item_logout" />
             </menu>
         </item>

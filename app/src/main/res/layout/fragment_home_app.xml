@@ -4,8 +4,17 @@
     tools:context="com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Home_app">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="82dp"
         android:text="Inicio"
-        android:textSize="50dp" />
+        android:textSize="50dp"
+        android:id="@+id/hometitle" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="380dp"
+        android:id="@+id/svgimg"
+        android:layout_gravity="top" />
 
 </FrameLayout>

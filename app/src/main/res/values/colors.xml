@@ -6,4 +6,8 @@
     <color name="backgroundColor">#9bb196</color>
     <color name="backgroundBotton">#2e9b64</color>
     <color name="BackgroundEDText">#cfd9d4</color>
+
+    <color name="accent_transparency">#cdff4646</color>
+    <color name="textWhite">#cdf5f2f2</color>
+
 </resources>

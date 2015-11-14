@@ -35,6 +35,7 @@ import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.CircleAdminist
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Desertion_app;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.HistoryLaboral_app;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Home_app;
+import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Itinerario;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.LoginUser;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Notifications_app;
 
@@ -216,6 +217,10 @@ public class MainActivity extends AppCompatActivity {
 
                 case R.id.nav_add_desertion:
                     fragment =  Desertion_app.newInstance("", "");
+                    break;
+
+                case R.id.nav_itinerarios:
+                    fragment =  Itinerario.newInstance("", "");
                     break;
 
                 case R.id.nav_add_laboral:

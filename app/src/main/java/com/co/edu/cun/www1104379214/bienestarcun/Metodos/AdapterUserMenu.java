@@ -25,7 +25,7 @@ import java.util.concurrent.ExecutionException;
  * Created by root on 30/10/15.
  */
 
-public class Metodos {
+public class AdapterUserMenu {
 
     Context CONTEXTO;
     DBManager DB;
@@ -39,7 +39,7 @@ public class Metodos {
     Cursor result;
 
     //<editor-fold desc="Constructor">
-    public Metodos(Context contexto, DBManager db) {
+    public AdapterUserMenu(Context contexto, DBManager db) {
 
         this.CONTEXTO = contexto;
         this.DB = db;
@@ -205,7 +205,7 @@ public class Metodos {
     //</editor-fold>
 
     //<editor-fold desc="Crear objeto con resultados consulta sqlite">
-    private JSONObject CreateObjectResultSQL(Cursor result, String[] campos) throws JSONException { //crear JSONObject con los resultados de sqlite
+    public JSONObject CreateObjectResultSQL(Cursor result, String[] campos) throws JSONException { //crear JSONObject con los resultados de sqlite
 
         JSONObject SQL_RESULT_SEARCH = new JSONObject();
         JSONObject subobject = new JSONObject();
@@ -494,5 +494,6 @@ public class Metodos {
 
 
     //</editor-fold>
+
 
 }

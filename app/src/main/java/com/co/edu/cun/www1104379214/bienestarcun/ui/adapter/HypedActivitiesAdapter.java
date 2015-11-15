@@ -3,7 +3,6 @@ package com.co.edu.cun.www1104379214.bienestarcun.ui.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.co.edu.cun.www1104379214.bienestarcun.R;
-import com.co.edu.cun.www1104379214.bienestarcun.WebServices.Activities;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.CircleList;
 
 
 import java.util.ArrayList;
@@ -21,7 +20,7 @@ import java.util.ArrayList;
  */
 public class HypedActivitiesAdapter extends RecyclerView.Adapter<HypedActivitiesAdapter.HypedActivitiesViewHolder> {
 
-    ArrayList<Activities> activities;
+    ArrayList<CircleList> activities;
 
     Context context;
 
@@ -43,7 +42,7 @@ public class HypedActivitiesAdapter extends RecyclerView.Adapter<HypedActivities
     @Override
     public void onBindViewHolder(HypedActivitiesViewHolder holder, int position) {
 
-        Activities CurrentArtists = activities.get(position);
+        CircleList CurrentArtists = activities.get(position);
         holder.setArtistsName(CurrentArtists.getName());
     }
 
@@ -52,7 +51,7 @@ public class HypedActivitiesAdapter extends RecyclerView.Adapter<HypedActivities
         return activities.size();
     }
 
-    public void AddAll(@NonNull ArrayList<Activities> artists){
+    public void AddAll(@NonNull ArrayList<CircleList> artists){
         if( artists == null)
             throw new NullPointerException("The items can not be null");
 

@@ -2,10 +2,7 @@ package com.co.edu.cun.www1104379214.bienestarcun;
 
 
 
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.design.internal.NavigationMenuItemView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,16 +11,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.IconManager;
-import com.co.edu.cun.www1104379214.bienestarcun.Metodos.Metodos;
+import com.co.edu.cun.www1104379214.bienestarcun.Metodos.AdapterUserMenu;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLDelete;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLInsert;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLSearch;
@@ -42,12 +36,10 @@ import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Notifications_
 
 import org.json.JSONObject;
 
-import java.io.IOException;
-
 public class MainActivity extends AppCompatActivity {
 
 
-    Metodos metodos;//clase con metodos para usar
+    AdapterUserMenu metodos;//clase con metodos para usar
     CodMessajes mss = new CodMessajes();
     ServicesPeticion services = new ServicesPeticion();
     IconManager icon;
@@ -84,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
             services.SaveError(contenido);
         }
 
-        metodos = new Metodos( getApplicationContext(), db );
+        metodos = new AdapterUserMenu( getApplicationContext(), db );
 
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);//instancio menu lateral
@@ -137,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
         final ActionBar ab = getSupportActionBar();
         if (ab != null) {
             // Poner ícono del drawer toggle
-            ab.setHomeAsUpIndicator(R.drawable.abc_ic_menu_share_mtrl_alpha);
+            ab.setHomeAsUpIndicator(R.drawable.icon_menu);
             ab.setDisplayHomeAsUpEnabled(true);
         }
 
@@ -212,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 case R.id.nav_add_activities:
-                    fragment =  Activities_app.newInstance("", "");
+                    fragment =  Activities_app.newInstance(db, "");
                     break;
 
                 case R.id.nav_add_desertion:

@@ -22,7 +22,7 @@ public class IconManager {
 
     public void SetIconMenu( NavigationView menu ){//Agregar iconos al navigationview
 
-        menu.getMenu().findItem(R.id.nav_home).setIcon(R.drawable.android);
+        menu.getMenu().findItem(R.id.nav_home).setIcon(R.drawable.icon_home);
         menu.getMenu().findItem(R.id.nav_add_activities).setIcon(R.drawable.icon_actividades);
         menu.getMenu().findItem(R.id.nav_itinerarios).setIcon(R.drawable.icon_itinerario);
         menu.getMenu().findItem(R.id.nav_add_desertion).setIcon(R.drawable.icon_desercion);

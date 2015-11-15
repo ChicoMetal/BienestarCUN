@@ -1,21 +1,23 @@
 package com.co.edu.cun.www1104379214.bienestarcun.frragmentContent;
 
-import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.R;
-import com.co.edu.cun.www1104379214.bienestarcun.WebServices.Activities;
+import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.CircleList;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.CirclesManager;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
 import com.co.edu.cun.www1104379214.bienestarcun.ui.adapter.HypedActivitiesAdapter;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 
@@ -30,7 +32,8 @@ import java.util.ArrayList;
  */
 public class Activities_app extends Fragment {
 
-    ArrayList<Activities> activities;
+    private static DBManager DB;
+    ArrayList<CircleList> activities;
 
     public static final String LOG_TAG = Activities_app.class.getName();
     public static final int NUM_COLUMNS = 1;
@@ -53,15 +56,14 @@ public class Activities_app extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
      * @param param2 Parameter 2.
      * @return A new instance of fragment Activities_app.
      */
     // TODO: Rename and change types and number of parameters
-    public static Activities_app newInstance(String param1, String param2) {
+    public static Activities_app newInstance(DBManager db, String param2) {
         Activities_app fragment = new Activities_app();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
+        DB = db;
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
@@ -92,9 +94,22 @@ public class Activities_app extends Fragment {
 
         mHyperdActivitiesList = (RecyclerView) root.findViewById(R.id.hyper_activities_list);
 
+
         SetudActivitiesList();
 
-        SetDummyContent();
+        try {
+
+            CasthConentAdapter();//lleno el adaptador
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }catch (Exception e){
+            String contenido = "Error desde android #!#";
+            contenido += " Funcion: onCreateView #!#";
+            contenido += "Clase : Activities_app.java #!#";
+            contenido += e.getMessage();
+            new ServicesPeticion().SaveError(contenido);
+        }
 
         return root;
     }
@@ -146,15 +161,25 @@ public class Activities_app extends Fragment {
         mHyperdActivitiesList.setAdapter(adapter);
     }
 
-    private void SetDummyContent(){
-        ArrayList<Activities> artists = new ArrayList<>();
+    private void CasthConentAdapter() throws JSONException {
 
-        for (int i=0; i <= 10; i++){
+        CirclesManager getCircles = new CirclesManager( getActivity().getApplicationContext(), DB );
 
-            artists.add( new Activities("Artists"+ i));
+        JSONArray circlesResult = getCircles.SearchCircles();
+
+        if( circlesResult != null ){
+
+            ArrayList<CircleList> circles = new ArrayList<>();
+
+            for (int i=0; i < circlesResult.length(); i++){
+
+                circles.add( new CircleList( circlesResult.getString(i) ) );
+
+            }
+
+            adapter.AddAll(circles);
 
         }
-        adapter.AddAll(artists);
     }
 
 

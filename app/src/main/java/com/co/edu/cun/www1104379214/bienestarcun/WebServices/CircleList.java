@@ -1,41 +1,55 @@
 package com.co.edu.cun.www1104379214.bienestarcun.WebServices;
 
-import android.content.Context;
-import android.database.Cursor;
-import android.widget.Toast;
 
-import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
-import com.co.edu.cun.www1104379214.bienestarcun.Metodos.AdapterUserMenu;
-import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
-import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLSearch;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
-
 /**
- * Created by root on 26/10/15.
+ * Created by krlos guzman on 26/10/15.
  */
 public class CircleList {
 
+    String id_actividad;
+    String name_actividad;
+    String admin_actividad;
+    String description_actividad;
 
 
-    String name;
-
-
-    public CircleList(String name) {
-        this.name = name;
+    public CircleList( String objectCircle, JSONObject indexCircles ) { //recivo valores e indices de circulos
+        setearObjext( objectCircle, indexCircles );
     }
 
-    public String getName() {
-        return name;
+    public String getNameActiviti() { //retorno nombre del circulo
+        return name_actividad;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getAdminActiviti() {//retorno admin del circulo
+        return admin_actividad;
+    }
+
+    public String getDescriptionActiviti() {//retorno descripcion del circulo
+        return description_actividad;
+    }
+    public String getIdActiviti() {//retorno id del circulo
+        return id_actividad;
+    }
+
+    private void setearObjext( String objectString, JSONObject index ){
+    //extraigo los valores del objeto para asignarlo a las variables globales
+
+        try {
+
+            JSONObject object = new JSONObject( objectString );
+
+            this.id_actividad = object.getString( index.getString("0") );
+            this.name_actividad = object.getString( index.getString("1") );
+            this.description_actividad = object.getString( index.getString("2")  );
+            this.admin_actividad = object.getString( index.getString("3") );
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 }

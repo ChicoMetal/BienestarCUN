@@ -18,6 +18,7 @@ import com.co.edu.cun.www1104379214.bienestarcun.ui.adapter.HypedActivitiesAdapt
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -166,6 +167,7 @@ public class Activities_app extends Fragment {
         CirclesManager getCircles = new CirclesManager( getActivity().getApplicationContext(), DB );
 
         JSONArray circlesResult = getCircles.SearchCircles();
+        JSONObject indexCircles = getCircles.IndexCircles();
 
         if( circlesResult != null ){
 
@@ -173,7 +175,7 @@ public class Activities_app extends Fragment {
 
             for (int i=0; i < circlesResult.length(); i++){
 
-                circles.add( new CircleList( circlesResult.getString(i) ) );
+                circles.add( new CircleList( circlesResult.getString(i), indexCircles ) );
 
             }
 

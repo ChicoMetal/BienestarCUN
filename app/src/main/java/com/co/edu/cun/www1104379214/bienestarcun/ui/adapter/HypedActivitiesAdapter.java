@@ -2,13 +2,17 @@ package com.co.edu.cun.www1104379214.bienestarcun.ui.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.CircleList;
 
@@ -21,6 +25,7 @@ import java.util.ArrayList;
 public class HypedActivitiesAdapter extends RecyclerView.Adapter<HypedActivitiesAdapter.HypedActivitiesViewHolder> {
 
     ArrayList<CircleList> activities;
+    CodMessajes mss = new CodMessajes();
 
     Context context;
 
@@ -42,8 +47,13 @@ public class HypedActivitiesAdapter extends RecyclerView.Adapter<HypedActivities
     @Override
     public void onBindViewHolder(HypedActivitiesViewHolder holder, int position) {
 
-        CircleList CurrentArtists = activities.get(position);
-        holder.setArtistsName(CurrentArtists.getName());
+        CircleList CurrentCircle = activities.get(position);
+
+        holder.setArtistsName(
+                CurrentCircle.getIdActiviti(),
+                CurrentCircle.getNameActiviti(),
+                CurrentCircle.getDescriptionActiviti(),
+                CurrentCircle.getAdminActiviti() );
     }
 
     @Override
@@ -61,21 +71,50 @@ public class HypedActivitiesAdapter extends RecyclerView.Adapter<HypedActivities
 
     public class HypedActivitiesViewHolder extends RecyclerView.ViewHolder{
 
-        TextView artistsName;
-        ImageView imgArtist;
+        CardView vistaItem;
+        TextView CircleName;
+        TextView CircleDescription;
+        TextView CircleAdmin;
+        ImageView imgAdmin;
+
 
 
         public HypedActivitiesViewHolder(View itemView) {
             super(itemView);
 
-            imgArtist = (ImageView) itemView.findViewById(R.id.img_artist);
-            artistsName = (TextView) itemView.findViewById(R.id.txt_name);
+            View view;
+            view = itemView;
+            view.setOnClickListener(new View.OnClickListener() {//evento click de las cardView
+                @Override
+                public void onClick(View v) {
+                    // item clicked
+                    Log.i(mss.TAG, v.getId()+"");
+                    v.getId();
+                }
+            });
+
+            //instancio componentes de las card
+            vistaItem = (CardView) itemView;
+            imgAdmin = (ImageView) itemView.findViewById( R.id.img_person);
+            CircleName = (TextView) itemView.findViewById(R.id.txt_nameCircle);
+            CircleDescription = (TextView) itemView.findViewById(R.id.txt_description);
+            CircleAdmin = (TextView) itemView.findViewById(R.id.txt_administrator);
 
         }
 
-        public void setArtistsName(String name) {
-            artistsName.setText(name);
+        public void setArtistsName(String idActiviti, String name, String description, String admin) {
+            //asigno los valores a los compnentes de las card
+
+
+            vistaItem.setId( Integer.parseInt( idActiviti ) );
+            imgAdmin.setImageResource(R.drawable.icon_login);
+            CircleName.setText(name);
+            CircleDescription.setText(description);
+            CircleAdmin.setText(admin);
+
         }
+
+
 
     }
 }

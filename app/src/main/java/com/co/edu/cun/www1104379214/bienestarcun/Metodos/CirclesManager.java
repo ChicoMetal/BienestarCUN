@@ -24,10 +24,12 @@ public class CirclesManager {
     httpHandler BD = new httpHandler();
     String[][] parametros;
     CodMessajes mss = new CodMessajes();
-    JSONArray result = null;
     Context CONTEXTO;
     TaskExecuteSQLSearch userSearch;
     DBManager DB;
+    JSONObject indexCircles;
+    JSONArray result = null;
+    JSONArray resultResponse = null;
 
     String name;
 
@@ -37,13 +39,13 @@ public class CirclesManager {
 
     }
 
-
-
     public JSONArray SearchCircles() {
 
         try {
 
-            result = GetCirclesExists( getIdUser() ).getJSONArray(0);
+            result = GetCirclesExists(getIdUser());
+            resultResponse = result.getJSONArray(0);
+            indexCircles = result.getJSONObject(1);
 
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -55,7 +57,7 @@ public class CirclesManager {
             new ServicesPeticion().SaveError(contenido);
         }
 
-        return result;
+        return resultResponse;
 
 
     }
@@ -151,5 +153,10 @@ public class CirclesManager {
 
         return arrayResponse;
 
+    }
+
+    public JSONObject IndexCircles() {
+
+        return indexCircles;
     }
 }

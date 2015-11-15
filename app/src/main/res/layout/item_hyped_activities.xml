@@ -7,26 +7,74 @@
     android:layout_height="192dp"
     app:cardBackgroundColor="@color/colorPrimaryDark"
     app:cardCornerRadius="4dp"
-    app:cardElevation="4dp">
+    app:cardElevation="4dp"
+    android:padding="2dp">
 
     <ImageView
         android:id="@+id/img_artist"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/cun_logo"/>
+        android:src="@drawable/cun_logo"
+        android:contentDescription="@string/img_circles_background" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="120dp"
+            android:layout_height="130dp">
+
+            <ImageView
+                android:id="@+id/img_person"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/admin_circle_name" />
+
+
+            <TextView
+                android:id="@+id/txt_administrator"
+                android:layout_width="match_parent"
+                android:background="@color/accent_transparency_admin"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical|bottom"
+                android:textColor="@color/textWhite"
+                android:gravity="center"
+                android:textAlignment="center" />
+
+        </FrameLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txt_nameCircle"
+                android:layout_width="match_parent"
+                android:background="@color/accent_transparency"
+                android:layout_height="40dp"
+                android:layout_gravity="top"
+                android:textColor="@color/textWhite"
+                android:textAlignment="center" />
+
+
+        </FrameLayout>
+
+
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/txt_name"
+        android:id="@+id/txt_description"
         android:layout_width="match_parent"
         android:background="@color/accent_transparency"
-        android:layout_height="78dp"
-        android:text="Hola"
+        android:layout_height="55dp"
         android:layout_gravity="bottom"
-        android:textStyle="bold"
         android:textColor="@color/textWhite"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:textAlignment="textStart" />
 
 
 </android.support.v7.widget.CardView>

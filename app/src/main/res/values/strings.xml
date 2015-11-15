@@ -24,5 +24,7 @@
     <string name="ed_pass_user">Contraseña</string>
     <string name="msm_btn_login_send">Enviar</string>
     <string name="msm_btn_login_cancel">Cancelar</string>
+    <string name="img_circles_background">img_circles</string>
+    <string name="admin_circle_name">img_admin_circle</string>
 
 </resources>

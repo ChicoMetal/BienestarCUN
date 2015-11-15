@@ -2,6 +2,7 @@ package com.co.edu.cun.www1104379214.bienestarcun;
 
 
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -129,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
         final ActionBar ab = getSupportActionBar();
         if (ab != null) {
             // Poner ícono del drawer toggle
+
             ab.setHomeAsUpIndicator(R.drawable.icon_menu);
             ab.setDisplayHomeAsUpEnabled(true);
         }
@@ -174,7 +176,6 @@ public class MainActivity extends AppCompatActivity {
         if( id != R.id.nav_logout){ //si se selecciona salir no llama fragmento, solo ejecuta es logout
 
             ChangeFragment(id);
-
 
             drawerLayout.closeDrawers(); // Cerrar drawer
 

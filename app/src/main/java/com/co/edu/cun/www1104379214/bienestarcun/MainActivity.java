@@ -2,7 +2,6 @@ package com.co.edu.cun.www1104379214.bienestarcun;
 
 
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -30,7 +29,8 @@ import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.CircleAdminist
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Desertion_app;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.HistoryLaboral_app;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Home_app;
-import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Itinerario;
+import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.DelActivities_app;
+import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Itinerarios_app;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.LoginUser;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Notifications_app;
 
@@ -212,8 +212,12 @@ public class MainActivity extends AppCompatActivity {
                     fragment =  Desertion_app.newInstance("", "");
                     break;
 
+                case R.id.nav_del_activities:
+                    fragment =  DelActivities_app.newInstance(db, "");
+                    break;
+
                 case R.id.nav_itinerarios:
-                    fragment =  Itinerario.newInstance(db, "");
+                    fragment =  Itinerarios_app.newInstance("", "");
                     break;
 
                 case R.id.nav_add_laboral:

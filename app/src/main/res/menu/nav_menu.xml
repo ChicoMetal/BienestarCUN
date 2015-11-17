@@ -15,6 +15,9 @@
                     android:id="@+id/nav_add_activities"
                     android:title="+ actividades"/>
                 <item
+                    android:id="@+id/nav_del_activities"
+                    android:title="- actividades"/>
+                <item
                     android:id="@+id/nav_itinerarios"
                     android:title="Ver itinerarios"/>
 

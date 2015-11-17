@@ -27,12 +27,12 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link Itinerario.OnFragmentInteractionListener} interface
+ * {@link DelActivities_app.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link Itinerario#newInstance} factory method to
+ * Use the {@link DelActivities_app#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Itinerario extends Fragment {
+public class DelActivities_app extends Fragment {
 
     private static DBManager DB;
     ArrayList<CircleList> activities;
@@ -63,8 +63,8 @@ public class Itinerario extends Fragment {
      * @return A new instance of fragment Itinerario.
      */
     // TODO: Rename and change types and number of parameters
-    public static Itinerario newInstance(DBManager db, String param2) {
-        Itinerario fragment = new Itinerario();
+    public static DelActivities_app newInstance(DBManager db, String param2) {
+        DelActivities_app fragment = new DelActivities_app();
         Bundle args = new Bundle();
         DB = db;
         args.putString(ARG_PARAM2, param2);
@@ -72,7 +72,7 @@ public class Itinerario extends Fragment {
         return fragment;
     }
 
-    public Itinerario() {
+    public DelActivities_app() {
         // Required empty public constructor
     }
 
@@ -92,7 +92,7 @@ public class Itinerario extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_itinerario, container, false);
+        View root = inflater.inflate(R.layout.fragment_delactivities_app, container, false);
 
         mHyperdActivitiesList = (RecyclerView) root.findViewById(R.id.hyper_activities_itinerario);
 

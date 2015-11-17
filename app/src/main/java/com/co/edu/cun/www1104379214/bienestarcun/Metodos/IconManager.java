@@ -21,6 +21,7 @@ public class IconManager {
 
         menu.getMenu().findItem(R.id.nav_home).setIcon(R.drawable.icon_home);
         menu.getMenu().findItem(R.id.nav_add_activities).setIcon(R.drawable.icon_actividades);
+        menu.getMenu().findItem(R.id.nav_del_activities).setIcon(R.drawable.icon_actividades);
         menu.getMenu().findItem(R.id.nav_itinerarios).setIcon(R.drawable.icon_itinerario);
         menu.getMenu().findItem(R.id.nav_add_desertion).setIcon(R.drawable.icon_desercion);
         menu.getMenu().findItem(R.id.nav_add_laboral).setIcon(R.drawable.icon_laboralhystorial);

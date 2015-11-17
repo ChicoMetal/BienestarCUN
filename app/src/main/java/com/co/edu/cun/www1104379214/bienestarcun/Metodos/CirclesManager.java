@@ -1,13 +1,16 @@
-package com.co.edu.cun.www1104379214.bienestarcun.WebServices;
+package com.co.edu.cun.www1104379214.bienestarcun.Metodos;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.AdapterUserMenu;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLSearch;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.httpHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,11 +42,19 @@ public class CirclesManager {
 
     }
 
-    public JSONArray SearchCircles() {
+    public JSONArray SearchCircles( int servicePetition) { //buscar circulo existente en la BD
+        final String service;
+
+        if( servicePetition == 0){
+            service = "circles/GetCirclesExists.php";
+        }else{
+            service = "circles/SearchCircleAdd.php";
+        }
+
 
         try {
 
-            result = GetCirclesExists(getIdUser());
+            result = GetCirclesExists(getIdUser(), service);
             resultResponse = result.getJSONArray(0);
             indexCircles = result.getJSONObject(1);
 
@@ -61,6 +72,8 @@ public class CirclesManager {
 
 
     }
+
+
 
     private String getIdUser() {//obtengo el id del usuario logueado
 
@@ -109,10 +122,10 @@ public class CirclesManager {
         this.name = name;
     }*/
 
-    public JSONArray GetCirclesExists(String idUser) throws InterruptedException {
+    public JSONArray GetCirclesExists(String idUser, String service) throws InterruptedException { //obtengo el array de objeto con los circulos
         String[][] values = null;
 
-        final String service = "circles/GetCirclesExists.php";
+
         JSONArray arrayResponse = null;
 
         parametros = new String[][]{ //array parametros a enviar
@@ -146,7 +159,7 @@ public class CirclesManager {
         }catch (Exception e){
             String contenido = "Error desde android #!#";
             contenido += " Funcion: GetCirclesExists #!#";
-            contenido += "Clase : CircleList.java #!#";
+            contenido += "Clase : CircleManager.java #!#";
             contenido += e.getMessage();
             new ServicesPeticion().SaveError(contenido);
         }
@@ -159,4 +172,101 @@ public class CirclesManager {
 
         return indexCircles;
     }
+
+    public void SaveCircleUser( int idCircle1) {//agrego el usuario al circulo
+        String idCircle = idCircle1+"";
+        final String service = "circles/saveAddCircle.php";
+        JSONArray arrayResponse = null;
+
+        String idUser = getIdUser();
+
+        parametros = new String[][]{ //array parametros a enviar
+                {"user",idUser},
+                {"circle", idCircle}
+        };
+
+
+
+        try {
+
+            String resultado = BD.HttpRequestServer(service, parametros);
+
+            arrayResponse = new JSONArray( resultado ); // obtengo el array con la result del server
+
+            if( arrayResponse.getString(0).toString().equals("msm")  ){
+
+                Toast.makeText(CONTEXTO.getApplicationContext(),
+                        mss.msmServices.getString(arrayResponse.getString(1).toString()),
+                        Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
+
+            }else {
+
+                Toast.makeText(CONTEXTO.getApplicationContext(),
+                        mss.SaveCircleUser,
+                        Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
+
+            }
+
+        } catch (JSONException e) {
+
+            e.printStackTrace();
+
+        }catch (Exception e){
+            String contenido = "Error desde android #!#";
+            contenido += " Funcion: SaveCircleUser #!#";
+            contenido += "Clase : CircleManager.java #!#";
+            contenido += e.getMessage();
+            new ServicesPeticion().SaveError(contenido);
+        }
+
+    }
+
+    public void DeleteCircleUser( int idCircle) {//agrego el usuario al circulo
+
+        final String service = "circles/DeleteCircleUser.php";
+        JSONArray arrayResponse = null;
+
+        String idUser = getIdUser();
+
+        parametros = new String[][]{ //array parametros a enviar
+                {"user",idUser},
+                {"circle",idCircle+""}
+        };
+
+
+
+        try {
+
+            String resultado = BD.HttpRequestServer(service, parametros);
+
+            arrayResponse = new JSONArray( resultado ); // obtengo el array con la result del server
+
+            if( arrayResponse.getString(0).toString().equals("msm")  ){
+
+                Toast.makeText(CONTEXTO.getApplicationContext(),
+                        mss.msmServices.getString(arrayResponse.getString(1).toString()),
+                        Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
+
+            }else {
+
+                Toast.makeText(CONTEXTO.getApplicationContext(),
+                        mss.DeleteCircleUser,
+                        Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
+
+            }
+
+        } catch (JSONException e) {
+
+            e.printStackTrace();
+
+        }catch (Exception e){
+            String contenido = "Error desde android #!#";
+            contenido += " Funcion: SaveCircleUser #!#";
+            contenido += "Clase : CircleManager.java #!#";
+            contenido += e.getMessage();
+            new ServicesPeticion().SaveError(contenido);
+        }
+
+    }
+
 }

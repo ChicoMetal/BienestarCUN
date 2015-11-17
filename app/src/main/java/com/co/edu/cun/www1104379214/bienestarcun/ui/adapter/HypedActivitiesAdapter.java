@@ -13,8 +13,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
+import com.co.edu.cun.www1104379214.bienestarcun.Metodos.CirclesManager;
+import com.co.edu.cun.www1104379214.bienestarcun.Metodos.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
+import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.CircleList;
+
 
 
 import java.util.ArrayList;
@@ -26,12 +30,17 @@ public class HypedActivitiesAdapter extends RecyclerView.Adapter<HypedActivities
 
     ArrayList<CircleList> activities;
     CodMessajes mss = new CodMessajes();
+    IconManager icons = new IconManager();
 
     Context context;
+    DBManager DB;
+    int INSTANCE;
 
-    public HypedActivitiesAdapter(Context context) {
+    public HypedActivitiesAdapter(Context context, DBManager db, int instance) {
 
         this.context = context;
+        this.DB = db;
+        this.INSTANCE = instance;
 
         this.activities = new ArrayList<>();
 
@@ -76,6 +85,7 @@ public class HypedActivitiesAdapter extends RecyclerView.Adapter<HypedActivities
         TextView CircleDescription;
         TextView CircleAdmin;
         ImageView imgAdmin;
+        ImageView imgcard;
 
 
 
@@ -86,16 +96,22 @@ public class HypedActivitiesAdapter extends RecyclerView.Adapter<HypedActivities
             view = itemView;
             view.setOnClickListener(new View.OnClickListener() {//evento click de las cardView
                 @Override
-                public void onClick(View v) {
+                public void onClick(View v) {//evento de touch para agregar usuario a circulo
                     // item clicked
-                    Log.i(mss.TAG, v.getId()+"");
-                    v.getId();
+                    if( INSTANCE == 0 ){//pregunto q fragento invoca el adaptador para saber que accion realizar al touch de las card
+                        new CirclesManager(context,DB).SaveCircleUser(v.getId() );
+                    }else{
+                        new CirclesManager(context,DB).DeleteCircleUser(v.getId());
+                    }
+
+
                 }
             });
 
             //instancio componentes de las card
             vistaItem = (CardView) itemView;
-            imgAdmin = (ImageView) itemView.findViewById( R.id.img_person);
+            imgAdmin = (ImageView) itemView.findViewById( R.id.img_admin);
+            imgcard = (ImageView) itemView.findViewById( R.id.img_activities);
             CircleName = (TextView) itemView.findViewById(R.id.txt_nameCircle);
             CircleDescription = (TextView) itemView.findViewById(R.id.txt_description);
             CircleAdmin = (TextView) itemView.findViewById(R.id.txt_administrator);
@@ -103,11 +119,10 @@ public class HypedActivitiesAdapter extends RecyclerView.Adapter<HypedActivities
         }
 
         public void setArtistsName(String idActiviti, String name, String description, String admin) {
+
             //asigno los valores a los compnentes de las card
-
-
-            vistaItem.setId( Integer.parseInt( idActiviti ) );
-            imgAdmin.setImageResource(R.drawable.icon_login);
+            icons.SetIconCards(imgcard, imgAdmin);
+            vistaItem.setId(Integer.parseInt(idActiviti));
             CircleName.setText(name);
             CircleDescription.setText(description);
             CircleAdmin.setText(admin);

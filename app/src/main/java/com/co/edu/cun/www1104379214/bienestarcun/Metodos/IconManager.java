@@ -2,6 +2,9 @@ package com.co.edu.cun.www1104379214.bienestarcun.Metodos;
 
 import android.content.Context;
 import android.support.design.widget.NavigationView;
+import android.support.v7.widget.CardView;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 
@@ -11,13 +14,7 @@ import com.co.edu.cun.www1104379214.bienestarcun.R;
  */
 public class IconManager {
 
-    Context CONTEXTO;
-
-
-    public IconManager(Context contexto){
-
-        this.CONTEXTO = contexto;
-
+    public IconManager() {
     }
 
     public void SetIconMenu( NavigationView menu ){//Agregar iconos al navigationview
@@ -35,6 +32,13 @@ public class IconManager {
         menu.getMenu().findItem(R.id.nav_evidencias).setIcon(R.drawable.icon_evidencias);
         menu.getMenu().findItem(R.id.nav_login).setIcon(R.drawable.icon_login);
         menu.getMenu().findItem(R.id.nav_logout).setIcon(R.drawable.icon_logout);
+
+    }
+
+    public void SetIconCards( ImageView fondo, ImageView admin){
+
+        fondo.setBackgroundResource( R.drawable.cardfondocircles);
+        admin.setBackgroundResource( R.drawable.admincircle);
 
     }
 

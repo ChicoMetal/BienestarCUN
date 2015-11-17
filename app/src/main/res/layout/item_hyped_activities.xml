@@ -11,11 +11,10 @@
     android:padding="2dp">
 
     <ImageView
-        android:id="@+id/img_artist"
+        android:id="@+id/img_activities"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/cun_logo"
         android:contentDescription="@string/img_circles_background" />
 
     <LinearLayout
@@ -25,10 +24,11 @@
 
         <FrameLayout
             android:layout_width="120dp"
-            android:layout_height="130dp">
+            android:layout_height="130dp"
+            android:background="@color/textWhite">
 
             <ImageView
-                android:id="@+id/img_person"
+                android:id="@+id/img_admin"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
@@ -58,7 +58,8 @@
                 android:layout_height="40dp"
                 android:layout_gravity="top"
                 android:textColor="@color/textWhite"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:gravity="center_vertical|center_horizontal" />
 
 
         </FrameLayout>

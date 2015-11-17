@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void PrepareMenuUser(){
 
-        icon = new IconManager( getApplicationContext() );
+        icon = new IconManager();
         icon.SetIconMenu(navigationView);
 
         metodos.ComproveUser(navigationView);//verficar si existe un usuario logueado
@@ -213,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 case R.id.nav_itinerarios:
-                    fragment =  Itinerario.newInstance("", "");
+                    fragment =  Itinerario.newInstance(db, "");
                     break;
 
                 case R.id.nav_add_laboral:

@@ -9,10 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.co.edu.cun.www1104379214.bienestarcun.Metodos.CirclesManager;
+import com.co.edu.cun.www1104379214.bienestarcun.Metodos.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.CircleList;
-import com.co.edu.cun.www1104379214.bienestarcun.WebServices.CirclesManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
 import com.co.edu.cun.www1104379214.bienestarcun.ui.adapter.HypedActivitiesAdapter;
 
@@ -35,6 +36,7 @@ public class Activities_app extends Fragment {
 
     private static DBManager DB;
     ArrayList<CircleList> activities;
+
 
     public static final String LOG_TAG = Activities_app.class.getName();
     public static final int NUM_COLUMNS = 1;
@@ -82,7 +84,7 @@ public class Activities_app extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        adapter = new HypedActivitiesAdapter(getActivity());
+        adapter = new HypedActivitiesAdapter(getActivity(), DB, 0);
 
 
     }
@@ -91,9 +93,10 @@ public class Activities_app extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_activities_app,container,false);
+        View root = inflater.inflate(R.layout.fragment_activities_app, container, false);
 
         mHyperdActivitiesList = (RecyclerView) root.findViewById(R.id.hyper_activities_list);
+
 
 
         SetudActivitiesList();
@@ -164,9 +167,9 @@ public class Activities_app extends Fragment {
 
     private void CasthConentAdapter() throws JSONException {
 
-        CirclesManager getCircles = new CirclesManager( getActivity().getApplicationContext(), DB );
+        CirclesManager getCircles = new CirclesManager( getActivity().getApplicationContext(), DB );//busco en BD los circulos existentes
 
-        JSONArray circlesResult = getCircles.SearchCircles();
+        JSONArray circlesResult = getCircles.SearchCircles(0);
         JSONObject indexCircles = getCircles.IndexCircles();
 
         if( circlesResult != null ){

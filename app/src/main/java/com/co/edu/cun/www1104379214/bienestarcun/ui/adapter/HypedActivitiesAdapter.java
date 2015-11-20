@@ -2,15 +2,14 @@ package com.co.edu.cun.www1104379214.bienestarcun.ui.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.CirclesManager;
@@ -32,13 +31,22 @@ public class HypedActivitiesAdapter extends RecyclerView.Adapter<HypedActivities
     CodMessajes mss = new CodMessajes();
     IconManager icons = new IconManager();
 
+    FragmentManager fragmentManager;
+
     Context context;
     DBManager DB;
     int INSTANCE;
 
-    public HypedActivitiesAdapter(Context context, DBManager db, int instance) {
+    public HypedActivitiesAdapter(
+                                Context context,
+                                DBManager db,
+                                int instance,
+                                FragmentManager fragmentManager) {
 
         this.context = context;
+        if( fragmentManager != null ){
+            this.fragmentManager = fragmentManager;
+        }
         this.DB = db;
         this.INSTANCE = instance;
 
@@ -50,6 +58,7 @@ public class HypedActivitiesAdapter extends RecyclerView.Adapter<HypedActivities
     public HypedActivitiesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View ItemView = LayoutInflater.from(context)
                             .inflate(R.layout.item_hyped_activities, parent, false);
+
         return new HypedActivitiesViewHolder(ItemView);
     }
 
@@ -58,11 +67,11 @@ public class HypedActivitiesAdapter extends RecyclerView.Adapter<HypedActivities
 
         CircleList CurrentCircle = activities.get(position);
 
-        holder.setArtistsName(
+        holder.setCircleSource(
                 CurrentCircle.getIdActiviti(),
                 CurrentCircle.getNameActiviti(),
                 CurrentCircle.getDescriptionActiviti(),
-                CurrentCircle.getAdminActiviti() );
+                CurrentCircle.getAdminActiviti());
     }
 
     @Override
@@ -70,12 +79,12 @@ public class HypedActivitiesAdapter extends RecyclerView.Adapter<HypedActivities
         return activities.size();
     }
 
-    public void AddAll(@NonNull ArrayList<CircleList> artists){
-        if( artists == null)
+    public void AddAll(@NonNull ArrayList<CircleList> circles){
+        if( circles == null)
             throw new NullPointerException("The items can not be null");
 
-        this.activities.addAll(artists);
-        notifyItemRangeChanged( getItemCount() - 1, artists.size());
+        this.activities.addAll(circles);
+        notifyItemRangeChanged(getItemCount() - 1, circles.size());
     }
 
     public class HypedActivitiesViewHolder extends RecyclerView.ViewHolder{
@@ -100,11 +109,11 @@ public class HypedActivitiesAdapter extends RecyclerView.Adapter<HypedActivities
                     // item clicked
                     if( INSTANCE == 0 ){//pregunto q fragento invoca el adaptador para saber que accion realizar al touch de las card
                         new CirclesManager(context,DB).SaveCircleUser(v.getId() );
-                    }else{
+                    }else if( INSTANCE == 1){//Desvincularcirculo
                         new CirclesManager(context,DB).DeleteCircleUser(v.getId());
+                    }else{//ver itnerarios
+                        new CirclesManager(context,DB).ShowItinerariosCircle(v.getId(), fragmentManager);
                     }
-
-
                 }
             });
 
@@ -118,7 +127,7 @@ public class HypedActivitiesAdapter extends RecyclerView.Adapter<HypedActivities
 
         }
 
-        public void setArtistsName(String idActiviti, String name, String description, String admin) {
+        public void setCircleSource(String idActiviti, String name, String description, String admin) {
 
             //asigno los valores a los compnentes de las card
             icons.SetIconCards(imgcard, imgAdmin);

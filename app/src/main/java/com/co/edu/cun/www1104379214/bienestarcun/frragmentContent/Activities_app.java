@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.CirclesManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
@@ -37,8 +36,6 @@ public class Activities_app extends Fragment {
     private static DBManager DB;
     ArrayList<CircleList> activities;
 
-
-    public static final String LOG_TAG = Activities_app.class.getName();
     public static final int NUM_COLUMNS = 1;
 
     private RecyclerView mHyperdActivitiesList;
@@ -84,7 +81,7 @@ public class Activities_app extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        adapter = new HypedActivitiesAdapter(getActivity(), DB, 0);
+        adapter = new HypedActivitiesAdapter(getActivity(), DB, 0,null);
 
 
     }

@@ -85,7 +85,7 @@ public class DelActivities_app extends Fragment {
 
 
         }
-        adapter = new HypedActivitiesAdapter(getActivity(), DB, 1);
+        adapter = new HypedActivitiesAdapter(getActivity(), DB, 1,null);
     }
 
     @Override
@@ -94,7 +94,7 @@ public class DelActivities_app extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_delactivities_app, container, false);
 
-        mHyperdActivitiesList = (RecyclerView) root.findViewById(R.id.hyper_activities_itinerario);
+        mHyperdActivitiesList = (RecyclerView) root.findViewById(R.id.hyper_delactivities);
 
         SetudActivitiesList();
 

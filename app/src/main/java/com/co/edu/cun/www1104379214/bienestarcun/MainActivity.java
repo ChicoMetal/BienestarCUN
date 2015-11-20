@@ -217,7 +217,8 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 case R.id.nav_itinerarios:
-                    fragment =  Itinerarios_app.newInstance("", "");
+                    FragmentManager fragmentManagerItinerario = getSupportFragmentManager();
+                    fragment =  Itinerarios_app.newInstance(db, fragmentManagerItinerario);
                     break;
 
                 case R.id.nav_add_laboral:

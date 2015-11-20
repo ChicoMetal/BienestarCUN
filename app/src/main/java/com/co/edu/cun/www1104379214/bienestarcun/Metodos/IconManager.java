@@ -37,10 +37,14 @@ public class IconManager {
     }
 
     public void SetIconCards( ImageView fondo, ImageView admin){
-
+    //cambiar fondo cards y image de la foto del admin del circulo
         fondo.setBackgroundResource( R.drawable.cardfondocircles);
         admin.setBackgroundResource( R.drawable.admincircle);
+    }
+    public void SetIconCardsItinerarios( ImageView fondo ){
+    //cambiar la imagen de las card de itinerarios
+
+        fondo.setBackgroundResource( R.drawable.cardfondocircles);
 
     }
-
 }

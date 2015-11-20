@@ -4,19 +4,19 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.co.edu.cun.www1104379214.bienestarcun.Metodos.CirclesManager;
+import com.co.edu.cun.www1104379214.bienestarcun.Metodos.ItinerariosManager;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.CircleList;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ItinerarioList;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
-import com.co.edu.cun.www1104379214.bienestarcun.ui.adapter.HypedActivitiesAdapter;
+import com.co.edu.cun.www1104379214.bienestarcun.ui.adapter.HypedItinerarioAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,26 +28,24 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link Itinerarios_app.OnFragmentInteractionListener} interface
+ * {@link Show_itinerario_circle.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link Itinerarios_app#newInstance} factory method to
+ * Use the {@link Show_itinerario_circle#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Itinerarios_app extends Fragment {
-
-
-    private static DBManager DB;
-    ArrayList<CircleList> activities;
-    public static FragmentManager fragmentManager;
-
-    public static final int NUM_COLUMNS = 1;
-
-    private RecyclerView mHyperdActivitiesList;
-    private HypedActivitiesAdapter adapter;
+public class Show_itinerario_circle extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+
+    public static int idCirculo;
+    private static DBManager DB;
+    ArrayList<ItinerarioList> itinerarios;
+    public static final int NUM_COLUMNS = 1;
+    private RecyclerView mHypedItinerarioAdapter;
+    private HypedItinerarioAdapter adapter;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -59,19 +57,20 @@ public class Itinerarios_app extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @return A new instance of fragment New_Itinerario.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment Show_itinerario_circle.
      */
     // TODO: Rename and change types and number of parameters
-    public static Itinerarios_app newInstance(DBManager db, FragmentManager fragmentManager1) {
-        Itinerarios_app fragment = new Itinerarios_app();
+    public static Show_itinerario_circle newInstance(int circulo, String param2) {
+        Show_itinerario_circle fragment = new Show_itinerario_circle();
         Bundle args = new Bundle();
-        DB = db;
-        fragmentManager = fragmentManager1;
+        idCirculo = circulo;
+        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public Itinerarios_app() {
+    public Show_itinerario_circle() {
         // Required empty public constructor
     }
 
@@ -82,21 +81,18 @@ public class Itinerarios_app extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-        adapter = new HypedActivitiesAdapter(getActivity(), DB, 2, fragmentManager );
+        adapter = new HypedItinerarioAdapter( getActivity() );
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_itinerarios_app, container, false);
+        View root = inflater.inflate(R.layout.fragment_show_itinerario_circle, container, false);
 
-        mHyperdActivitiesList = (RecyclerView) root.findViewById(R.id.hyper_show_itinerario);
+        mHypedItinerarioAdapter = (RecyclerView) root.findViewById(R.id.hyper_show_itinerario_circle);
 
-
-
-        SetudActivitiesList();
+        SetudItinerariosList();
 
         try {
 
@@ -139,7 +135,7 @@ public class Itinerarios_app extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p/>
+     * <p>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
@@ -149,36 +145,35 @@ public class Itinerarios_app extends Fragment {
         public void onFragmentInteraction(Uri uri);
     }
 
-    private void SetudActivitiesList(){
+    private void SetudItinerariosList(){
 
-        mHyperdActivitiesList.setLayoutManager(
+        mHypedItinerarioAdapter.setLayoutManager(
                 new GridLayoutManager(getActivity(),
                         NUM_COLUMNS) );
 
-        mHyperdActivitiesList.setAdapter(adapter);
+        mHypedItinerarioAdapter.setAdapter(adapter);
     }
 
     private void CasthConentAdapter() throws JSONException {
 
-        CirclesManager getCircles = new CirclesManager( getActivity().getApplicationContext(), DB );//busco en BD los circulos existentes
+        ItinerariosManager getItinerarios = new ItinerariosManager( getActivity().getApplicationContext() );//busco en BD los circulos existentes
 
-        JSONArray circlesResult = getCircles.SearchCircles(1);
-        JSONObject indexCircles = getCircles.IndexCircles();
+        JSONArray ItinerariosResult = getItinerarios.SearchItinerarios(idCirculo);
+        JSONObject indexItinerarios = getItinerarios.IndexItinerario();
 
-        if( circlesResult != null ){
+        if( ItinerariosResult != null ){
 
-            ArrayList<CircleList> circles = new ArrayList<>();
+            ArrayList<ItinerarioList> itinerarios = new ArrayList<>();
 
-            for (int i=0; i < circlesResult.length(); i++){
+            for (int i=0; i < ItinerariosResult.length(); i++){
 
-                circles.add( new CircleList( circlesResult.getString(i), indexCircles ) );
+                itinerarios.add(new ItinerarioList(ItinerariosResult.getString(i), indexItinerarios));
 
             }
 
-            adapter.AddAll(circles);
+            adapter.AddAll(itinerarios);
 
         }
     }
-
 
 }

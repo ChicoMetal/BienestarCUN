@@ -2,15 +2,20 @@ package com.co.edu.cun.www1104379214.bienestarcun.Metodos;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
-import com.co.edu.cun.www1104379214.bienestarcun.Metodos.AdapterUserMenu;
+import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLSearch;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.httpHandler;
+import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Show_itinerario_circle;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,7 +39,6 @@ public class CirclesManager {
     JSONArray result = null;
     JSONArray resultResponse = null;
 
-    String name;
 
     public CirclesManager(Context contexto, DBManager db) {
         this.CONTEXTO = contexto;
@@ -42,7 +46,7 @@ public class CirclesManager {
 
     }
 
-    public JSONArray SearchCircles( int servicePetition) { //buscar circulo existente en la BD
+    public JSONArray SearchCircles( int servicePetition) { //buscar circulo existente en la BD o los agregados por el usuario
         final String service;
 
         if( servicePetition == 0){
@@ -62,7 +66,7 @@ public class CirclesManager {
             e.printStackTrace();
         }catch (Exception e){
             String contenido = "Error desde android #!#";
-            contenido += " Funcion: getObject #!#";
+            contenido += " Funcion: SearchCircles #!#";
             contenido += "Clase : CircleList.java #!#";
             contenido += e.getMessage();
             new ServicesPeticion().SaveError(contenido);
@@ -118,11 +122,10 @@ public class CirclesManager {
         return null;
     }
 
-    /*public void setName(String name) {
-        this.name = name;
-    }*/
 
-    public JSONArray GetCirclesExists(String idUser, String service) throws InterruptedException { //obtengo el array de objeto con los circulos
+    public JSONArray GetCirclesExists(String idUser, String service) throws InterruptedException {
+    //obtengo el array de objeto con los circulos
+
         String[][] values = null;
 
 
@@ -168,12 +171,13 @@ public class CirclesManager {
 
     }
 
-    public JSONObject IndexCircles() {
+    public JSONObject IndexCircles() { //retornar los index dell objeto traido de la BD
 
         return indexCircles;
     }
 
     public void SaveCircleUser( int idCircle1) {//agrego el usuario al circulo
+
         String idCircle = idCircle1+"";
         final String service = "circles/saveAddCircle.php";
         JSONArray arrayResponse = null;
@@ -221,7 +225,7 @@ public class CirclesManager {
 
     }
 
-    public void DeleteCircleUser( int idCircle) {//agrego el usuario al circulo
+    public void DeleteCircleUser( int idCircle) {//elimino el usuario del circulo
 
         final String service = "circles/DeleteCircleUser.php";
         JSONArray arrayResponse = null;
@@ -269,4 +273,19 @@ public class CirclesManager {
 
     }
 
+    public void ShowItinerariosCircle(int idCircle, FragmentManager fragmentManager) {
+
+        Bundle args = new Bundle();
+        args.putString("", "");
+
+        Fragment fragment;
+        fragment =  Show_itinerario_circle.newInstance(idCircle, "");
+
+        fragment.setArguments(args);
+
+        fragmentManager
+                .beginTransaction()
+                .replace(R.id.main_content, fragment)
+                .commit();
+    }
 }

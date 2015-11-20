@@ -53,7 +53,7 @@ public class CodMessajes {
             msmServices.put("0000", "Error al conectar");
             msmServices.put("0001", "Error al ejecutar el query");
             msmServices.put("0010", "No existen datos");
-            msmServices.put("1000", "Ejecucion exitosa");
+            msmServices.put("1000", "Todo ha ido bien");
             msmServices.put("0100", "Error al seleccionar la tabla");
             msmServices.put("0011", "Error en la instruccion");
             msmServices.put("1100", "Instruccion ejecutada correctamente");
@@ -66,6 +66,11 @@ public class CodMessajes {
             msmServices.put("10001", "Usuario bloqueado");
             msmServices.put("10010", "Combinacion de datos erronea");
             msmServices.put("10110", "Sesion finalizada");
+
+            //mesajes circles
+            msmServices.put("000", "Pendiente");
+            msmServices.put("001", "Aplazado");
+            msmServices.put("010", "Cancelado");
 
         } catch (JSONException e) {
             e.printStackTrace();

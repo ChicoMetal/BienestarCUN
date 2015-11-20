@@ -52,7 +52,7 @@ public class CodMessajes {
             //mensajes php
             msmServices.put("0000", "Error al conectar");
             msmServices.put("0001", "Error al ejecutar el query");
-            msmServices.put("0010", "No existen datos");
+            msmServices.put("0010", "No se encontraron datos");
             msmServices.put("1000", "Todo ha ido bien");
             msmServices.put("0100", "Error al seleccionar la tabla");
             msmServices.put("0011", "Error en la instruccion");

@@ -38,7 +38,7 @@ public class DelActivities_app extends Fragment {
     ArrayList<CircleList> activities;
 
 
-    public static final String LOG_TAG = Activities_app.class.getName();
+    public static final String LOG_TAG = Circles_app.class.getName();
     public static final int NUM_COLUMNS = 1;
 
     private RecyclerView mHyperdActivitiesList;

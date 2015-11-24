@@ -19,7 +19,6 @@ import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.CircleList;
 
 
-
 import java.util.ArrayList;
 
 /**
@@ -107,12 +106,13 @@ public class HypedActivitiesAdapter extends RecyclerView.Adapter<HypedActivities
                 @Override
                 public void onClick(View v) {//evento de touch para agregar usuario a circulo
                     // item clicked
-                    if( INSTANCE == 0 ){//pregunto q fragento invoca el adaptador para saber que accion realizar al touch de las card
-                        new CirclesManager(context,DB).SaveCircleUser(v.getId() );
-                    }else if( INSTANCE == 1){//Desvincularcirculo
-                        new CirclesManager(context,DB).DeleteCircleUser(v.getId());
-                    }else{//ver itnerarios
-                        new CirclesManager(context,DB).ShowItinerariosCircle(v.getId(), fragmentManager);
+                    if (INSTANCE == 0) {//pregunto q fragento invoca el adaptador para saber que accion realizar al touch de las card
+                        new CirclesManager(context, DB).SaveCircleUser(v.getId());
+
+                    } else if (INSTANCE == 1) {//Desvincularcirculo
+                        new CirclesManager(context, DB).DeleteCircleUser(v.getId());
+                    } else {//ver itnerarios
+                        new CirclesManager(context, DB).ShowItinerariosCircle(v.getId(), fragmentManager);
                     }
                 }
             });

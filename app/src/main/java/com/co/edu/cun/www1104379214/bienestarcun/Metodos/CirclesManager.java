@@ -203,12 +203,6 @@ public class CirclesManager {
                         mss.msmServices.getString(arrayResponse.getString(1).toString()),
                         Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
 
-            }else {
-
-                Toast.makeText(CONTEXTO.getApplicationContext(),
-                        mss.SaveCircleUser,
-                        Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
-
             }
 
         } catch (JSONException e) {
@@ -249,12 +243,6 @@ public class CirclesManager {
 
                 Toast.makeText(CONTEXTO.getApplicationContext(),
                         mss.msmServices.getString(arrayResponse.getString(1).toString()),
-                        Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
-
-            }else {
-
-                Toast.makeText(CONTEXTO.getApplicationContext(),
-                        mss.DeleteCircleUser,
                         Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
 
             }

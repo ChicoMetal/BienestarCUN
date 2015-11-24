@@ -174,11 +174,11 @@ public class AdapterUserMenu {
 
             if( result_object.length() > 0 ){
 
-                String result_service = services.LogoutUser( result_object );
-
                 DeleteUser();
 
                 UserDefaultAfterLogout(menu);
+
+                String result_service = services.LogoutUser( result_object );
 
                 Toast.makeText(CONTEXTO,
                         mss.msmServices.getString( result_service ),

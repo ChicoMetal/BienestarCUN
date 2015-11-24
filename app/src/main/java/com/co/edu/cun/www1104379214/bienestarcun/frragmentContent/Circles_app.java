@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.CirclesManager;
-import com.co.edu.cun.www1104379214.bienestarcun.Metodos.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.CircleList;
@@ -26,12 +25,12 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link Activities_app.OnFragmentInteractionListener} interface
+ * {@link Circles_app.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link Activities_app#newInstance} factory method to
+ * Use the {@link Circles_app#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Activities_app extends Fragment {
+public class Circles_app extends Fragment {
 
     private static DBManager DB;
     ArrayList<CircleList> activities;
@@ -60,8 +59,8 @@ public class Activities_app extends Fragment {
      * @return A new instance of fragment Activities_app.
      */
     // TODO: Rename and change types and number of parameters
-    public static Activities_app newInstance(DBManager db, String param2) {
-        Activities_app fragment = new Activities_app();
+    public static Circles_app newInstance(DBManager db, String param2) {
+        Circles_app fragment = new Circles_app();
         Bundle args = new Bundle();
         DB = db;
         args.putString(ARG_PARAM2, param2);
@@ -69,7 +68,7 @@ public class Activities_app extends Fragment {
         return fragment;
     }
 
-    public Activities_app() {
+    public Circles_app() {
         // Required empty public constructor
     }
 

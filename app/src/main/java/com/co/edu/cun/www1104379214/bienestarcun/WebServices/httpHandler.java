@@ -30,7 +30,10 @@ public class httpHandler {
 
     private Activity activity;
 
-    private static final String Server = "http://10.0.3.2/BienestarCun/service/core/android/";
+    //private static final String Server = "http://10.0.3.2/BienestarCun/core/android/";
+    private static final String Server = "http://192.168.1.107/BienestarCun/core/android/";
+    //private static final String Server = "http://ottsincelejo.com/carlos/BienestarCun/core/android/";
+    //private static final String Server = "bienestarcun.webcindario.com/core/android/";
 
 
     //Metodo para realizar peticiones al server

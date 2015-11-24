@@ -23,7 +23,7 @@ import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLInsert;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLSearch;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
-import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Activities_app;
+import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Circles_app;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.ChatPsicologa_app;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.CircleAdministration_app;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Desertion_app;
@@ -205,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 case R.id.nav_add_activities:
-                    fragment =  Activities_app.newInstance(db, "");
+                    fragment =  Circles_app.newInstance(db, "");
                     break;
 
                 case R.id.nav_add_desertion:
@@ -226,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 case R.id.nav_show_notifications:
-                    fragment =  Notifications_app.newInstance("", "");
+                    fragment =  Notifications_app.newInstance(db, "");
                     break;
 
                 case R.id.nav_new_chat:

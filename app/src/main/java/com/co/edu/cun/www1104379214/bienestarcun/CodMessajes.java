@@ -67,10 +67,10 @@ public class CodMessajes {
             msmServices.put("10010", "Combinacion de datos erronea");
             msmServices.put("10110", "Sesion finalizada");
 
-            //mesajes circles
-            msmServices.put("000", "Pendiente");
-            msmServices.put("001", "Aplazado");
-            msmServices.put("010", "Cancelado");
+            //mesajes notificaciones
+            msmServices.put("111", "Pendiente");
+            msmServices.put("110", "Aplazado");
+            msmServices.put("000", "Cancelado");
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -89,7 +89,6 @@ public class CodMessajes {
     public static final String LocalInsertError = "Error al insertar los datos";
     public static final String LocalInsert = "Se han insertado los datos";
     public static final String LoginWell = " Felicidades, has ingresado ";
-    public static final String SaveCircleUser = " Te has viculado a esta actividad ";
-    public static final String DeleteCircleUser = " Te has desvinculado de la actividad ";
+
 
 }

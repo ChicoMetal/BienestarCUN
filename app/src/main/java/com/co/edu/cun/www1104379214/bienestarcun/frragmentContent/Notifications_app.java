@@ -4,11 +4,24 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.co.edu.cun.www1104379214.bienestarcun.Metodos.CircleNotificationsManager;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
+import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.NotificationsList;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
+import com.co.edu.cun.www1104379214.bienestarcun.ui.adapter.HypedNotificationsAdapter;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 
 /**
@@ -20,6 +33,16 @@ import com.co.edu.cun.www1104379214.bienestarcun.R;
  * create an instance of this fragment.
  */
 public class Notifications_app extends Fragment {
+
+    private static DBManager DB;
+    ArrayList<NotificationsList> activities;
+
+    public static final int NUM_COLUMNS = 1;
+
+    private RecyclerView mHyperdNotificationsList;
+    private HypedNotificationsAdapter adapter;
+
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -35,15 +58,14 @@ public class Notifications_app extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
      * @param param2 Parameter 2.
      * @return A new instance of fragment Notifications_app.
      */
     // TODO: Rename and change types and number of parameters
-    public static Notifications_app newInstance(String param1, String param2) {
+    public static Notifications_app newInstance(DBManager db, String param2) {
         Notifications_app fragment = new Notifications_app();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
+        DB = db;
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
@@ -60,13 +82,35 @@ public class Notifications_app extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        adapter = new HypedNotificationsAdapter(getActivity(), DB);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_notifications_app, container, false);
+        View root = inflater.inflate(R.layout.fragment_notifications_app, container, false);
+
+        mHyperdNotificationsList = (RecyclerView) root.findViewById(R.id.hyper_notifications_list);
+
+        SetudNotificationList();
+
+        try {
+
+            CasthConentAdapter();//lleno el adaptador
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }catch (Exception e){
+            String contenido = "Error desde android #!#";
+            contenido += " Funcion: onCreateView #!#";
+            contenido += "Clase : Notifications_app.java #!#";
+            contenido += e.getMessage();
+            new ServicesPeticion().SaveError(contenido);
+        }
+
+        return root;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -103,4 +147,36 @@ public class Notifications_app extends Fragment {
         public void onFragmentInteraction(Uri uri);
     }
 
+    private void SetudNotificationList(){
+
+        mHyperdNotificationsList.setLayoutManager(
+                new GridLayoutManager(getActivity(),
+                        NUM_COLUMNS));
+
+
+
+        mHyperdNotificationsList.setAdapter(adapter);
+    }
+
+    private void CasthConentAdapter() throws JSONException {
+
+        CircleNotificationsManager getNotifications = new CircleNotificationsManager( getActivity().getApplicationContext(), DB );//busco en BD los circulos existentes
+
+        JSONArray notificationsResult = getNotifications.getResultResponse();
+        JSONObject indexCircles = getNotifications.IndexNotifications();
+
+        if( notificationsResult != null ){
+
+            ArrayList<NotificationsList> notifications = new ArrayList<>();
+
+            for (int i=0; i < notificationsResult.length(); i++){
+
+                notifications.add(new NotificationsList(notificationsResult.getString(i), indexCircles));
+
+            }
+
+            adapter.AddAll(notifications);
+
+        }
+    }
 }

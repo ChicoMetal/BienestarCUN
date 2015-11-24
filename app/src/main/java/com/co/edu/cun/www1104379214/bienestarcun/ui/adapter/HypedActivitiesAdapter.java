@@ -97,7 +97,7 @@ public class HypedActivitiesAdapter extends RecyclerView.Adapter<HypedActivities
 
 
 
-        public HypedActivitiesViewHolder(View itemView) {
+        public HypedActivitiesViewHolder(final View itemView) {
             super(itemView);
 
             View view;
@@ -106,13 +106,23 @@ public class HypedActivitiesAdapter extends RecyclerView.Adapter<HypedActivities
                 @Override
                 public void onClick(View v) {//evento de touch para agregar usuario a circulo
                     // item clicked
+
                     if (INSTANCE == 0) {//pregunto q fragento invoca el adaptador para saber que accion realizar al touch de las card
+
                         new CirclesManager(context, DB).SaveCircleUser(v.getId());
+                        activities.remove(getAdapterPosition()); // remover un itemview
+                        notifyItemRemoved(getAdapterPosition()); //remover un itemview
 
                     } else if (INSTANCE == 1) {//Desvincularcirculo
+
                         new CirclesManager(context, DB).DeleteCircleUser(v.getId());
+                        activities.remove(getAdapterPosition()); // remover un itemview
+                        notifyItemRemoved(getAdapterPosition()); //remover un itemview
+
                     } else {//ver itnerarios
+
                         new CirclesManager(context, DB).ShowItinerariosCircle(v.getId(), fragmentManager);
+
                     }
                 }
             });

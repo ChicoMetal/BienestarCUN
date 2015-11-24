@@ -8,6 +8,7 @@ package com.co.edu.cun.www1104379214.bienestarcun.SqliteBD;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;

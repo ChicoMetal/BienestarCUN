@@ -21,26 +21,24 @@ public class CircleNotificationsManager {
     String[][] parametros;
     CodMessajes mss = new CodMessajes();
     Context CONTEXTO;
-    TaskExecuteSQLSearch userSearch;
     DBManager DB;
+    String[] tipeNotification;
     JSONObject indexCircles;
     JSONArray result = null;
     private JSONArray resultResponse = null;
 
-    public CircleNotificationsManager(Context contexto, DBManager db) {
+    public CircleNotificationsManager(Context contexto, DBManager db, String[] tipNotification) {
         this.CONTEXTO = contexto;
         this.DB = db;
-
-        SearchNotifications();
+        this.tipeNotification = tipNotification;
+        SearchNotifications(tipeNotification);
     }
 
-    public void SearchNotifications() { //buscar notificaciones existentes en la BD o los agregados por el usuario
+    public void SearchNotifications(String[] tipeNotification) { //buscar notificaciones existentes en la BD o los agregados por el usuario
 
         final String service;
 
         service = "notifications/getNotifications.php";
-
-        String[] tipeNotification = new String[]{"1"};
 
         Notification getNotification = new Notification(CONTEXTO, DB);
 

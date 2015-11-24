@@ -1,12 +1,14 @@
 package com.co.edu.cun.www1104379214.bienestarcun.Metodos;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.support.annotation.ArrayRes;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
+import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLInsert;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLSearch;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLSearchConditions;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
@@ -27,14 +29,25 @@ public class Notification {
     Context CONTEXTO;
 
     httpHandler server = new httpHandler();
+    ServicesPeticion services = new ServicesPeticion();
     CodMessajes mss = new CodMessajes();
     TaskExecuteSQLSearchConditions sqliteSearchconditions;
     TaskExecuteSQLSearch sqliteSearch;
+    TaskExecuteSQLInsert sqliteInsert;
 
     JSONArray resultNotifications;
     JSONObject indexNotifications;
     JSONArray newresultNotifications;
 
+    /**
+     **********************
+     **********************
+     **********************
+     * 1 = notificaciones de los circulos
+     * 0 = notificaciones de los egresados
+     **********************
+     **********************
+     */
     public Notification(Context contexto, DBManager db){
         this.DB = db;
         this.CONTEXTO = contexto;
@@ -85,6 +98,7 @@ public class Notification {
 
     private JSONObject getNotificationsOld(String[] tipeNotifications){//buscar notificaciones guardadas en sqlite (leidas)
 
+        JSONObject jsonNotifications = null;
 
         String[] camposSeacrh = new String[]{
                 DB.CN_COD_NOTIFICACION,
@@ -100,15 +114,10 @@ public class Notification {
 
         try {
 
-            Cursor result = sqliteSearch.execute().get();
+            Cursor result = sqliteSearchconditions.execute().get();
 
-            JSONObject jsonNotifications = new AdapterUserMenu(CONTEXTO, DB).CreateObjectResultSQL(result, camposSeacrh);
+            jsonNotifications = new AdapterUserMenu(CONTEXTO, DB).CreateObjectResultSQL(result, camposSeacrh);
 
-            if ( jsonNotifications.length() > 0 ){
-
-                return jsonNotifications;
-
-            }
 
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -122,7 +131,7 @@ public class Notification {
             new ServicesPeticion().SaveError(contenido);
         }
 
-        return null;
+        return jsonNotifications;
     }
 
     public JSONArray GetNotifications(String[] tipeNotifications, String service){//obtener notificaciones en la BD remota
@@ -162,8 +171,8 @@ public class Notification {
 
         }catch (Exception e){
             String contenido = "Error desde android #!#";
-            contenido += " Funcion: GetCirclesExists #!#";
-            contenido += "Clase : CircleManager.java #!#";
+            contenido += " Funcion: GetNotifications #!#";
+            contenido += "Clase : Notification.java #!#";
             contenido += e.getMessage();
             new ServicesPeticion().SaveError(contenido);
         }
@@ -171,64 +180,125 @@ public class Notification {
     }
 
     private JSONArray ShowNotificationsNew(JSONArray arrayResponse,
-                                      String[] tipeNotifications) throws JSONException {
+                                      String[] tipeNotifications) {
 
-        JSONObject notificationOlds = getNotificationsOld(tipeNotifications);//notificaciones guardadas en sqlite
+        newresultNotifications = new JSONArray();
 
+        try{
 
-        if( notificationOlds != null){
+            resultNotifications = arrayResponse.getJSONArray(0);//array de objetos con los resultados
+            indexNotifications = arrayResponse.getJSONObject(1);//objeto con los index de la consulta
 
-            for(int c = notificationOlds.length() -1; c>=0; c-- ){
+            JSONObject notificationOlds = getNotificationsOld(tipeNotifications);//notificaciones guardadas en sqlite
 
-                String key = "ROW"+c;
+            JSONObject notificationNew = null;
 
-                JSONObject rowNotifications = notificationOlds.getJSONObject(key);
+            for(int c = resultNotifications.length()-1; c >= 0; c--  ){
 
-                SerachNotificationsGetExists(
-                    arrayResponse,
-                    rowNotifications.getString(
-                            DB.CN_COD_NOTIFICACION
-                    )
-                );
+                notificationNew = resultNotifications.getJSONObject(c);
 
+                boolean existst = SearchNotificationsGetExists(tipeNotifications,
+                                    notificationNew.getString(
+                                            indexNotifications.getString("0")
+                                    ),
+                                    notificationOlds); //verifico el id de la notificacion traida con las guardadas
+
+                if( !existst ){
+
+                    newresultNotifications.put( notificationNew );
+                }
 
             }
 
-        }else{//si no existen notificaciones almacenadas retorno el mismo array de objetos con los resultados
+            JSONArray array = new JSONArray(); //nuevo array
+            array.put(newresultNotifications);
+            array.put(indexNotifications);
+            return array;
 
-            newresultNotifications = arrayResponse.getJSONArray(0);
-            indexNotifications = arrayResponse.getJSONObject(1);
-
+        } catch (JSONException e) {
+            e.printStackTrace();
+            String contenido = "Error desde android #!#";
+            contenido += " Funcion: ShowNotificationsNew #!#";
+            contenido += "Clase : Notification.java #!#";
+            contenido += e.getMessage();
+            services.SaveError(contenido);
         }
 
-        JSONArray array = new JSONArray(); //nuevo array
-        array.put(newresultNotifications);
-        array.put(indexNotifications);
-
-        return array;
+        return null;
     }
 
-    private void SerachNotificationsGetExists( JSONArray arrayResponse,
-                                               String idNotificationOld) throws JSONException {
+    private boolean SearchNotificationsGetExists(String[] tipeNotifications, String idNewNotification, JSONObject notificationOlds){
         //confirmo si las notificaciones traidas del server ya estan guardadas para retirarlas
 
-        resultNotifications = arrayResponse.getJSONArray(0);//array de objetos con los resultados
-        indexNotifications = arrayResponse.getJSONObject(1);//objeto con los index de la consulta
+        boolean resultExists = false;
+        try{
 
-        for(int c = resultNotifications.length(); c >= 0; c--  ){
+            if( notificationOlds != null){
 
-            JSONObject notificationNew = resultNotifications.getJSONObject(c);
+                for(int c = notificationOlds.length() -1; c>=0; c-- ){
 
-            if( !notificationNew.getString(
-                    indexNotifications.getString("1")
-                ).equals( idNotificationOld )
-            ){
-                newresultNotifications.put( notificationNew );
+                    String key = "ROW"+c;
+
+                    JSONObject rowNotifications = notificationOlds.getJSONObject(key);
+
+                    if( rowNotifications.getString(
+                            DB.CN_COD_NOTIFICACION ).equals(idNewNotification)
+                    ){
+                        resultExists = true;
+                        break;
+                    }
+
+
+                }
+
             }
 
+        } catch (JSONException e) {
+            e.printStackTrace();
+            String contenido = "Error desde android #!#";
+            contenido += " Funcion: SearchNotificationsGetExists #!#";
+            contenido += "Clase : Notification.java #!#";
+            contenido += e.getMessage();
+            services.SaveError(contenido);
         }
 
-
+        return resultExists;
     }
 
+
+    public boolean SaveNotificationRead( String idNotification, String tipeNotification ){
+
+        boolean resultInsert = false;
+
+        String[][] values = new String[][]{
+                {DB.CN_TIPE_NOTIFICATION,tipeNotification},
+                {DB.CN_COD_NOTIFICACION,idNotification}
+        };
+
+        ContentValues UserValues = DB.GenerateValues( values );
+
+        sqliteInsert = new TaskExecuteSQLInsert(DB.TABLE_NAME_NOTIFICATION,
+                UserValues,
+                CONTEXTO,
+                DB
+        ); //insertar una notificacon leida
+
+        try {
+
+            resultInsert  = sqliteInsert.execute().get();
+
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+            String contenido = "Error desde android #!#";
+            contenido += " Funcion: SaveNotificationRead #!#";
+            contenido += "Clase : Notification.java #!#";
+            contenido += e.getMessage();
+            services.SaveError(contenido);
+        }
+
+        return resultInsert;
+    }
 }

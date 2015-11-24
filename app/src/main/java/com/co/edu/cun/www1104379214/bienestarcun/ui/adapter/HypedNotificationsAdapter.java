@@ -13,7 +13,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
+import com.co.edu.cun.www1104379214.bienestarcun.Metodos.CircleNotificationsManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.IconManager;
+import com.co.edu.cun.www1104379214.bienestarcun.Metodos.Notification;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.NotificationsList;
@@ -100,7 +102,13 @@ public class HypedNotificationsAdapter extends RecyclerView.Adapter<HypedNotific
                 @Override
                 public void onClick(View v) {//evento de touch para agregar usuario a circulo
                     // item clicked
+                    String idNotification = v.getId()+"";
+                    Notification notification = new Notification(context,DB);
+                    notification.SaveNotificationRead(idNotification, mss.tipeNotification[1][0]);
                     //new CirclesManager(context, DB).SaveCircleUser(v.getId());
+
+                    notifications.remove(getAdapterPosition()); // remover un itemview
+                    notifyItemRemoved(getAdapterPosition()); //remover un itemview
 
                 }
             });

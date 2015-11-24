@@ -67,7 +67,7 @@ public class CodMessajes {
             msmServices.put("10010", "Combinacion de datos erronea");
             msmServices.put("10110", "Sesion finalizada");
 
-            //mesajes notificaciones
+            //status notificaciones
             msmServices.put("111", "Pendiente");
             msmServices.put("110", "Aplazado");
             msmServices.put("000", "Cancelado");
@@ -80,7 +80,7 @@ public class CodMessajes {
 
 
     //*****************************************
-    //*****************************************
+    //*****************************************Mensaje cadena
     //*****************************************
 
 
@@ -91,4 +91,12 @@ public class CodMessajes {
     public static final String LoginWell = " Felicidades, has ingresado ";
 
 
+    //************************************
+    //************************************Variables globales
+    //************************************
+
+    public static final String[][] tipeNotification = new String[][]{
+            {"0"},
+            {"1"}
+    };//tipo de notificaciones; 1:circulos; 0:ofertas laborales
 }

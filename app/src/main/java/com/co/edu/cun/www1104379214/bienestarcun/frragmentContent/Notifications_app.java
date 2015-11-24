@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.CircleNotificationsManager;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
@@ -41,6 +42,8 @@ public class Notifications_app extends Fragment {
 
     private RecyclerView mHyperdNotificationsList;
     private HypedNotificationsAdapter adapter;
+
+    CodMessajes mss = new CodMessajes();
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -160,7 +163,7 @@ public class Notifications_app extends Fragment {
 
     private void CasthConentAdapter() throws JSONException {
 
-        CircleNotificationsManager getNotifications = new CircleNotificationsManager( getActivity().getApplicationContext(), DB );//busco en BD los circulos existentes
+        CircleNotificationsManager getNotifications = new CircleNotificationsManager( getActivity().getApplicationContext(), DB,mss.tipeNotification[1] );//busco en BD los circulos existentes
 
         JSONArray notificationsResult = getNotifications.getResultResponse();
         JSONObject indexCircles = getNotifications.IndexNotifications();

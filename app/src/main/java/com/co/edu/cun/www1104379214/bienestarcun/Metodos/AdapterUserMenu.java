@@ -208,7 +208,7 @@ public class AdapterUserMenu {
     public JSONObject CreateObjectResultSQL(Cursor result, String[] campos) throws JSONException { //crear JSONObject con los resultados de sqlite
 
         JSONObject SQL_RESULT_SEARCH = new JSONObject();
-        JSONObject subobject = new JSONObject();
+        JSONObject subobject;
 
         int numero = result.getCount();
         String nameRow = "ROW";
@@ -217,7 +217,7 @@ public class AdapterUserMenu {
         while ( result.moveToNext() ) {
 
             try { //creo objeto de resultados consulta
-
+                subobject = new JSONObject();
                 int size = campos.length;//numero de campos
 
                 for (int c = 0; c < size; c++) {//itero por cada campo enviado para la consulta
@@ -231,7 +231,7 @@ public class AdapterUserMenu {
                 }
 
                 SQL_RESULT_SEARCH.put(nameRow+contador + "", subobject);
-
+                Log.i(mss.TAG, SQL_RESULT_SEARCH.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
 

@@ -36,6 +36,8 @@ public class CodMessajes {
     //1100 = Docente CUN
     //1011 = Estudiante
     //1010 = Estudiante egresado
+    //1001 = Psicologa
+    //1000 = Usuario sin loguear
 
 
     //****************************************

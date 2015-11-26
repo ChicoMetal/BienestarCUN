@@ -50,7 +50,7 @@ public class CirclesManager {
         final String service;
 
         if( servicePetition == 0){
-            service = "circles/GetCirclesExists.php";
+            service = "circles/GetChatPendientesExists.php";
         }else{
             service = "circles/SearchCircleAdd.php";
         }
@@ -66,7 +66,7 @@ public class CirclesManager {
             e.printStackTrace();
         }catch (Exception e){
             String contenido = "Error desde android #!#";
-            contenido += " Funcion: SearchCircles #!#";
+            contenido += " Funcion: SearchChatPendientes #!#";
             contenido += "Clase : CircleList.java #!#";
             contenido += e.getMessage();
             new ServicesPeticion().SaveError(contenido);
@@ -161,7 +161,7 @@ public class CirclesManager {
 
         }catch (Exception e){
             String contenido = "Error desde android #!#";
-            contenido += " Funcion: GetCirclesExists #!#";
+            contenido += " Funcion: GetChatPendientesExists #!#";
             contenido += "Clase : CircleManager.java #!#";
             contenido += e.getMessage();
             new ServicesPeticion().SaveError(contenido);

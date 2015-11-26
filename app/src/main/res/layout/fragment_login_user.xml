@@ -41,7 +41,8 @@
                 android:layout_weight="0.89"
                 android:hint="@string/ed_usuario"
                 android:background="@color/BackgroundEDText"
-                android:layout_marginBottom="5dp" />
+                android:layout_marginBottom="5dp"
+                android:minHeight="30dp" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -51,7 +52,8 @@
                 android:layout_weight="0.64"
                 android:hint="@string/ed_pass_user"
                 android:background="@color/BackgroundEDText"
-                android:layout_marginTop="5dp" />
+                android:layout_marginTop="5dp"
+                android:minHeight="30dp" />
         </LinearLayout>
 
         <LinearLayout

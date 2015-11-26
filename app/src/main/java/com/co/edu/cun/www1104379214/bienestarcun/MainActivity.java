@@ -15,7 +15,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.co.edu.cun.www1104379214.bienestarcun.Metodos.ChatPsicologiaManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.AdapterUserMenu;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLDelete;
@@ -23,6 +27,7 @@ import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLInsert;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLSearch;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
+import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.ChatPendientes;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Circles_app;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.ChatPsicologa_app;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.CircleAdministration_app;
@@ -230,7 +235,15 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 case R.id.nav_new_chat:
-                    fragment =  ChatPsicologa_app.newInstance("", "");
+
+                    ChatPsicologiaManager chatCod = new ChatPsicologiaManager(getApplicationContext(), db);
+                    if( chatCod.ComproveUser() ){
+                        FragmentManager fragmentManagerChat = getSupportFragmentManager();
+                        fragment =  ChatPendientes.newInstance(db, fragmentManagerChat);
+                    }else{
+                        fragment =  ChatPsicologa_app.newInstance(1, 2);
+                    }
+
                     break;
 
                 case R.id.nav_new_itinerario:
@@ -299,5 +312,24 @@ public class MainActivity extends AppCompatActivity {
         selectItem(drawerTitle, id);
     }
 
+
+    public void AddMensjae(View v){
+
+
+        TextView ContenRemitente, ContentReceptor;
+        EditText mensaje;
+        ScrollView contentChat;
+
+        ContenRemitente = (TextView) findViewById(R.id.TVRemitente);
+        ContentReceptor = (TextView) findViewById(R.id.TVRReceptor);
+        mensaje = (EditText) findViewById(R.id.etMensajePsicologia);
+        contentChat = (ScrollView) findViewById(R.id.SVContentMsm);
+
+        ChatPsicologiaManager chatMensajes = new ChatPsicologiaManager(getApplicationContext(), db);
+
+        chatMensajes.AddMesagesChat(mensaje, ContenRemitente, ContentReceptor, contentChat );
+
+
+    }
 
 }

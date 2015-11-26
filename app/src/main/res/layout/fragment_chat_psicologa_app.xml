@@ -4,8 +4,56 @@
     tools:context="com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.ChatPsicologa_app">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="Psicologia"
-        android:textSize="50dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/SVContentMsm"
+        android:paddingTop="50dp" >
+
+    </ScrollView>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="right|bottom">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:inputType="textMultiLine"
+            android:ems="10"
+            android:id="@+id/etMensajePsicologia"
+            android:layout_gravity="bottom"
+            android:background="@color/BackgroundEDText"
+            android:minHeight="36dp"
+            android:layout_weight="2"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="6dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Enviar"
+            android:id="@+id/button"
+            android:layout_gravity="bottom|right"
+            android:onClick="AddMensjae" />
+    </TableRow>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:id="@+id/TVRemitente"
+        android:visibility="invisible" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:id="@+id/TVRReceptor"
+        android:visibility="invisible" />
 
 </FrameLayout>

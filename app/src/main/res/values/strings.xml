@@ -28,4 +28,6 @@
     <string name="admin_circle_name">img_admin_circle</string>
     <string name="itinerariosHyped">backgroundCardItinerarios</string>
 
+    <string name="msmPendienteChat">Chat pendiente</string>
+
 </resources>

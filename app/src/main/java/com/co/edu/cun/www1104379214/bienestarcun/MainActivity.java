@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -241,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
                         FragmentManager fragmentManagerChat = getSupportFragmentManager();
                         fragment =  ChatPendientes.newInstance(db, fragmentManagerChat);
                     }else{
-                        fragment =  ChatPsicologa_app.newInstance(1, 2);
+                        fragment =  ChatPsicologa_app.newInstance( 7, Integer.parseInt( chatCod.getIdUser() ));
                     }
 
                     break;
@@ -253,7 +254,6 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.nav_login:
                     fragment =  LoginUser.newInstance("", "");
                     break;
-
 
             }
 
@@ -318,12 +318,12 @@ public class MainActivity extends AppCompatActivity {
 
         TextView ContenRemitente, ContentReceptor;
         EditText mensaje;
-        ScrollView contentChat;
+        LinearLayout contentChat;
 
         ContenRemitente = (TextView) findViewById(R.id.TVRemitente);
         ContentReceptor = (TextView) findViewById(R.id.TVRReceptor);
         mensaje = (EditText) findViewById(R.id.etMensajePsicologia);
-        contentChat = (ScrollView) findViewById(R.id.SVContentMsm);
+        contentChat = (LinearLayout) findViewById(R.id.SVContentMsm);
 
         ChatPsicologiaManager chatMensajes = new ChatPsicologiaManager(getApplicationContext(), db);
 

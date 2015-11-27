@@ -50,7 +50,7 @@ public class CirclesManager {
         final String service;
 
         if( servicePetition == 0){
-            service = "circles/GetChatPendientesExists.php";
+            service = "circles/GetCirclesExists.php";
         }else{
             service = "circles/SearchCircleAdd.php";
         }

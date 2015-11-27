@@ -1,16 +1,24 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.ChatPsicologa_app">
 
     <!-- TODO: Update blank fragment layout -->
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/SVContentMsm"
-        android:paddingTop="50dp" >
+        android:layout_height="0dp"
+        android:paddingTop="50dp"
+        android:layout_weight="1">
 
+        <LinearLayout
+            android:id="@+id/SVContentMsm"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </LinearLayout>
     </ScrollView>
 
     <TableRow
@@ -45,6 +53,7 @@
         android:layout_height="0dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
+        android:gravity="left"
         android:id="@+id/TVRemitente"
         android:visibility="invisible" />
 
@@ -56,4 +65,4 @@
         android:id="@+id/TVRReceptor"
         android:visibility="invisible" />
 
-</FrameLayout>
+</LinearLayout>

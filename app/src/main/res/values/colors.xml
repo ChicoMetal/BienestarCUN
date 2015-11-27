@@ -7,8 +7,11 @@
     <color name="backgroundBotton">#2e9b64</color>
     <color name="BackgroundEDText">#cfd9d4</color>
 
-    <color name="accent_transparency">#1a602d</color>
+    <color name="accent_transparency">#58a77c</color>
     <color name="accent_transparency_admin">#3b7adf</color>
     <color name="textWhite">#cdf5f2f2</color>
 
+    <color name="textBlack">#cd0d0d0d</color>
+    <color name="accent_transparency_remitente">#3b7adf</color>
+    <color name="accent_transparency_receptor">#5c3bdf</color>
 </resources>

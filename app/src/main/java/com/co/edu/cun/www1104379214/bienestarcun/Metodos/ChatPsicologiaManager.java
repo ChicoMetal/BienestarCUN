@@ -1,12 +1,17 @@
 package com.co.edu.cun.www1104379214.bienestarcun.Metodos;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.text.Html;
 import android.util.Log;
+import android.view.Gravity;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,6 +46,7 @@ public class ChatPsicologiaManager {
     JSONObject indexChats;
     JSONArray result = null;
     JSONArray resultResponse = null;
+
 
     public ChatPsicologiaManager(Context contexto, DBManager db) {
 
@@ -175,7 +181,7 @@ public class ChatPsicologiaManager {
         return indexChats;
     }
 
-    private String getIdUser() {//obtengo el id del usuario logueado
+    public String getIdUser() {//obtengo el id del usuario logueado
 
         String idUser="";
 
@@ -241,7 +247,12 @@ public class ChatPsicologiaManager {
     }
 
 
-    public void AddMesagesChat(EditText Contentmensaje, TextView ContentRemitente, TextView ContentReceptor, ScrollView contentChat){
+    public void AddMesagesChat(EditText Contentmensaje,
+                               TextView ContentRemitente,
+                               TextView ContentReceptor,
+                               LinearLayout contentChat){//Agregar los textView con los mensajes y traer
+
+
 
         String Remitente;
         String Receptor;
@@ -251,29 +262,55 @@ public class ChatPsicologiaManager {
         Receptor = (String) ContentReceptor.getText();
         Mensaje = Contentmensaje.getText().toString();
 
+
+
         final String service = "chatPsicologia/getMensajes.php";
 
         try {
+            if( !Mensaje.equals("") ) {
 
-            JSONArray resultMensajes;
+                JSONArray resultMensajes;
 
-            resultMensajes = GetMensajesPendientesExists(service, Remitente, Receptor);
-            Log.i(mss.TAG, resultMensajes.toString());
+                resultMensajes = GetMensajesPendientesExists(service, Remitente, Receptor,Mensaje);
+
+
+                if (resultMensajes != null) {//si trae mensajes de vuelta
+
+                    JSONArray arrayresult = resultMensajes.getJSONArray(0);
+                    JSONObject indexResult = resultMensajes.getJSONObject(1);
+
+
+                    for( int c = 0; c < arrayresult.length(); c++){//itero por cada mensaje
+
+                        String MensajeRecibido = arrayresult.getJSONObject(c).getString( indexResult.getString("1") );
+
+                        contentChat.addView( GenerarTextView(1,MensajeRecibido) );
+
+                    }
+
+                }
+
+            }
 
         } catch (InterruptedException e) {
             e.printStackTrace();
         }catch (Exception e){
-        String contenido = "Error desde android #!#";
-        contenido += " Funcion: AddMesagesChat #!#";
-        contenido += "Clase : ChatPsicologiaManager.java #!#";
-        contenido += e.getMessage();
-        new ServicesPeticion().SaveError(contenido);
-    }
+            String contenido = "Error desde android #!#";
+            contenido += " Funcion: AddMesagesChat #!#";
+            contenido += "Clase : ChatPsicologiaManager.java #!#";
+            contenido += e.getMessage();
+            new ServicesPeticion().SaveError(contenido);
+        }
+
+        if ( !Mensaje.equals("")){
+            contentChat.addView(  GenerarTextView(0,Mensaje) );
+            Contentmensaje.setText("");
+        }
 
     }
 
-    public JSONArray GetMensajesPendientesExists(String service, String remitente, String receptor) throws InterruptedException {
-        //obtengo el array de objeto con los circulos
+    public JSONArray GetMensajesPendientesExists(String service, String remitente, String receptor, String mensaje) throws InterruptedException {
+        //obtengo el array de objeto con los mensajes
 
         String[][] values = null;
 
@@ -282,7 +319,8 @@ public class ChatPsicologiaManager {
 
         parametros = new String[][]{ //array parametros a enviar
                 {"remitente",remitente},
-                {"receptor",receptor}
+                {"receptor",receptor},
+                {"mensaje",mensaje}
         };
 
         String resultado = BD.HttpRequestServer(service, parametros);
@@ -292,10 +330,6 @@ public class ChatPsicologiaManager {
             arrayResponse = new JSONArray( resultado ); // obtengo el array con la result del server
 
             if( arrayResponse.getString(0).toString().equals("msm")  ){
-
-                Toast.makeText(CONTEXTO.getApplicationContext(),
-                        mss.msmServices.getString(arrayResponse.getString(1).toString()),
-                        Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
 
                 return null;
 
@@ -321,4 +355,28 @@ public class ChatPsicologiaManager {
 
     }
 
+
+    private TextView GenerarTextView(int origen, String mensaje){//generar textview
+
+
+        TextView texto = new TextView(CONTEXTO);
+
+        if( origen == 0){
+
+            texto.setBackgroundResource(R.color.accent_transparency_remitente);
+            texto.setGravity(Gravity.LEFT);
+
+        }else{
+            texto.setBackgroundResource(R.color.accent_transparency_receptor);
+            texto.setGravity(Gravity.RIGHT);
+        }
+
+        texto.setTextColor(CONTEXTO.getResources().getColor(R.color.textBlack));
+        texto.setPadding(30, 5, 30, 5);
+        texto.setTextSize(15);
+        texto.setText(mensaje);
+
+        return texto;
+
+    }
 }

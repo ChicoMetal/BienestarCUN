@@ -74,6 +74,9 @@ public class CodMessajes {
             msmServices.put("110", "Aplazado");
             msmServices.put("000", "Cancelado");
 
+            //respuestas deserciones
+            msmServices.put("00", "No existe el usuario a reportar");
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -91,6 +94,7 @@ public class CodMessajes {
     public static final String LocalInsertError = "Error al insertar los datos";
     public static final String LocalInsert = "Se han insertado los datos";
     public static final String LoginWell = " Felicidades, has ingresado ";
+    public static final String FormErrorDesertion = " Errores en el formulario ";
 
 
     //************************************

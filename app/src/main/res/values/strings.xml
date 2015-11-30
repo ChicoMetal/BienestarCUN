@@ -29,5 +29,9 @@
     <string name="itinerariosHyped">backgroundCardItinerarios</string>
 
     <string name="msmPendienteChat">Chat pendiente</string>
+    <string name="desertion_txt_id">Identificacion desertor</string>
+    <string name="desertion_rb_txtnocturne">Nocturno</string>
+    <string name="desertion_rb_txtdiurno">Diurno</string>
+    <string name="ibt_sendDesertion">Send</string>
 
 </resources>

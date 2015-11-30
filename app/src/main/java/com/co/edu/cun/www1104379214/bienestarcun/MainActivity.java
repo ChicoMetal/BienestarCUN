@@ -16,11 +16,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.ChatPsicologiaManager;
+import com.co.edu.cun.www1104379214.bienestarcun.Metodos.DesertionManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.AdapterUserMenu;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLDelete;
@@ -242,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
                         FragmentManager fragmentManagerChat = getSupportFragmentManager();
                         fragment =  ChatPendientes.newInstance(db, fragmentManagerChat);
                     }else{
-                        fragment =  ChatPsicologa_app.newInstance( 7, Integer.parseInt( chatCod.getIdUser() ));
+                        fragment =  ChatPsicologa_app.newInstance( 7, Integer.parseInt( chatCod.getIdUser() ));//se le envia 0 dado que aun no tengo el destinatario
                     }
 
                     break;
@@ -313,7 +316,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void AddMensjae(View v){
+    public void AddMensjae(View v){//comenzar chat, usuarios distintos a psicolog@
 
 
         TextView ContenRemitente, ContentReceptor;
@@ -327,7 +330,22 @@ public class MainActivity extends AppCompatActivity {
 
         ChatPsicologiaManager chatMensajes = new ChatPsicologiaManager(getApplicationContext(), db);
 
-        chatMensajes.AddMesagesChat(mensaje, ContenRemitente, ContentReceptor, contentChat );
+        chatMensajes.AddMesagesChat(mensaje, ContenRemitente, ContentReceptor, contentChat);
+
+
+    }
+
+    public void SaveReportDesertion( View v ){//guadar reporte de desercio
+
+        DesertionManager desertion = new DesertionManager(db, getApplicationContext() );
+
+        EditText idEstudiante;
+        RadioGroup horario;
+
+        idEstudiante = (EditText) findViewById( R.id.et_idDesertor);
+        horario = (RadioGroup) findViewById( R.id.rbg_horario);
+
+        desertion.SendReportDesertion( idEstudiante, horario );
 
 
     }

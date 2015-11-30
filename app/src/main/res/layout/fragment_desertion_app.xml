@@ -4,8 +4,50 @@
     tools:context="com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Desertion_app">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="Deserciones"
-        android:textSize="50dp" />
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/et_idDesertor"
+            android:hint="@string/desertion_txt_id"
+            android:layout_marginTop="10dp" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:id="@+id/rbg_horario">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/desertion_rb_txtnocturne"
+                android:id="@+id/rb_nocturne"
+                android:layout_marginRight="10dp" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/desertion_rb_txtdiurno"
+                android:id="@+id/rb_Diurno" />
+        </RadioGroup>
+
+        <ImageButton
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_sendDesertion"
+            android:background="@color/backgroundBotton"
+            android:src="@drawable/abc_btn_radio_to_on_mtrl_015"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@string/ibt_sendDesertion"
+            android:layout_marginTop="10dp"
+            android:onClick="SaveReportDesertion" />
+
+    </LinearLayout>
 </FrameLayout>

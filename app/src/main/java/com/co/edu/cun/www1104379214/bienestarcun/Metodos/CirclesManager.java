@@ -14,6 +14,7 @@ import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLSearch;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.TaskExecuteHttpHandler;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.httpHandler;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Show_itinerario_circle;
 
@@ -29,7 +30,7 @@ import java.util.concurrent.ExecutionException;
  */
 public class CirclesManager {
 
-    httpHandler BD = new httpHandler();
+    TaskExecuteHttpHandler BD;
     String[][] parametros;
     CodMessajes mss = new CodMessajes();
     Context CONTEXTO;
@@ -135,7 +136,19 @@ public class CirclesManager {
                 {"user",idUser}
         };
 
-        String resultado = BD.HttpRequestServer(service, parametros);
+        BD = new TaskExecuteHttpHandler(service, parametros);
+        String resultado="";
+        try {
+            resultado = BD.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }catch (Exception e){
+            String contenido = "Error desde android #!#";
+            contenido += " Funcion: GetCirclesExists #!#";
+            contenido += "Clase : CircleManager.java #!#";
+            contenido += e.getMessage();
+            new ServicesPeticion().SaveError(contenido);
+        }
 
         try {
 
@@ -193,7 +206,20 @@ public class CirclesManager {
 
         try {
 
-            String resultado = BD.HttpRequestServer(service, parametros);
+            BD = new TaskExecuteHttpHandler(service, parametros);
+            String resultado="";
+            try {
+                resultado = BD.execute().get();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }catch (Exception e){
+                String contenido = "Error desde android #!#";
+                contenido += " Funcion: SaveCircleUser #!#";
+                contenido += "Clase : CircleManager.java #!#";
+                contenido += e.getMessage();
+                new ServicesPeticion().SaveError(contenido);
+            }
+
 
             arrayResponse = new JSONArray( resultado ); // obtengo el array con la result del server
 
@@ -231,11 +257,23 @@ public class CirclesManager {
                 {"circle",idCircle+""}
         };
 
-
-
         try {
 
-            String resultado = BD.HttpRequestServer(service, parametros);
+            BD = new TaskExecuteHttpHandler(service, parametros);
+            String resultado="";
+            try {
+                resultado = BD.execute().get();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+
+            }catch (Exception e){
+                String contenido = "Error desde android #!#";
+                contenido += " Funcion: DeleteCircleUser #!#";
+                contenido += "Clase : CircleManager.java #!#";
+                contenido += e.getMessage();
+                new ServicesPeticion().SaveError(contenido);
+            }
+
 
             arrayResponse = new JSONArray( resultado ); // obtengo el array con la result del server
 

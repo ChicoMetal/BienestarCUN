@@ -94,7 +94,7 @@ public class CodMessajes {
     public static final String LocalInsertError = "Error al insertar los datos";
     public static final String LocalInsert = "Se han insertado los datos";
     public static final String LoginWell = " Felicidades, has ingresado ";
-    public static final String FormErrorDesertion = " Errores en el formulario ";
+    public static final String FormError = " Errores en el formulario ";
 
 
     //************************************

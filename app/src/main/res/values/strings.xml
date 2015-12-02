@@ -33,5 +33,9 @@
     <string name="desertion_rb_txtnocturne">Nocturno</string>
     <string name="desertion_rb_txtdiurno">Diurno</string>
     <string name="ibt_sendDesertion">Send</string>
+    <string name="txt_name_itinerario">Nombre de la actividad</string>
+    <string name="txt_details_itinerario">Detalle</string>
+    <string name="lb_itinerario">Circulo</string>
+    <string name="txt_btn_additinerario">Crear</string>
 
 </resources>

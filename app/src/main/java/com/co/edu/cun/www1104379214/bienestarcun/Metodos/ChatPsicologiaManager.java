@@ -21,6 +21,7 @@ import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLSearch;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.TaskExecuteHttpHandler;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.httpHandler;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.ChatPsicologa_app;
 
@@ -37,7 +38,7 @@ public class ChatPsicologiaManager {
 
     Context CONTEXTO;
     DBManager DB;
-    httpHandler BD = new httpHandler();
+    TaskExecuteHttpHandler BD;
     CodMessajes mss = new CodMessajes();
 
     String[][] parametros;
@@ -140,7 +141,19 @@ public class ChatPsicologiaManager {
                 {"tipuser","1001"}
         };
 
-        String resultado = BD.HttpRequestServer(service, parametros);
+        BD = new TaskExecuteHttpHandler(service, parametros);
+        String resultado="";
+        try {
+            resultado = BD.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }catch (Exception e){
+            String contenido = "Error desde android #!#";
+            contenido += " Funcion: GetChatPendientesExists #!#";
+            contenido += "Clase : ChatPsicologiaManager.java #!#";
+            contenido += e.getMessage();
+            new ServicesPeticion().SaveError(contenido);
+        }
 
         try {
 
@@ -323,7 +336,19 @@ public class ChatPsicologiaManager {
                 {"mensaje",mensaje}
         };
 
-        String resultado = BD.HttpRequestServer(service, parametros);
+        BD = new TaskExecuteHttpHandler(service, parametros);
+        String resultado="";
+        try {
+            resultado = BD.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }catch (Exception e){
+            String contenido = "Error desde android #!#";
+            contenido += " Funcion: GetMensajesPendientesExists #!#";
+            contenido += "Clase : ChatPsicologiaManager.java #!#";
+            contenido += e.getMessage();
+            new ServicesPeticion().SaveError(contenido);
+        }
 
         try {
 

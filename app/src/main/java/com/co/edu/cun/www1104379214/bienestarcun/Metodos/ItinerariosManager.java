@@ -5,18 +5,21 @@ import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.TaskExecuteHttpHandler;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.httpHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.concurrent.ExecutionException;
+
 /**
  * Created by root on 19/11/15.
  */
 public class ItinerariosManager {
 
-    httpHandler BD = new httpHandler();
+    TaskExecuteHttpHandler BD;
     String[][] parametros;
     CodMessajes mss = new CodMessajes();
     Context CONTEXTO;
@@ -68,7 +71,20 @@ public class ItinerariosManager {
                 {"circle",idCircle}
         };
 
-        String resultado = BD.HttpRequestServer(service, parametros);
+        BD = new TaskExecuteHttpHandler(service, parametros);
+        String resultado="";
+        try {
+            resultado = BD.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+
+        }catch (Exception e){
+            String contenido = "Error desde android #!#";
+            contenido += " Funcion: GetItinerariosExitst #!#";
+            contenido += "Clase : ItinerariosManager.java #!#";
+            contenido += e.getMessage();
+            new ServicesPeticion().SaveError(contenido);
+        }
 
         try {
 
@@ -76,11 +92,9 @@ public class ItinerariosManager {
 
             if( arrayResponse.getString(0).toString().equals("msm")  ){
 
-                Toast.makeText(CONTEXTO.getApplicationContext(),
+                Toast.makeText(CONTEXTO,
                         mss.msmServices.getString(arrayResponse.getString(1).toString()),
                         Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
-
-                return null;
 
             }else {
 

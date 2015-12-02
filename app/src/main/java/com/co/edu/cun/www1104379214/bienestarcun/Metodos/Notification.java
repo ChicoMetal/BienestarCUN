@@ -12,6 +12,7 @@ import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLInsert;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLSearch;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLSearchConditions;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.TaskExecuteHttpHandler;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.httpHandler;
 
 import org.json.JSONArray;
@@ -28,7 +29,7 @@ public class Notification {
     DBManager DB;
     Context CONTEXTO;
 
-    httpHandler server = new httpHandler();
+    TaskExecuteHttpHandler BD;
     ServicesPeticion services = new ServicesPeticion();
     CodMessajes mss = new CodMessajes();
     TaskExecuteSQLSearchConditions sqliteSearchconditions;
@@ -148,7 +149,20 @@ public class Notification {
 
         try {
 
-            String resultado = server.HttpRequestServer(service, parametros);
+            BD = new TaskExecuteHttpHandler(service, parametros);
+            String resultado="";
+            try {
+                resultado = BD.execute().get();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+
+            }catch (Exception e){
+                String contenido = "Error desde android #!#";
+                contenido += " Funcion: GetNotifications #!#";
+                contenido += "Clase : Notification.java #!#";
+                contenido += e.getMessage();
+                new ServicesPeticion().SaveError(contenido);
+            }
 
             arrayResponse = new JSONArray( resultado ); // obtengo el array con la result del server
 

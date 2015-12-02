@@ -17,6 +17,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.math.BigInteger;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Krlos guzman on 31/10/15.
@@ -25,7 +26,7 @@ public class ServicesPeticion {
 
     String[][] parametros;
     String result;
-    httpHandler BD = new httpHandler();
+    TaskExecuteHttpHandler BD;
     CodMessajes mss = new CodMessajes();
 
 
@@ -43,7 +44,20 @@ public class ServicesPeticion {
         };
 
 
-        result = BD.HttpRequestServer(service, parametros);
+        BD = new TaskExecuteHttpHandler(service, parametros);
+
+        try {
+            result = BD.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+
+        }catch (Exception e){
+            String contenido = "Error desde android #!#";
+            contenido += " Funcion: ConfirmarUser #!#";
+            contenido += "Clase : ServicesPeticion.java #!#";
+            contenido += e.getMessage();
+            new ServicesPeticion().SaveError(contenido);
+        }
 
 
         try {
@@ -141,7 +155,20 @@ public class ServicesPeticion {
 
         String[][] values = JSONObjectToMatrix(valuesJSON, campos); //obtener matrix desde objeto
 
-        String result = BD.HttpRequestServer(service, values);
+        BD = new TaskExecuteHttpHandler(service, parametros);
+
+        try {
+           result = BD.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+
+        }catch (Exception e){
+            String contenido = "Error desde android #!#";
+            contenido += " Funcion: SaveLog #!#";
+            contenido += "Clase : ServicesPeticion.java #!#";
+            contenido += e.getMessage();
+            new ServicesPeticion().SaveError(contenido);
+        }
 
         JSONArray arrayResponse = new JSONArray( result ); // obtengo el array con la result del server
 
@@ -183,7 +210,20 @@ public class ServicesPeticion {
                 {"json",valuesJSON.toString()}
         };
 
-        String result = BD.HttpRequestServer(service, values);
+        BD = new TaskExecuteHttpHandler(service, parametros);
+
+        try {
+            result = BD.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+
+        }catch (Exception e){
+            String contenido = "Error desde android #!#";
+            contenido += " Funcion: LogoutUser #!#";
+            contenido += "Clase : ServicesPeticion.java #!#";
+            contenido += e.getMessage();
+            new ServicesPeticion().SaveError(contenido);
+        }
 
         JSONArray arrayResponse = new JSONArray( result ); // obtengo el array con la result del server
 
@@ -202,8 +242,13 @@ public class ServicesPeticion {
                 {"contenido",contenido}
         };
 
+        BD = new TaskExecuteHttpHandler(service, parametros);
+
         try {
-            BD.HttpRequestServer(service, values);
+            BD.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

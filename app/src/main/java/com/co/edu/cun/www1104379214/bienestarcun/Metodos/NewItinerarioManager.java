@@ -1,8 +1,11 @@
 package com.co.edu.cun.www1104379214.bienestarcun.Metodos;
 
 import android.content.Context;
+import android.util.Log;
+import android.widget.DatePicker;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
@@ -17,9 +20,9 @@ import org.json.JSONException;
 import java.util.concurrent.ExecutionException;
 
 /**
- * Created by root on 30/11/15.
+ * Created by root on 2/12/15.
  */
-public class DesertionManager {
+public class NewItinerarioManager {
 
     DBManager DB;
     Context CONTEXTO;
@@ -28,7 +31,7 @@ public class DesertionManager {
     TaskExecuteHttpHandler BD;
     CodMessajes mss = new CodMessajes();
 
-    public DesertionManager(DBManager db, Context contexto) {
+    public NewItinerarioManager(DBManager db, Context contexto) {
 
         this.DB = db;
         this.CONTEXTO = contexto;
@@ -36,46 +39,45 @@ public class DesertionManager {
     }
 
 
-    public void SendReportDesertion( TextView contentIdDesertor, RadioGroup groupHorario){
+    public void SaveNewItinerario( TextView contentNameActivitie,
+                                   TextView contentDetailActivitie,
+                                   DatePicker contentFecha,
+                                   TimePicker contentHora
+    ){//guardar en la BD los datos del nuevo itinerario
 
         GeneralCode code = new GeneralCode( DB, CONTEXTO );
 
         String idDocente = code.getIdUser();
-        String idUser = contentIdDesertor.getText().toString();
-        String horario = null;
+        String name = contentNameActivitie.getText().toString();
+        String detail = contentDetailActivitie.getText().toString();
+        String fecha = contentFecha.getYear()+"-"+( contentFecha.getMonth() + 1 ) +"-"+contentFecha.getDayOfMonth();
+        String hora = contentHora.getCurrentHour()+":"+contentHora.getCurrentMinute()+":00";
 
-        switch ( groupHorario.getCheckedRadioButtonId() ){//obtengo el radiobutton seleccionado
-
-            case R.id.rb_Diurno:
-                horario = "Diurno";
-                break;
-
-            case R.id.rb_nocturne:
-                horario = "Nocturno";
-                break;
-
-        }
-
-        if( horario != null && !idUser.equals("") )
-            SendServerDesertion(idDocente, idUser, horario);
+        if( !idDocente.equals("") && !name.equals("") && !detail.equals("") && !fecha.equals("") && !hora.equals("") )
+            SendServerItinerario( idDocente, name, detail, fecha, hora);
         else
             Toast.makeText(CONTEXTO, mss.FormError, Toast.LENGTH_SHORT).show();
 
 
     }
 
-    private void SendServerDesertion( String idDocente, String idUser, String horario) {
+    private void SendServerItinerario( String idDocente,
+                                       String name,
+                                       String details,
+                                       String fecha,
+                                       String hora) {//Enviar datos al server
 
 
-        final String service = "desertion/saveDesertion.php";
+        final String service = "adminCircle/saveNewItinerario.php";
         JSONArray arrayResponse = null;
 
         parametros = new String[][]{ //array parametros a enviar
                 {"user",idDocente},
-                {"desertor",idUser},
-                {"horario", horario}
+                {"nameActiviti",name},
+                {"detailActivitie", details},
+                {"date", fecha},
+                {"hour", hora}
         };
-
 
 
         try {
@@ -89,8 +91,8 @@ public class DesertionManager {
 
             }catch (Exception e){
                 String contenido = "Error desde android #!#";
-                contenido += " Funcion: SendServerDesertion #!#";
-                contenido += "Clase : DesertionManager.java #!#";
+                contenido += " Funcion: SendServerItinerario try 2#!#";
+                contenido += "Clase : NewItinerarioManager.java #!#";
                 contenido += e.getMessage();
                 new ServicesPeticion().SaveError(contenido);
             }
@@ -113,8 +115,8 @@ public class DesertionManager {
         }catch (Exception e){
 
             String contenido = "Error desde android #!#";
-            contenido += " Funcion: SendServerDesertion #!#";
-            contenido += "Clase : DesertionManager.java #!#";
+            contenido += " Funcion: SendServerItinerario try 1 #!#";
+            contenido += "Clase : SendServerItinerario.java #!#";
             contenido += e.getMessage();
             new ServicesPeticion().SaveError(contenido);
 

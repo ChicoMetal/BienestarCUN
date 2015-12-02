@@ -30,12 +30,12 @@ public class httpHandler {
 
     private Activity activity;
 
-    //private static final String Server = "http://10.0.3.2/BienestarCun/core/android/";
-    private static final String Server = "http://192.168.1.107/BienestarCun/core/android/";
+    private static final String Server = "http://10.0.3.2/BienestarCun/core/android/";
+    //private static final String Server = "http://192.168.1.107/BienestarCun/core/android/";
     //private static final String Server = "http://ottsincelejo.com/carlos/BienestarCun/core/android/";
     //private static final String Server = "bienestarcun.webcindario.com/core/android/";
 
-
+/*
     //Metodo para realizar peticiones al server
     public String BuscarBD1( final String service, final String[][] parametros) throws InterruptedException {
 
@@ -173,8 +173,8 @@ public class httpHandler {
 
                         params.add(
                                 new BasicNameValuePair(
-                                        campos[c][0],
-                                        campos[c][1]
+                                    campos[c][0],
+                                    campos[c][1]
                                 )
                         );
                     }
@@ -203,5 +203,5 @@ public class httpHandler {
         return result[0];
 
     }
-
+*/
 }

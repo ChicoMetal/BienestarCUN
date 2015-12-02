@@ -14,23 +14,27 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.ChatPsicologiaManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.DesertionManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.AdapterUserMenu;
+import com.co.edu.cun.www1104379214.bienestarcun.Metodos.NewItinerarioManager;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLDelete;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLInsert;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLSearch;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
+import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.AsistenciaCircleActivities;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.ChatPendientes;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Circles_app;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.ChatPsicologa_app;
@@ -230,6 +234,10 @@ public class MainActivity extends AppCompatActivity {
                     fragment =  Itinerarios_app.newInstance(db, fragmentManagerItinerario);
                     break;
 
+                case R.id.nav_asistencia:
+                    fragment =  AsistenciaCircleActivities.newInstance("","");
+                    break;
+
                 case R.id.nav_add_laboral:
                     fragment =  HistoryLaboral_app.newInstance("", "");
                     break;
@@ -345,7 +353,26 @@ public class MainActivity extends AppCompatActivity {
         idEstudiante = (EditText) findViewById( R.id.et_idDesertor);
         horario = (RadioGroup) findViewById( R.id.rbg_horario);
 
-        desertion.SendReportDesertion( idEstudiante, horario );
+        desertion.SendReportDesertion(idEstudiante, horario);
+
+
+    }
+
+    public void SaveItinerarioNew( View v ){//Guardar un nuevo itinerario
+
+        NewItinerarioManager newItinerario = new NewItinerarioManager(db, getApplicationContext() );
+
+        EditText nameActiviti, detailsActiviti;
+        DatePicker fecha;
+        TimePicker hora;
+
+
+        nameActiviti = (EditText) findViewById( R.id.txtNameActivitieNew);
+        detailsActiviti = (EditText) findViewById( R.id.txtDetailNewActiviti);
+        fecha = (DatePicker) findViewById( R.id.pickerFechaNewItinerario);
+        hora = (TimePicker) findViewById( R.id.pickerHoraNewItinerario);
+
+        newItinerario.SaveNewItinerario(nameActiviti, detailsActiviti, fecha, hora);
 
 
     }

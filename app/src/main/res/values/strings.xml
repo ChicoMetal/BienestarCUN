@@ -42,5 +42,7 @@
     <string name="rb_yes">Si</string>
     <string name="rb_not">No</string>
     <string name="lb_cuestion_laboralEstatus">¿Labora actualmente?</string>
+    <string name="ejemploAsistencia">Persona1</string>
+    <string name="ejemAddEvidencias">+</string>
 
 </resources>

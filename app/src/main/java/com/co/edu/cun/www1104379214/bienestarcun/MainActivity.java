@@ -41,6 +41,7 @@ import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Circles_app;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.ChatPsicologa_app;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.CircleAdministration_app;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Desertion_app;
+import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.EvidenciasActivities;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.HistoryLaboral_app;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Home_app;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.DelActivities_app;
@@ -238,6 +239,10 @@ public class MainActivity extends AppCompatActivity {
 
                 case R.id.nav_asistencia:
                     fragment =  AsistenciaCircleActivities.newInstance("","");
+                    break;
+
+                case R.id.nav_evidencias:
+                    fragment =  EvidenciasActivities.newInstance("", "");
                     break;
 
                 case R.id.nav_add_laboral:

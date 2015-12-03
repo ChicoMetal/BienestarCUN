@@ -94,8 +94,6 @@ public class Itinerarios_app extends Fragment {
 
         mHyperdActivitiesList = (RecyclerView) root.findViewById(R.id.hyper_show_itinerario);
 
-
-
         SetudActivitiesList();
 
         try {

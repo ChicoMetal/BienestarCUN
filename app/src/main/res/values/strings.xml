@@ -37,5 +37,10 @@
     <string name="txt_details_itinerario">Detalle</string>
     <string name="lb_itinerario">Circulo</string>
     <string name="txt_btn_additinerario">Crear</string>
+    <string name="name_empresa_laboral">Empresa donde laboro</string>
+    <string name="cargo_empresa_laboral">Cargo que ocupo</string>
+    <string name="rb_yes">Si</string>
+    <string name="rb_not">No</string>
+    <string name="lb_cuestion_laboralEstatus">¿Labora actualmente?</string>
 
 </resources>

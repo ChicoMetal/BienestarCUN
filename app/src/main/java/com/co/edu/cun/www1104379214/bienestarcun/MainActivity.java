@@ -28,6 +28,7 @@ import com.co.edu.cun.www1104379214.bienestarcun.Metodos.ChatPsicologiaManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.DesertionManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.AdapterUserMenu;
+import com.co.edu.cun.www1104379214.bienestarcun.Metodos.LaboralAdd;
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.NewItinerarioManager;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLDelete;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLInsert;
@@ -44,6 +45,7 @@ import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.HistoryLaboral
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Home_app;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.DelActivities_app;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Itinerarios_app;
+import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.LaboralStatus;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.LoginUser;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Notifications_app;
 
@@ -242,6 +244,10 @@ public class MainActivity extends AppCompatActivity {
                     fragment =  HistoryLaboral_app.newInstance("", "");
                     break;
 
+                case R.id.nav_update_laboral_state:
+                    fragment =  LaboralStatus.newInstance("", "");
+                    break;
+
                 case R.id.nav_show_notifications:
                     fragment =  Notifications_app.newInstance(db, "");
                     break;
@@ -373,6 +379,36 @@ public class MainActivity extends AppCompatActivity {
         hora = (TimePicker) findViewById( R.id.pickerHoraNewItinerario);
 
         newItinerario.SaveNewItinerario(nameActiviti, detailsActiviti, fecha, hora);
+
+
+    }
+
+    public void SaveHistoryLaboral( View v ){//Guardar un nuevo itinerario
+
+        LaboralAdd newlaboral = new LaboralAdd(db, getApplicationContext() );
+
+        EditText nameEmpresa, cargoEmpresa;
+        DatePicker fechaStart, fechaEnd;
+
+        nameEmpresa = (EditText) findViewById( R.id.txt_nameEmpresa);
+        cargoEmpresa = (EditText) findViewById( R.id.txt_cargoEmpresa);
+        fechaStart = (DatePicker) findViewById( R.id.pickerFechaLaboralStart);
+        fechaEnd = (DatePicker) findViewById( R.id.pickerFechaLaboralEnd);
+
+        newlaboral.SaveNewHistoryLaboral(nameEmpresa, cargoEmpresa, fechaStart, fechaEnd);
+
+
+    }
+
+    public void UpdateStatusLaboral( View v ){//actualizar el estado laboral
+
+        LaboralAdd updateStatus = new LaboralAdd(db, getApplicationContext() );
+
+        RadioGroup status;
+
+        status = (RadioGroup) findViewById( R.id.rbg_statusLaboral);
+
+        updateStatus.SaveNewHistoryLaboral( status );
 
 
     }

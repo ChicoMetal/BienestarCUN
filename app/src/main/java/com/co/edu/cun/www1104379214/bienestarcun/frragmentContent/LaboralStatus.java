@@ -7,7 +7,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 
+import com.co.edu.cun.www1104379214.bienestarcun.Metodos.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 
 /**
@@ -65,7 +68,13 @@ public class LaboralStatus extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_laboral_status, container, false);
+        View root = inflater.inflate(R.layout.fragment_laboral_status, container, false);
+
+        IconManager icon = new IconManager();
+        icon.SetIconBtnAsistencias((ImageButton) root.findViewById(R.id.btnUpdateStatusLaboral));
+        icon.setBackgroundApp((FrameLayout)root.findViewById(R.id.contentStatusLaboral));
+
+        return root;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

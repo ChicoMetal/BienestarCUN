@@ -1,7 +1,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.LaboralStatus">
+    tools:context="com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.LaboralStatus"
+    android:id="@+id/contentStatusLaboral">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -22,7 +23,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:id="@+id/rbg_statusLaboral">
+            android:id="@+id/rbg_statusLaboral"
+            android:layout_marginTop="5dp">
 
             <RadioButton
                 android:layout_width="wrap_content"
@@ -40,13 +42,13 @@
                 android:textSize="30sp" />
         </RadioGroup>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/ibt_sendDesertion"
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
             android:id="@+id/btnUpdateStatusLaboral"
             android:background="@color/backgroundBotton"
-            android:onClick="UpdateStatusLaboral" />
+            android:onClick="UpdateStatusLaboral"
+            android:layout_marginTop="5dp" />
     </LinearLayout>
 
 </FrameLayout>

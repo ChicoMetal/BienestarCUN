@@ -4,7 +4,12 @@ import android.content.Context;
 import android.support.design.widget.NavigationView;
 import android.support.v7.widget.CardView;
 import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 
@@ -47,4 +52,24 @@ public class IconManager {
         fondo.setBackgroundResource( R.drawable.cardfondocircles);
 
     }
+
+    public void SetIconBtnAsistencias(ImageButton btnAsistencia) {
+
+        btnAsistencia.setImageResource(R.drawable.icon_send);
+
+    }
+
+    public void setBackgroundApp(FrameLayout main_content) {
+        main_content.setBackgroundResource(R.drawable.background);
+    }
+
+    public void setBackgroundApp(RelativeLayout main_content) {
+        main_content.setBackgroundResource(R.drawable.background);
+    }
+
+    public void setBackgroundApp(LinearLayout main_content) {
+        main_content.setBackgroundResource(R.drawable.background);
+    }
+
+
 }

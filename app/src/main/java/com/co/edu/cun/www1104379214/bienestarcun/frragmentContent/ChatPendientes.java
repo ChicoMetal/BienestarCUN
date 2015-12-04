@@ -10,8 +10,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.ChatPsicologiaManager;
+import com.co.edu.cun.www1104379214.bienestarcun.Metodos.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ChatList;
@@ -88,6 +92,9 @@ public class ChatPendientes extends Fragment {
 
         mHyperdChatList = (RecyclerView) root.findViewById(R.id.hyper_chat_list);
 
+        IconManager icon = new IconManager();
+        icon.SetIconBtnAsistencias((ImageButton) root.findViewById(R.id.btn_sendAsistencias));
+        icon.setBackgroundApp((LinearLayout)root.findViewById(R.id.contentChatPendientes));
         SetudActivitiesList();
 
         try {

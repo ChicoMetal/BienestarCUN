@@ -8,8 +8,11 @@ import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.co.edu.cun.www1104379214.bienestarcun.Metodos.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 
 
@@ -74,6 +77,9 @@ public class ChatPsicologa_app extends Fragment {
         TVReceptor.setText(mReceptor+"");
         TVRemitente.setText(mRemitente+"");
 
+        IconManager icon = new IconManager();
+        icon.SetIconBtnAsistencias((ImageButton) root.findViewById(R.id.btn_sendMsm));
+        icon.setBackgroundApp((LinearLayout)root.findViewById(R.id.contentChat));
         return root;
 
     }

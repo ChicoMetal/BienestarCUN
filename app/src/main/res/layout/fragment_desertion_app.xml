@@ -1,7 +1,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Desertion_app">
+    tools:context="com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Desertion_app"
+    android:id="@+id/contentDesertion">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -22,7 +23,8 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginTop="10dp"
-            android:id="@+id/rbg_horario">
+            android:id="@+id/rbg_horario"
+            android:gravity="center">
 
             <RadioButton
                 android:layout_width="wrap_content"
@@ -39,11 +41,10 @@
         </RadioGroup>
 
         <ImageButton
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
             android:id="@+id/btn_sendDesertion"
             android:background="@color/backgroundBotton"
-            android:src="@drawable/abc_btn_radio_to_on_mtrl_015"
             android:layout_gravity="center_horizontal"
             android:contentDescription="@string/ibt_sendDesertion"
             android:layout_marginTop="10dp"

@@ -3,11 +3,17 @@ package com.co.edu.cun.www1104379214.bienestarcun.frragmentContent;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 
+import com.co.edu.cun.www1104379214.bienestarcun.Metodos.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 
 /**
@@ -65,7 +71,14 @@ public class AsistenciaCircleActivities extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_asistencia_circle_activities, container, false);
+        View root = inflater.inflate(R.layout.fragment_asistencia_circle_activities, container, false);
+
+        IconManager icon = new IconManager();
+        icon.SetIconBtnAsistencias((ImageButton) root.findViewById(R.id.btn_sendAsistencias));
+        icon.setBackgroundApp((FrameLayout)root.findViewById(R.id.ContentAsistencias));
+
+
+        return root;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

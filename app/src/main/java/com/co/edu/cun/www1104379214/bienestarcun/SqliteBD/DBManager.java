@@ -26,10 +26,7 @@ public class DBManager { //Creacion de tablas
 
 
     }
-    //acciones a realizar a la BD local
-    public static final String SQ_ACTION_SEARCH = "search";
-    public static final String SQ_ACTION_DELETE = "delete";
-    public static final String SQ_ACTION_INSERT = "insert";
+
 
     public static final String TABLE_NAME_NOTIFICATION = "Notifications";
     public static final String TABLE_NAME_USER = "LogUser";

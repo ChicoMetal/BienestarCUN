@@ -74,9 +74,6 @@ public class Home_app extends Fragment {
 
         // Ubicar argumento en el text view de section_fragment.xml
 
-        TextView titulo = (TextView) view.findViewById(R.id.hometitle);
-        titulo.setText("nuevo text");
-
         ImageView img = (ImageView) view.findViewById(R.id.svgimg);
         img.setImageResource(R.drawable.cunnegro);
 

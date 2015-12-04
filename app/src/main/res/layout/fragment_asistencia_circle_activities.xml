@@ -1,7 +1,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.AsistenciaCircleActivities">
+    tools:context="com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.AsistenciaCircleActivities"
+    android:id="@+id/ContentAsistencias">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -52,13 +53,13 @@
                 android:id="@+id/checkBox6" />
         </LinearLayout>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/ibt_sendDesertion"
-            android:id="@+id/button3"
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:id="@+id/btn_sendAsistencias"
             android:layout_gravity="center_horizontal"
-            android:background="@color/backgroundBotton" />
+            android:background="@color/backgroundBotton"
+            android:enabled="false" />
 
     </LinearLayout>
 

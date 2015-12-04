@@ -91,7 +91,7 @@ public class AdapterUserMenu {
                         e.printStackTrace();
                         String contenido = "Error desde android #!#";
                         contenido += " Funcion: ProcessLogin try 2 #!#";
-                        contenido += "Clase : Metodos.java #!#";
+                        contenido += "Clase : Adaptermenu.java #!#";
                         contenido += e.getMessage();
                         services.SaveError(contenido);
 
@@ -108,7 +108,7 @@ public class AdapterUserMenu {
         }catch (Exception e){
             String contenido = "Error desde android #!#";
             contenido += " Funcion: ProcessLogin try 1 #!#";
-            contenido += "Clase : Metodos.java #!#";
+            contenido += "Clase : Adaptermenu.java #!#";
             contenido += e.getMessage();
             services.SaveError(contenido);
         }
@@ -195,7 +195,7 @@ public class AdapterUserMenu {
 
             String contenido = "Error desde android #!#";
             contenido += " Funcion: ProcessLogout #!#";
-            contenido += "Clase : Metodos.java #!#";
+            contenido += "Clase : Adaptermenu.java #!#";
             contenido += e.getMessage();
             services.SaveError(contenido);
 
@@ -238,7 +238,7 @@ public class AdapterUserMenu {
 
                 String contenido = "Error desde android #!#";
                 contenido += " Funcion: CreateObjectResultSQL #!#";
-                contenido += "Clase : Metodos.java #!#";
+                contenido += "Clase : Adaptermenu.java #!#";
                 contenido += e.getMessage();
                 services.SaveError(contenido);
 
@@ -273,7 +273,7 @@ public class AdapterUserMenu {
         }catch (Exception e){
             String contenido = "Error desde android #!#";
             contenido += " Funcion: DeleteUser #!#";
-            contenido += "Clase : Metodos.java #!#";
+            contenido += "Clase : Adaptermenu.java #!#";
             contenido += e.getMessage();
             services.SaveError(contenido);
         }
@@ -323,7 +323,7 @@ public class AdapterUserMenu {
         }catch (Exception e){
             String contenido = "Error desde android #!#";
             contenido += " Funcion: ComproveUser #!#";
-            contenido += "Clase : Metodos.java #!#";
+            contenido += "Clase : Adaptermenu.java #!#";
             contenido += e.getMessage();
             services.SaveError(contenido);
         }
@@ -359,7 +359,7 @@ public class AdapterUserMenu {
             e.printStackTrace();
             String contenido = "Error desde android #!#";
             contenido += " Funcion: UserDefaultAfterLogout #!#";
-            contenido += "Clase : Metodos.java #!#";
+            contenido += "Clase : Adaptermenu.java #!#";
             contenido += e.getMessage();
             services.SaveError(contenido);
         }

@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#309125</color>
 
     <color name="backgroundColor">#9bb196</color>
-    <color name="backgroundBotton">#2e9b64</color>
+    <color name="backgroundBotton">#3A3435</color>
     <color name="BackgroundEDText">#cfd9d4</color>
 
     <color name="accent_transparency">#d82d7436</color>
@@ -14,4 +14,6 @@
     <color name="textBlack">#cd0d0d0d</color>
     <color name="accent_transparency_remitente">#3b7adf</color>
     <color name="accent_transparency_receptor">#5c3bdf</color>
+    <color name="BackGroundHome">#3A3435</color>
+
 </resources>

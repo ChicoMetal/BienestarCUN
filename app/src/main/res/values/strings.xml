@@ -7,7 +7,7 @@
 
     <!-- Menu text-->
     <string name="item_home">Inicio</string>
-    <string name="item_activities">Circulos</string>
+    <string name="item_activities">Actividades</string>
     <string name="item_desertion"> Desercion</string>
     <string name="item_History_laboral">Laboral </string>
     <string name="item_notifications"> Notificaciones</string>
@@ -44,5 +44,11 @@
     <string name="lb_cuestion_laboralEstatus">¿Labora actualmente?</string>
     <string name="ejemploAsistencia">Persona1</string>
     <string name="ejemAddEvidencias">+</string>
+    <string name="home_text">Bienestar!</string>
+    <string name="lb_bienvenida_home">Hola, bienvenido</string>
+    <string name="lb_startLaboral">Inicio</string>
+    <string name="lb_endLaboral">Fin</string>
+    <string name="lb_dateItinerario">Fecha</string>
+    <string name="lb_hourItinerario">Hora</string>
 
 </resources>

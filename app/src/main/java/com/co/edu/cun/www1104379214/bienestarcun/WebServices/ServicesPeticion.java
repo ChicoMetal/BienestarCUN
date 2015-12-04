@@ -24,10 +24,11 @@ import java.util.concurrent.ExecutionException;
  */
 public class ServicesPeticion {
 
-    String[][] parametros;
+
     String result;
     TaskExecuteHttpHandler BD;
     CodMessajes mss = new CodMessajes();
+    DBManager DB;
 
 
     //<editor-fold desc="Verificar el usuario en la BD remota">
@@ -38,7 +39,7 @@ public class ServicesPeticion {
 
         final String service = "user/login.php";
 
-        parametros = new String[][]{ //array parametros a enviar
+        String[][] parametros = new String[][]{ //array parametros a enviar
                 {"user",user},
                 {"password",pass}
         };
@@ -155,7 +156,7 @@ public class ServicesPeticion {
 
         String[][] values = JSONObjectToMatrix(valuesJSON, campos); //obtener matrix desde objeto
 
-        BD = new TaskExecuteHttpHandler(service, parametros);
+        BD = new TaskExecuteHttpHandler(service, values);
 
         try {
            result = BD.execute().get();
@@ -206,11 +207,14 @@ public class ServicesPeticion {
 
         final String service = "user/logout.php";
 
+        JSONObject loginSave = valuesJSON.getJSONObject("ROW0");
+
         String[][] values = new String[][]{
-                {"json",valuesJSON.toString()}
+                {"user",loginSave.getString(DB.CN_ID_USER_BD)},
+                {"token",loginSave.getString(DB.CN_TOKEN_LOGIN)}
         };
 
-        BD = new TaskExecuteHttpHandler(service, parametros);
+        BD = new TaskExecuteHttpHandler(service, values);
 
         try {
             result = BD.execute().get();
@@ -242,7 +246,7 @@ public class ServicesPeticion {
                 {"contenido",contenido}
         };
 
-        BD = new TaskExecuteHttpHandler(service, parametros);
+        BD = new TaskExecuteHttpHandler(service, values);
 
         try {
             BD.execute().get();

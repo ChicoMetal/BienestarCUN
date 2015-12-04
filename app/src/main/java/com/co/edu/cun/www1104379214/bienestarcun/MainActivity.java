@@ -16,9 +16,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -26,6 +28,7 @@ import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.ChatPsicologiaManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.DesertionManager;
+import com.co.edu.cun.www1104379214.bienestarcun.Metodos.GeneralCode;
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.AdapterUserMenu;
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.LaboralAdd;
@@ -60,14 +63,9 @@ public class MainActivity extends AppCompatActivity {
     CodMessajes mss = new CodMessajes();
     ServicesPeticion services = new ServicesPeticion();
     IconManager icon;
-
+    GeneralCode code;
     DBManager db;
 
-
-    JSONObject SQL_RESULT_SEARCH = new JSONObject();
-    TaskExecuteSQLInsert sqliteInsert;
-    TaskExecuteSQLSearch sqliteSearch;
-    TaskExecuteSQLDelete sqliteDelete;
 
     NavigationView navigationView;
     private DrawerLayout drawerLayout;
@@ -77,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setToolbar(); // Setear Toolbar como action bar
@@ -142,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
         final ActionBar ab = getSupportActionBar();
         if (ab != null) {
@@ -307,8 +307,14 @@ public class MainActivity extends AppCompatActivity {
 
         BDManager();
 
+        setnameUserHead();
 
         //services.ListPerson(getApplicationContext());
+    }
+
+    private void setnameUserHead() {
+        code = new GeneralCode(db, getApplicationContext());
+        code.getNameUser((TextView) findViewById(R.id.lb_nameUser ));//peticion para mostrar nombre de usuario en el header del menu
     }
 
     public void Login(View v){ //ingresar usuario
@@ -322,8 +328,10 @@ public class MainActivity extends AppCompatActivity {
 
             drawerTitle = "Inicio";
             selectItem(drawerTitle, R.id.nav_home);
+            setnameUserHead();
 
         }
+
 
     }
 
@@ -332,10 +340,13 @@ public class MainActivity extends AppCompatActivity {
         int id = R.id.nav_home;
         drawerTitle = "Inicio";
         selectItem(drawerTitle, id);
+
+        TextView nameUser = (TextView) findViewById(R.id.lb_nameUser);
+        nameUser.setText("User");
     }
 
 
-    public void AddMensjae(View v){//comenzar chat, usuarios distintos a psicolog@
+    public void AddMensaje(View v){//comenzar chat, usuarios distintos a psicolog@
 
 
         TextView ContenRemitente, ContentReceptor;

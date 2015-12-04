@@ -1,7 +1,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.CircleAdministration_app">
+    tools:context="com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.CircleAdministration_app"
+    android:id="@+id/contentCircleAdmin">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -24,6 +25,13 @@
             android:id="@+id/txtDetailNewActiviti"
             android:hint="@string/txt_details_itinerario" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/textView4"
+            android:text="@string/lb_dateItinerario" />
+
         <DatePicker
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -33,6 +41,13 @@
             android:calendarViewShown="false"
             android:layout_weight="1" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/textView5"
+            android:text="@string/lb_hourItinerario" />
+
         <TimePicker
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -40,14 +55,15 @@
             android:timePickerMode="spinner"
             android:layout_weight="1" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
             android:text="@string/txt_btn_additinerario"
             android:id="@+id/btnAddNewItinerario"
             android:layout_gravity="center_horizontal"
             android:onClick="SaveItinerarioNew"
-            android:background="@color/backgroundBotton" />
+            android:background="@color/backgroundBotton"
+            android:layout_marginBottom="3dp" />
 
     </LinearLayout>
 

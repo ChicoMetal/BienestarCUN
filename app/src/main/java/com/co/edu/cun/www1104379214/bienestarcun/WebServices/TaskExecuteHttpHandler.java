@@ -12,12 +12,15 @@ import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 
@@ -101,6 +104,7 @@ public class TaskExecuteHttpHandler extends AsyncTask<Void, Void, String> {
         HttpClient httpClient = new DefaultHttpClient();
         HttpContext localContext = new BasicHttpContext();
         HttpPost httpPost = new HttpPost( Server + services);
+        httpPost.setHeader("charset", "utf-8");
         HttpResponse response = null;
 
         try{
@@ -119,8 +123,17 @@ public class TaskExecuteHttpHandler extends AsyncTask<Void, Void, String> {
 
             httpPost.setEntity(new UrlEncodedFormEntity(params));
             response = httpClient.execute(httpPost, localContext);
-            HttpEntity res1 = response.getEntity();
-            result = EntityUtils.toString(res1);
+            //HttpEntity res1 = response.getEntity();
+            //result = EntityUtils.toString(res1, "UTF-8");
+
+            StatusLine statusLine = response.getStatusLine();
+            if (statusLine.getStatusCode() >= 300) {
+                throw new HttpResponseException(statusLine.getStatusCode(),
+                        statusLine.getReasonPhrase());
+            }
+
+            HttpEntity entity = response.getEntity();
+            return entity == null ? null : EntityUtils.toString(entity, "UTF-8");
 
         }catch(Exception e){
             result = messajes.ErrorServicesPeticion;

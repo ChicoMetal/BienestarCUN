@@ -1,20 +1,36 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Home_app">
+    tools:context="com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Home_app"
+    android:background="@color/BackGroundHome">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="82dp"
-        android:text="Inicio"
-        android:textSize="50dp"
-        android:id="@+id/hometitle" />
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="380dp"
         android:id="@+id/svgimg"
+        android:layout_gravity="center_vertical" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/home_text"
+        android:textSize="50sp"
+        android:id="@+id/hometitle"
+        android:gravity="center"
+        android:layout_gravity="bottom"
+        android:textColor="@color/textWhite"
+        android:layout_marginBottom="5dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/lb_bienvenida_home"
+        android:textSize="30sp"
+        android:id="@+id/textView2"
+        android:gravity="center"
+        android:textColor="@color/textWhite"
         android:layout_gravity="top" />
 
 </FrameLayout>

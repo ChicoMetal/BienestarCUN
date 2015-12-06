@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -49,7 +50,8 @@ public class Show_itinerario_circle extends Fragment {
     public static final int NUM_COLUMNS = 1;
     private RecyclerView mHypedItinerarioAdapter;
     private HypedItinerarioAdapter adapter;
-
+    public static FragmentManager fragmentManager;
+    private static int INSTANCE;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -61,15 +63,16 @@ public class Show_itinerario_circle extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param2 Parameter 2.
      * @return A new instance of fragment Show_itinerario_circle.
      */
     // TODO: Rename and change types and number of parameters
-    public static Show_itinerario_circle newInstance(int circulo, String param2) {
+    public static Show_itinerario_circle newInstance(int circulo, DBManager db, int instance, FragmentManager fragments) {
         Show_itinerario_circle fragment = new Show_itinerario_circle();
         Bundle args = new Bundle();
         idCirculo = circulo;
-        args.putString(ARG_PARAM2, param2);
+        DB = db;
+        fragmentManager = fragments;
+        INSTANCE = instance;
         fragment.setArguments(args);
         return fragment;
     }
@@ -85,7 +88,7 @@ public class Show_itinerario_circle extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        adapter = new HypedItinerarioAdapter( getActivity() );
+        adapter = new HypedItinerarioAdapter( getActivity(), DB, INSTANCE, fragmentManager );
     }
 
     @Override

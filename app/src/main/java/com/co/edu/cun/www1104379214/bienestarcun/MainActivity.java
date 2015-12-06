@@ -27,6 +27,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.ChatPsicologiaManager;
+import com.co.edu.cun.www1104379214.bienestarcun.Metodos.CirclesManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.DesertionManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.GeneralCode;
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.IconManager;
@@ -52,6 +53,7 @@ import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Itinerarios_ap
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.LaboralStatus;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.LoginUser;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Notifications_app;
+import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Show_itinerario_circle;
 
 
 import org.json.JSONObject;
@@ -70,6 +72,11 @@ public class MainActivity extends AppCompatActivity {
     NavigationView navigationView;
     private DrawerLayout drawerLayout;
     private String drawerTitle;
+
+
+    private int SHOW_ITINERARIO_ASISTENCIA = 1;
+    private int SHOW_ITINERARIO_EVIDENCIAS = 2;
+
 
     MenuItem mPreviousMenuItem=null;//item seleccionado
 
@@ -207,84 +214,84 @@ public class MainActivity extends AppCompatActivity {
     private void ChangeFragment(int id){
         // Enviar título como arguemento del fragmento
         //abrir fragments
-        // Enviar título como arguemento del fragmento
 
-            Bundle args = new Bundle();
-            args.putString("", "");
+        Bundle args = new Bundle();
+        args.putString("", "");
 
-            Fragment fragment;
-            fragment =  Home_app.newInstance("", "");
+        Fragment fragment;
+        fragment =  Home_app.newInstance("", "");
 
-            switch ( id ){
-                case R.id.nav_home:
-                    fragment =  Home_app.newInstance("", "");
-                    break;
+        switch ( id ){
+            case R.id.nav_home:
+                fragment =  Home_app.newInstance("", "");
+                break;
 
-                case R.id.nav_add_activities:
-                    fragment =  Circles_app.newInstance(db, "");
-                    break;
+            case R.id.nav_add_activities:
+                fragment =  Circles_app.newInstance(db, "");
+                break;
 
-                case R.id.nav_add_desertion:
-                    fragment =  Desertion_app.newInstance("", "");
-                    break;
+            case R.id.nav_add_desertion:
+                fragment =  Desertion_app.newInstance("", "");
+                break;
 
-                case R.id.nav_del_activities:
-                    fragment =  DelActivities_app.newInstance(db, "");
-                    break;
+            case R.id.nav_del_activities:
+                fragment =  DelActivities_app.newInstance(db, "");
+                break;
 
-                case R.id.nav_itinerarios:
-                    FragmentManager fragmentManagerItinerario = getSupportFragmentManager();
-                    fragment =  Itinerarios_app.newInstance(db, fragmentManagerItinerario);
-                    break;
+            case R.id.nav_itinerarios:
+                fragment =  Itinerarios_app.newInstance(db, getSupportFragmentManager());
+                break;
 
-                case R.id.nav_asistencia:
-                    fragment =  AsistenciaCircleActivities.newInstance("","");
-                    break;
+            case R.id.nav_asistencia:
+                //TODO obtener id del circulo el cual administra el usuario logueado
+                fragment = Show_itinerario_circle.newInstance(1, db, SHOW_ITINERARIO_ASISTENCIA, getSupportFragmentManager());
+                break;
 
-                case R.id.nav_evidencias:
-                    fragment =  EvidenciasActivities.newInstance("", "");
-                    break;
+            case R.id.nav_evidencias:
+                //TODO obtener id del circulo el cual administra el usuario logueado
+                fragment = Show_itinerario_circle.newInstance(1, db, SHOW_ITINERARIO_EVIDENCIAS, getSupportFragmentManager());
+                break;
 
-                case R.id.nav_add_laboral:
-                    fragment =  HistoryLaboral_app.newInstance("", "");
-                    break;
+            case R.id.nav_add_laboral:
+                fragment =  HistoryLaboral_app.newInstance("", "");
+                break;
 
-                case R.id.nav_update_laboral_state:
-                    fragment =  LaboralStatus.newInstance("", "");
-                    break;
+            case R.id.nav_update_laboral_state:
+                fragment =  LaboralStatus.newInstance("", "");
+                break;
 
-                case R.id.nav_show_notifications:
-                    fragment =  Notifications_app.newInstance(db, "");
-                    break;
+            case R.id.nav_show_notifications:
+                fragment =  Notifications_app.newInstance(db, "");
+                break;
 
-                case R.id.nav_new_chat:
+            case R.id.nav_new_chat:
 
-                    ChatPsicologiaManager chatCod = new ChatPsicologiaManager(getApplicationContext(), db);
-                    if( chatCod.ComproveUser() ){
-                        FragmentManager fragmentManagerChat = getSupportFragmentManager();
-                        fragment =  ChatPendientes.newInstance(db, fragmentManagerChat);
-                    }else{
-                        fragment =  ChatPsicologa_app.newInstance( 7, Integer.parseInt( chatCod.getIdUser() ));//se le envia 0 dado que aun no tengo el destinatario
-                    }
+                ChatPsicologiaManager chatCod = new ChatPsicologiaManager(getApplicationContext(), db);
+                if( chatCod.ComproveUser() ){
+                    FragmentManager fragmentManagerChat = getSupportFragmentManager();
+                    fragment =  ChatPendientes.newInstance(db, fragmentManagerChat);
+                }else{
+                    fragment =  ChatPsicologa_app.newInstance( 7, Integer.parseInt( chatCod.getIdUser() ));//se le envia 0 dado que aun no tengo el destinatario
+                }
 
-                    break;
+                break;
 
-                case R.id.nav_new_itinerario:
-                    fragment =  CircleAdministration_app.newInstance("", "");
-                    break;
+            case R.id.nav_new_itinerario:
+                fragment =  CircleAdministration_app.newInstance("", "");
+                break;
 
-                case R.id.nav_login:
-                    fragment =  LoginUser.newInstance("", "");
-                    break;
+            case R.id.nav_login:
+                fragment =  LoginUser.newInstance("", "");
+                break;
 
-            }
+        }
 
-            fragment.setArguments(args);
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager
-                    .beginTransaction()
-                    .replace(R.id.main_content, fragment)
-                    .commit();
+        fragment.setArguments(args);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager
+                .beginTransaction()
+                .replace(R.id.main_content, fragment)
+                .commit();
 
 
     }

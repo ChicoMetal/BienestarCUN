@@ -39,7 +39,7 @@ public class CirclesManager {
     JSONObject indexCircles;
     JSONArray result = null;
     JSONArray resultResponse = null;
-
+    private int SHOW_ITINERARIO_OFF = 0;
 
     public CirclesManager(Context contexto, DBManager db) {
         this.CONTEXTO = contexto;
@@ -305,7 +305,7 @@ public class CirclesManager {
         args.putString("", "");
 
         Fragment fragment;
-        fragment =  Show_itinerario_circle.newInstance(idCircle, "");
+        fragment =  Show_itinerario_circle.newInstance(idCircle,DB,SHOW_ITINERARIO_OFF,  null);//tercer parametro nulo para q no muestre las asistencias de los itinerarios
 
         fragment.setArguments(args);
 

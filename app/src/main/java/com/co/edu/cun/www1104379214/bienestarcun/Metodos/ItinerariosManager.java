@@ -1,12 +1,19 @@
 package com.co.edu.cun.www1104379214.bienestarcun.Metodos;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
+import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.TaskExecuteHttpHandler;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.httpHandler;
+import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.AsistenciaCircleActivities;
+import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.EvidenciasActivities;
+import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Show_itinerario_circle;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -121,5 +128,28 @@ public class ItinerariosManager {
     public JSONObject IndexItinerario() { //retornar los index dell objeto traido de la BD
 
         return indexItinerarios;
+    }
+
+    public void ShowAsistenciaItinerarios(int idItinerario, int INSTANCE, FragmentManager fragmentManager) {
+
+        Bundle args = new Bundle();
+        args.putString("", "");
+
+        Fragment fragment;
+        //TODO enviar id del circulo para obtener los suscritos
+        if( INSTANCE == 1)
+            fragment =  AsistenciaCircleActivities.newInstance("", "");
+        else
+            fragment =  EvidenciasActivities.newInstance("", "");
+
+
+        fragment.setArguments(args);
+
+        fragmentManager
+                .beginTransaction()
+                .replace(R.id.main_content, fragment)
+                .commit();
+
+
     }
 }

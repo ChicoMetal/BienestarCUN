@@ -32,17 +32,13 @@ import java.util.List;
  */
 public class TaskExecuteHttpHandler extends AsyncTask<Void, Void, String> {
 
-    public static final String modo = "POST";
-    public static final String insert = "insert";
-    public static final String search = "search";
-
     CodMessajes messajes = new CodMessajes();
 
     private Activity activity;
 
-    //private static final String Server = "http://10.0.3.2/BienestarCun/core/android/";
+    private static final String Server = "http://10.0.3.2/BienestarCun/core/android/";
     //private static final String Server = "http://192.168.1.107/BienestarCun/core/android/";
-    private static final String Server = "http://ottsincelejo.com/carlos/BienestarCun/core/android/";
+    //private static final String Server = "http://ottsincelejo.com/carlos/BienestarCun/core/android/";
     //private static final String Server = "bienestarcun.webcindario.com/core/android/";
 
 
@@ -81,9 +77,6 @@ public class TaskExecuteHttpHandler extends AsyncTask<Void, Void, String> {
 
             e.printStackTrace();
 
-            /*Toast.makeText(CONTEXT.getApplicationContext(),
-                    "Error en la peticion al server",
-                    Toast.LENGTH_SHORT).show();*/
         }
 
         return result;

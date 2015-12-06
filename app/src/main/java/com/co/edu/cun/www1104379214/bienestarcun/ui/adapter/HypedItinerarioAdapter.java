@@ -12,8 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
-import com.co.edu.cun.www1104379214.bienestarcun.Metodos.CirclesManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.IconManager;
+import com.co.edu.cun.www1104379214.bienestarcun.Metodos.ItinerariosManager;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ItinerarioList;
@@ -30,15 +30,23 @@ public class HypedItinerarioAdapter extends RecyclerView.Adapter<HypedItinerario
     ArrayList<ItinerarioList> itinerario;
     CodMessajes mss = new CodMessajes();
     IconManager icons = new IconManager();
+    FragmentManager fragmentManager;
     int idCircle;
 
     Context context;
+    int INSTANCE;
+    DBManager DB;
 
 
-    public HypedItinerarioAdapter( Context context) {
+    public HypedItinerarioAdapter( Context context, DBManager db, int instance, FragmentManager fragmentManager) {
 
         this.context = context;
         this.itinerario = new ArrayList<>();
+        this.INSTANCE = instance;
+        this.DB = db;
+
+        if( fragmentManager != null )
+            this.fragmentManager = fragmentManager;
 
     }
 
@@ -89,6 +97,27 @@ public class HypedItinerarioAdapter extends RecyclerView.Adapter<HypedItinerario
 
         public HypedItinerariosViewHolder(View itemView) {
             super(itemView);
+
+            View view;
+            view = itemView;
+            view.setOnClickListener(new View.OnClickListener() {//evento click de las cardView
+                @Override
+                public void onClick(View v) {//evento de touch para agregar usuario a circulo
+                    // item clicked
+
+                    if (INSTANCE == 1 && fragmentManager != null) {//pregunto quien invoca el adaptador para saber que accion realizar al touch de las card
+                        //TODO enviar id del circulo para obtener los suscritos
+                        new ItinerariosManager( context ).ShowAsistenciaItinerarios(v.getId(), INSTANCE, fragmentManager);
+
+
+                    } else if (INSTANCE == 2 && fragmentManager != null) {//Desvincularcirculo
+                        //TODO enviar id del circulo para obtener los suscritos
+                        new ItinerariosManager( context ).ShowAsistenciaItinerarios(v.getId(), INSTANCE, fragmentManager);
+
+
+                    }
+                }
+            });
 
             //instancio componentes de las card
             vistaItem = (CardView) itemView;

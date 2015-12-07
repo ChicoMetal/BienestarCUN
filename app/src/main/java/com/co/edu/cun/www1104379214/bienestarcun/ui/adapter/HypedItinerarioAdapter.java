@@ -31,19 +31,20 @@ public class HypedItinerarioAdapter extends RecyclerView.Adapter<HypedItinerario
     CodMessajes mss = new CodMessajes();
     IconManager icons = new IconManager();
     FragmentManager fragmentManager;
-    int idCircle;
+    int CIRCLE;
 
     Context context;
     int INSTANCE;
     DBManager DB;
 
 
-    public HypedItinerarioAdapter( Context context, DBManager db, int instance, FragmentManager fragmentManager) {
+    public HypedItinerarioAdapter( Context context, DBManager db, int instance,int circle, FragmentManager fragmentManager) {
 
         this.context = context;
         this.itinerario = new ArrayList<>();
         this.INSTANCE = instance;
         this.DB = db;
+        this.CIRCLE = circle;
 
         if( fragmentManager != null )
             this.fragmentManager = fragmentManager;
@@ -105,15 +106,9 @@ public class HypedItinerarioAdapter extends RecyclerView.Adapter<HypedItinerario
                 public void onClick(View v) {//evento de touch para agregar usuario a circulo
                     // item clicked
 
-                    if (INSTANCE == 1 && fragmentManager != null) {//pregunto quien invoca el adaptador para saber que accion realizar al touch de las card
-                        //TODO enviar id del circulo para obtener los suscritos
-                        new ItinerariosManager( context ).ShowAsistenciaItinerarios(v.getId(), INSTANCE, fragmentManager);
+                    if ( fragmentManager != null) {//pregunto quien invoca el adaptador para saber que accion realizar al touch de las card
 
-
-                    } else if (INSTANCE == 2 && fragmentManager != null) {//Desvincularcirculo
-                        //TODO enviar id del circulo para obtener los suscritos
-                        new ItinerariosManager( context ).ShowAsistenciaItinerarios(v.getId(), INSTANCE, fragmentManager);
-
+                        new ItinerariosManager( context ).ShowAsistenciaItinerarios(v.getId(), CIRCLE, INSTANCE, fragmentManager);
 
                     }
                 }

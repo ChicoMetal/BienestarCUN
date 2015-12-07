@@ -11,9 +11,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -32,6 +35,7 @@ import com.co.edu.cun.www1104379214.bienestarcun.Metodos.DesertionManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.GeneralCode;
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.AdapterUserMenu;
+import com.co.edu.cun.www1104379214.bienestarcun.Metodos.ItinerariosManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.LaboralAdd;
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.NewItinerarioManager;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLDelete;
@@ -56,6 +60,8 @@ import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Notifications_
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Show_itinerario_circle;
 
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
@@ -78,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
     private int SHOW_ITINERARIO_EVIDENCIAS = 2;
 
 
-    MenuItem mPreviousMenuItem=null;//item seleccionado
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -243,13 +248,19 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.nav_asistencia:
-                //TODO obtener id del circulo el cual administra el usuario logueado
-                fragment = Show_itinerario_circle.newInstance(1, db, SHOW_ITINERARIO_ASISTENCIA, getSupportFragmentManager());
+
+                fragment = Show_itinerario_circle.newInstance(getCircleOfAdmin(),
+                        db,
+                        SHOW_ITINERARIO_ASISTENCIA,
+                        getSupportFragmentManager());
                 break;
 
             case R.id.nav_evidencias:
-                //TODO obtener id del circulo el cual administra el usuario logueado
-                fragment = Show_itinerario_circle.newInstance(1, db, SHOW_ITINERARIO_EVIDENCIAS, getSupportFragmentManager());
+
+                fragment = Show_itinerario_circle.newInstance(getCircleOfAdmin(),
+                        db,
+                        SHOW_ITINERARIO_EVIDENCIAS,
+                        getSupportFragmentManager());
                 break;
 
             case R.id.nav_add_laboral:
@@ -271,6 +282,7 @@ public class MainActivity extends AppCompatActivity {
                     FragmentManager fragmentManagerChat = getSupportFragmentManager();
                     fragment =  ChatPendientes.newInstance(db, fragmentManagerChat);
                 }else{
+                    //TODO buscar id de la psicologa
                     fragment =  ChatPsicologa_app.newInstance( 7, Integer.parseInt( chatCod.getIdUser() ));//se le envia 0 dado que aun no tengo el destinatario
                 }
 
@@ -321,7 +333,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setnameUserHead() {
         code = new GeneralCode(db, getApplicationContext());
-        code.getNameUser((TextView) findViewById(R.id.lb_nameUser ));//peticion para mostrar nombre de usuario en el header del menu
+        code.getNameUser((TextView) findViewById(R.id.lb_nameUser));//peticion para mostrar nombre de usuario en el header del menu
     }
 
     public void Login(View v){ //ingresar usuario
@@ -420,20 +432,26 @@ public class MainActivity extends AppCompatActivity {
 
         newlaboral.SaveNewHistoryLaboral(nameEmpresa, cargoEmpresa, fechaStart, fechaEnd);
 
+    }
+
+    public int getCircleOfAdmin(){//buscar el circulo que el usuario tiene a cargo
+
+        String user = code.getIdUser();
+
+        int circle = new ItinerariosManager( getApplicationContext() ).SearchCircleOfAdmin(user);
+
+        return circle;
 
     }
 
-    public void UpdateStatusLaboral( View v ){//actualizar el estado laboral
+    public void SaveAsistenciaItinerario( View v ){//guarda la lista de asistencia del itinerario
 
-        LaboralAdd updateStatus = new LaboralAdd(db, getApplicationContext() );
+        LinearLayout layout = (LinearLayout)findViewById( R.id.contentListAsistentes);
+        TextView contentIdItinerario = (TextView) findViewById(R.id.idItinerario);
 
-        RadioGroup status;
+        String idItinerario = contentIdItinerario.getText().toString();
 
-        status = (RadioGroup) findViewById( R.id.rbg_statusLaboral);
-
-        updateStatus.SaveNewHistoryLaboral( status );
-
-
+        new ItinerariosManager( getApplicationContext() ).SaveAsistenciasItinerario( layout, idItinerario );
     }
 
 }

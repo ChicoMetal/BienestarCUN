@@ -11,9 +11,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.IconManager;
+import com.co.edu.cun.www1104379214.bienestarcun.Metodos.ItinerariosManager;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 
 /**
@@ -25,6 +28,12 @@ import com.co.edu.cun.www1104379214.bienestarcun.R;
  * create an instance of this fragment.
  */
 public class AsistenciaCircleActivities extends Fragment {
+
+    IconManager icon = new IconManager();
+    private static ItinerariosManager manager;
+
+    private static int CIRCLE;
+    public static int ITINERARIO;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -36,20 +45,15 @@ public class AsistenciaCircleActivities extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AsistenciaCircleActivities.
-     */
+
     // TODO: Rename and change types and number of parameters
-    public static AsistenciaCircleActivities newInstance(String param1, String param2) {
+    public static AsistenciaCircleActivities newInstance(int circle1, int itinerario1) {
         AsistenciaCircleActivities fragment = new AsistenciaCircleActivities();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+
+        CIRCLE = circle1;
+        ITINERARIO = itinerario1;
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -73,10 +77,17 @@ public class AsistenciaCircleActivities extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_asistencia_circle_activities, container, false);
 
-        IconManager icon = new IconManager();
-        icon.SetIconBtnAsistencias((ImageButton) root.findViewById(R.id.btn_sendAsistencias));
-        icon.setBackgroundApp((FrameLayout)root.findViewById(R.id.ContentAsistencias));
+        manager = new ItinerariosManager(getActivity().getApplicationContext());
 
+        icon.SetIconBtnAsistencias((ImageButton) root.findViewById(R.id.btn_sendAsistencias));
+        icon.setBackgroundApp((FrameLayout) root.findViewById(R.id.ContentAsistencias));
+
+        manager.SearchListInscritos(
+                (LinearLayout) root.findViewById(R.id.contentListAsistentes),
+                CIRCLE);//buscar y generar listado de inscritos
+
+        TextView contentId = (TextView) root.findViewById(R.id.idItinerario);
+        contentId.setText( ITINERARIO+"" );
 
         return root;
     }
@@ -114,5 +125,6 @@ public class AsistenciaCircleActivities extends Fragment {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
+
 
 }

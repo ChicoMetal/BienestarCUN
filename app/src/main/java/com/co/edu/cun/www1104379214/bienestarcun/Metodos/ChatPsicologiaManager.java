@@ -41,8 +41,6 @@ public class ChatPsicologiaManager {
     TaskExecuteHttpHandler BD;
     CodMessajes mss = new CodMessajes();
 
-    String[][] parametros;
-
     TaskExecuteSQLSearch sqliteSearch;
     JSONObject indexChats;
     JSONArray result = null;
@@ -59,7 +57,6 @@ public class ChatPsicologiaManager {
     //<editor-fold desc="Verificar tipo de usuario logueado actualmente">
     public  boolean ComproveUser(){
 
-        String[][] values;
         boolean resultado = false;
 
         try {
@@ -137,11 +134,11 @@ public class ChatPsicologiaManager {
 
         JSONArray arrayResponse = null;
 
-        parametros = new String[][]{ //array parametros a enviar
+        values = new String[][]{ //array parametros a enviar
                 {"tipuser","1001"}
         };
 
-        BD = new TaskExecuteHttpHandler(service, parametros);
+        BD = new TaskExecuteHttpHandler(service, values);
         String resultado="";
         try {
             resultado = BD.execute().get();
@@ -330,13 +327,13 @@ public class ChatPsicologiaManager {
 
         JSONArray arrayResponse = null;
 
-        parametros = new String[][]{ //array parametros a enviar
+        values = new String[][]{ //array parametros a enviar
                 {"remitente",remitente},
                 {"receptor",receptor},
                 {"mensaje",mensaje}
         };
 
-        BD = new TaskExecuteHttpHandler(service, parametros);
+        BD = new TaskExecuteHttpHandler(service, values);
         String resultado="";
         try {
             resultado = BD.execute().get();

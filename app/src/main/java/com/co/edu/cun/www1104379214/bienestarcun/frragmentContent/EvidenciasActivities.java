@@ -22,9 +22,12 @@ import com.co.edu.cun.www1104379214.bienestarcun.R;
  * create an instance of this fragment.
  */
 public class EvidenciasActivities extends Fragment {
+
+    private static int CIRCLE;
+    public static int ITINERARIO;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM1 = "itinerario";
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
@@ -33,20 +36,14 @@ public class EvidenciasActivities extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment EvidenciasActivities.
-     */
+
     // TODO: Rename and change types and number of parameters
-    public static EvidenciasActivities newInstance(String param1, String param2) {
+    public static EvidenciasActivities newInstance(int circle1, int itinerario1) {
         EvidenciasActivities fragment = new EvidenciasActivities();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        CIRCLE = circle1;
+        ITINERARIO = itinerario1;
+        args.putString(ARG_PARAM1, itinerario1+"");
         fragment.setArguments(args);
         return fragment;
     }

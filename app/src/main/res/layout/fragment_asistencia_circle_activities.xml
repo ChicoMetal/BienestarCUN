@@ -9,58 +9,40 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <LinearLayout
-            android:orientation="vertical"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:id="@+id/scrollView"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="top">
 
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ejemploAsistencia"
-                android:id="@+id/checkBox2" />
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/contentListAsistentes">
 
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ejemploAsistencia"
-                android:id="@+id/checkBox" />
-
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ejemploAsistencia"
-                android:id="@+id/checkBox3" />
-
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ejemploAsistencia"
-                android:id="@+id/checkBox4" />
-
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ejemploAsistencia"
-                android:id="@+id/checkBox5" />
-
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ejemploAsistencia"
-                android:id="@+id/checkBox6" />
-        </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
 
         <ImageButton
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:id="@+id/btn_sendAsistencias"
-            android:layout_gravity="center_horizontal"
             android:background="@color/backgroundBotton"
-            android:enabled="false" />
+            android:enabled="false"
+            android:layout_gravity="bottom"
+            android:onClick="SaveAsistenciaItinerario" />
 
     </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/idItinerario"
+        android:visibility="invisible" />
 
 </FrameLayout>

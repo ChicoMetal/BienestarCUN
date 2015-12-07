@@ -4,20 +4,23 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.AttributeSet;
+import android.util.Xml;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.TaskExecuteHttpHandler;
-import com.co.edu.cun.www1104379214.bienestarcun.WebServices.httpHandler;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.AsistenciaCircleActivities;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.EvidenciasActivities;
-import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Show_itinerario_circle;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.xmlpull.v1.XmlPullParser;
 
 import java.util.concurrent.ExecutionException;
 
@@ -26,14 +29,15 @@ import java.util.concurrent.ExecutionException;
  */
 public class ItinerariosManager {
 
+    private String ITINERARIO_ASISTENCIA_TRUE = "111";
+    private String ITINERARIO_ASISTENCIA_FALSE = "000";
+
     TaskExecuteHttpHandler BD;
-    String[][] parametros;
     CodMessajes mss = new CodMessajes();
     Context CONTEXTO;
     JSONObject indexItinerarios;
     JSONArray result = null;
     JSONArray resultResponse = null;
-
 
     public ItinerariosManager(Context contexto) {
         this.CONTEXTO = contexto;
@@ -69,16 +73,16 @@ public class ItinerariosManager {
     public JSONArray GetItinerariosExitst(int idCircle1, String service) throws InterruptedException {
         //obtengo el array de objeto con los itinerarios
 
-        String[][] values = null;
+        String[][] values;
         String idCircle = idCircle1+"";
 
         JSONArray arrayResponse = null;
 
-        parametros = new String[][]{ //array parametros a enviar
+        values = new String[][]{ //array parametros a enviar
                 {"circle",idCircle}
         };
 
-        BD = new TaskExecuteHttpHandler(service, parametros);
+        BD = new TaskExecuteHttpHandler(service, values);
         String resultado="";
         try {
             resultado = BD.execute().get();
@@ -130,17 +134,17 @@ public class ItinerariosManager {
         return indexItinerarios;
     }
 
-    public void ShowAsistenciaItinerarios(int idItinerario, int INSTANCE, FragmentManager fragmentManager) {
+    public void ShowAsistenciaItinerarios(int idItinerario, int idCircle, int INSTANCE, FragmentManager fragmentManager) {
 
         Bundle args = new Bundle();
         args.putString("", "");
 
         Fragment fragment;
-        //TODO enviar id del circulo para obtener los suscritos
+
         if( INSTANCE == 1)
-            fragment =  AsistenciaCircleActivities.newInstance("", "");
+            fragment =  AsistenciaCircleActivities.newInstance(idCircle, idItinerario);
         else
-            fragment =  EvidenciasActivities.newInstance("", "");
+            fragment =  EvidenciasActivities.newInstance(idCircle, idItinerario);
 
 
         fragment.setArguments(args);
@@ -152,4 +156,221 @@ public class ItinerariosManager {
 
 
     }
+
+    public void SearchListInscritos( LinearLayout contentList, int idCircle1 ){//buscar listado de inscritos en el circulo
+
+        String service = "adminCircle/getInscritosCircle.php";
+        String[][] values;
+        String idCircle = idCircle1+"";
+
+        JSONArray arrayResponse = null;
+
+        values = new String[][]{ //array parametros a enviar
+                {"circle",idCircle}
+        };
+
+        BD = new TaskExecuteHttpHandler(service, values);
+        String resultado = "";
+        try {
+
+            resultado = BD.execute().get();
+
+            arrayResponse = new JSONArray( resultado ); // obtengo el array con la result del server
+
+            if( arrayResponse.getString(0).toString().equals("msm")  ){
+
+                Toast.makeText(CONTEXTO,
+                        mss.msmServices.getString(arrayResponse.getString(1).toString()),
+                        Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
+
+            }else {
+
+                JSONArray arrayResult = arrayResponse.getJSONArray( 0 );
+                JSONObject index = arrayResponse.getJSONObject( 1 );
+
+                for( int c = arrayResult.length() -1; c >= 0; c-- ){
+
+                    String id = arrayResult.getJSONObject(c).getString( index.getString("0") );
+                    String name = arrayResult.getJSONObject(c).getString( index.getString("1") );
+
+                    contentList.addView( GenerateComponentsList(c, name, id) );
+
+                }
+
+            }
+
+        } catch (JSONException e) {
+
+            e.printStackTrace();
+
+        }catch (Exception e){
+            String contenido = "Error desde android #!#";
+            contenido += " Funcion: SearchListInscritos #!#";
+            contenido += "Clase : ItinerariosManager.java #!#";
+            contenido += e.getMessage();
+            new ServicesPeticion().SaveError(contenido);
+        }
+
+    }
+
+    private CheckBox GenerateComponentsList( int idCheck, String nameInscrito, String id ){//generar los checkBox dinamicos para la asistencia
+
+
+        CheckBox check = new CheckBox( CONTEXTO );
+
+        check.setTextColor(CONTEXTO.getResources().getColor(R.color.textBlack));
+        check.setId( idCheck );
+        check.setTextSize(20);
+        check.setText( nameInscrito );
+        check.setContentDescription( id );
+
+        return check;
+
+    }
+
+    public int SearchCircleOfAdmin( String user ){//buscar el circulo al cual esta encargado
+
+        String service = "adminCircle/getCircle.php";
+        String[][] values;
+
+
+        JSONArray arrayResponse;
+
+        values = new String[][]{ //array parametros a enviar
+                {"user",user}
+        };
+
+        BD = new TaskExecuteHttpHandler(service, values);
+        String resultado;
+        try {
+
+            resultado = BD.execute().get();
+
+            arrayResponse = new JSONArray( resultado ); // obtengo el array con la result del server
+
+            if( arrayResponse.getString(0).toString().equals("msm")  ){
+
+                Toast.makeText(CONTEXTO,
+                        mss.msmServices.getString(arrayResponse.getString(1).toString()),
+                        Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
+
+            }else {
+
+                JSONArray arrayResult = arrayResponse.getJSONArray( 0 );
+                JSONObject index = arrayResponse.getJSONObject(1);
+
+                String idCircle = arrayResult.getJSONObject(0).getString( index.getString("0") );
+
+                return Integer.parseInt( idCircle );
+
+
+            }
+
+        } catch (JSONException e) {
+
+            e.printStackTrace();
+
+        }catch (Exception e){
+            String contenido = "Error desde android #!#";
+            contenido += " Funcion: SearchCircleOfAdmin #!#";
+            contenido += "Clase : ItinerariosManager.java #!#";
+            contenido += e.getMessage();
+            new ServicesPeticion().SaveError(contenido);
+        }
+
+        return 0;
+
+    }
+
+    public void SaveAsistenciasItinerario( LinearLayout layout, String idItinerario){//armo objeto de los datos del listado para enviar al server
+
+        try{
+
+            JSONObject index = new JSONObject();
+            index.put("item1","asistencia");
+            index.put("item0","id");
+
+            JSONObject suscriptor;
+            JSONArray listAsistencia = new JSONArray();
+            JSONArray objectAsistencia = new JSONArray();
+
+            for(int i=0;i<layout.getChildCount();i++)
+            {
+                suscriptor = new JSONObject();
+
+                CheckBox check =  (CheckBox)layout.getChildAt(i);
+
+                if( check.isChecked() )//dependiendo de s esta seleccionado agrego el codigo
+                    suscriptor.put( index.getString("item1"), ITINERARIO_ASISTENCIA_TRUE );
+                else
+                    suscriptor.put( index.getString("item1"), ITINERARIO_ASISTENCIA_FALSE );
+
+                suscriptor.put( index.getString("item0"), check.getContentDescription() );
+
+                listAsistencia.put(suscriptor);
+
+            }
+
+            objectAsistencia.put(listAsistencia);
+            objectAsistencia.put(index);
+            objectAsistencia.put( idItinerario );
+
+            if( objectAsistencia != null )
+                SendAsistenciaServer( objectAsistencia );
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }catch (Exception e){
+            String contenido = "Error desde android #!#";
+            contenido += " Funcion: SaveAsistenciasItinerario #!#";
+            contenido += "Clase : ItinerariosManager.java #!#";
+            contenido += e.getMessage();
+            new ServicesPeticion().SaveError(contenido);
+        }
+
+    }
+
+    public void SendAsistenciaServer( JSONArray listObject ){//buscar el circulo al cual esta encargado
+
+        String service = "adminCircle/saveListAsitencia.php";
+        String[][] values;
+
+
+        JSONArray arrayResponse;
+
+        values = new String[][]{ //array parametros a enviar
+                {"listObject",listObject.toString() }
+        };
+
+        BD = new TaskExecuteHttpHandler(service, values);
+        String resultado;
+        try {
+
+            resultado = BD.execute().get();
+
+            arrayResponse = new JSONArray( resultado ); // obtengo el array con la result del server
+
+            if( arrayResponse.getString(0).toString().equals("msm")  ){
+
+                Toast.makeText(CONTEXTO,
+                        mss.msmServices.getString(arrayResponse.getString(1).toString()),
+                        Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
+
+            }
+
+        } catch (JSONException e) {
+
+            e.printStackTrace();
+
+        }catch (Exception e){
+            String contenido = "Error desde android #!#";
+            contenido += " Funcion: SearchCircleOfAdmin #!#";
+            contenido += "Clase : ItinerariosManager.java #!#";
+            contenido += e.getMessage();
+            new ServicesPeticion().SaveError(contenido);
+        }
+
+    }
+
 }

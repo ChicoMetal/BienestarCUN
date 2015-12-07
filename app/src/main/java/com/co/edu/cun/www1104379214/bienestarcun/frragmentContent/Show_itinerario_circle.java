@@ -88,7 +88,7 @@ public class Show_itinerario_circle extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        adapter = new HypedItinerarioAdapter( getActivity(), DB, INSTANCE, fragmentManager );
+        adapter = new HypedItinerarioAdapter( getActivity(), DB, INSTANCE, idCirculo, fragmentManager );
     }
 
     @Override

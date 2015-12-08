@@ -50,5 +50,8 @@
     <string name="lb_endLaboral">Fin</string>
     <string name="lb_dateItinerario">Fecha</string>
     <string name="lb_hourItinerario">Hora</string>
+    <string name="cam_btn">btn_cam</string>
+    <string name="img_evidencia">img_evidencia</string>
+    <string name="send_evidencia">Send</string>
 
 </resources>

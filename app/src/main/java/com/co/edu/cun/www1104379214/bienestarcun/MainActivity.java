@@ -2,7 +2,19 @@ package com.co.edu.cun.www1104379214.bienestarcun;
 
 
 
+import android.app.ProgressDialog;
+import android.content.ContentResolver;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,6 +32,7 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -43,6 +56,7 @@ import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLInsert;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLSearch;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.TaskExecuteHttpHandler;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.AsistenciaCircleActivities;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.ChatPendientes;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Circles_app;
@@ -60,12 +74,41 @@ import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Notifications_
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Show_itinerario_circle;
 
 
+import org.apache.http.HttpVersion;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.ContentBody;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.CoreProtocolPNames;
+import org.apache.http.params.HttpParams;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
+    ImageButton camara;
+    ImageView imagen;
+    ImageButton upload;
+    Uri output;
+    String foto;
+    File file;
+    static final String nameImagen = "/imagenEvidenciaCun.jpg";
 
     AdapterUserMenu metodos;//clase con metodos para usar
     CodMessajes mss = new CodMessajes();
@@ -123,6 +166,7 @@ public class MainActivity extends AppCompatActivity {
             selectItem(drawerTitle, id);
 
         }
+
 
     }
 
@@ -451,7 +495,176 @@ public class MainActivity extends AppCompatActivity {
 
         String idItinerario = contentIdItinerario.getText().toString();
 
-        new ItinerariosManager( getApplicationContext() ).SaveAsistenciasItinerario( layout, idItinerario );
+        new ItinerariosManager( getApplicationContext() ).SaveAsistenciasItinerario(layout, idItinerario);
     }
 
+    public void getCamara(View v){
+
+        imagen = (ImageView) findViewById( R.id.imgEvidencia);
+        camara = (ImageButton) findViewById(R.id.cam_take_evidencia);
+        upload = (ImageButton) findViewById(R.id.send_evidencia);
+
+
+        foto = Environment.getExternalStorageDirectory() +nameImagen;
+        file = new File(foto);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        output = Uri.fromFile(file);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, output);
+        startActivityForResult(intent, 1);
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        ContentResolver cr=this.getContentResolver();
+        Bitmap bit;
+        try {
+            bit = android.provider.MediaStore.Images.Media.getBitmap(cr, output);
+
+            //orientation
+            int rotate = 0;
+            try {
+                ExifInterface exif = new ExifInterface(
+                        file.getAbsolutePath());
+                int orientation = exif.getAttributeInt(
+                        ExifInterface.TAG_ORIENTATION,
+                        ExifInterface.ORIENTATION_NORMAL);
+
+                switch (orientation) {
+                    case ExifInterface.ORIENTATION_ROTATE_270:
+                        rotate = 270;
+                        break;
+                    case ExifInterface.ORIENTATION_ROTATE_180:
+                        rotate = 180;
+                        break;
+                    case ExifInterface.ORIENTATION_ROTATE_90:
+                        rotate = 90;
+                        break;
+                }
+            } catch (Exception e) {
+                Toast.makeText(MainActivity.this, "Error.. "+e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inSampleSize = 2;
+            bit = BitmapFactory.decodeFile(foto, options);
+
+            Matrix matrix = new Matrix();
+            matrix.postRotate(rotate);
+            bit = Bitmap.createBitmap(bit , 0, 0, bit.getWidth(), bit.getHeight(), matrix, true);
+
+            imagen.setImageBitmap(bit);
+
+        } catch (FileNotFoundException e) {
+            Toast.makeText(MainActivity.this, "Error2.. "+e.getMessage(), Toast.LENGTH_SHORT).show();
+
+        } catch (IOException e) {
+            Toast.makeText(MainActivity.this, "Error3.. "+e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+
+    }
+
+
+    private void UploapFoto( String imag ) throws IOException {
+
+        String url = "http://192.168.1.107/BienestarCun/core/android/";
+        String service = "adminCircle/SaveEvidencia.php";
+
+        HttpClient httpclient = new DefaultHttpClient();
+        httpclient.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
+        HttpPost httppost = new HttpPost(url+service);
+        MultipartEntity mpEntity = new MultipartEntity();
+        ContentBody foto = new FileBody( file , "image/jpeg");
+        mpEntity.addPart("fotoUp", foto);
+        httppost.setEntity(mpEntity);
+        httpclient.execute(httppost);
+        httpclient.getConnectionManager().shutdown();
+
+    }
+
+    private  boolean OnInsert(){
+
+        String url = "http://192.168.1.107/BienestarCun/core/android/";
+        String service = "adminCircle/imgSaveDB.php";
+
+        HttpClient httpclient;
+        List<NameValuePair> nameValuesPairs;
+        HttpPost httppost;
+        httpclient = new DefaultHttpClient();
+        httppost = new HttpPost(url+service);
+        nameValuesPairs = new ArrayList<NameValuePair>(1);
+        nameValuesPairs.add( new BasicNameValuePair( "evidencia", nameImagen ) );
+
+        try{
+
+            httppost.setEntity(new UrlEncodedFormEntity(nameValuesPairs));
+            httpclient.execute( httppost );
+            return true;
+
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+
+    }
+    class ServerUpdate extends AsyncTask<String,String,String>{
+        ProgressDialog pDialog;
+
+        @Override
+        protected String doInBackground(String... arg0) {
+
+            try {
+                UploapFoto( foto );
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if( OnInsert())
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(MainActivity.this, "Exito al subir la imagen", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            else
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(MainActivity.this, "Error al subir la imagen", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                return null;
+        }
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog( MainActivity.this);
+            pDialog.setMessage("Actualizando servidor, espere...");
+            pDialog.setProgressStyle( ProgressDialog.STYLE_SPINNER);
+            pDialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            pDialog.dismiss();
+        }
+
+
+    }
+
+    public void Uploader( View v){
+
+        if( file.exists() )
+            new ServerUpdate().execute();
+
+    }
 }

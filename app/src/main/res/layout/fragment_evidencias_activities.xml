@@ -5,9 +5,39 @@
     android:id="@+id/contentEvidencias">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="@string/ejemAddEvidencias"
-        android:textSize="200dp"
-        android:gravity="center" />
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:id="@+id/cam_take_evidencia"
+            android:src="@drawable/abc_btn_radio_to_on_mtrl_015"
+            android:background="@color/backgroundBotton"
+            android:layout_marginTop="5dp"
+            android:contentDescription="@string/cam_btn"
+            android:onClick="getCamara" />
+
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:id="@+id/send_evidencia"
+            android:background="@color/backgroundBotton"
+            android:layout_marginTop="5dp"
+            android:contentDescription="@string/send_evidencia"
+            android:src="@drawable/abc_ic_menu_share_mtrl_alpha"
+            android:onClick="Uploader" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/imgEvidencia"
+            android:layout_marginTop="5dp"
+            android:contentDescription="@string/img_evidencia"
+            android:scaleType="fitCenter"/>
+
+    </LinearLayout>
 </FrameLayout>

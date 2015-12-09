@@ -29,7 +29,7 @@ public class AdapterUserMenu {
 
     Context CONTEXTO;
     DBManager DB;
-    ServicesPeticion services = new ServicesPeticion();
+    ServicesPeticion services;
 
     TaskExecuteSQLInsert sqliteInsert;
     TaskExecuteSQLSearch sqliteSearch;
@@ -43,6 +43,8 @@ public class AdapterUserMenu {
 
         this.CONTEXTO = contexto;
         this.DB = db;
+
+        services = new ServicesPeticion(CONTEXTO);
 
     }
     //</editor-fold>
@@ -231,7 +233,7 @@ public class AdapterUserMenu {
                 }
 
                 SQL_RESULT_SEARCH.put(nameRow+contador + "", subobject);
-                Log.i(mss.TAG, SQL_RESULT_SEARCH.toString());
+
             } catch (JSONException e) {
                 e.printStackTrace();
 

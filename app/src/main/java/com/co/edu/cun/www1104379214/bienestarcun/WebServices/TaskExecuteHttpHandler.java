@@ -1,12 +1,15 @@
 package com.co.edu.cun.www1104379214.bienestarcun.WebServices;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
+import com.co.edu.cun.www1104379214.bienestarcun.Metodos.GeneralCode;
+import com.co.edu.cun.www1104379214.bienestarcun.Metodos.ServerUri;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 
 import org.apache.http.HttpEntity;
@@ -32,36 +35,35 @@ import java.util.List;
  */
 public class TaskExecuteHttpHandler extends AsyncTask<Void, Void, String> {
 
+    ProgressDialog pDialog;
+
     CodMessajes messajes = new CodMessajes();
 
-    private Activity activity;
-
-    //private static final String Server = "http://10.0.3.2/BienestarCun/core/android/";
-    private static final String Server = "http://192.168.1.107/BienestarCun/core/android/";
-    //private static final String Server = "http://ottsincelejo.com/carlos/BienestarCun/core/android/";
-    //private static final String Server = "bienestarcun.webcindario.com/core/android/";
-
-
-    //private Context CONTEXT;
+    private final String Server = ServerUri.Server;
     private String SERVICE;
     private String[][] CAMPOS;
+    private Context CONTEXTO;
     private String result;
 
     public TaskExecuteHttpHandler(String service,//nombre del servicio
-                                  String[][] campos
-                                //Context contesto//contexto
+                                  String[][] campos,
+                                Context contesto//contexto
     ) {
 
-        //this.CONTEXT = contesto;
+
         this.SERVICE = service;
         this.CAMPOS = campos;
+        this.CONTEXTO = contesto;
 
     }
 
     @Override
     protected void onPreExecute() {
 
-        //Toast.makeText(CONTEXT.getApplicationContext(), "Procesando...", Toast.LENGTH_SHORT).show();
+        /*pDialog = new ProgressDialog( CONTEXTO );
+        pDialog.setMessage("Enviando al servidor, espere...");
+        pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        pDialog.show();*/
 
     }
 
@@ -86,7 +88,9 @@ public class TaskExecuteHttpHandler extends AsyncTask<Void, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
+
         super.onPostExecute(result);
+       // pDialog.dismiss();
 
     }
 

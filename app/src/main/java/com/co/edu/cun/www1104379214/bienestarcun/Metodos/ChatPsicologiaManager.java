@@ -93,7 +93,7 @@ public class ChatPsicologiaManager {
             contenido += " Funcion: ComproveUser #!#";
             contenido += "Clase : ChatPsicologia.java #!#";
             contenido += e.getMessage();
-            new ServicesPeticion().SaveError(contenido);
+            new ServicesPeticion(CONTEXTO).SaveError(contenido);
         }
 
         return resultado;
@@ -118,7 +118,7 @@ public class ChatPsicologiaManager {
             contenido += " Funcion: SearchChatPendientes #!#";
             contenido += "Clase : ChatPsicologiaManager.java #!#";
             contenido += e.getMessage();
-            new ServicesPeticion().SaveError(contenido);
+            new ServicesPeticion(CONTEXTO).SaveError(contenido);
         }
 
         return resultResponse;
@@ -138,7 +138,7 @@ public class ChatPsicologiaManager {
                 {"tipuser","1001"}
         };
 
-        BD = new TaskExecuteHttpHandler(service, values);
+        BD = new TaskExecuteHttpHandler(service, values,CONTEXTO);
         String resultado="";
         try {
             resultado = BD.execute().get();
@@ -149,7 +149,7 @@ public class ChatPsicologiaManager {
             contenido += " Funcion: GetChatPendientesExists #!#";
             contenido += "Clase : ChatPsicologiaManager.java #!#";
             contenido += e.getMessage();
-            new ServicesPeticion().SaveError(contenido);
+            new ServicesPeticion(CONTEXTO).SaveError(contenido);
         }
 
         try {
@@ -179,7 +179,7 @@ public class ChatPsicologiaManager {
             contenido += " Funcion: GetChatPendientesExists #!#";
             contenido += "Clase : ChatPsicologiaManager.java #!#";
             contenido += e.getMessage();
-            new ServicesPeticion().SaveError(contenido);
+            new ServicesPeticion(CONTEXTO).SaveError(contenido);
         }
 
         return arrayResponse;
@@ -228,7 +228,7 @@ public class ChatPsicologiaManager {
             contenido += " Funcion: getIdUser #!#";
             contenido += "Clase : CircleList.java #!#";
             contenido += e.getMessage();
-            new ServicesPeticion().SaveError(contenido);
+            new ServicesPeticion(CONTEXTO).SaveError(contenido);
         }
 
         return null;
@@ -309,7 +309,7 @@ public class ChatPsicologiaManager {
             contenido += " Funcion: AddMesagesChat #!#";
             contenido += "Clase : ChatPsicologiaManager.java #!#";
             contenido += e.getMessage();
-            new ServicesPeticion().SaveError(contenido);
+            new ServicesPeticion(CONTEXTO).SaveError(contenido);
         }
 
         if ( !Mensaje.equals("")){
@@ -333,7 +333,7 @@ public class ChatPsicologiaManager {
                 {"mensaje",mensaje}
         };
 
-        BD = new TaskExecuteHttpHandler(service, values);
+        BD = new TaskExecuteHttpHandler(service, values,CONTEXTO);
         String resultado="";
         try {
             resultado = BD.execute().get();
@@ -344,7 +344,7 @@ public class ChatPsicologiaManager {
             contenido += " Funcion: GetMensajesPendientesExists #!#";
             contenido += "Clase : ChatPsicologiaManager.java #!#";
             contenido += e.getMessage();
-            new ServicesPeticion().SaveError(contenido);
+            new ServicesPeticion(CONTEXTO).SaveError(contenido);
         }
 
         try {
@@ -370,7 +370,7 @@ public class ChatPsicologiaManager {
             contenido += " Funcion: GetMensajesPendientesExists #!#";
             contenido += "Clase : ChatPsicologiaManager.java #!#";
             contenido += e.getMessage();
-            new ServicesPeticion().SaveError(contenido);
+            new ServicesPeticion(CONTEXTO).SaveError(contenido);
         }
 
         return arrayResponse;

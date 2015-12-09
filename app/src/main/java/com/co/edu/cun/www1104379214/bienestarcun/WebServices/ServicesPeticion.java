@@ -29,7 +29,11 @@ public class ServicesPeticion {
     TaskExecuteHttpHandler BD;
     CodMessajes mss = new CodMessajes();
     DBManager DB;
+    Context CONTEXTO;
 
+    public ServicesPeticion(Context contexto) {
+        this.CONTEXTO = contexto;
+    }
 
     //<editor-fold desc="Verificar el usuario en la BD remota">
     public String[][] ConfirmarUser(Context context, String user, String pass)
@@ -45,7 +49,7 @@ public class ServicesPeticion {
         };
 
 
-        BD = new TaskExecuteHttpHandler(service, parametros);
+        BD = new TaskExecuteHttpHandler(service, parametros, CONTEXTO);
 
         try {
             result = BD.execute().get();
@@ -57,7 +61,7 @@ public class ServicesPeticion {
             contenido += " Funcion: ConfirmarUser #!#";
             contenido += "Clase : ServicesPeticion.java #!#";
             contenido += e.getMessage();
-            new ServicesPeticion().SaveError(contenido);
+            new ServicesPeticion(CONTEXTO).SaveError(contenido);
         }
 
 
@@ -156,7 +160,7 @@ public class ServicesPeticion {
 
         String[][] values = JSONObjectToMatrix(valuesJSON, campos); //obtener matrix desde objeto
 
-        BD = new TaskExecuteHttpHandler(service, values);
+        BD = new TaskExecuteHttpHandler(service, values, CONTEXTO);
 
         try {
            result = BD.execute().get();
@@ -168,7 +172,7 @@ public class ServicesPeticion {
             contenido += " Funcion: SaveLog #!#";
             contenido += "Clase : ServicesPeticion.java #!#";
             contenido += e.getMessage();
-            new ServicesPeticion().SaveError(contenido);
+            new ServicesPeticion(CONTEXTO).SaveError(contenido);
         }
 
         JSONArray arrayResponse = new JSONArray( result ); // obtengo el array con la result del server
@@ -184,8 +188,6 @@ public class ServicesPeticion {
             throws JSONException {
 
         String[][] Matrix = new String[campos.length][2];
-
-        Log.i(mss.TAG, arrayResult.getString( campos[0] ));
 
         for (int c = 0; c < campos.length; c++) {//pasar JSONArray a matrix
 
@@ -214,7 +216,7 @@ public class ServicesPeticion {
                 {"token",loginSave.getString(DB.CN_TOKEN_LOGIN)}
         };
 
-        BD = new TaskExecuteHttpHandler(service, values);
+        BD = new TaskExecuteHttpHandler(service, values, CONTEXTO);
 
         try {
             result = BD.execute().get();
@@ -226,7 +228,7 @@ public class ServicesPeticion {
             contenido += " Funcion: LogoutUser #!#";
             contenido += "Clase : ServicesPeticion.java #!#";
             contenido += e.getMessage();
-            new ServicesPeticion().SaveError(contenido);
+            new ServicesPeticion(CONTEXTO).SaveError(contenido);
         }
 
         JSONArray arrayResponse = new JSONArray( result ); // obtengo el array con la result del server
@@ -246,7 +248,7 @@ public class ServicesPeticion {
                 {"contenido",contenido}
         };
 
-        BD = new TaskExecuteHttpHandler(service, values);
+        BD = new TaskExecuteHttpHandler(service, values, CONTEXTO);
 
         try {
             BD.execute().get();

@@ -82,7 +82,7 @@ public class NewItinerarioManager {
 
         try {
 
-            BD = new TaskExecuteHttpHandler(service, parametros);
+            BD = new TaskExecuteHttpHandler(service, parametros, CONTEXTO);
             String resultado="";
             try {
                 resultado = BD.execute().get();
@@ -94,7 +94,7 @@ public class NewItinerarioManager {
                 contenido += " Funcion: SendServerItinerario try 2#!#";
                 contenido += "Clase : NewItinerarioManager.java #!#";
                 contenido += e.getMessage();
-                new ServicesPeticion().SaveError(contenido);
+                new ServicesPeticion(CONTEXTO).SaveError(contenido);
             }
 
 
@@ -118,7 +118,7 @@ public class NewItinerarioManager {
             contenido += " Funcion: SendServerItinerario try 1 #!#";
             contenido += "Clase : SendServerItinerario.java #!#";
             contenido += e.getMessage();
-            new ServicesPeticion().SaveError(contenido);
+            new ServicesPeticion(CONTEXTO).SaveError(contenido);
 
         }
 

@@ -76,7 +76,7 @@ public class GeneralCode {
             contenido += " Funcion: getIdUser #!#";
             contenido += "Clase : GeneralCode.java #!#";
             contenido += e.getMessage();
-            new ServicesPeticion().SaveError(contenido);
+            new ServicesPeticion(CONTEXTO).SaveError(contenido);
         }
 
         return null;
@@ -97,7 +97,7 @@ public class GeneralCode {
 
         try {
 
-            BD = new TaskExecuteHttpHandler(service, parametros);
+            BD = new TaskExecuteHttpHandler(service, parametros, CONTEXTO);
             String resultado="";
 
 
@@ -135,7 +135,7 @@ public class GeneralCode {
             contenido += " Funcion: getNameUser try 1 #!#";
             contenido += "Clase : GeneralCode.java #!#";
             contenido += e.getMessage();
-            new ServicesPeticion().SaveError(contenido);
+            new ServicesPeticion(CONTEXTO).SaveError(contenido);
 
         }
 

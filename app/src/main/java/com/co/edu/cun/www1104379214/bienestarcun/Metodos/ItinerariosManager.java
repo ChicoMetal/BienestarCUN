@@ -62,7 +62,7 @@ public class ItinerariosManager {
             contenido += " Funcion: SearchItinerarios #!#";
             contenido += "Clase : ItinerariosManager.java #!#";
             contenido += e.getMessage();
-            new ServicesPeticion().SaveError(contenido);
+            new ServicesPeticion(CONTEXTO).SaveError(contenido);
         }
 
         return resultResponse;
@@ -82,7 +82,7 @@ public class ItinerariosManager {
                 {"circle",idCircle}
         };
 
-        BD = new TaskExecuteHttpHandler(service, values);
+        BD = new TaskExecuteHttpHandler(service, values, CONTEXTO);
         String resultado="";
         try {
             resultado = BD.execute().get();
@@ -94,7 +94,7 @@ public class ItinerariosManager {
             contenido += " Funcion: GetItinerariosExitst #!#";
             contenido += "Clase : ItinerariosManager.java #!#";
             contenido += e.getMessage();
-            new ServicesPeticion().SaveError(contenido);
+            new ServicesPeticion(CONTEXTO).SaveError(contenido);
         }
 
         try {
@@ -122,7 +122,7 @@ public class ItinerariosManager {
             contenido += " Funcion: GetItinerariosExitst #!#";
             contenido += "Clase : ItinerariosManager.java #!#";
             contenido += e.getMessage();
-            new ServicesPeticion().SaveError(contenido);
+            new ServicesPeticion(CONTEXTO).SaveError(contenido);
         }
 
         return arrayResponse;
@@ -169,7 +169,7 @@ public class ItinerariosManager {
                 {"circle",idCircle}
         };
 
-        BD = new TaskExecuteHttpHandler(service, values);
+        BD = new TaskExecuteHttpHandler(service, values,CONTEXTO);
         String resultado = "";
         try {
 
@@ -208,7 +208,7 @@ public class ItinerariosManager {
             contenido += " Funcion: SearchListInscritos #!#";
             contenido += "Clase : ItinerariosManager.java #!#";
             contenido += e.getMessage();
-            new ServicesPeticion().SaveError(contenido);
+            new ServicesPeticion(CONTEXTO).SaveError(contenido);
         }
 
     }
@@ -240,7 +240,7 @@ public class ItinerariosManager {
                 {"user",user}
         };
 
-        BD = new TaskExecuteHttpHandler(service, values);
+        BD = new TaskExecuteHttpHandler(service, values, CONTEXTO);
         String resultado;
         try {
 
@@ -275,7 +275,7 @@ public class ItinerariosManager {
             contenido += " Funcion: SearchCircleOfAdmin #!#";
             contenido += "Clase : ItinerariosManager.java #!#";
             contenido += e.getMessage();
-            new ServicesPeticion().SaveError(contenido);
+            new ServicesPeticion(CONTEXTO).SaveError(contenido);
         }
 
         return 0;
@@ -326,7 +326,7 @@ public class ItinerariosManager {
             contenido += " Funcion: SaveAsistenciasItinerario #!#";
             contenido += "Clase : ItinerariosManager.java #!#";
             contenido += e.getMessage();
-            new ServicesPeticion().SaveError(contenido);
+            new ServicesPeticion(CONTEXTO).SaveError(contenido);
         }
 
     }
@@ -343,7 +343,7 @@ public class ItinerariosManager {
                 {"listObject",listObject.toString() }
         };
 
-        BD = new TaskExecuteHttpHandler(service, values);
+        BD = new TaskExecuteHttpHandler(service, values, CONTEXTO);
         String resultado;
         try {
 
@@ -368,7 +368,7 @@ public class ItinerariosManager {
             contenido += " Funcion: SearchCircleOfAdmin #!#";
             contenido += "Clase : ItinerariosManager.java #!#";
             contenido += e.getMessage();
-            new ServicesPeticion().SaveError(contenido);
+            new ServicesPeticion(CONTEXTO).SaveError(contenido);
         }
 
     }

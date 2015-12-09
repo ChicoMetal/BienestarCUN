@@ -57,7 +57,7 @@
 
         <ImageButton
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="35dp"
             android:text="@string/txt_btn_additinerario"
             android:id="@+id/btnAddNewItinerario"
             android:layout_gravity="center_horizontal"

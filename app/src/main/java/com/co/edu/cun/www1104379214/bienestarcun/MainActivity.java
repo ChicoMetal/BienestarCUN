@@ -14,7 +14,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -23,27 +22,21 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.text.format.Time;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.ChatPsicologiaManager;
-import com.co.edu.cun.www1104379214.bienestarcun.Metodos.CirclesManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.DesertionManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.GeneralCode;
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.IconManager;
@@ -51,19 +44,14 @@ import com.co.edu.cun.www1104379214.bienestarcun.Metodos.AdapterUserMenu;
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.ItinerariosManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.LaboralAdd;
 import com.co.edu.cun.www1104379214.bienestarcun.Metodos.NewItinerarioManager;
-import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLDelete;
-import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLInsert;
-import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLSearch;
+import com.co.edu.cun.www1104379214.bienestarcun.Metodos.ServerUri;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
-import com.co.edu.cun.www1104379214.bienestarcun.WebServices.TaskExecuteHttpHandler;
-import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.AsistenciaCircleActivities;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.ChatPendientes;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Circles_app;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.ChatPsicologa_app;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.CircleAdministration_app;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Desertion_app;
-import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.EvidenciasActivities;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.HistoryLaboral_app;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Home_app;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.DelActivities_app;
@@ -86,18 +74,14 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.CoreProtocolPNames;
-import org.apache.http.params.HttpParams;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -105,14 +89,16 @@ public class MainActivity extends AppCompatActivity {
     ImageButton camara;
     ImageView imagen;
     ImageButton upload;
+    TextView idItinerario;
     Uri output;
     String foto;
     File file;
-    static final String nameImagen = "/imagenEvidenciaCun.jpg";
+    String nameFileImagen;
+
 
     AdapterUserMenu metodos;//clase con metodos para usar
     CodMessajes mss = new CodMessajes();
-    ServicesPeticion services = new ServicesPeticion();
+    ServicesPeticion services;
     IconManager icon;
     GeneralCode code;
     DBManager db;
@@ -134,6 +120,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setToolbar(); // Setear Toolbar como action bar
+
+        services = new ServicesPeticion( getApplicationContext() );
 
         try {
             Ejecutar();
@@ -358,7 +346,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void BDManager(){
 
-        db = new DBManager(getApplicationContext());//crea la base de datos local
+        db = new DBManager( getApplicationContext() );//crea la base de datos local
 
     }
 
@@ -498,14 +486,24 @@ public class MainActivity extends AppCompatActivity {
         new ItinerariosManager( getApplicationContext() ).SaveAsistenciasItinerario(layout, idItinerario);
     }
 
-    public void getCamara(View v){
+    //********************************************
+    //********************************************Subir fotos al server
+    //********************************************
+
+    public void getCamara(View v){//abre una ventana con la camara para tomar una foto
 
         imagen = (ImageView) findViewById( R.id.imgEvidencia);
         camara = (ImageButton) findViewById(R.id.cam_take_evidencia);
         upload = (ImageButton) findViewById(R.id.send_evidencia);
+        idItinerario = (TextView) findViewById( R.id.ItinerarioId);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        String currentDateandTime = sdf.format(new Date());
 
 
-        foto = Environment.getExternalStorageDirectory() +nameImagen;
+        nameFileImagen = "/Evidencia#!#"+idItinerario.getText().toString()+"#!#"+currentDateandTime+".jpg";
+
+        foto = Environment.getExternalStorageDirectory() + nameFileImagen;
         file = new File(foto);
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         output = Uri.fromFile(file);
@@ -515,11 +513,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {//obtiene la foto tomada y la ajusta para subirla al servidor
 
         ContentResolver cr=this.getContentResolver();
         Bitmap bit;
         try {
+
             bit = android.provider.MediaStore.Images.Media.getBitmap(cr, output);
 
             //orientation
@@ -531,7 +530,7 @@ public class MainActivity extends AppCompatActivity {
                         ExifInterface.TAG_ORIENTATION,
                         ExifInterface.ORIENTATION_NORMAL);
 
-                switch (orientation) {
+                switch (orientation) { //dependiendo de la posicion del movil al tomar la foto, la gira
                     case ExifInterface.ORIENTATION_ROTATE_270:
                         rotate = 270;
                         break;
@@ -542,25 +541,52 @@ public class MainActivity extends AppCompatActivity {
                         rotate = 90;
                         break;
                 }
-            } catch (Exception e) {
-                Toast.makeText(MainActivity.this, "Error.. "+e.getMessage(), Toast.LENGTH_SHORT).show();
+
+            }catch (Exception e){
+
+                Toast.makeText(MainActivity.this, mss.ProcesImgError +e.getMessage(),
+                        Toast.LENGTH_SHORT).show();
+
+                String contenido = "Error desde android #!#";
+                contenido += " Funcion: onActivityResul( try 2 change position) #!#";
+                contenido += "Clase : MainActivity.java #!#";
+                contenido += e.getMessage();
+                new ServicesPeticion(getApplicationContext()).SaveError(contenido);
+
             }
 
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inSampleSize = 2;
-            bit = BitmapFactory.decodeFile(foto, options);
+
+            BitmapFactory.Options options = new BitmapFactory.Options();//obtimiza el trato de las img
+            options.inSampleSize = 2;//obtimiza el trato de las img
+            bit = BitmapFactory.decodeFile(foto, options);//obtimiza el trato de las img
 
             Matrix matrix = new Matrix();
             matrix.postRotate(rotate);
-            bit = Bitmap.createBitmap(bit , 0, 0, bit.getWidth(), bit.getHeight(), matrix, true);
+            bit = Bitmap.createBitmap(bit , 0, 0, bit.getWidth(), bit.getHeight(), matrix, true);//obtiene la imagen con los nuevos ajustes
 
-            imagen.setImageBitmap(bit);
+            imagen.setImageBitmap(bit);//muestra la imagen en el imageView
 
         } catch (FileNotFoundException e) {
-            Toast.makeText(MainActivity.this, "Error2.. "+e.getMessage(), Toast.LENGTH_SHORT).show();
+
+
+
+            Toast.makeText(MainActivity.this, mss.CarryImageError+e.getMessage(), Toast.LENGTH_SHORT).show();
+            String contenido = "Error desde android #!#";
+            contenido += " Funcion: onActivityResult(try 1 get image FileNotFoundException) #!#";
+            contenido += "Clase : MainActivity.java #!#";
+            contenido += e.getMessage();
+            new ServicesPeticion(getApplicationContext()).SaveError(contenido);
+
 
         } catch (IOException e) {
-            Toast.makeText(MainActivity.this, "Error3.. "+e.getMessage(), Toast.LENGTH_SHORT).show();
+
+            Toast.makeText(MainActivity.this, mss.CarryImageError+e.getMessage(), Toast.LENGTH_SHORT).show();
+            String contenido = "Error desde android #!#";
+            contenido += " Funcion: onActivityResult(try 1 get image IOException) #!#";
+            contenido += "Clase : MainActivity.java #!#";
+            contenido += e.getMessage();
+            new ServicesPeticion(getApplicationContext()).SaveError(contenido);
+
         }
 
 
@@ -569,15 +595,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void UploapFoto( String imag ) throws IOException {
 
-        String url = "http://192.168.1.107/BienestarCun/core/android/";
+        String url = ServerUri.Server;
         String service = "adminCircle/SaveEvidencia.php";
 
         HttpClient httpclient = new DefaultHttpClient();
         httpclient.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
         HttpPost httppost = new HttpPost(url+service);
         MultipartEntity mpEntity = new MultipartEntity();
-        ContentBody foto = new FileBody( file , "image/jpeg");
-        mpEntity.addPart("fotoUp", foto);
+        ContentBody foto = new FileBody( file , "image/jpeg");//tipo de contenido q se envia
+        mpEntity.addPart("fotoUp", foto);//nombre con que se recibe en el server
         httppost.setEntity(mpEntity);
         httpclient.execute(httppost);
         httpclient.getConnectionManager().shutdown();
@@ -586,7 +612,7 @@ public class MainActivity extends AppCompatActivity {
 
     private  boolean OnInsert(){
 
-        String url = "http://192.168.1.107/BienestarCun/core/android/";
+        String url = ServerUri.Server;
         String service = "adminCircle/imgSaveDB.php";
 
         HttpClient httpclient;
@@ -595,20 +621,33 @@ public class MainActivity extends AppCompatActivity {
         httpclient = new DefaultHttpClient();
         httppost = new HttpPost(url+service);
         nameValuesPairs = new ArrayList<NameValuePair>(1);
-        nameValuesPairs.add( new BasicNameValuePair( "evidencia", nameImagen ) );
+        nameValuesPairs.add(new BasicNameValuePair("evidencia", nameFileImagen));
+        nameValuesPairs.add(new BasicNameValuePair("itinerario", idItinerario.getText().toString()));
 
         try{
 
             httppost.setEntity(new UrlEncodedFormEntity(nameValuesPairs));
-            httpclient.execute( httppost );
+            httpclient.execute(httppost);
             return true;
 
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+
+            Toast.makeText(MainActivity.this, mss.SendImageError + e.getMessage(), Toast.LENGTH_SHORT).show();
+            String contenido = "Error desde android #!#";
+            contenido += " Funcion: OnInsert(UnsupportedEncodingException) #!#";
+            contenido += "Clase : MainActivity.java #!#";
+            contenido += e.getMessage();
+            new ServicesPeticion(getApplicationContext()).SaveError(contenido);
+
+        }catch (IOException e) {
+
+            Toast.makeText(MainActivity.this, mss.SendImageError + e.getMessage(), Toast.LENGTH_SHORT).show();
+            String contenido = "Error desde android #!#";
+            contenido += " Funcion: OnInsert(IOException) #!#";
+            contenido += "Clase : MainActivity.java #!#";
+            contenido += e.getMessage();
+            new ServicesPeticion(getApplicationContext()).SaveError(contenido);
+
         }
 
         return false;
@@ -621,22 +660,32 @@ public class MainActivity extends AppCompatActivity {
         protected String doInBackground(String... arg0) {
 
             try {
+
                 UploapFoto( foto );
+
             } catch (IOException e) {
-                e.printStackTrace();
+
+                Toast.makeText(MainActivity.this, mss.SendImageError+ e.getMessage(), Toast.LENGTH_SHORT).show();
+                String contenido = "Error desde android #!#";
+                contenido += " Funcion: doInBackground #!#";
+                contenido += "Clase : MainActivity.java ServerUpdate#!#";
+                contenido += e.getMessage();
+                new ServicesPeticion(getApplicationContext()).SaveError(contenido);
+
             }
-            if( OnInsert())
+
+            if( OnInsert() )
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(MainActivity.this, "Exito al subir la imagen", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, mss.SendImageWell, Toast.LENGTH_SHORT).show();
                     }
                 });
             else
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(MainActivity.this, "Error al subir la imagen", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, mss.SendImageError, Toast.LENGTH_SHORT).show();
                     }
                 });
                 return null;
@@ -647,8 +696,8 @@ public class MainActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             pDialog = new ProgressDialog( MainActivity.this);
-            pDialog.setMessage("Actualizando servidor, espere...");
-            pDialog.setProgressStyle( ProgressDialog.STYLE_SPINNER);
+            pDialog.setMessage("Enviando, espere...");
+            pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             pDialog.show();
         }
 
@@ -661,7 +710,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void Uploader( View v){
+    public void Uploader( View v){ //llamar el metodo que sube la imagen al server y guarda el registro
 
         if( file.exists() )
             new ServerUpdate().execute();

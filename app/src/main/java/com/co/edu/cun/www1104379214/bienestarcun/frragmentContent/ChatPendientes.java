@@ -108,7 +108,7 @@ public class ChatPendientes extends Fragment {
             contenido += " Funcion: onCreateView #!#";
             contenido += "Clase : ChatPendientes.java #!#";
             contenido += e.getMessage();
-            new ServicesPeticion().SaveError(contenido);
+            new ServicesPeticion(getActivity().getApplicationContext()).SaveError(contenido);
         }
 
 

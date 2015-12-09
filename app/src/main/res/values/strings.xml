@@ -53,5 +53,6 @@
     <string name="cam_btn">btn_cam</string>
     <string name="img_evidencia">img_evidencia</string>
     <string name="send_evidencia">Send</string>
+    <string name="btn_status_laboral_update">update_status_laboral</string>
 
 </resources>

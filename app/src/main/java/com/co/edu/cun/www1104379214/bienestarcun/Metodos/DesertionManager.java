@@ -80,7 +80,7 @@ public class DesertionManager {
 
         try {
 
-            BD = new TaskExecuteHttpHandler(service, parametros);
+            BD = new TaskExecuteHttpHandler(service, parametros,CONTEXTO);
             String resultado="";
             try {
                 resultado = BD.execute().get();
@@ -92,7 +92,7 @@ public class DesertionManager {
                 contenido += " Funcion: SendServerDesertion #!#";
                 contenido += "Clase : DesertionManager.java #!#";
                 contenido += e.getMessage();
-                new ServicesPeticion().SaveError(contenido);
+                new ServicesPeticion(CONTEXTO).SaveError(contenido);
             }
 
 
@@ -116,7 +116,7 @@ public class DesertionManager {
             contenido += " Funcion: SendServerDesertion #!#";
             contenido += "Clase : DesertionManager.java #!#";
             contenido += e.getMessage();
-            new ServicesPeticion().SaveError(contenido);
+            new ServicesPeticion(CONTEXTO).SaveError(contenido);
 
         }
 

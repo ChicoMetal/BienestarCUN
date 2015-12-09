@@ -60,15 +60,15 @@ public class IconManager {
     }
 
     public void setBackgroundApp(FrameLayout main_content) {
-        main_content.setBackgroundResource(R.drawable.background);
+        main_content.setBackgroundResource(R.drawable.background1);
     }
 
     public void setBackgroundApp(RelativeLayout main_content) {
-        main_content.setBackgroundResource(R.drawable.background);
+        main_content.setBackgroundResource(R.drawable.background1);
     }
 
     public void setBackgroundApp(LinearLayout main_content) {
-        main_content.setBackgroundResource(R.drawable.background);
+        main_content.setBackgroundResource(R.drawable.background1);
     }
 
 

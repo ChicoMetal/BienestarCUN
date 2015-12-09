@@ -60,7 +60,7 @@
 
         <ImageButton
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="35dp"
             android:id="@+id/btn_login_send"
             android:layout_gravity="center_horizontal"
             android:contentDescription="@string/msm_btn_login_send"

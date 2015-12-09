@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:text="@string/lb_cuestion_laboralEstatus"
             android:id="@+id/textView"
-            android:textSize="30dp" />
+            android:textSize="30sp" />
 
         <RadioGroup
             android:layout_width="wrap_content"
@@ -44,11 +44,12 @@
 
         <ImageButton
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="35dp"
             android:id="@+id/btnUpdateStatusLaboral"
             android:background="@color/backgroundBotton"
             android:onClick="UpdateStatusLaboral"
-            android:layout_marginTop="5dp" />
+            android:layout_marginTop="5dp"
+            android:contentDescription="@string/btn_status_laboral_update" />
     </LinearLayout>
 
 </FrameLayout>

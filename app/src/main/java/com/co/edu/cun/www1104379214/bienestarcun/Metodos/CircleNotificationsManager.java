@@ -58,7 +58,7 @@ public class CircleNotificationsManager {
             contenido += " Funcion: SearchNotifications #!#";
             contenido += "Clase : CircleNotificationsManager.java #!#";
             contenido += e.getMessage();
-            new ServicesPeticion().SaveError(contenido);
+            new ServicesPeticion(CONTEXTO).SaveError(contenido);
         }
 
     }

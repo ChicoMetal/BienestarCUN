@@ -30,7 +30,7 @@ public class Notification {
     Context CONTEXTO;
 
     TaskExecuteHttpHandler BD;
-    ServicesPeticion services = new ServicesPeticion();
+    ServicesPeticion services = new ServicesPeticion(CONTEXTO);
     CodMessajes mss = new CodMessajes();
     TaskExecuteSQLSearchConditions sqliteSearchconditions;
     TaskExecuteSQLSearch sqliteSearch;
@@ -59,7 +59,7 @@ public class Notification {
         String idUser="";
 
         String[] camposSeacrh = new String[]{
-                DB.CN_ID_USER_BD,
+                DB.CN_ID_USER_BD
         };
 
         sqliteSearch = new TaskExecuteSQLSearch(DB.TABLE_NAME_USER,
@@ -91,7 +91,7 @@ public class Notification {
             contenido += " Funcion: getIdUser #!#";
             contenido += "Clase : Notification.java #!#";
             contenido += e.getMessage();
-            new ServicesPeticion().SaveError(contenido);
+            new ServicesPeticion(CONTEXTO).SaveError(contenido);
         }
 
         return null;
@@ -129,7 +129,7 @@ public class Notification {
             contenido += " Funcion: getNotificationsOld #!#";
             contenido += "Clase : Notification.java #!#";
             contenido += e.getMessage();
-            new ServicesPeticion().SaveError(contenido);
+            new ServicesPeticion(CONTEXTO).SaveError(contenido);
         }
 
         return jsonNotifications;
@@ -137,10 +137,9 @@ public class Notification {
 
     public JSONArray GetNotifications(String[] tipeNotifications, String service){//obtener notificaciones en la BD remota
 
-        String[][] values = null;
         String[][] parametros;
 
-        JSONArray arrayResponse = null;
+        JSONArray arrayResponse;
 
         parametros = new String[][]{ //array parametros a enviar
                 {"user",getIdUser()}
@@ -149,7 +148,7 @@ public class Notification {
 
         try {
 
-            BD = new TaskExecuteHttpHandler(service, parametros);
+            BD = new TaskExecuteHttpHandler(service, parametros, CONTEXTO);
             String resultado="";
             try {
                 resultado = BD.execute().get();
@@ -161,7 +160,7 @@ public class Notification {
                 contenido += " Funcion: GetNotifications #!#";
                 contenido += "Clase : Notification.java #!#";
                 contenido += e.getMessage();
-                new ServicesPeticion().SaveError(contenido);
+                new ServicesPeticion(CONTEXTO).SaveError(contenido);
             }
 
             arrayResponse = new JSONArray( resultado ); // obtengo el array con la result del server
@@ -188,7 +187,7 @@ public class Notification {
             contenido += " Funcion: GetNotifications #!#";
             contenido += "Clase : Notification.java #!#";
             contenido += e.getMessage();
-            new ServicesPeticion().SaveError(contenido);
+            new ServicesPeticion(CONTEXTO).SaveError(contenido);
         }
         return null;
     }
@@ -241,7 +240,9 @@ public class Notification {
         return null;
     }
 
-    private boolean SearchNotificationsGetExists(String[] tipeNotifications, String idNewNotification, JSONObject notificationOlds){
+    private boolean SearchNotificationsGetExists(String[] tipeNotifications,
+                                                 String idNewNotification,
+                                                 JSONObject notificationOlds){
         //confirmo si las notificaciones traidas del server ya estan guardadas para retirarlas
 
         boolean resultExists = false;

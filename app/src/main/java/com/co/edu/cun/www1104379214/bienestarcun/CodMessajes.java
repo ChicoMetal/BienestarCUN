@@ -12,7 +12,7 @@ public class CodMessajes {
     //*************************************Constantes
     //*************************************
 
-    public static final String TAG = "CONTROL";
+    public static final String TAG1 = "CONTROL";
 
     public static final String UsrSuperAd = "1111";
     public static final String UsrAd = "1110";
@@ -95,6 +95,14 @@ public class CodMessajes {
     public static final String LocalInsert = "Se han insertado los datos";
     public static final String LoginWell = " Felicidades, has ingresado ";
     public static final String FormError = " Errores en el formulario ";
+
+    public static final String ProcesImgError = "Error al procesar la imagen";
+    public static final String CarryImageError = "Ha ocurrido un error cargar la imagen";
+    public static final String SendImageError = "Error al enviar la imagen";
+    public static final String SendImageWell = "Se ha subido la imagen";
+
+
+
 
 
     //************************************

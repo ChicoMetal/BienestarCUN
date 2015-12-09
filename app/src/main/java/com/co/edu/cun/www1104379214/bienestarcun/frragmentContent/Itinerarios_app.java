@@ -112,7 +112,7 @@ public class Itinerarios_app extends Fragment {
             contenido += " Funcion: onCreateView #!#";
             contenido += "Clase : Itinerarios_app.java #!#";
             contenido += e.getMessage();
-            new ServicesPeticion().SaveError(contenido);
+            new ServicesPeticion(getActivity().getApplicationContext()).SaveError(contenido);
         }
 
         return root;

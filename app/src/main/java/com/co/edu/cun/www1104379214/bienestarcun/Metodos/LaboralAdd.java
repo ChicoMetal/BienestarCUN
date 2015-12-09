@@ -80,7 +80,7 @@ public class LaboralAdd {
 
         try {
 
-            BD = new TaskExecuteHttpHandler(service, parametros);
+            BD = new TaskExecuteHttpHandler(service, parametros, CONTEXTO);
             String resultado="";
             try {
                 resultado = BD.execute().get();
@@ -92,7 +92,7 @@ public class LaboralAdd {
                 contenido += " Funcion: SendServerNewLaboral try 2#!#";
                 contenido += "Clase : laboralAdd.java #!#";
                 contenido += e.getMessage();
-                new ServicesPeticion().SaveError(contenido);
+                new ServicesPeticion(CONTEXTO).SaveError(contenido);
             }
 
 
@@ -116,7 +116,7 @@ public class LaboralAdd {
             contenido += " Funcion: SendServerNewLaboral try 1 #!#";
             contenido += "Clase : laboralAdd.java #!#";
             contenido += e.getMessage();
-            new ServicesPeticion().SaveError(contenido);
+            new ServicesPeticion(CONTEXTO).SaveError(contenido);
 
         }
 
@@ -163,7 +163,7 @@ public class LaboralAdd {
 
         try {
 
-            BD = new TaskExecuteHttpHandler(service, parametros);
+            BD = new TaskExecuteHttpHandler(service, parametros, CONTEXTO);
             String resultado="";
             try {
                 resultado = BD.execute().get();
@@ -175,7 +175,7 @@ public class LaboralAdd {
                 contenido += " Funcion: SendServerNewLaboralStatus try 2#!#";
                 contenido += "Clase : laboralAdd.java #!#";
                 contenido += e.getMessage();
-                new ServicesPeticion().SaveError(contenido);
+                new ServicesPeticion(CONTEXTO).SaveError(contenido);
             }
 
             arrayResponse = new JSONArray( resultado ); // obtengo el array con la result del server
@@ -198,7 +198,7 @@ public class LaboralAdd {
             contenido += " Funcion: SendServerNewLaboralStatus try 1 #!#";
             contenido += "Clase : laboralAdd.java #!#";
             contenido += e.getMessage();
-            new ServicesPeticion().SaveError(contenido);
+            new ServicesPeticion(CONTEXTO).SaveError(contenido);
 
         }
 

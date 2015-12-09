@@ -11,25 +11,32 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageButton
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:id="@+id/cam_take_evidencia"
-            android:src="@drawable/abc_btn_radio_to_on_mtrl_015"
-            android:background="@color/backgroundBotton"
-            android:layout_marginTop="5dp"
-            android:contentDescription="@string/cam_btn"
-            android:onClick="getCamara" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp">
 
-        <ImageButton
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:id="@+id/send_evidencia"
-            android:background="@color/backgroundBotton"
-            android:layout_marginTop="5dp"
-            android:contentDescription="@string/send_evidencia"
-            android:src="@drawable/abc_ic_menu_share_mtrl_alpha"
-            android:onClick="Uploader" />
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:id="@+id/cam_take_evidencia"
+                android:src="@drawable/ic_cam_start"
+                android:background="@color/backgroundBotton"
+                android:contentDescription="@string/cam_btn"
+                android:onClick="getCamara"
+                android:layout_weight="1"
+                android:layout_marginRight="2dp" />
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:id="@+id/send_evidencia"
+                android:background="@color/backgroundBotton"
+                android:contentDescription="@string/send_evidencia"
+                android:onClick="Uploader"
+                android:layout_weight="1"
+                android:layout_marginLeft="2dp" />
+        </TableRow>
 
         <ImageView
             android:layout_width="match_parent"
@@ -38,6 +45,13 @@
             android:layout_marginTop="5dp"
             android:contentDescription="@string/img_evidencia"
             android:scaleType="fitCenter"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/ItinerarioId"
+            android:visibility="invisible" />
 
     </LinearLayout>
 </FrameLayout>

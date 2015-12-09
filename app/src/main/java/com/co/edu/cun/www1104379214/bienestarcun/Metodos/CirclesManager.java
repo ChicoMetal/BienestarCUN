@@ -70,7 +70,7 @@ public class CirclesManager {
             contenido += " Funcion: SearchChatPendientes #!#";
             contenido += "Clase : CircleList.java #!#";
             contenido += e.getMessage();
-            new ServicesPeticion().SaveError(contenido);
+            new ServicesPeticion(CONTEXTO).SaveError(contenido);
         }
 
         return resultResponse;
@@ -117,7 +117,7 @@ public class CirclesManager {
             contenido += " Funcion: getIdUser #!#";
             contenido += "Clase : CircleList.java #!#";
             contenido += e.getMessage();
-            new ServicesPeticion().SaveError(contenido);
+            new ServicesPeticion(CONTEXTO).SaveError(contenido);
         }
 
         return null;
@@ -136,7 +136,7 @@ public class CirclesManager {
                 {"user",idUser}
         };
 
-        BD = new TaskExecuteHttpHandler(service, parametros);
+        BD = new TaskExecuteHttpHandler(service, parametros, CONTEXTO);
         String resultado="";
         try {
             resultado = BD.execute().get();
@@ -147,7 +147,7 @@ public class CirclesManager {
             contenido += " Funcion: GetCirclesExists #!#";
             contenido += "Clase : CircleManager.java #!#";
             contenido += e.getMessage();
-            new ServicesPeticion().SaveError(contenido);
+            new ServicesPeticion(CONTEXTO).SaveError(contenido);
         }
 
         try {
@@ -177,7 +177,7 @@ public class CirclesManager {
             contenido += " Funcion: GetChatPendientesExists #!#";
             contenido += "Clase : CircleManager.java #!#";
             contenido += e.getMessage();
-            new ServicesPeticion().SaveError(contenido);
+            new ServicesPeticion(CONTEXTO).SaveError(contenido);
         }
 
         return arrayResponse;
@@ -206,7 +206,7 @@ public class CirclesManager {
 
         try {
 
-            BD = new TaskExecuteHttpHandler(service, parametros);
+            BD = new TaskExecuteHttpHandler(service, parametros, CONTEXTO);
             String resultado="";
             try {
                 resultado = BD.execute().get();
@@ -217,7 +217,7 @@ public class CirclesManager {
                 contenido += " Funcion: SaveCircleUser #!#";
                 contenido += "Clase : CircleManager.java #!#";
                 contenido += e.getMessage();
-                new ServicesPeticion().SaveError(contenido);
+                new ServicesPeticion(CONTEXTO).SaveError(contenido);
             }
 
 
@@ -240,7 +240,7 @@ public class CirclesManager {
             contenido += " Funcion: SaveCircleUser #!#";
             contenido += "Clase : CircleManager.java #!#";
             contenido += e.getMessage();
-            new ServicesPeticion().SaveError(contenido);
+            new ServicesPeticion(CONTEXTO).SaveError(contenido);
         }
 
     }
@@ -259,7 +259,7 @@ public class CirclesManager {
 
         try {
 
-            BD = new TaskExecuteHttpHandler(service, parametros);
+            BD = new TaskExecuteHttpHandler(service, parametros, CONTEXTO);
             String resultado="";
             try {
                 resultado = BD.execute().get();
@@ -271,7 +271,7 @@ public class CirclesManager {
                 contenido += " Funcion: DeleteCircleUser #!#";
                 contenido += "Clase : CircleManager.java #!#";
                 contenido += e.getMessage();
-                new ServicesPeticion().SaveError(contenido);
+                new ServicesPeticion(CONTEXTO).SaveError(contenido);
             }
 
 
@@ -294,7 +294,7 @@ public class CirclesManager {
             contenido += " Funcion: SaveCircleUser #!#";
             contenido += "Clase : CircleManager.java #!#";
             contenido += e.getMessage();
-            new ServicesPeticion().SaveError(contenido);
+            new ServicesPeticion(CONTEXTO).SaveError(contenido);
         }
 
     }

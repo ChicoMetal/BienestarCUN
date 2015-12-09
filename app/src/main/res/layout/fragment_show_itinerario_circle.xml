@@ -4,6 +4,16 @@
     android:layout_height="match_parent"
     android:id="@+id/contentShowItinerarios">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="@string/lb_guide_showItinerario"
+        android:id="@+id/textView12"
+        android:background="@color/BackGroundGuide"
+        android:gravity="center_vertical"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/hyper_show_itinerario_circle"
         android:layout_width="match_parent"

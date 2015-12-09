@@ -4,6 +4,16 @@
     android:layout_height="match_parent"
     android:id="@+id/contentChatPendientes">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="@string/ld_guide_chatPendientes"
+        android:id="@+id/textView8"
+        android:background="@color/BackGroundGuide"
+        android:gravity="center_vertical"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/hyper_chat_list"
         android:layout_width="match_parent"

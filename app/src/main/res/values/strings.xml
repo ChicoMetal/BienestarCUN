@@ -54,5 +54,11 @@
     <string name="img_evidencia">img_evidencia</string>
     <string name="send_evidencia">Send</string>
     <string name="btn_status_laboral_update">update_status_laboral</string>
+    <string name="lb_guide_addActivity">Toca, para vincularte a una actividad</string>
+    <string name="ld_guide_chatPendientes">Toca, para elejir un chat.</string>
+    <string name="lb_guide_delActivity">Toca, para desvincularte de una actividad</string>
+    <string name="lb_guide_showItinerarios">Toca una actividad, para mostrar itinerarios</string>
+    <string name="lb_guide_hideNotifications">Toca, para ocultar una notificacion</string>
+    <string name="lb_guide_showItinerario">Toca un itinerario, para administrarlo</string>
 
 </resources>

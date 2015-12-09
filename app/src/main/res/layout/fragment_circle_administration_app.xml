@@ -13,17 +13,21 @@
 
         <EditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:id="@+id/txtNameActivitieNew"
-            android:hint="@string/txt_name_itinerario" />
+            android:hint="@string/txt_name_itinerario"
+            android:background="@color/BackgroundEDText"
+            android:layout_marginTop="3dp" />
 
         <EditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:inputType="textMultiLine"
             android:ems="10"
             android:id="@+id/txtDetailNewActiviti"
-            android:hint="@string/txt_details_itinerario" />
+            android:hint="@string/txt_details_itinerario"
+            android:background="@color/BackgroundEDText"
+            android:layout_marginTop="3dp" />
 
         <TextView
             android:layout_width="wrap_content"

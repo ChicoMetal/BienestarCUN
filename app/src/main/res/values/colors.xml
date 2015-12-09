@@ -16,4 +16,6 @@
     <color name="accent_transparency_receptor">#5c3bdf</color>
     <color name="BackGroundHome">#3A3435</color>
 
+    <color name="BackGroundGuide">#e0f195</color>
+
 </resources>

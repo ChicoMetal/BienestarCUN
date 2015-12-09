@@ -13,22 +13,27 @@
 
         <EditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:id="@+id/txt_nameEmpresa"
-            android:hint="@string/name_empresa_laboral" />
+            android:hint="@string/name_empresa_laboral"
+            android:background="@color/BackgroundEDText"
+            android:layout_marginTop="3dp" />
 
         <EditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:id="@+id/txt_cargoEmpresa"
-            android:hint="@string/cargo_empresa_laboral" />
+            android:hint="@string/cargo_empresa_laboral"
+            android:background="@color/BackgroundEDText"
+            android:layout_marginTop="3dp" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/lb_startLaboral"
-            android:id="@+id/textView6" />
+            android:id="@+id/textView6"
+            android:gravity="center" />
 
         <DatePicker
             android:layout_width="wrap_content"
@@ -40,11 +45,12 @@
             android:layout_weight="1" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/lb_endLaboral"
             android:id="@+id/textView7"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:gravity="center" />
 
         <DatePicker
             android:layout_width="wrap_content"

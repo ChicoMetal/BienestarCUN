@@ -82,8 +82,6 @@ public class HypedChatAdapter extends RecyclerView.Adapter<HypedChatAdapter.Hype
         ImageView imgAdmin;
         ImageView imgcard;
 
-
-
         public HypedChatViewHolder(final View itemView) {
             super(itemView);
 

@@ -92,9 +92,6 @@ public class ChatPendientes extends Fragment {
 
         mHyperdChatList = (RecyclerView) root.findViewById(R.id.hyper_chat_list);
 
-        IconManager icon = new IconManager();
-        icon.SetIconBtnAsistencias((ImageButton) root.findViewById(R.id.btn_sendAsistencias));
-        icon.setBackgroundApp((LinearLayout)root.findViewById(R.id.contentChatPendientes));
         SetudActivitiesList();
 
         try {

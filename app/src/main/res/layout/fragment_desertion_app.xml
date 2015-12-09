@@ -9,14 +9,16 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical">
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/et_idDesertor"
             android:hint="@string/desertion_txt_id"
-            android:layout_marginTop="10dp" />
+            android:layout_marginTop="10dp"
+            android:background="@color/BackgroundEDText" />
 
         <RadioGroup
             android:layout_width="match_parent"

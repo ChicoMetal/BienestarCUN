@@ -313,7 +313,7 @@ public class ChatPsicologiaManager {
         }
 
         if ( !Mensaje.equals("")){
-            contentChat.addView(  GenerarTextView(0,Mensaje) );
+            contentChat.addView(GenerarTextView(0, Mensaje));
             Contentmensaje.setText("");
         }
 
@@ -399,6 +399,70 @@ public class ChatPsicologiaManager {
         texto.setText(mensaje);
 
         return texto;
+
+    }
+
+    public String getIdPsicologiaUser(String idUser) {
+        //busco el id del usuario encargado del area de psicologia
+
+        String[][] values;
+        String service = "chatPsicologia/getUserPsicologo.php";
+
+
+        JSONArray arrayResponse = null;
+
+        values = new String[][]{ //array parametros a enviar
+                {"usuario",idUser}
+        };
+
+        BD = new TaskExecuteHttpHandler(service, values,CONTEXTO);
+        String resultado="";
+        try {
+            resultado = BD.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }catch (Exception e){
+            String contenido = "Error desde android #!#";
+            contenido += " Funcion: getIdPsicologiaUser #!#";
+            contenido += "Clase : ChatPsicologiaManager.java #!#";
+            contenido += e.getMessage();
+            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+        }
+
+        try {
+
+            arrayResponse = new JSONArray( resultado ); // obtengo el array con la result del server
+
+            if( arrayResponse.getString(0).toString().equals("msm")  ){
+
+                Toast.makeText(CONTEXTO,
+                        mss.msmServices.getString(arrayResponse.getString(1).toString()),
+                        Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
+
+                return null;
+
+            }else {
+
+                JSONObject result = arrayResponse.getJSONArray(0).getJSONObject(0);
+                JSONObject index = arrayResponse.getJSONObject(1);
+
+                return result.getString( index.getString("0") );
+
+            }
+
+        } catch (JSONException e) {
+
+            e.printStackTrace();
+
+        }catch (Exception e){
+            String contenido = "Error desde android #!#";
+            contenido += " Funcion: getIdPsicologiaUser #!#";
+            contenido += "Clase : ChatPsicologiaManager.java #!#";
+            contenido += e.getMessage();
+            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+        }
+
+        return null;
 
     }
 }

@@ -30,8 +30,8 @@ public class ChatPsicologa_app extends Fragment {
 
 
     // TODO: Rename and change types of parameters
-    private static int mRemitente;
-    private static int mReceptor;
+    private static long mRemitente;
+    private static long mReceptor;
 
     public TextView TVRemitente, TVReceptor;
 
@@ -46,7 +46,7 @@ public class ChatPsicologa_app extends Fragment {
      * @return A new instance of fragment ChatPsicologa_app.
      */
     // TODO: Rename and change types and number of parameters
-    public static ChatPsicologa_app newInstance(int receptor, int remitente) {
+    public static ChatPsicologa_app newInstance(long receptor, long remitente) {
         ChatPsicologa_app fragment = new ChatPsicologa_app();
 
         mRemitente = remitente;

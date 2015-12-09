@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
     CodMessajes mss = new CodMessajes();
     ServicesPeticion services;
     IconManager icon;
-    GeneralCode code;
+    GeneralCode code = null;
     DBManager db;
 
 
@@ -310,12 +310,13 @@ public class MainActivity extends AppCompatActivity {
             case R.id.nav_new_chat:
 
                 ChatPsicologiaManager chatCod = new ChatPsicologiaManager(getApplicationContext(), db);
-                if( chatCod.ComproveUser() ){
+
+                if( chatCod.ComproveUser() ){//dependiendo si el usuario es psicologo o no
                     FragmentManager fragmentManagerChat = getSupportFragmentManager();
                     fragment =  ChatPendientes.newInstance(db, fragmentManagerChat);
                 }else{
-                    //TODO buscar id de la psicologa
-                    fragment =  ChatPsicologa_app.newInstance( 7, Integer.parseInt( chatCod.getIdUser() ));//se le envia 0 dado que aun no tengo el destinatario
+
+                    fragment =  ChatPsicologa_app.newInstance( getPsicologiaUser() , Integer.parseInt( chatCod.getIdUser() ));//se le envia 0 dado que aun no tengo el destinatario
                 }
 
                 break;
@@ -364,7 +365,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setnameUserHead() {
-        code = new GeneralCode(db, getApplicationContext());
+        if( code == null)
+            code = new GeneralCode(db, getApplicationContext());
+
         code.getNameUser((TextView) findViewById(R.id.lb_nameUser));//peticion para mostrar nombre de usuario en el header del menu
     }
 
@@ -484,6 +487,18 @@ public class MainActivity extends AppCompatActivity {
         String idItinerario = contentIdItinerario.getText().toString();
 
         new ItinerariosManager( getApplicationContext() ).SaveAsistenciasItinerario(layout, idItinerario);
+    }
+
+    private long getPsicologiaUser(){
+        if( code == null )
+            code = new GeneralCode(db, getApplicationContext());
+
+        String idUserPsicologia =  new ChatPsicologiaManager(getApplicationContext(), db).getIdPsicologiaUser( code.getIdUser() );
+
+        if( idUserPsicologia != null )
+            return Long.parseLong( idUserPsicologia );
+        else
+            return 0;
     }
 
     //********************************************

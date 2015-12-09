@@ -46,8 +46,8 @@
     <string name="ejemAddEvidencias">+</string>
     <string name="home_text">Bienestar!</string>
     <string name="lb_bienvenida_home">Hola, bienvenido</string>
-    <string name="lb_startLaboral">Inicio</string>
-    <string name="lb_endLaboral">Fin</string>
+    <string name="lb_startLaboral">Cuando iniciastes?</string>
+    <string name="lb_endLaboral">Cuando finalizastes?</string>
     <string name="lb_dateItinerario">Fecha</string>
     <string name="lb_hourItinerario">Hora</string>
     <string name="cam_btn">btn_cam</string>

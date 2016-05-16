@@ -9,11 +9,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
-import com.co.edu.cun.www1104379214.bienestarcun.Metodos.CirclesManager;
-import com.co.edu.cun.www1104379214.bienestarcun.Metodos.IconManager;
+import com.co.edu.cun.www1104379214.bienestarcun.Funciones.CirclesManager;
+import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.CircleList;

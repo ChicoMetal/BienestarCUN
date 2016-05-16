@@ -9,12 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
-import com.co.edu.cun.www1104379214.bienestarcun.Metodos.ChatPsicologiaManager;
-import com.co.edu.cun.www1104379214.bienestarcun.Metodos.CirclesManager;
-import com.co.edu.cun.www1104379214.bienestarcun.Metodos.IconManager;
+import com.co.edu.cun.www1104379214.bienestarcun.Funciones.ChatPsicologiaManager;
+import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ChatList;

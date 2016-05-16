@@ -22,7 +22,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.format.Time;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,15 +35,15 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.co.edu.cun.www1104379214.bienestarcun.Metodos.ChatPsicologiaManager;
-import com.co.edu.cun.www1104379214.bienestarcun.Metodos.DesertionManager;
-import com.co.edu.cun.www1104379214.bienestarcun.Metodos.GeneralCode;
-import com.co.edu.cun.www1104379214.bienestarcun.Metodos.IconManager;
-import com.co.edu.cun.www1104379214.bienestarcun.Metodos.AdapterUserMenu;
-import com.co.edu.cun.www1104379214.bienestarcun.Metodos.ItinerariosManager;
-import com.co.edu.cun.www1104379214.bienestarcun.Metodos.LaboralAdd;
-import com.co.edu.cun.www1104379214.bienestarcun.Metodos.NewItinerarioManager;
-import com.co.edu.cun.www1104379214.bienestarcun.Metodos.ServerUri;
+import com.co.edu.cun.www1104379214.bienestarcun.Funciones.ChatPsicologiaManager;
+import com.co.edu.cun.www1104379214.bienestarcun.Funciones.DesertionManager;
+import com.co.edu.cun.www1104379214.bienestarcun.Funciones.GeneralCode;
+import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
+import com.co.edu.cun.www1104379214.bienestarcun.Funciones.AdapterUserMenu;
+import com.co.edu.cun.www1104379214.bienestarcun.Funciones.ItinerariosManager;
+import com.co.edu.cun.www1104379214.bienestarcun.Funciones.LaboralAdd;
+import com.co.edu.cun.www1104379214.bienestarcun.Funciones.NewItinerarioManager;
+import com.co.edu.cun.www1104379214.bienestarcun.Funciones.ServerUri;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.ChatPendientes;
@@ -64,7 +63,6 @@ import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Show_itinerari
 
 import org.apache.http.HttpVersion;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
@@ -102,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
     IconManager icon;
     GeneralCode code = null;
     DBManager db;
+    ChatPsicologiaManager ChatCode;
 
 
     NavigationView navigationView;
@@ -309,14 +308,15 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.nav_new_chat:
 
-                ChatPsicologiaManager chatCod = new ChatPsicologiaManager(getApplicationContext(), db);
 
-                if( chatCod.ComproveUser() ){//dependiendo si el usuario es psicologo o no
+                ChatPsicologiaManager ChatCodeInflateNull = new ChatPsicologiaManager(getApplicationContext(), db );
+
+                if( ChatCodeInflateNull.ComproveUser() ){//dependiendo si el usuario es psicologo o no
                     FragmentManager fragmentManagerChat = getSupportFragmentManager();
                     fragment =  ChatPendientes.newInstance(db, fragmentManagerChat);
                 }else{
 
-                    fragment =  ChatPsicologa_app.newInstance( getPsicologiaUser() , Integer.parseInt( chatCod.getIdUser() ));//se le envia 0 dado que aun no tengo el destinatario
+                    fragment =  ChatPsicologa_app.newInstance( getPsicologiaUser() , Integer.parseInt( ChatCodeInflateNull.getIdUser() ));//se le envia 0 dado que aun no tengo el destinatario
                 }
 
                 break;
@@ -401,23 +401,31 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void AddMensaje(View v){//comenzar chat, usuarios distintos a psicolog@
+       TextView contentMsm = (TextView) findViewById(R.id.textoPruebaMsm);
+        if(ChatCode == null ) {//si aun no se instancia la clase, la instancio
 
+
+
+        }
 
         TextView ContenRemitente, ContentReceptor;
         EditText mensaje;
-        LinearLayout contentChat;
 
         ContenRemitente = (TextView) findViewById(R.id.TVRemitente);
         ContentReceptor = (TextView) findViewById(R.id.TVRReceptor);
         mensaje = (EditText) findViewById(R.id.etMensajePsicologia);
-        contentChat = (LinearLayout) findViewById(R.id.SVContentMsm);
 
-        ChatPsicologiaManager chatMensajes = new ChatPsicologiaManager(getApplicationContext(), db);
-
-        chatMensajes.AddMesagesChat(mensaje, ContenRemitente, ContentReceptor, contentChat);
-
+        ChatCode.AddMesagesChat(mensaje, ContenRemitente, ContentReceptor);
 
     }
+
+    public void StartService(View v){
+        LinearLayout contentChat;
+        contentChat = (LinearLayout) findViewById(R.id.SVContentMsm);
+        ChatCode = new ChatPsicologiaManager(getApplicationContext(), db, contentChat);
+    }
+
+
 
     public void SaveReportDesertion( View v ){//guadar reporte de desercio
 
@@ -493,7 +501,7 @@ public class MainActivity extends AppCompatActivity {
         if( code == null )
             code = new GeneralCode(db, getApplicationContext());
 
-        String idUserPsicologia =  new ChatPsicologiaManager(getApplicationContext(), db).getIdPsicologiaUser( code.getIdUser() );
+        String idUserPsicologia =  new ChatPsicologiaManager(getApplicationContext(), db ).getIdPsicologiaUser( code.getIdUser() );
 
         if( idUserPsicologia != null )
             return Long.parseLong( idUserPsicologia );

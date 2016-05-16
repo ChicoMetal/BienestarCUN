@@ -10,12 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
-import com.co.edu.cun.www1104379214.bienestarcun.Metodos.CircleNotificationsManager;
-import com.co.edu.cun.www1104379214.bienestarcun.Metodos.IconManager;
-import com.co.edu.cun.www1104379214.bienestarcun.Metodos.Notification;
+import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
+import com.co.edu.cun.www1104379214.bienestarcun.Funciones.Notification;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.NotificationsList;

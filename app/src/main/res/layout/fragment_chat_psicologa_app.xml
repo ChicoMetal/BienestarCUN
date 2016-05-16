@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:paddingTop="50dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:clickable="false">
 
         <LinearLayout
             android:id="@+id/SVContentMsm"
@@ -21,6 +22,20 @@
 
         </LinearLayout>
     </ScrollView>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Button"
+        android:id="@+id/button"
+        android:onClick="StartService" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:id="@+id/textoPruebaMsm" />
 
     <TableRow
         android:layout_width="match_parent"

@@ -3,20 +3,17 @@ package com.co.edu.cun.www1104379214.bienestarcun.frragmentContent;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.co.edu.cun.www1104379214.bienestarcun.Metodos.IconManager;
-import com.co.edu.cun.www1104379214.bienestarcun.Metodos.ItinerariosManager;
+import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
+import com.co.edu.cun.www1104379214.bienestarcun.Funciones.ItinerariosManager;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 
 /**

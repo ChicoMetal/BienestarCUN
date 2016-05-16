@@ -3,6 +3,10 @@ package com.co.edu.cun.www1104379214.bienestarcun.Funciones;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -26,6 +30,7 @@ import com.github.nkzawa.socketio.client.Socket;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.net.URISyntaxException;
 import java.util.concurrent.ExecutionException;
@@ -34,6 +39,10 @@ import java.util.concurrent.ExecutionException;
  * Created by root on 25/11/15.
  */
 public class ChatPsicologiaManager {
+
+    private Handler mUiHandler = new Handler();
+    private MyWorkerThread mWorkerThread;
+    JSONObject Mensaje;
 
     Socket socket;
     private final static String EVENT_SEND_IDSOCKET = "saveIdSocket";
@@ -59,6 +68,7 @@ public class ChatPsicologiaManager {
         this.DB = db;
         this.CONTENTCHAT = contentchat;
 
+
         IO.Options opts = new IO.Options();
 
         opts.forceNew = false;
@@ -71,29 +81,22 @@ public class ChatPsicologiaManager {
 
         socket.connect();
 
+        mWorkerThread = new MyWorkerThread("myWorkerThread");
+        mWorkerThread.start();
+
 
         socket.on(EVENT_SEND_GET_MESSAGE, new Emitter.Listener(){
 
             @Override
             public void call(Object... args) {
 
-                JSONObject Mensaje = (JSONObject) args[0];
+                Mensaje = (JSONObject) args[0];
                 if ( !Mensaje.equals("") && CONTENTCHAT != null ){
 
-                    try {
-                        if( Mensaje.getString("Remitente").equals("7") ){
-                            AddTextHistoryChat(0, Mensaje.getString("Mensaje"));
-                            //CONTENTCHAT.addView( GenerarTextView(0, Mensaje.getString("Mensaje") ) );
+                    mWorkerThread.prepareHandler();
+                    mWorkerThread.postTask(task);
 
-                        }else{
-                            AddTextHistoryChat(1, Mensaje.getString("Mensaje"));
-                            //CONTENTCHAT.addView( GenerarTextView(1, Mensaje.getString("Mensaje") ) );
 
-                        }
-                        Log.i("RESPONSE", Mensaje.getString("Mensaje"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
                     //Log.i("RESPONSE", args[0].toString());
                 }
             }
@@ -106,6 +109,7 @@ public class ChatPsicologiaManager {
         socket.on(Socket.EVENT_CONNECT, new Emitter.Listener(){
 
             public void call(Object... args) {
+
 
 
                 JSONObject newConversasion = new JSONObject();
@@ -128,6 +132,7 @@ public class ChatPsicologiaManager {
         }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener(){
 
             public void call(Object... args) {
+                mWorkerThread.quit();
                 //socket.disconnect();
             }
 
@@ -136,10 +141,48 @@ public class ChatPsicologiaManager {
 
     }
 
+
+    final Runnable task = new Runnable() {
+
+        @Override
+        public void run() {
+
+            mUiHandler.post(new Runnable() {
+                @Override
+                public void run(){
+                    try {
+                        if( Mensaje.getString("Remitente").equals("7") ){
+                            TextView msmContent = GenerarTextView(0, Mensaje.getString("Mensaje") );
+
+                            CONTENTCHAT.addView( msmContent );
+                            //CONTENTCHAT.addView( GenerarTextView(0, Mensaje.getString("Mensaje") ) );
+
+                        }else{
+                            TextView msmContent = GenerarTextView(1, Mensaje.getString("Mensaje") );
+                            CONTENTCHAT.addView( msmContent );
+
+                            //CONTENTCHAT.addView( GenerarTextView(1, Mensaje.getString("Mensaje") ) );
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    Toast.makeText(CONTEXTO,
+                            "Revibido",
+                            Toast.LENGTH_LONG)
+                            .show();
+                }
+            });
+
+
+        }
+    };
+
     private void AddTextHistoryChat(int origin, String msm){
         TextView msmContent = GenerarTextView(origin, msm );
 
-        //new AddViewsMSM(CONTEXTO, CONTENTCHAT,msmContent).execute();
+
         Log.i("RESPONSE", msm);
     }
 
@@ -571,6 +614,27 @@ public class ChatPsicologiaManager {
         }
 
         return null;
+
+    }
+}
+
+class MyWorkerThread extends HandlerThread {
+
+    private Handler mWorkerHandler;
+
+
+    public MyWorkerThread(String name) {
+        super(name);
+
+    }
+
+    public void postTask(Runnable task){
+        mWorkerHandler.post(task);
+
+    }
+
+    public void prepareHandler(){
+        mWorkerHandler = new Handler(getLooper());
 
     }
 }

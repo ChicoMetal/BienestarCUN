@@ -168,10 +168,6 @@ public class ChatPsicologiaManager {
                         e.printStackTrace();
                     }
 
-                    Toast.makeText(CONTEXTO,
-                            "Revibido",
-                            Toast.LENGTH_LONG)
-                            .show();
                 }
             });
 
@@ -179,12 +175,6 @@ public class ChatPsicologiaManager {
         }
     };
 
-    private void AddTextHistoryChat(int origin, String msm){
-        TextView msmContent = GenerarTextView(origin, msm );
-
-
-        Log.i("RESPONSE", msm);
-    }
 
     public ChatPsicologiaManager(Context contexto, DBManager db  ) {//constructor para instanciar metodos que no necesiten de la interfaz
 

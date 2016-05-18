@@ -314,6 +314,7 @@ public class MainActivity extends AppCompatActivity {
                 if( ChatCodeInflateNull.ComproveUser() ){//dependiendo si el usuario es psicologo o no
                     FragmentManager fragmentManagerChat = getSupportFragmentManager();
                     fragment =  ChatPendientes.newInstance(db, fragmentManagerChat);
+
                 }else{
 
                     fragment =  ChatPsicologa_app.newInstance( getPsicologiaUser() , Integer.parseInt( ChatCodeInflateNull.getIdUser() ));//se le envia 0 dado que aun no tengo el destinatario
@@ -398,33 +399,6 @@ public class MainActivity extends AppCompatActivity {
         TextView nameUser = (TextView) findViewById(R.id.lb_nameUser);
         nameUser.setText("User");
     }
-
-
-    public void AddMensaje(View v){//comenzar chat, usuarios distintos a psicolog@
-       TextView contentMsm = (TextView) findViewById(R.id.textoPruebaMsm);
-        if(ChatCode == null ) {//si aun no se instancia la clase, la instancio
-
-
-
-        }
-
-        TextView ContenRemitente, ContentReceptor;
-        EditText mensaje;
-
-        ContenRemitente = (TextView) findViewById(R.id.TVRemitente);
-        ContentReceptor = (TextView) findViewById(R.id.TVRReceptor);
-        mensaje = (EditText) findViewById(R.id.etMensajePsicologia);
-
-        ChatCode.AddMesagesChat(mensaje, ContenRemitente, ContentReceptor);
-
-    }
-
-    public void StartService(View v){
-        LinearLayout contentChat;
-        contentChat = (LinearLayout) findViewById(R.id.SVContentMsm);
-        ChatCode = new ChatPsicologiaManager(getApplicationContext(), db, contentChat);
-    }
-
 
 
     public void SaveReportDesertion( View v ){//guadar reporte de desercio

@@ -40,13 +40,7 @@ import java.util.concurrent.ExecutionException;
  */
 public class ChatPsicologiaManager {
 
-    private Handler mUiHandler = new Handler();
-    private MyWorkerThread mWorkerThread;
-    JSONObject Mensaje;
 
-    Socket socket;
-    private final static String EVENT_SEND_IDSOCKET = "saveIdSocket";
-    private final static String EVENT_SEND_GET_MESSAGE = "new message";
 
 
     Context CONTEXTO;
@@ -69,119 +63,17 @@ public class ChatPsicologiaManager {
         this.CONTENTCHAT = contentchat;
 
 
-        IO.Options opts = new IO.Options();
-
-        opts.forceNew = false;
-        opts.reconnection = true;
-        try{
-            socket = IO.socket(ServerUri.URL_SOCKET, opts);
-        }catch (URISyntaxException e){
-            e.printStackTrace();
-        }
-
-        socket.connect();
-
-        mWorkerThread = new MyWorkerThread("myWorkerThread");
-        mWorkerThread.start();
-
-
-        socket.on(EVENT_SEND_GET_MESSAGE, new Emitter.Listener(){
-
-            @Override
-            public void call(Object... args) {
-
-                Mensaje = (JSONObject) args[0];
-                if ( !Mensaje.equals("") && CONTENTCHAT != null ){
-
-                    mWorkerThread.prepareHandler();
-                    mWorkerThread.postTask(task);
-
-
-                    //Log.i("RESPONSE", args[0].toString());
-                }
-            }
-        });
-
-
-        final String receptor = "7".toString();
-        final String remitente = getIdUser();
-
-        socket.on(Socket.EVENT_CONNECT, new Emitter.Listener(){
-
-            public void call(Object... args) {
-
-
-
-                JSONObject newConversasion = new JSONObject();
-                try{//objeto con la informacion de la conversasion iniciada
-
-                    String socketId = socket.id().toString();
-
-                    newConversasion.put("remitente", remitente);
-                    newConversasion.put("receptor", receptor);
-                    newConversasion.put("socket", socketId);
-                    Log.i("DATOS",newConversasion.toString());
-                }catch(Exception e){
-                    Log.i("ERROR", e.getMessage());
-                }
-
-                // Emit event
-                socket.emit(EVENT_SEND_IDSOCKET, newConversasion);//envio la informasion al server para guardar el socket
-
-            }
-        }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener(){
-
-            public void call(Object... args) {
-                mWorkerThread.quit();
-                //socket.disconnect();
-            }
-
-        });
-
 
     }
 
 
-    final Runnable task = new Runnable() {
 
-        @Override
-        public void run() {
-
-            mUiHandler.post(new Runnable() {
-                @Override
-                public void run(){
-                    try {
-                        if( Mensaje.getString("Remitente").equals("7") ){
-                            TextView msmContent = GenerarTextView(0, Mensaje.getString("Mensaje") );
-
-                            CONTENTCHAT.addView( msmContent );
-                            //CONTENTCHAT.addView( GenerarTextView(0, Mensaje.getString("Mensaje") ) );
-
-                        }else{
-                            TextView msmContent = GenerarTextView(1, Mensaje.getString("Mensaje") );
-                            CONTENTCHAT.addView( msmContent );
-
-                            //CONTENTCHAT.addView( GenerarTextView(1, Mensaje.getString("Mensaje") ) );
-
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-            });
-
-
-        }
-    };
 
 
     public ChatPsicologiaManager(Context contexto, DBManager db  ) {//constructor para instanciar metodos que no necesiten de la interfaz
 
         this.CONTEXTO = contexto;
         this.DB = db;
-
-        Log.i("MSM","hola");
 
     }
 
@@ -410,7 +302,7 @@ public class ChatPsicologiaManager {
         try {
             if( !Mensaje.equals("") ) {
 
-             /*   JSONArray resultMensajes;
+             /*JSONArray resultMensajes;
 
                 resultMensajes = GetMensajesPendientesExists(service, Remitente, Receptor,Mensaje);
 
@@ -430,19 +322,6 @@ public class ChatPsicologiaManager {
                     }
 
                 } */
-
-                JSONObject sendMensaje = new JSONObject();
-                try{//objeto con la informacion de la conversasion iniciada
-                    sendMensaje.put("Mensaje", Mensaje );
-                    sendMensaje.put("Remitente", Remitente);
-                    sendMensaje.put("Destinatario", Receptor);
-
-                }catch(Exception e){
-                    Log.i("ERROR", e.getMessage());
-                }
-
-                /* Emit event */
-                socket.emit(EVENT_SEND_GET_MESSAGE, sendMensaje);//envio la informasion al server para guardar el socket
 
             }
 
@@ -519,29 +398,6 @@ public class ChatPsicologiaManager {
     }
 
 
-    private TextView GenerarTextView(int origen, String mensaje){//generar textview
-
-
-        TextView texto = new TextView(CONTEXTO);
-
-        if( origen == 0){
-
-            texto.setBackgroundResource(R.color.accent_transparency_remitente);
-            texto.setGravity(Gravity.LEFT);
-
-        }else{
-            texto.setBackgroundResource(R.color.accent_transparency_receptor);
-            texto.setGravity(Gravity.RIGHT);
-        }
-
-        texto.setTextColor(CONTEXTO.getResources().getColor(R.color.textBlack));
-        texto.setPadding(30, 5, 30, 5);
-        texto.setTextSize(15);
-        texto.setText(mensaje);
-
-        return texto;
-
-    }
 
     public String getIdPsicologiaUser(String idUser) {
         //busco el id del usuario encargado del area de psicologia
@@ -608,23 +464,3 @@ public class ChatPsicologiaManager {
     }
 }
 
-class MyWorkerThread extends HandlerThread {
-
-    private Handler mWorkerHandler;
-
-
-    public MyWorkerThread(String name) {
-        super(name);
-
-    }
-
-    public void postTask(Runnable task){
-        mWorkerHandler.post(task);
-
-    }
-
-    public void prepareHandler(){
-        mWorkerHandler = new Handler(getLooper());
-
-    }
-}

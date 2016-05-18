@@ -11,5 +11,5 @@ public class ServerUri {
     //public static final String Server = "bienestarcun.webcindario.com/core/android/";
 
     //uri server node
-    final static String URL_SOCKET = "http://192.168.1.107:3000";
+    public static final String URL_SOCKET = "http://192.168.1.107:3000";
 }

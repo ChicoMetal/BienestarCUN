@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
-import com.co.edu.cun.www1104379214.bienestarcun.Funciones.ServerUri;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServerUri;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.TaskExecuteHttpHandler;
@@ -30,7 +30,6 @@ import com.github.nkzawa.socketio.client.Socket;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.net.URISyntaxException;
 import java.util.concurrent.ExecutionException;

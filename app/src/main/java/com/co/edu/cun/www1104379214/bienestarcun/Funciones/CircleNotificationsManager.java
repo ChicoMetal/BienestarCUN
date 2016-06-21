@@ -2,10 +2,8 @@ package com.co.edu.cun.www1104379214.bienestarcun.Funciones;
 
 import android.content.Context;
 
-import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
-import com.co.edu.cun.www1104379214.bienestarcun.WebServices.httpHandler;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -16,9 +14,7 @@ import org.json.JSONObject;
 public class CircleNotificationsManager {
 
 
-    httpHandler BD = new httpHandler();
-    String[][] parametros;
-    CodMessajes mss = new CodMessajes();
+
     Context CONTEXTO;
     DBManager DB;
     String[] tipeNotification;

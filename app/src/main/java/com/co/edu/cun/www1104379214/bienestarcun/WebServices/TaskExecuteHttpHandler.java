@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
-import com.co.edu.cun.www1104379214.bienestarcun.Funciones.ServerUri;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -17,6 +16,9 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
@@ -92,7 +94,11 @@ public class TaskExecuteHttpHandler extends AsyncTask<Void, Void, String> {
 
         String result = null;
 
-        HttpClient httpClient = new DefaultHttpClient();
+        HttpParams httpParameters = new BasicHttpParams();
+        HttpConnectionParams.setConnectionTimeout(httpParameters, 5000);
+        HttpConnectionParams.setSoTimeout(httpParameters, 10000);
+
+        HttpClient httpClient = new DefaultHttpClient(httpParameters);
         HttpContext localContext = new BasicHttpContext();
         HttpPost httpPost = new HttpPost( Server + services);
         httpPost.setHeader("charset", "utf-8");

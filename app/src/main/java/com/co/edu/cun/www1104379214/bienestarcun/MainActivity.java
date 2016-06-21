@@ -43,7 +43,7 @@ import com.co.edu.cun.www1104379214.bienestarcun.Funciones.AdapterUserMenu;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.ItinerariosManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.LaboralAdd;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.NewItinerarioManager;
-import com.co.edu.cun.www1104379214.bienestarcun.Funciones.ServerUri;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServerUri;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.ChatPendientes;
@@ -348,7 +348,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void BDManager(){
 
-        db = new DBManager( getApplicationContext() );//crea la base de datos local
+        db = new DBManager( getApplicationContext() );//crea la base de datos local o la instancia si esta creada
 
     }
 
@@ -365,7 +365,7 @@ public class MainActivity extends AppCompatActivity {
         //services.ListPerson(getApplicationContext());
     }
 
-    private void setnameUserHead() {
+    private void setnameUserHead() {//cambiar el nombre del usuario (si es posible) y mostrarlo en el menu lateral
         if( code == null)
             code = new GeneralCode(db, getApplicationContext());
 

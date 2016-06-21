@@ -25,7 +25,8 @@ public class CodMessajes {
 
     //datos usuario por default
 
-    public static final String DftUsrId = "1000000000";
+    //TODO: agregar una identificacion para que el usuario la elija y asi pertenezca a la sede que seleccione (las sedes deben ingresarse manualmente)
+    public static final String DftUsrId = "5000000000";
     public static final String DftUsrName = "usuario";
     public static final String DftUsrPass = "usuario";
     public static final String DftUsrToken = "default";

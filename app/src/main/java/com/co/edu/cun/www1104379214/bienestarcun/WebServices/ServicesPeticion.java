@@ -1,22 +1,15 @@
 package com.co.edu.cun.www1104379214.bienestarcun.WebServices;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.text.Editable;
-import android.util.Log;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
-import com.co.edu.cun.www1104379214.bienestarcun.WebServices.httpHandler;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.math.BigInteger;
 import java.util.concurrent.ExecutionException;
 
 /**

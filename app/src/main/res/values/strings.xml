@@ -59,6 +59,6 @@
     <string name="lb_guide_delActivity">Toca, para desvincularte de una actividad</string>
     <string name="lb_guide_showItinerarios">Toca una actividad, para mostrar itinerarios</string>
     <string name="lb_guide_hideNotifications">Toca, para ocultar una notificacion</string>
-    <string name="lb_guide_showItinerario">Toca un itinerario, para administrarlo</string>
+    <string name="lb_guide_showItinerario">Itinerarios actuales</string>
 
 </resources>

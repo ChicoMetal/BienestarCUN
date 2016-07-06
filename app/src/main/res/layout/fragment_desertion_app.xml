@@ -50,7 +50,8 @@
             android:layout_gravity="center_horizontal"
             android:contentDescription="@string/ibt_sendDesertion"
             android:layout_marginTop="10dp"
-            android:onClick="SaveReportDesertion" />
+            android:onClick="SaveReportDesertion"
+            android:src="@android:drawable/ic_menu_send" />
 
     </LinearLayout>
 </FrameLayout>

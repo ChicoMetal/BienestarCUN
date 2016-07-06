@@ -72,7 +72,6 @@ public class HistoryLaboral_app extends Fragment {
         View root = inflater.inflate(R.layout.fragment_history_laboral_app, container, false);
 
         IconManager icon = new IconManager();
-        icon.SetIconBtnAsistencias((ImageButton) root.findViewById(R.id.btn_sendLaboral));
         icon.setBackgroundApp((FrameLayout)root.findViewById(R.id.contentHistoryLaboral));
         return root;
     }

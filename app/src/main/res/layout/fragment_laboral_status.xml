@@ -49,7 +49,8 @@
             android:background="@color/backgroundBotton"
             android:onClick="UpdateStatusLaboral"
             android:layout_marginTop="5dp"
-            android:contentDescription="@string/btn_status_laboral_update" />
+            android:contentDescription="@string/btn_status_laboral_update"
+            android:src="@android:drawable/ic_menu_send" />
     </LinearLayout>
 
 </FrameLayout>

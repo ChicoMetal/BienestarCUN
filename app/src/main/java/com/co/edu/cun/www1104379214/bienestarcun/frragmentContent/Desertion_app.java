@@ -72,7 +72,6 @@ public class Desertion_app extends Fragment {
         View root = inflater.inflate(R.layout.fragment_desertion_app, container, false);
 
         IconManager icon = new IconManager();
-        icon.SetIconBtnAsistencias((ImageButton) root.findViewById(R.id.btn_sendDesertion));
         icon.setBackgroundApp((FrameLayout)root.findViewById(R.id.contentDesertion));
         return root;
     }

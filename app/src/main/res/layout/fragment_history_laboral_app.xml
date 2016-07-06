@@ -68,7 +68,8 @@
             android:layout_gravity="center_horizontal"
             android:background="@color/backgroundBotton"
             android:onClick="SaveHistoryLaboral"
-            android:layout_marginBottom="5dp" />
+            android:layout_marginBottom="5dp"
+            android:src="@android:drawable/ic_menu_send" />
 
     </LinearLayout>
 </FrameLayout>

@@ -35,7 +35,8 @@
             android:background="@color/backgroundBotton"
             android:enabled="false"
             android:layout_gravity="bottom"
-            android:onClick="SaveAsistenciaItinerario" />
+            android:onClick="SaveAsistenciaItinerario"
+            android:src="@android:drawable/ic_menu_send" />
 
     </LinearLayout>
 

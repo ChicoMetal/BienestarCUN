@@ -50,7 +50,8 @@
             android:layout_weight="1"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp"
-            android:contentDescription="sendMsmChat" />
+            android:contentDescription="sendMsmChat"
+            android:src="@android:drawable/ic_menu_send" />
     </TableRow>
 
     <TextView

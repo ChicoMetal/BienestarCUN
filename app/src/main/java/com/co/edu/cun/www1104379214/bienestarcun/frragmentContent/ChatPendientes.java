@@ -16,6 +16,7 @@ import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ChatList;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
+import com.co.edu.cun.www1104379214.bienestarcun.ui.ItemOffsetDecoration;
 import com.co.edu.cun.www1104379214.bienestarcun.ui.adapter.HypedChatAdapter;
 
 import org.json.JSONArray;
@@ -151,6 +152,8 @@ public class ChatPendientes extends Fragment {
 
 
         mHyperdChatList.setAdapter(adapter);
+
+        mHyperdChatList.addItemDecoration( new ItemOffsetDecoration( getActivity().getApplicationContext(), R.integer.offset ) );
     }
 
     private void CasthConentAdapter() throws JSONException {

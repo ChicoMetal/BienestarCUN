@@ -76,7 +76,6 @@ public class AsistenciaCircleActivities extends Fragment {
 
         manager = new ItinerariosManager(getActivity().getApplicationContext());
 
-        icon.SetIconBtnAsistencias((ImageButton) root.findViewById(R.id.btn_sendAsistencias));
         icon.setBackgroundApp((FrameLayout) root.findViewById(R.id.ContentAsistencias));
 
         manager.SearchListInscritos(

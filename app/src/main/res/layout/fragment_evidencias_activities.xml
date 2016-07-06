@@ -35,7 +35,8 @@
                 android:contentDescription="@string/send_evidencia"
                 android:onClick="Uploader"
                 android:layout_weight="1"
-                android:layout_marginLeft="2dp" />
+                android:layout_marginLeft="2dp"
+                android:src="@android:drawable/ic_menu_send" />
         </TableRow>
 
         <ImageView

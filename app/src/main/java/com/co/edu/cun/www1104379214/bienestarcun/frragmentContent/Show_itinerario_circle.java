@@ -18,6 +18,7 @@ import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ItinerarioList;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
+import com.co.edu.cun.www1104379214.bienestarcun.ui.ItemOffsetDecoration;
 import com.co.edu.cun.www1104379214.bienestarcun.ui.adapter.HypedItinerarioAdapter;
 
 import org.json.JSONArray;
@@ -160,6 +161,7 @@ public class Show_itinerario_circle extends Fragment {
                         NUM_COLUMNS) );
 
         mHypedItinerarioAdapter.setAdapter(adapter);
+        mHypedItinerarioAdapter.addItemDecoration( new ItemOffsetDecoration( getActivity().getApplicationContext(), R.integer.offset ) );
     }
 
     private void CasthConentAdapter() throws JSONException {

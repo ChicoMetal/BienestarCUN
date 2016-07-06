@@ -16,6 +16,7 @@ import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.CircleList;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
+import com.co.edu.cun.www1104379214.bienestarcun.ui.ItemOffsetDecoration;
 import com.co.edu.cun.www1104379214.bienestarcun.ui.adapter.HypedActivitiesAdapter;
 
 import org.json.JSONArray;
@@ -163,6 +164,8 @@ public class Circles_app extends Fragment {
 
 
         mHyperdActivitiesList.setAdapter(adapter);
+
+        mHyperdActivitiesList.addItemDecoration( new ItemOffsetDecoration( getActivity().getApplicationContext(), R.integer.offset ) );
     }
 
     private void CasthConentAdapter() throws JSONException {

@@ -71,8 +71,6 @@ public class EvidenciasActivities extends Fragment {
         IconManager icon = new IconManager();
         icon.setBackgroundApp((FrameLayout)root.findViewById(R.id.contentEvidencias));
 
-        icon.SetIconBtnAsistencias((ImageButton) root.findViewById(R.id.send_evidencia));
-
         TextView contentId = (TextView) root.findViewById(R.id.ItinerarioId);
         contentId.setText( ITINERARIO+"" );
 

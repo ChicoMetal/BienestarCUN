@@ -72,7 +72,6 @@ public class LoginUser extends Fragment {
         View root =  inflater.inflate(R.layout.fragment_login_user, container, false);
 
         IconManager icon = new IconManager();
-        icon.SetIconBtnAsistencias((ImageButton) root.findViewById(R.id.btn_login_send));
         icon.setBackgroundApp((RelativeLayout) root.findViewById(R.id.contentLogin));
         return root;
     }

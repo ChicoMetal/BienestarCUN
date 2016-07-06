@@ -71,7 +71,6 @@ public class LaboralStatus extends Fragment {
         View root = inflater.inflate(R.layout.fragment_laboral_status, container, false);
 
         IconManager icon = new IconManager();
-        icon.SetIconBtnAsistencias((ImageButton) root.findViewById(R.id.btnUpdateStatusLaboral));
         icon.setBackgroundApp((FrameLayout)root.findViewById(R.id.contentStatusLaboral));
 
         return root;

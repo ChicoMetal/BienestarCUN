@@ -49,11 +49,6 @@ public class IconManager {
 
     }
 
-    public void SetIconBtnAsistencias(ImageButton btnAsistencia) {
-
-        btnAsistencia.setImageResource(R.drawable.icon_send);
-
-    }
 
     public void setBackgroundApp(FrameLayout main_content) {
         main_content.setBackgroundResource(R.drawable.background1);

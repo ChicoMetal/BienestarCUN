@@ -127,7 +127,7 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
 
 
         IconManager icon = new IconManager();
-        icon.SetIconBtnAsistencias((ImageButton) root.findViewById(R.id.btn_sendMsm));
+
         icon.setBackgroundApp((LinearLayout)root.findViewById(R.id.contentChat));
 
         btn.setOnClickListener(this);

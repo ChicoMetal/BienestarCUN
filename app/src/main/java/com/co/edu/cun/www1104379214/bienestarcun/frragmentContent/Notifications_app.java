@@ -18,6 +18,7 @@ import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.NotificationsList;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
+import com.co.edu.cun.www1104379214.bienestarcun.ui.ItemOffsetDecoration;
 import com.co.edu.cun.www1104379214.bienestarcun.ui.adapter.HypedNotificationsAdapter;
 
 import org.json.JSONArray;
@@ -164,6 +165,7 @@ public class Notifications_app extends Fragment {
 
 
         mHyperdNotificationsList.setAdapter(adapter);
+        mHyperdNotificationsList.addItemDecoration( new ItemOffsetDecoration( getActivity().getApplicationContext(), R.integer.offset ) );
     }
 
     private void CasthConentAdapter() throws JSONException {

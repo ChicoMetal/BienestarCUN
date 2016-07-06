@@ -72,7 +72,7 @@ public class CircleAdministration_app extends Fragment {
         View root = inflater.inflate(R.layout.fragment_circle_administration_app, container, false);
 
         IconManager icon = new IconManager();
-        icon.SetIconBtnAsistencias((ImageButton) root.findViewById(R.id.btnAddNewItinerario));
+
         icon.setBackgroundApp((FrameLayout)root.findViewById(R.id.contentCircleAdmin));
 
         return root;

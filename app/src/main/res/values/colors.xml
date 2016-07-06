@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#42b74e</color>
-    <color name="colorPrimaryDark">#309125</color>
+    <color name="colorPrimary">#009f32</color>
+    <color name="colorPrimaryDark">#008e2d</color>
 
     <color name="backgroundColor">#e4e4e4</color>
     <color name="backgroundBotton">#3A3435</color>
     <color name="BackgroundEDText">#cfd9d4</color>
 
-    <color name="accent_transparency">#d82d7436</color>
+    <color name="accent_transparency">#e6709331</color>
     <color name="accent_transparency_admin">#3b7adf</color>
     <color name="textWhite">#cdf5f2f2</color>
 

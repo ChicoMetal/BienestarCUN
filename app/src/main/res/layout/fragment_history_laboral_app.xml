@@ -9,11 +9,12 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="5dp">
 
         <EditText
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="40dp"
             android:id="@+id/txt_nameEmpresa"
             android:hint="@string/name_empresa_laboral"
             android:background="@color/BackgroundEDText"
@@ -21,7 +22,7 @@
 
         <EditText
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="40dp"
             android:id="@+id/txt_cargoEmpresa"
             android:hint="@string/cargo_empresa_laboral"
             android:background="@color/BackgroundEDText"
@@ -69,7 +70,8 @@
             android:background="@color/backgroundBotton"
             android:onClick="SaveHistoryLaboral"
             android:layout_marginBottom="5dp"
-            android:src="@android:drawable/ic_menu_send" />
+            android:src="@android:drawable/ic_menu_send"
+            android:contentDescription="@string/atr_send_history_laboral" />
 
     </LinearLayout>
 </FrameLayout>

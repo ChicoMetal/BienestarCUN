@@ -3,9 +3,38 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.ChatPsicologa_app"
-    android:id="@+id/contentChat">
+    android:id="@+id/contentChat"
+    android:padding="5dp">
 
     <!-- TODO: Update blank fragment layout -->
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="41dp"
+        android:layout_gravity="right|bottom"
+        android:padding="0dp">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:inputType="textMultiLine"
+            android:ems="10"
+            android:id="@+id/etMensajePsicologia"
+            android:layout_gravity="bottom"
+            android:background="@color/BackgroundEDText"
+            android:minHeight="36dp"
+            android:layout_weight="2" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/btn_sendMsm"
+            android:layout_gravity="bottom|right"
+            android:background="@color/backgroundBotton"
+            android:layout_weight="1"
+            android:contentDescription="@string/atr_sendmsmchat"
+            android:src="@android:drawable/ic_menu_send" />
+    </TableRow>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -22,37 +51,6 @@
 
         </LinearLayout>
     </ScrollView>
-
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_gravity="right|bottom">
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:inputType="textMultiLine"
-            android:ems="10"
-            android:id="@+id/etMensajePsicologia"
-            android:layout_gravity="bottom"
-            android:background="@color/BackgroundEDText"
-            android:minHeight="36dp"
-            android:layout_weight="2"
-            android:layout_marginTop="6dp"
-            android:layout_marginBottom="6dp" />
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/btn_sendMsm"
-            android:layout_gravity="bottom|right"
-            android:background="@color/backgroundBotton"
-            android:layout_weight="1"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:contentDescription="sendMsmChat"
-            android:src="@android:drawable/ic_menu_send" />
-    </TableRow>
 
     <TextView
         android:layout_width="0dp"

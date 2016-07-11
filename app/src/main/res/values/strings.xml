@@ -60,5 +60,10 @@
     <string name="lb_guide_showItinerarios">Toca una actividad, para mostrar itinerarios</string>
     <string name="lb_guide_hideNotifications">Toca, para ocultar una notificacion</string>
     <string name="lb_guide_showItinerario">Itinerarios actuales</string>
+    <string name="atr_enviar_asistencia">enviar_asistencia</string>
+    <string name="atr_sendmsmchat">sendMsmChat</string>
+    <string name="atr_send_itinerario_activitie">send_itinerario_activitie</string>
+    <string name="atr_send_history_laboral">send_history_laboral</string>
+    <string name="atr_img_cun_home">img_cun_home</string>
 
 </resources>

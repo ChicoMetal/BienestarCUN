@@ -103,9 +103,6 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
 
     }
 
-    public ChatPsicologa_app() {
-        // Required empty public constructor
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -210,9 +207,6 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
 
             }
         });
-
-
-
 
 
         socket.on(Socket.EVENT_CONNECT, new Emitter.Listener(){

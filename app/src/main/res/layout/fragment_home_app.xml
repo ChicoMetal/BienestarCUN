@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="380dp"
         android:id="@+id/svgimg"
-        android:layout_gravity="center_vertical" />
+        android:layout_gravity="center_vertical"
+        android:contentDescription="@string/atr_img_cun_home" />
 
     <TextView
         android:layout_width="match_parent"

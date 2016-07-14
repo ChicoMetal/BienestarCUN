@@ -1,7 +1,9 @@
 package com.co.edu.cun.www1104379214.bienestarcun.frragmentContent;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.ItinerariosManager;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
@@ -51,6 +54,7 @@ public class Show_itinerario_circle extends Fragment {
     private HypedItinerarioAdapter adapter;
     public static FragmentManager fragmentManager;
     private static int INSTANCE;
+    private CodMessajes mss = new CodMessajes();
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -101,21 +105,7 @@ public class Show_itinerario_circle extends Fragment {
         IconManager icon = new IconManager();
         icon.setBackgroundApp((LinearLayout)root.findViewById(R.id.contentShowItinerarios));
 
-        SetudItinerariosList();
-
-        try {
-
-            CasthConentAdapter();//lleno el adaptador
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: onCreateView #!#";
-            contenido += "Clase : Itinerarios_app.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(getActivity().getApplicationContext()).SaveError(contenido);
-        }
+        new InterfaceNoBlock().execute();
 
         return root;
     }
@@ -182,6 +172,61 @@ public class Show_itinerario_circle extends Fragment {
             }
 
             adapter.AddAll(itinerarios);
+
+        }
+    }
+
+    public class InterfaceNoBlock extends AsyncTask<Void, Void, Void> {
+
+        ProgressDialog pDialog;
+
+        int a = 1;
+        @Override
+        protected void onPreExecute() {
+
+            pDialog = new ProgressDialog( getActivity() );
+            pDialog.setMessage("Un momento...");
+            pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            pDialog.show();
+
+            SetudItinerariosList();
+
+        }
+
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            try {
+                Thread.sleep (mss.TiempoEsperaTask);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+
+            super.onPostExecute(aVoid);
+
+            pDialog.dismiss();
+
+            try {
+
+                CasthConentAdapter();//lleno el adaptador
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }catch (Exception e){
+                String contenido = "Error desde android #!#";
+                contenido += " Funcion: onCreateView #!#";
+                contenido += "Clase : Itinerarios_app.java #!#";
+                contenido += e.getMessage();
+                new ServicesPeticion(getActivity().getApplicationContext()).SaveError(contenido);
+            }
+
 
         }
     }

@@ -33,10 +33,9 @@ victor {
 android {
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
-
     defaultConfig {
         applicationId "com.co.edu.cun.www1104379214.bienestarcun"
-        minSdkVersion 10
+        minSdkVersion 14
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
@@ -51,6 +50,8 @@ android {
         main {
             svg.srcDir 'src/main/res/raw'
         }
+    }
+    productFlavors {
     }
 }
 

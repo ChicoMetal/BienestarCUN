@@ -48,7 +48,6 @@
                 android:layout_height="40dp"
                 android:layout_gravity="top"
                 android:textColor="@color/textWhite"
-                android:textAlignment="center"
                 android:gravity="center_vertical|center_horizontal"
                 android:text="@string/msmPendienteChat" />
 

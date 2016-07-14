@@ -23,6 +23,9 @@ public class CodMessajes {
     public static final String UsrPsicologa = "1001";
     public static final String UsrLoginOff = "1000";
 
+
+    public static final int TiempoEsperaTask = 3000;
+
     //datos usuario por default
 
     //TODO: agregar una identificacion para que el usuario la elija y asi pertenezca a la sede que seleccione (las sedes deben ingresarse manualmente)
@@ -92,6 +95,7 @@ public class CodMessajes {
 
 
     public static final String ErrorServicesPeticion = "['msm', '0']";
+    public static final String ErrorServerPeticion = "['msm', '0000000000']";
     public static final String LocalInsertError = "Error al insertar los datos";
     public static final String LocalInsert = "Se han insertado los datos";
     public static final String LoginWell = " Felicidades, has ingresado ";

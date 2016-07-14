@@ -125,8 +125,10 @@ public class TaskExecuteHttpHandler extends AsyncTask<Void, Void, String> {
 
             StatusLine statusLine = response.getStatusLine();
             if (statusLine.getStatusCode() >= 300) {
-                throw new HttpResponseException(statusLine.getStatusCode(),
-                        statusLine.getReasonPhrase());
+                /*throw new HttpResponseException(statusLine.getStatusCode(),
+                        statusLine.getReasonPhrase());*/
+
+                return messajes.ErrorServerPeticion;
             }
 
             HttpEntity entity = response.getEntity();

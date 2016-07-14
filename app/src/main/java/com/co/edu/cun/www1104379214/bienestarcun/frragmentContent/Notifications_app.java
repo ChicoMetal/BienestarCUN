@@ -1,7 +1,9 @@
 package com.co.edu.cun.www1104379214.bienestarcun.frragmentContent;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -103,21 +105,7 @@ public class Notifications_app extends Fragment {
         IconManager icon = new IconManager();
         icon.setBackgroundApp((LinearLayout)root.findViewById(R.id.contentNotifications));
 
-        SetudNotificationList();
-
-        try {
-
-            CasthConentAdapter();//lleno el adaptador
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: onCreateView #!#";
-            contenido += "Clase : Notifications_app.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(getActivity().getApplicationContext()).SaveError(contenido);
-        }
+        new InterfaceNoBlock().execute();
 
         return root;
     }
@@ -189,4 +177,60 @@ public class Notifications_app extends Fragment {
 
         }
     }
+
+    public class InterfaceNoBlock extends AsyncTask<Void, Void, Void> {
+
+        ProgressDialog pDialog;
+
+        int a = 1;
+        @Override
+        protected void onPreExecute() {
+
+            pDialog = new ProgressDialog( getActivity() );
+            pDialog.setMessage("Un momento...");
+            pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            pDialog.show();
+
+            SetudNotificationList();
+
+        }
+
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            try {
+                Thread.sleep (mss.TiempoEsperaTask);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+
+            super.onPostExecute(aVoid);
+
+            pDialog.dismiss();
+
+            try {
+
+                CasthConentAdapter();//lleno el adaptador
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }catch (Exception e){
+                String contenido = "Error desde android #!#";
+                contenido += " Funcion: onCreateView #!#";
+                contenido += "Clase : Notifications_app.java #!#";
+                contenido += e.getMessage();
+                new ServicesPeticion(getActivity().getApplicationContext()).SaveError(contenido);
+            }
+
+
+        }
+    }
+
 }

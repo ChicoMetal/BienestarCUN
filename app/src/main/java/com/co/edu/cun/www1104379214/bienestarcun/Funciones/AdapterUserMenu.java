@@ -1,11 +1,18 @@
 package com.co.edu.cun.www1104379214.bienestarcun.Funciones;
 
 
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.NavigationView;
+import android.view.View;
+import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.Toast;
 import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
@@ -34,6 +41,9 @@ public class AdapterUserMenu {
     TaskExecuteSQLSearch sqliteSearch;
     TaskExecuteSQLDelete sqliteDelete;
     CodMessajes mss = new CodMessajes();
+    GeneralCode code;
+
+
 
     Cursor result;
 
@@ -154,7 +164,9 @@ public class AdapterUserMenu {
     //</editor-fold>
 
     //<editor-fold desc="Logout">
-    public void ProcessLogout(NavigationView menu){
+    public void ProcessLogout(NavigationView menu, Context activity){
+
+        code = new GeneralCode(DB, CONTEXTO);
 
         String[] camposSeacrh = new String[]{
                 DB.CN_ID_USER_BD,
@@ -177,7 +189,9 @@ public class AdapterUserMenu {
 
                 DeleteUser();
 
-                UserDefaultAfterLogout(menu);
+                code.ChoseUserDefault(activity);
+
+                PrepareMenuUser( mss.UsrLoginOff, menu );//ajuste menu
 
                 String result_service = services.LogoutUser( result_object );
 
@@ -331,41 +345,7 @@ public class AdapterUserMenu {
     }
     //</editor-fold> actualmente
 
-    public void UserDefaultAfterLogout(NavigationView menu){
 
-        String[][] values = new String[][]{
-                {DB.CN_ID_USER_BD,mss.DftUsrId},
-                {DB.CN_USER,mss.DftUsrName},
-                {DB.CN_PASSWORD,mss.DftUsrPass},
-                {DB.CN_TIPE_USER,mss.UsrLoginOff},
-                {DB.CN_TOKEN_LOGIN,mss.DftUsrToken}
-        };
-
-        ContentValues UserValues = DB.GenerateValues( values );
-        sqliteInsert = new TaskExecuteSQLInsert(DB.TABLE_NAME_USER,
-                UserValues,
-                CONTEXTO,
-                DB
-        ); //insertar usuario logueado en sqlite
-
-        try {
-            if ( sqliteInsert.execute().get() ){//verifico el guardado del usuario
-
-                PrepareMenuUser( mss.UsrLoginOff, menu );//ajuste menu
-
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: UserDefaultAfterLogout #!#";
-            contenido += "Clase : Adaptermenu.java #!#";
-            contenido += e.getMessage();
-            services.SaveError(contenido);
-        }
-
-    }
 
     //<editor-fold desc="Ocutacion de items de menu segun el usuario">
     public void PrepareMenuUser( String targetUser, NavigationView menu ){//adapto el menu del usuario
@@ -492,6 +472,7 @@ public class AdapterUserMenu {
         menu.getMenu().findItem(R.id.nav_login).setEnabled(false);
         menu.getMenu().findItem(R.id.nav_logout).setEnabled(true);
     }
+
 
 
     //</editor-fold>

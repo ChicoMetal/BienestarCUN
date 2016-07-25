@@ -2,6 +2,7 @@ package com.co.edu.cun.www1104379214.bienestarcun;
 
 
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -25,12 +26,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -94,6 +100,8 @@ public class MainActivity extends AppCompatActivity {
     String nameFileImagen;
 
 
+
+
     AdapterUserMenu metodos;//clase con metodos para usar
     CodMessajes mss = new CodMessajes();
     ServicesPeticion services;
@@ -101,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
     GeneralCode code = null;
     DBManager db;
     ChatPsicologiaManager ChatCode;
+
 
 
     NavigationView navigationView;
@@ -352,6 +361,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
     //********************************************
     //********************************************fin Base de datos
     //********************************************
@@ -362,8 +372,14 @@ public class MainActivity extends AppCompatActivity {
 
         setnameUserHead();
 
+        if( code == null)
+            code = new GeneralCode(db, getApplicationContext());
+
+        code.ChoseUserDefault(this);//mostrar lista para seleccionar la sede para los usuarios sin loguear
+
         //services.ListPerson(getApplicationContext());
     }
+
 
     private void setnameUserHead() {//cambiar el nombre del usuario (si es posible) y mostrarlo en el menu lateral
         if( code == null)
@@ -391,7 +407,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void Logout(){
-        metodos.ProcessLogout(navigationView);
+        metodos.ProcessLogout(navigationView, this);
         int id = R.id.nav_home;
         drawerTitle = "Inicio";
         selectItem(drawerTitle, id);

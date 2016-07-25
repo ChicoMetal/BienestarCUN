@@ -17,7 +17,7 @@
     <string name="item_login"> Ingresar </string>
     <string name="item_logout"> Salir </string>
 
-<!-- texto de interfaz login-->
+    <!-- texto de interfaz login-->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="login_text_view">INGRESAR</string>
     <string name="ed_usuario">Usuario</string>
@@ -65,5 +65,7 @@
     <string name="atr_send_itinerario_activitie">send_itinerario_activitie</string>
     <string name="atr_send_history_laboral">send_history_laboral</string>
     <string name="atr_img_cun_home">img_cun_home</string>
+    <string name="lb_title_chose_sede">Elije una de las sedes</string>
+    <string name="btn_send_sede">btn_send_sede</string>
 
 </resources>

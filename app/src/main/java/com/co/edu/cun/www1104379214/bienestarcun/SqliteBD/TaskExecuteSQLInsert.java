@@ -48,8 +48,10 @@ public class TaskExecuteSQLInsert extends AsyncTask<Void, Void, Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... voids) {
-
-        return db.InsertBD(VALORES, TABLA);
+        if( db != null )
+            return db.InsertBD(VALORES, TABLA);
+        else
+            return null;
 
     }
 

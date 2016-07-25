@@ -50,7 +50,8 @@ public class TaskExecuteSQLDelete extends AsyncTask<Void, Void, Integer> {
 
         Integer resultado = null;
 
-        resultado = db.DeleteBD();
+        if( db != null )
+            resultado = db.DeleteBD();
 
         return resultado;
 

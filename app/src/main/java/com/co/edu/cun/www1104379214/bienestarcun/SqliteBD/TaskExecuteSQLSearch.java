@@ -49,7 +49,8 @@ public class TaskExecuteSQLSearch extends AsyncTask<Void, Void, Cursor> {
     @Override
     protected Cursor doInBackground(Void... voids) {
 
-        result_search = db.SearchDB(TABLA, CAMPOS);
+        if( db != null)
+            result_search = db.SearchDB(TABLA, CAMPOS);
 
         return result_search;
 

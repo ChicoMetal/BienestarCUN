@@ -1,6 +1,7 @@
 package com.co.edu.cun.www1104379214.bienestarcun;
 
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -29,7 +30,26 @@ public class CodMessajes {
     //datos usuario por default
 
     //TODO: agregar una identificacion para que el usuario la elija y asi pertenezca a la sede que seleccione (las sedes deben ingresarse manualmente)
-    public static final String DftUsrId = "5000000000";
+
+    private static final String sedeSincelejo = "Sincelejo",
+        sedeBogota = "Bogota",
+        SedeMonteria = "Monteria";//sedes
+
+    public static final String[] DftUsrNameSedes = {sedeSincelejo, sedeBogota,SedeMonteria };//indices para mostrar (deben ser iguales a las llaves de los codigos)
+
+    public static final JSONObject DftUsrId = new JSONObject();
+    static {
+        try {
+            DftUsrId.put(sedeSincelejo, "1000000000");
+            DftUsrId.put(sedeBogota,    "3000000000");
+            DftUsrId.put(SedeMonteria,  "6000000000");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
     public static final String DftUsrName = "usuario";
     public static final String DftUsrPass = "usuario";
     public static final String DftUsrToken = "default";

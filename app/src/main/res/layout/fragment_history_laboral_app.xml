@@ -35,7 +35,8 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/lb_startLaboral"
             android:id="@+id/textView6"
-            android:gravity="center" />
+            android:gravity="center"
+            android:layout_marginTop="10dp" />
 
         <DatePicker
             android:layout_width="wrap_content"
@@ -46,13 +47,29 @@
             android:calendarViewShown="false"
             android:layout_weight="1" />
 
-        <TextView
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/lb_endLaboral"
-            android:id="@+id/textView7"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:gravity="center" />
+            android:gravity="center_vertical|center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lb_endLaboral"
+                android:id="@+id/textView7"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:gravity="center" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lb_chk_aun_continua"
+                android:id="@+id/chk_continua_trabajando"
+                android:layout_marginLeft="5dp"
+                android:checked="false" />
+
+        </LinearLayout>
 
         <DatePicker
             android:layout_width="wrap_content"
@@ -61,7 +78,8 @@
             android:layout_gravity="center_horizontal"
             android:datePickerMode="spinner"
             android:calendarViewShown="false"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:visibility="visible" />
 
         <ImageButton
             android:layout_width="match_parent"
@@ -71,8 +89,9 @@
             android:background="@color/backgroundBotton"
             android:onClick="SaveHistoryLaboral"
             android:layout_marginBottom="5dp"
-            android:src="@android:drawable/ic_menu_send"
-            android:contentDescription="@string/atr_send_history_laboral" />
+            android:src="@mipmap/ic_btn_send"
+            android:contentDescription="@string/atr_send_history_laboral"
+            android:scaleType="fitCenter" />
 
     </LinearLayout>
 </FrameLayout>

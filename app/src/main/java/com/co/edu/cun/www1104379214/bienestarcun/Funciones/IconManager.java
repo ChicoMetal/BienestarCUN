@@ -42,6 +42,7 @@ public class IconManager {
         fondo.setBackgroundResource( R.drawable.cardfondocircles);
         admin.setBackgroundResource( R.drawable.admincircle);
     }
+
     public void SetIconCardsItinerarios( ImageView fondo ){
     //cambiar la imagen de las card de itinerarios
 

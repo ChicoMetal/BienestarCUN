@@ -422,12 +422,14 @@ public class MainActivity extends AppCompatActivity {
         DesertionManager desertion = new DesertionManager(db, getApplicationContext() );
 
         EditText idEstudiante;
+        EditText Description;
         RadioGroup horario;
 
         idEstudiante = (EditText) findViewById( R.id.et_idDesertor);
+        Description = (EditText) findViewById( R.id.edt_description_desertioen);
         horario = (RadioGroup) findViewById( R.id.rbg_horario);
 
-        desertion.SendReportDesertion(idEstudiante, horario);
+        desertion.SendReportDesertion(idEstudiante, Description, horario);
 
 
     }
@@ -457,13 +459,15 @@ public class MainActivity extends AppCompatActivity {
 
         EditText nameEmpresa, cargoEmpresa;
         DatePicker fechaStart, fechaEnd;
+        CheckBox working;
 
         nameEmpresa = (EditText) findViewById( R.id.txt_nameEmpresa);
         cargoEmpresa = (EditText) findViewById( R.id.txt_cargoEmpresa);
         fechaStart = (DatePicker) findViewById( R.id.pickerFechaLaboralStart);
         fechaEnd = (DatePicker) findViewById( R.id.pickerFechaLaboralEnd);
+        working = (CheckBox) findViewById( R.id.chk_continua_trabajando );
 
-        newlaboral.SaveNewHistoryLaboral(nameEmpresa, cargoEmpresa, fechaStart, fechaEnd);
+        newlaboral.SaveNewHistoryLaboral(nameEmpresa, cargoEmpresa, fechaStart, working, fechaEnd);
 
     }
 

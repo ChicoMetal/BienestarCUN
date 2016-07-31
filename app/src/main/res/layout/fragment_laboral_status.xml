@@ -51,7 +51,8 @@
             android:onClick="UpdateStatusLaboral"
             android:layout_marginTop="5dp"
             android:contentDescription="@string/btn_status_laboral_update"
-            android:src="@android:drawable/ic_menu_send" />
+            android:src="@mipmap/ic_btn_send"
+            android:scaleType="fitCenter" />
     </LinearLayout>
 
 </FrameLayout>

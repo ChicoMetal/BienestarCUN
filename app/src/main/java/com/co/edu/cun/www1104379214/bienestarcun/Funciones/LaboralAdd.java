@@ -1,6 +1,7 @@
 package com.co.edu.cun.www1104379214.bienestarcun.Funciones;
 
 import android.content.Context;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -40,6 +41,7 @@ public class LaboralAdd {
     public void SaveNewHistoryLaboral( TextView contentNameActivitie,
                                    TextView contentDetailActivitie,
                                    DatePicker contentFechaStart,
+                                   CheckBox working,
                                    DatePicker contentFechaEnd
     ){//guardar en la BD los datos del nuevo historial laboral
 
@@ -49,7 +51,10 @@ public class LaboralAdd {
         String nameEmpresa = contentNameActivitie.getText().toString();
         String cargoEmpresa = contentDetailActivitie.getText().toString();
         String fechaStart = contentFechaStart.getYear()+"-"+( contentFechaStart.getMonth() + 1 ) +"-"+contentFechaStart.getDayOfMonth();
-        String fechaEnd = contentFechaEnd.getYear() + "-"+( contentFechaEnd.getMonth() + 1 ) +"-"+contentFechaEnd.getDayOfMonth();
+        String fechaEnd = "";
+
+        if( !working.isChecked() )
+            fechaEnd = contentFechaEnd.getYear() + "-"+( contentFechaEnd.getMonth() + 1 ) +"-"+contentFechaEnd.getDayOfMonth();
 
         if( !idDocente.equals("") && !nameEmpresa.equals("") && !cargoEmpresa.equals("") && !fechaStart.equals("")  )
             SendServerNewLaboral(idDocente, nameEmpresa, cargoEmpresa, fechaStart, fechaEnd);

@@ -33,7 +33,8 @@
             android:background="@color/backgroundBotton"
             android:layout_weight="1"
             android:contentDescription="@string/atr_sendmsmchat"
-            android:src="@android:drawable/ic_menu_send" />
+            android:src="@mipmap/ic_btn_send"
+            android:scaleType="fitCenter" />
     </TableRow>
 
     <ScrollView

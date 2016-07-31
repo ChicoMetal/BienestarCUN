@@ -26,10 +26,11 @@
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:id="@+id/btn_send_sede"
-        android:src="@android:drawable/ic_menu_send"
+        android:src="@mipmap/ic_btn_send"
         android:background="@color/backgroundBotton"
         android:contentDescription="@string/btn_send_sede"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="20dp"
+        android:scaleType="fitCenter" />
 
 
 </LinearLayout>

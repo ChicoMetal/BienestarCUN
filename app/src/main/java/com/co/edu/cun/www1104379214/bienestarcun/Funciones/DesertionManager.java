@@ -36,12 +36,13 @@ public class DesertionManager {
     }
 
 
-    public void SendReportDesertion( TextView contentIdDesertor, RadioGroup groupHorario){
+    public void SendReportDesertion( TextView contentIdDesertor, TextView contentDescription, RadioGroup groupHorario){
 
         GeneralCode code = new GeneralCode( DB, CONTEXTO );
 
         String idDocente = code.getIdUser();
         String idUser = contentIdDesertor.getText().toString();
+        String Descripcion = contentDescription.getText().toString();
         String horario = null;
 
         switch ( groupHorario.getCheckedRadioButtonId() ){//obtengo el radiobutton seleccionado
@@ -56,15 +57,15 @@ public class DesertionManager {
 
         }
 
-        if( horario != null && !idUser.equals("") )
-            SendServerDesertion(idDocente, idUser, horario);
+        if( horario != null && !idUser.equals("") && !Descripcion.equals("") )
+            SendServerDesertion(idDocente, idUser, Descripcion, horario);
         else
             Toast.makeText(CONTEXTO, mss.FormError, Toast.LENGTH_SHORT).show();
 
 
     }
 
-    private void SendServerDesertion( String idDocente, String idUser, String horario) {
+    private void SendServerDesertion( String idDocente, String idUser, String descripcion, String horario) {
 
 
         final String service = "desertion/saveDesertion.php";
@@ -73,6 +74,7 @@ public class DesertionManager {
         parametros = new String[][]{ //array parametros a enviar
                 {"user",idDocente},
                 {"desertor",idUser},
+                {"descripcion",descripcion},
                 {"horario", horario}
         };
 

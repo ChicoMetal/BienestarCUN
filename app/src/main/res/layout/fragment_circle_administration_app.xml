@@ -72,8 +72,9 @@
             android:onClick="SaveItinerarioNew"
             android:background="@color/backgroundBotton"
             android:layout_marginBottom="3dp"
-            android:src="@android:drawable/ic_menu_send"
-            android:contentDescription="@string/atr_send_itinerario_activitie" />
+            android:src="@mipmap/ic_btn_send"
+            android:contentDescription="@string/atr_send_itinerario_activitie"
+            android:scaleType="fitCenter" />
 
     </LinearLayout>
 

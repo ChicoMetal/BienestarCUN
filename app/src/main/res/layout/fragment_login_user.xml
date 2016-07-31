@@ -70,7 +70,8 @@
             android:onClick="Login"
             android:background="@color/backgroundBotton"
             android:layout_marginTop="10dp"
-            android:src="@android:drawable/ic_menu_send" />
+            android:src="@mipmap/ic_btn_send"
+            android:scaleType="fitCenter" />
 
     </LinearLayout>
 </RelativeLayout>

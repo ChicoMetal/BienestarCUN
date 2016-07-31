@@ -31,7 +31,7 @@
             <menu>
                 <item
                     android:id="@+id/nav_add_desertion"
-                    android:title="+ Desercion"/>
+                    android:title="Desercion"/>
 
             </menu>
 

@@ -37,8 +37,9 @@
             android:enabled="false"
             android:layout_gravity="bottom"
             android:onClick="SaveAsistenciaItinerario"
-            android:src="@android:drawable/ic_menu_send"
-            android:contentDescription="@string/atr_enviar_asistencia" />
+            android:src="@mipmap/ic_btn_send"
+            android:contentDescription="@string/atr_enviar_asistencia"
+            android:scaleType="fitCenter" />
 
     </LinearLayout>
 

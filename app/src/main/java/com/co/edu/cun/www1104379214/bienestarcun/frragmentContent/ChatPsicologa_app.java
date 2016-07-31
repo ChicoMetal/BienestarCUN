@@ -35,20 +35,8 @@ import java.net.URISyntaxException;
 import java.util.concurrent.ExecutionException;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ChatPsicologa_app.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ChatPsicologa_app#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ChatPsicologa_app extends Fragment implements View.OnClickListener {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    //TODO: Crear las coneciones para que no se presenten problemas en multiples conversaciones del psicologo
 
-    // TODO: Rename and change types of parameters
     private static long mRemitente;
     private static long mReceptor;
 
@@ -75,13 +63,6 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
 
     private OnFragmentInteractionListener mListener;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment ChatPsicologa_app.
-     */
-    // TODO: Rename and change types and number of parameters
     public static ChatPsicologa_app newInstance(long receptor, long remitente) {
         ChatPsicologa_app fragment = new ChatPsicologa_app();
 
@@ -93,16 +74,8 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
 
     @Override
     public void onResume() {
-
         super.onResume();
-        if( socket.connected() ){
-            socket.disconnect();
-        }
-
-        socket.connect();
-
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -131,27 +104,34 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
 
         CONTEXTO = root.getContext();
 
-        IO.Options opts = new IO.Options();
 
-        opts.forceNew = false;
-        opts.reconnection = true;
         try{
+
+            IO.Options opts = new IO.Options();
+
+            opts.forceNew = false;
+            opts.reconnection = true;
+
             socket = IO.socket(ServerUri.URL_SOCKET, opts);
+
+            socket.connect();
+
+            mWorkerThread = new MyWorkerThread("myWorkerThread");
+            mWorkerThread.start();
+
         }catch (URISyntaxException e){
             e.printStackTrace();
+        }catch (Exception e){
+            String contenido = "Error desde android #!#";
+            contenido += " Funcion: OnCreateView #!#";
+            contenido += "Clase : ChatPsicologia_app.java #!#";
+            contenido += e.getMessage();
+            new ServicesPeticion(CONTEXTO).SaveError(contenido);
         }
-
-        if( socket.connected() ){
-            socket.disconnect();
-        }
-
-        socket.connect();
-
-        mWorkerThread = new MyWorkerThread("myWorkerThread");
-        mWorkerThread.start();
 
 
         socket.on(EVENT_SEND_GET_MESSAGE, new Emitter.Listener(){
+         //evento emitir el envio de un mensaje y escuchar los nuevos mensajes
 
             @Override
             public void call(Object... args) {
@@ -160,21 +140,30 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
                 String msm = null;
                 try {
                     msm = MensajeEntrante.getString("Mensaje");
+
+                    if ( !msm.equals("") ){
+
+                        mWorkerThread.prepareHandler();
+                        mWorkerThread.postTask(task);
+                        //Log.i("RESPONSE", args[0].toString());
+
+                    }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
+                }catch (Exception e){
+                    String contenido = "Error desde android #!#";
+                    contenido += " Funcion: evento recibir mensajes del socket #!#";
+                    contenido += "Clase : ChatPsicologia_app.java #!#";
+                    contenido += e.getMessage();
+                    new ServicesPeticion(CONTEXTO).SaveError(contenido);
                 }
 
-                if ( !msm.equals("") ){
-
-                    mWorkerThread.prepareHandler();
-                    mWorkerThread.postTask(task);
-                    //Log.i("RESPONSE", args[0].toString());
-
-                }
             }
         });
 
         socket.on(EVENT_SEND_IDSOCKET, new Emitter.Listener(){
+            //evento identificar la conexion en el servidor
 
             @Override
             public void call(Object... args) {
@@ -184,7 +173,7 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
 
                     final String service = "chatPsicologia/getMensajes.php";
 
-                    resultMensajes = GetMensajesPendientesExists(service, mRemitente+"", mReceptor+"","");
+                    resultMensajes = GetMensajesPendientesExists(service, mRemitente+"", mReceptor+"");
 
                     if (resultMensajes != null) {//si trae mensajes de vuelta
 
@@ -200,7 +189,7 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
                 }catch (Exception e){
                     String contenido = "Error desde android #!#";
                     contenido += " Funcion: AddMesagesChat #!#";
-                    contenido += "Clase : ChatPsicologiaManager.java #!#";
+                    contenido += "Clase : ChatPsicologia_app.java #!#";
                     contenido += e.getMessage();
                     new ServicesPeticion(CONTEXTO).SaveError(contenido);
                 }
@@ -210,6 +199,7 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
 
 
         socket.on(Socket.EVENT_CONNECT, new Emitter.Listener(){
+            //eventos de conexion y desconexion
 
             public void call(Object... args) {
 
@@ -222,12 +212,18 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
                     newConversasion.put("receptor", mReceptor);
                     newConversasion.put("socket", socketId);
 
+                    // Emit event
+                    socket.emit(EVENT_SEND_IDSOCKET, newConversasion);//envio la informasion al server para guardar el socket
+
                 }catch(Exception e){
-                    Log.i("ERROR", e.getMessage());
+                    String contenido = "Error desde android #!#";
+                    contenido += " Funcion: evento socket conexion creada #!#";
+                    contenido += "Clase : ChatPsicologia_app.java #!#";
+                    contenido += e.getMessage();
+                    new ServicesPeticion(CONTEXTO).SaveError(contenido);
                 }
 
-                // Emit event
-                socket.emit(EVENT_SEND_IDSOCKET, newConversasion);//envio la informasion al server para guardar el socket
+
 
             }
         }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener(){
@@ -250,18 +246,6 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
         }
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        socket.connect();
-        mListener = null;
-    }
 
     @Override
     public void onClick(View view) {
@@ -281,16 +265,7 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
         socket.emit(EVENT_SEND_GET_MESSAGE, sendMensaje);//envio la informasion al server para guardar el socket
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
@@ -386,18 +361,16 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
 
     }
 
-    public JSONArray GetMensajesPendientesExists(String service, String remitente, String receptor, String mensaje) throws InterruptedException {
+    public JSONArray GetMensajesPendientesExists(String service, String remitente, String receptor) throws InterruptedException {
         //obtengo el array de objeto con los mensajes
 
-        String[][] values = null;
 
 
         JSONArray arrayResponse = null;
 
-        values = new String[][]{ //array parametros a enviar
+        String[][] values = new String[][]{ //array parametros a enviar
                 {"remitente",remitente},
-                {"receptor",receptor},
-                {"mensaje",mensaje}
+                {"receptor",receptor}
         };
 
         BD = new TaskExecuteHttpHandler(service, values,CONTEXTO);
@@ -435,7 +408,7 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
         }catch (Exception e){
             String contenido = "Error desde android #!#";
             contenido += " Funcion: GetMensajesPendientesExists #!#";
-            contenido += "Clase : ChatPsicologiaManager.java #!#";
+            contenido += "Clase : ChatPsicologia_app.java #!#";
             contenido += e.getMessage();
             new ServicesPeticion(CONTEXTO).SaveError(contenido);
         }

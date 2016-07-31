@@ -1,7 +1,9 @@
 package com.co.edu.cun.www1104379214.bienestarcun.frragmentContent;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.ChatPsicologiaManager;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
@@ -43,6 +46,7 @@ public class ChatPendientes extends Fragment {
 
     private RecyclerView mHyperdChatList;
     private HypedChatAdapter adapter;
+    private CodMessajes mss = new CodMessajes();
 
     public static FragmentManager fragmentManager;
 
@@ -89,21 +93,7 @@ public class ChatPendientes extends Fragment {
 
         mHyperdChatList = (RecyclerView) root.findViewById(R.id.hyper_chat_list);
 
-        SetudActivitiesList();
-
-        try {
-
-            CasthConentAdapter();//lleno el adaptador
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: onCreateView #!#";
-            contenido += "Clase : ChatPendientes.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(getActivity().getApplicationContext()).SaveError(contenido);
-        }
+        new InterfaceNoBlock().execute();
 
 
         return root;
@@ -174,6 +164,61 @@ public class ChatPendientes extends Fragment {
             }
 
             adapter.AddAll(chats);
+
+        }
+    }
+
+    public class InterfaceNoBlock extends AsyncTask<Void, Void, Void> {
+
+        ProgressDialog pDialog;
+
+        int a = 1;
+        @Override
+        protected void onPreExecute() {
+
+            pDialog = new ProgressDialog( getActivity() );
+            pDialog.setMessage("Un momento...");
+            pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            pDialog.show();
+
+            SetudActivitiesList();
+
+        }
+
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            try {
+                Thread.sleep (mss.TiempoEsperaTask);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+
+            super.onPostExecute(aVoid);
+
+            pDialog.dismiss();
+
+            try {
+
+                CasthConentAdapter();//lleno el adaptador
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }catch (Exception e){
+                String contenido = "Error desde android #!#";
+                contenido += " Funcion: onCreateView #!#";
+                contenido += "Clase : ChatPendientes.java #!#";
+                contenido += e.getMessage();
+                new ServicesPeticion(getActivity().getApplicationContext()).SaveError(contenido);
+            }
+
 
         }
     }

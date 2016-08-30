@@ -1,6 +1,5 @@
 package com.co.edu.cun.www1104379214.bienestarcun.frragmentContent;
 
-import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,11 +15,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
+import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
-import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServerUri;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServerUri;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.TaskExecuteHttpHandler;
 import com.github.nkzawa.emitter.Emitter;
@@ -417,8 +416,14 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
 
     }
 
-
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        socket.disconnect();
+    }
 }
+
+
 
 class MyWorkerThread extends HandlerThread {
 

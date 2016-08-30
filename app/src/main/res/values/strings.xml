@@ -70,5 +70,7 @@
     <string name="item_desarrolladores">Desarrolladores</string>
     <string name="item_ayuda">Ayuda</string>
     <string name="item_ebaut">Sobre esta app</string>
+    <string name="hint_descripcion_desercion">Detalles del reporte</string>
+    <string name="lb_chk_aun_continua">Aun continua?</string>
 
 </resources>

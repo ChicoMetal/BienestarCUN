@@ -263,8 +263,6 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
 
 
         socket.emit(EVENT_SEND_GET_MESSAGE, sendMensaje);//envio la informasion al server para guardar el socket
-
-        mensaje.setText("");
     }
 
 

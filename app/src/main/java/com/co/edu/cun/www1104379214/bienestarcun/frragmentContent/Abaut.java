@@ -1,6 +1,6 @@
 package com.co.edu.cun.www1104379214.bienestarcun.frragmentContent;
 
-import android.app.Activity;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,63 +8,49 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 
-
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link Desertion_app.OnFragmentInteractionListener} interface
+ * {@link Abaut.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link Desertion_app#newInstance} factory method to
+ * Use the {@link Abaut#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Desertion_app extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+public class Abaut extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-
-    public static Desertion_app newInstance(String param1, String param2) {
-        Desertion_app fragment = new Desertion_app();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    public Abaut() {
+        // Required empty public constructor
     }
 
-    public Desertion_app() {
-        // Required empty public constructor
+
+    public static Abaut newInstance() {
+        Abaut fragment = new Abaut();
+        Bundle args = new Bundle();
+
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_desertion_app, container, false);
+        View root = inflater.inflate(R.layout.fragment_abaut, container, false);
 
         IconManager icon = new IconManager();
-        icon.setBackgroundApp((FrameLayout)root.findViewById(R.id.contentDesertion));
+        icon.setBackgroundApp((FrameLayout)root.findViewById(R.id.content_information_about));
         return root;
     }
 
@@ -75,11 +61,7 @@ public class Desertion_app extends Fragment {
         }
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
 
-    }
 
     @Override
     public void onDetach() {
@@ -87,10 +69,18 @@ public class Desertion_app extends Fragment {
         mListener = null;
     }
 
-
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     * <p>
+     * See the Android Training lesson <a href=
+     * "http://developer.android.com/training/basics/fragments/communicating.html"
+     * >Communicating with Other Fragments</a> for more information.
+     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
+        void onFragmentInteraction(Uri uri);
     }
-
 }

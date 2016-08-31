@@ -52,11 +52,14 @@ import com.co.edu.cun.www1104379214.bienestarcun.Funciones.NewItinerarioManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServerUri;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
+import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Abaut;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.ChatPendientes;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Circles_app;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.ChatPsicologa_app;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.CircleAdministration_app;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Desertion_app;
+import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Developers;
+import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Help;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.HistoryLaboral_app;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Home_app;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.DelActivities_app;
@@ -90,6 +93,9 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    Fragment fragment;
+    FragmentManager fragmentManager = getSupportFragmentManager();
+
     ImageButton camara;
     ImageView imagen;
     ImageButton upload;
@@ -98,9 +104,6 @@ public class MainActivity extends AppCompatActivity {
     String foto;
     File file;
     String nameFileImagen;
-
-
-
 
     AdapterUserMenu metodos;//clase con metodos para usar
     CodMessajes mss = new CodMessajes();
@@ -183,11 +186,33 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        String title = "";
+
         switch (item.getItemId()) {
             case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);
                 return true;
+            case R.id.action_ebaout:
+                fragment =  Abaut.newInstance();
+                title = getResources().getString(R.string.item_ebaut);
+                break;
+            case R.id.action_creation:
+                fragment =  Developers.newInstance();
+                title = getResources().getString(R.string.item_desarrolladores);
+                break;
+            case R.id.action_help:
+                fragment =  Help.newInstance();
+                title = getResources().getString(R.string.item_ayuda);
+                break;
         }
+
+        setTitle(title); // Setear título actual
+        fragmentManager
+                .beginTransaction()
+                .replace(R.id.main_content, fragment)
+                .commit();
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -263,7 +288,6 @@ public class MainActivity extends AppCompatActivity {
         Bundle args = new Bundle();
         args.putString("", "");
 
-        Fragment fragment;
         fragment =  Home_app.newInstance("", "");
 
         switch ( id ){
@@ -342,7 +366,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         fragment.setArguments(args);
-        FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager
                 .beginTransaction()
                 .replace(R.id.main_content, fragment)

@@ -25,7 +25,7 @@ public class CodMessajes {
     public static final String UsrLoginOff = "1000";
 
 
-    public static final int TiempoEsperaTask = 3000;
+    public static final int TiempoEsperaTask = 2000;
 
     //datos usuario por default
 

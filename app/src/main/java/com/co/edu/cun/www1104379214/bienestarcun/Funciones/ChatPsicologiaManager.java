@@ -1,5 +1,6 @@
 package com.co.edu.cun.www1104379214.bienestarcun.Funciones;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -125,14 +126,14 @@ public class ChatPsicologiaManager {
     }
     //</editor-fold> actualmente
 
-    public JSONArray SearchChatPendientes() { //Mensajes sin leer
+    public JSONArray SearchChatPendientes( ProgressDialog pdialog ) { //Mensajes sin leer
         final String service;
 
         service = "chatPsicologia/getChatPendientes.php";
 
         try {
 
-            result = GetChatPendientesExists(service);
+            result = GetChatPendientesExists(service, pdialog);
             resultResponse = result.getJSONArray(0);
             indexChats = result.getJSONObject(1);
 
@@ -151,7 +152,7 @@ public class ChatPsicologiaManager {
 
     }
 
-    public JSONArray GetChatPendientesExists(String service) throws InterruptedException {
+    public JSONArray GetChatPendientesExists(String service, ProgressDialog pdialog) throws InterruptedException {
         //obtengo el array de objeto con los circulos
 
         String[][] values = null;
@@ -163,7 +164,7 @@ public class ChatPsicologiaManager {
                 {"tipuser",CodMessajes.UsrPsicologa}
         };
 
-        BD = new TaskExecuteHttpHandler(service, values,CONTEXTO);
+        BD = new TaskExecuteHttpHandler(service, values,CONTEXTO, pdialog);
         String resultado="";
         try {
             resultado = BD.execute().get();
@@ -353,7 +354,7 @@ public class ChatPsicologiaManager {
                 {"mensaje",mensaje}
         };
 
-        BD = new TaskExecuteHttpHandler(service, values,CONTEXTO);
+        BD = new TaskExecuteHttpHandler(service, values,CONTEXTO, null);
         String resultado="";
         try {
             resultado = BD.execute().get();
@@ -412,7 +413,7 @@ public class ChatPsicologiaManager {
                 {"usuario",idUser}
         };
 
-        BD = new TaskExecuteHttpHandler(service, values,CONTEXTO);
+        BD = new TaskExecuteHttpHandler(service, values,CONTEXTO, null);
         String resultado="";
         try {
             resultado = BD.execute().get();

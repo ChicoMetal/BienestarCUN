@@ -31,14 +31,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link Show_itinerario_circle.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link Show_itinerario_circle#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class Show_itinerario_circle extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -62,13 +54,7 @@ public class Show_itinerario_circle extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment Show_itinerario_circle.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static Show_itinerario_circle newInstance(int circulo, DBManager db, int instance, FragmentManager fragments) {
         Show_itinerario_circle fragment = new Show_itinerario_circle();
         Bundle args = new Bundle();
@@ -129,16 +115,7 @@ public class Show_itinerario_circle extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
@@ -154,11 +131,11 @@ public class Show_itinerario_circle extends Fragment {
         mHypedItinerarioAdapter.addItemDecoration( new ItemOffsetDecoration( getActivity().getApplicationContext(), R.integer.offset ) );
     }
 
-    private void CasthConentAdapter() throws JSONException {
+    private void CasthConentAdapter(ProgressDialog pdialog) throws JSONException {
 
         ItinerariosManager getItinerarios = new ItinerariosManager( getActivity().getApplicationContext() );//busco en BD los circulos existentes
 
-        JSONArray ItinerariosResult = getItinerarios.SearchItinerarios(idCirculo);
+        JSONArray ItinerariosResult = getItinerarios.SearchItinerarios(idCirculo, pdialog);
         JSONObject indexItinerarios = getItinerarios.IndexItinerario();
 
         if( ItinerariosResult != null ){
@@ -186,7 +163,10 @@ public class Show_itinerario_circle extends Fragment {
 
             pDialog = new ProgressDialog( getActivity() );
             pDialog.setMessage("Un momento...");
-            pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            pDialog.setCancelable(false);
+            pDialog.setIndeterminate(true);
+            pDialog.setProgress(0);
             pDialog.show();
 
             SetudItinerariosList();
@@ -211,11 +191,11 @@ public class Show_itinerario_circle extends Fragment {
 
             super.onPostExecute(aVoid);
 
-            pDialog.dismiss();
+            //pDialog.dismiss();
 
             try {
 
-                CasthConentAdapter();//lleno el adaptador
+                CasthConentAdapter(pDialog);//lleno el adaptador
 
             } catch (JSONException e) {
                 e.printStackTrace();

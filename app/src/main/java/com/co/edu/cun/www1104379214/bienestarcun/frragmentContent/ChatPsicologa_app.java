@@ -1,5 +1,6 @@
 package com.co.edu.cun.www1104379214.bienestarcun.frragmentContent;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -43,6 +44,7 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
     LinearLayout ContentChat;
     ImageButton btn;
     EditText mensaje;
+    ProgressDialog pDialog;
 
 
     //inicializacion necesarias para comunicacion con node
@@ -104,6 +106,14 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
         CONTEXTO = root.getContext();
 
 
+        pDialog = new ProgressDialog( getActivity() );
+        pDialog.setMessage("Un momento...");
+        pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        pDialog.setCancelable(false);
+        pDialog.setIndeterminate(true);
+        pDialog.setProgress(0);
+        pDialog.show();
+
         try{
 
             IO.Options opts = new IO.Options();
@@ -161,8 +171,7 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
             }
         });
 
-        socket.on(EVENT_SEND_IDSOCKET, new Emitter.Listener(){
-            //evento identificar la conexion en el servidor
+        socket.on(EVENT_SEND_IDSOCKET, new Emitter.Listener(){//evento identificar la conexion en el servidor
 
             @Override
             public void call(Object... args) {
@@ -355,7 +364,7 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
 
         texto.setTextColor(CONTEXTO.getResources().getColor(R.color.textBlack));
         texto.setPadding(30, 5, 30, 5);
-        texto.setTextSize(15);
+        texto.setTextSize(20);
         texto.setText(mensaje);
 
         return texto;
@@ -374,7 +383,7 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
                 {"receptor",receptor}
         };
 
-        BD = new TaskExecuteHttpHandler(service, values,CONTEXTO);
+        BD = new TaskExecuteHttpHandler(service, values,CONTEXTO, pDialog);
         String resultado="";
         try {
             resultado = BD.execute().get();

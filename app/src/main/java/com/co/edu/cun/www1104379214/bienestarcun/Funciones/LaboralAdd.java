@@ -85,7 +85,7 @@ public class LaboralAdd {
 
         try {
 
-            BD = new TaskExecuteHttpHandler(service, parametros, CONTEXTO);
+            BD = new TaskExecuteHttpHandler(service, parametros, CONTEXTO, null);
             String resultado="";
             try {
                 resultado = BD.execute().get();
@@ -168,7 +168,7 @@ public class LaboralAdd {
 
         try {
 
-            BD = new TaskExecuteHttpHandler(service, parametros, CONTEXTO);
+            BD = new TaskExecuteHttpHandler(service, parametros, CONTEXTO, null);
             String resultado="";
             try {
                 resultado = BD.execute().get();

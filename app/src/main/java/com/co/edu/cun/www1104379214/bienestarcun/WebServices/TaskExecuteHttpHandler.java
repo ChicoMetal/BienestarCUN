@@ -3,6 +3,7 @@ package com.co.edu.cun.www1104379214.bienestarcun.WebServices;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
 
@@ -43,23 +44,22 @@ public class TaskExecuteHttpHandler extends AsyncTask<Void, Void, String> {
 
     public TaskExecuteHttpHandler(String service,//nombre del servicio
                                   String[][] campos,
-                                Context contesto//contexto
+                                  Context contesto,//contexto
+                                  ProgressDialog pdialog
     ) {
 
 
         this.SERVICE = service;
         this.CAMPOS = campos;
         this.CONTEXTO = contesto;
+        this.pDialog = pdialog;
 
     }
 
     @Override
     protected void onPreExecute() {
 
-        /*pDialog = new ProgressDialog( CONTEXTO );
-        pDialog.setMessage("Enviando al servidor, espere...");
-        pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        pDialog.show();*/
+
 
     }
 
@@ -86,7 +86,9 @@ public class TaskExecuteHttpHandler extends AsyncTask<Void, Void, String> {
     protected void onPostExecute(String result) {
 
         super.onPostExecute(result);
-       // pDialog.dismiss();
+
+        if( pDialog != null )
+            pDialog.dismiss();
 
     }
 

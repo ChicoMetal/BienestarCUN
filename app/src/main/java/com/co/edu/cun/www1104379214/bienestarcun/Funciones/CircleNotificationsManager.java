@@ -1,5 +1,6 @@
 package com.co.edu.cun.www1104379214.bienestarcun.Funciones;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
@@ -22,14 +23,14 @@ public class CircleNotificationsManager {
     JSONArray result = null;
     private JSONArray resultResponse = null;
 
-    public CircleNotificationsManager(Context contexto, DBManager db, String[] tipNotification) {
+    public CircleNotificationsManager(Context contexto, DBManager db, String[] tipNotification, ProgressDialog pdialog) {
         this.CONTEXTO = contexto;
         this.DB = db;
         this.tipeNotification = tipNotification;
-        SearchNotifications(tipeNotification);
+        SearchNotifications(tipeNotification, pdialog);
     }
 
-    public void SearchNotifications(String[] tipeNotification) { //buscar notificaciones existentes en la BD o los agregados por el usuario
+    public void SearchNotifications(String[] tipeNotification, ProgressDialog pdialog) { //buscar notificaciones existentes en la BD o los agregados por el usuario
 
         final String service;
 
@@ -39,7 +40,7 @@ public class CircleNotificationsManager {
 
         try {
 
-            result = getNotification.GetNotifications(tipeNotification,service);
+            result = getNotification.GetNotifications(tipeNotification,service, pdialog);
 
             if ( result != null){
 

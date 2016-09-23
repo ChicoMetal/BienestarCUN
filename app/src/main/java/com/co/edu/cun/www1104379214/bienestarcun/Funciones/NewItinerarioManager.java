@@ -79,7 +79,7 @@ public class NewItinerarioManager {
 
         try {
 
-            BD = new TaskExecuteHttpHandler(service, parametros, CONTEXTO);
+            BD = new TaskExecuteHttpHandler(service, parametros, CONTEXTO, null);
             String resultado="";
             try {
                 resultado = BD.execute().get();

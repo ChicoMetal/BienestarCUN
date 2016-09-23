@@ -1,5 +1,6 @@
 package com.co.edu.cun.www1104379214.bienestarcun.Funciones;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -43,7 +44,7 @@ public class CirclesManager {
 
     }
 
-    public JSONArray SearchCircles( int servicePetition) { //buscar circulo existente en la BD o los agregados por el usuario
+    public JSONArray SearchCircles(int servicePetition, ProgressDialog pdialog) { //buscar circulo existente en la BD o los agregados por el usuario
         final String service;
 
         if( servicePetition == 0){
@@ -55,7 +56,7 @@ public class CirclesManager {
 
         try {
 
-            result = GetCirclesExists(getIdUser(), service);
+            result = GetCirclesExists(getIdUser(), service, pdialog);
             resultResponse = result.getJSONArray(0);
             indexCircles = result.getJSONObject(1);
 
@@ -120,7 +121,7 @@ public class CirclesManager {
     }
 
 
-    public JSONArray GetCirclesExists(String idUser, String service) throws InterruptedException {
+    public JSONArray GetCirclesExists(String idUser, String service, ProgressDialog pdialog) throws InterruptedException {
     //obtengo el array de objeto con los circulos
 
         String[][] values = null;
@@ -132,7 +133,7 @@ public class CirclesManager {
                 {"user",idUser}
         };
 
-        BD = new TaskExecuteHttpHandler(service, parametros, CONTEXTO);
+        BD = new TaskExecuteHttpHandler(service, parametros, CONTEXTO, pdialog);
         String resultado="";
         try {
             resultado = BD.execute().get();
@@ -202,7 +203,7 @@ public class CirclesManager {
 
         try {
 
-            BD = new TaskExecuteHttpHandler(service, parametros, CONTEXTO);
+            BD = new TaskExecuteHttpHandler(service, parametros, CONTEXTO,null);
             String resultado="";
             try {
                 resultado = BD.execute().get();
@@ -255,7 +256,7 @@ public class CirclesManager {
 
         try {
 
-            BD = new TaskExecuteHttpHandler(service, parametros, CONTEXTO);
+            BD = new TaskExecuteHttpHandler(service, parametros, CONTEXTO, null);
             String resultado="";
             try {
                 resultado = BD.execute().get();

@@ -1,5 +1,6 @@
 package com.co.edu.cun.www1104379214.bienestarcun.Funciones;
 
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -133,7 +134,7 @@ public class Notification {
         return jsonNotifications;
     }
 
-    public JSONArray GetNotifications(String[] tipeNotifications, String service){//obtener notificaciones en la BD remota
+    public JSONArray GetNotifications(String[] tipeNotifications, String service, ProgressDialog pdialog){//obtener notificaciones en la BD remota
 
         String[][] parametros;
 
@@ -146,7 +147,7 @@ public class Notification {
 
         try {
 
-            BD = new TaskExecuteHttpHandler(service, parametros, CONTEXTO);
+            BD = new TaskExecuteHttpHandler(service, parametros, CONTEXTO, pdialog);
             String resultado="";
             try {
                 resultado = BD.execute().get();

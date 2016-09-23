@@ -112,7 +112,7 @@ public class GeneralCode {
 
         try {
 
-            BD = new TaskExecuteHttpHandler(service, parametros, CONTEXTO);
+            BD = new TaskExecuteHttpHandler(service, parametros, CONTEXTO, null);
             String resultado="";
 
 

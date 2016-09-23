@@ -1,5 +1,6 @@
 package com.co.edu.cun.www1104379214.bienestarcun.Funciones;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -41,14 +42,14 @@ public class ItinerariosManager {
 
     }
 
-    public JSONArray SearchItinerarios( int idCircle ) { //buscar circulo existente en la BD o los agregados por el usuario
+    public JSONArray SearchItinerarios(int idCircle, ProgressDialog pdialog) { //buscar circulo existente en la BD o los agregados por el usuario
 
         String service = "circles/GetItinerariosCircle.php";
 
 
         try {
 
-            result = GetItinerariosExitst(idCircle, service);
+            result = GetItinerariosExitst(idCircle, service, pdialog);
             resultResponse = result.getJSONArray(0);
             indexItinerarios = result.getJSONObject(1);
 
@@ -67,7 +68,7 @@ public class ItinerariosManager {
 
     }
 
-    public JSONArray GetItinerariosExitst(int idCircle1, String service) throws InterruptedException {
+    public JSONArray GetItinerariosExitst(int idCircle1, String service, ProgressDialog pdialog) throws InterruptedException {
         //obtengo el array de objeto con los itinerarios
 
         String[][] values;
@@ -79,7 +80,7 @@ public class ItinerariosManager {
                 {"circle",idCircle}
         };
 
-        BD = new TaskExecuteHttpHandler(service, values, CONTEXTO);
+        BD = new TaskExecuteHttpHandler(service, values, CONTEXTO, pdialog);
         String resultado="";
         try {
             resultado = BD.execute().get();
@@ -166,7 +167,7 @@ public class ItinerariosManager {
                 {"circle",idCircle}
         };
 
-        BD = new TaskExecuteHttpHandler(service, values,CONTEXTO);
+        BD = new TaskExecuteHttpHandler(service, values,CONTEXTO, null);
         String resultado = "";
         try {
 
@@ -237,7 +238,7 @@ public class ItinerariosManager {
                 {"user",user}
         };
 
-        BD = new TaskExecuteHttpHandler(service, values, CONTEXTO);
+        BD = new TaskExecuteHttpHandler(service, values, CONTEXTO, null);
         String resultado;
         try {
 
@@ -340,7 +341,7 @@ public class ItinerariosManager {
                 {"listObject",listObject.toString() }
         };
 
-        BD = new TaskExecuteHttpHandler(service, values, CONTEXTO);
+        BD = new TaskExecuteHttpHandler(service, values, CONTEXTO, null);
         String resultado;
         try {
 

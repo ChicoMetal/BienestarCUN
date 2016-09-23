@@ -42,7 +42,7 @@ public class ServicesPeticion {
         };
 
 
-        BD = new TaskExecuteHttpHandler(service, parametros, CONTEXTO);
+        BD = new TaskExecuteHttpHandler(service, parametros, CONTEXTO,null);
 
         try {
             result = BD.execute().get();
@@ -153,7 +153,7 @@ public class ServicesPeticion {
 
         String[][] values = JSONObjectToMatrix(valuesJSON, campos); //obtener matrix desde objeto
 
-        BD = new TaskExecuteHttpHandler(service, values, CONTEXTO);
+        BD = new TaskExecuteHttpHandler(service, values, CONTEXTO, null);
 
         try {
            result = BD.execute().get();
@@ -209,7 +209,7 @@ public class ServicesPeticion {
                 {"token",loginSave.getString(DB.CN_TOKEN_LOGIN)}
         };
 
-        BD = new TaskExecuteHttpHandler(service, values, CONTEXTO);
+        BD = new TaskExecuteHttpHandler(service, values, CONTEXTO, null);
 
         try {
             result = BD.execute().get();
@@ -241,7 +241,7 @@ public class ServicesPeticion {
                 {"contenido",contenido}
         };
 
-        BD = new TaskExecuteHttpHandler(service, values, CONTEXTO);
+        BD = new TaskExecuteHttpHandler(service, values, CONTEXTO, null);
 
         try {
             BD.execute().get();

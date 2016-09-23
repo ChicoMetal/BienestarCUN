@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.PersistableBundle;
 import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -134,20 +135,9 @@ public class MainActivity extends AppCompatActivity {
 
         services = new ServicesPeticion( getApplicationContext() );
 
-        try {
-            Ejecutar();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: onCreate #!#";
-            contenido += "Clase : MainActivity.java #!#";
-            contenido += e.getMessage();
-            services.SaveError(contenido);
-        }
+        BDManager();
 
         metodos = new AdapterUserMenu( getApplicationContext(), db );
-
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);//instancio menu lateral
         navigationView = (NavigationView) findViewById(R.id.nav_view);//instancio contenedor de menu lateral
@@ -167,6 +157,24 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        try {
+            Ejecutar();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }catch (Exception e){
+            String contenido = "Error desde android #!#";
+            contenido += " Funcion: onCreate #!#";
+            contenido += "Clase : MainActivity.java #!#";
+            contenido += e.getMessage();
+            services.SaveError(contenido);
+        }
     }
 
     //********************************************
@@ -391,7 +399,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void Ejecutar() throws InterruptedException {
 
-        BDManager();
 
         setnameUserHead();
 

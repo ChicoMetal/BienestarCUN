@@ -132,11 +132,11 @@ public class Circles_app extends Fragment {
         mHyperdActivitiesList.addItemDecoration( new ItemOffsetDecoration( getActivity().getApplicationContext(), R.integer.offset ) );
     }
 
-    private void CasthConentAdapter() throws JSONException {
+    private void CasthConentAdapter(ProgressDialog pdialog) throws JSONException {
 
         CirclesManager getCircles = new CirclesManager( getActivity().getApplicationContext(), DB );//busco en BD los circulos existentes
 
-        JSONArray circlesResult = getCircles.SearchCircles(0);
+        JSONArray circlesResult = getCircles.SearchCircles(0, pdialog);
         JSONObject indexCircles = getCircles.IndexCircles();
 
         if( circlesResult != null ){
@@ -164,7 +164,10 @@ public class Circles_app extends Fragment {
 
             pDialog = new ProgressDialog( getActivity() );
             pDialog.setMessage("Un momento...");
-            pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            pDialog.setCancelable(false);
+            pDialog.setIndeterminate(true);
+            pDialog.setProgress(0);
             pDialog.show();
 
             SetudActivitiesList();
@@ -189,11 +192,11 @@ public class Circles_app extends Fragment {
 
             super.onPostExecute(aVoid);
 
-            pDialog.dismiss();
+            //pDialog.dismiss();
 
             try {
 
-                CasthConentAdapter();//lleno el adaptador
+                CasthConentAdapter(pDialog);//lleno el adaptador
 
             } catch (JSONException e) {
                 e.printStackTrace();

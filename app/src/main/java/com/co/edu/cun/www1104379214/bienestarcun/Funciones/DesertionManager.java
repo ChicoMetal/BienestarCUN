@@ -82,7 +82,7 @@ public class DesertionManager {
 
         try {
 
-            BD = new TaskExecuteHttpHandler(service, parametros,CONTEXTO, null);
+            BD = new TaskExecuteHttpHandler(service, parametros, null);
             String resultado="";
             try {
                 resultado = BD.execute().get();
@@ -90,11 +90,9 @@ public class DesertionManager {
                 e.printStackTrace();
 
             }catch (Exception e){
-                String contenido = "Error desde android #!#";
-                contenido += " Funcion: SendServerDesertion #!#";
-                contenido += "Clase : DesertionManager.java #!#";
-                contenido += e.getMessage();
-                new ServicesPeticion(CONTEXTO).SaveError(contenido);
+                new ServicesPeticion().SaveError(e,
+                        new Exception().getStackTrace()[0].getMethodName().toString(),
+                        this.getClass().getName());//Envio la informacion de la excepcion al server
             }
 
 
@@ -114,11 +112,9 @@ public class DesertionManager {
 
         }catch (Exception e){
 
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: SendServerDesertion #!#";
-            contenido += "Clase : DesertionManager.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
 
         }
 

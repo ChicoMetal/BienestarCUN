@@ -79,7 +79,7 @@ public class NewItinerarioManager {
 
         try {
 
-            BD = new TaskExecuteHttpHandler(service, parametros, CONTEXTO, null);
+            BD = new TaskExecuteHttpHandler(service, parametros, null);
             String resultado="";
             try {
                 resultado = BD.execute().get();
@@ -87,11 +87,9 @@ public class NewItinerarioManager {
                 e.printStackTrace();
 
             }catch (Exception e){
-                String contenido = "Error desde android #!#";
-                contenido += " Funcion: SendServerItinerario try 2#!#";
-                contenido += "Clase : NewItinerarioManager.java #!#";
-                contenido += e.getMessage();
-                new ServicesPeticion(CONTEXTO).SaveError(contenido);
+                new ServicesPeticion().SaveError(e,
+                        new Exception().getStackTrace()[0].getMethodName().toString(),
+                        this.getClass().getName());//Envio la informacion de la excepcion al server
             }
 
 
@@ -111,11 +109,9 @@ public class NewItinerarioManager {
 
         }catch (Exception e){
 
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: SendServerItinerario try 1 #!#";
-            contenido += "Clase : SendServerItinerario.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
 
         }
 

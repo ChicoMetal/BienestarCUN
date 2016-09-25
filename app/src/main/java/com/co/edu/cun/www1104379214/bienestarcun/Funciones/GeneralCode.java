@@ -45,7 +45,7 @@ public class GeneralCode {
     ImageButton BtnChoseSede;
     String[][] UserDefault;
     TaskExecuteSQLInsert sqliteInsert;
-    ServicesPeticion services = new ServicesPeticion(CONTEXTO);
+    ServicesPeticion services = new ServicesPeticion();
 
     public GeneralCode(DBManager db, Context contexto) {
 
@@ -87,11 +87,9 @@ public class GeneralCode {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: getIdUser #!#";
-            contenido += "Clase : GeneralCode.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
         }
 
         return null;
@@ -112,7 +110,7 @@ public class GeneralCode {
 
         try {
 
-            BD = new TaskExecuteHttpHandler(service, parametros, CONTEXTO, null);
+            BD = new TaskExecuteHttpHandler(service, parametros, null);
             String resultado="";
 
 
@@ -146,11 +144,9 @@ public class GeneralCode {
 
         }catch (Exception e){
 
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: getNameUser try 1 #!#";
-            contenido += "Clase : GeneralCode.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
 
         }
 
@@ -204,12 +200,9 @@ public class GeneralCode {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     } catch (ExecutionException e) {
-                        e.printStackTrace();
-                        String contenido = "Error desde android #!#";
-                        contenido += " Funcion: ChoseUserDefault #!#";
-                        contenido += "Clase : GeneralCode.java #!#";
-                        contenido += e.getMessage();
-                        services.SaveError(contenido);
+                        new ServicesPeticion().SaveError(e,
+                                new Exception().getStackTrace()[0].getMethodName().toString(),
+                                this.getClass().getName());//Envio la informacion de la excepcion al server
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

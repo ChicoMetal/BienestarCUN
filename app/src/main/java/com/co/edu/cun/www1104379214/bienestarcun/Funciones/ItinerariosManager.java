@@ -56,11 +56,9 @@ public class ItinerariosManager {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: SearchItinerarios #!#";
-            contenido += "Clase : ItinerariosManager.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());
         }
 
         return resultResponse;
@@ -80,7 +78,7 @@ public class ItinerariosManager {
                 {"circle",idCircle}
         };
 
-        BD = new TaskExecuteHttpHandler(service, values, CONTEXTO, pdialog);
+        BD = new TaskExecuteHttpHandler(service, values, pdialog);
         String resultado="";
         try {
             resultado = BD.execute().get();
@@ -88,11 +86,9 @@ public class ItinerariosManager {
             e.printStackTrace();
 
         }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: GetItinerariosExitst #!#";
-            contenido += "Clase : ItinerariosManager.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());
         }
 
         try {
@@ -116,11 +112,9 @@ public class ItinerariosManager {
             e.printStackTrace();
 
         }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: GetItinerariosExitst #!#";
-            contenido += "Clase : ItinerariosManager.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());
         }
 
         return arrayResponse;
@@ -167,7 +161,7 @@ public class ItinerariosManager {
                 {"circle",idCircle}
         };
 
-        BD = new TaskExecuteHttpHandler(service, values,CONTEXTO, null);
+        BD = new TaskExecuteHttpHandler(service, values, null);
         String resultado = "";
         try {
 
@@ -202,11 +196,9 @@ public class ItinerariosManager {
             e.printStackTrace();
 
         }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: SearchListInscritos #!#";
-            contenido += "Clase : ItinerariosManager.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());
         }
 
     }
@@ -238,7 +230,7 @@ public class ItinerariosManager {
                 {"user",user}
         };
 
-        BD = new TaskExecuteHttpHandler(service, values, CONTEXTO, null);
+        BD = new TaskExecuteHttpHandler(service, values, null);
         String resultado;
         try {
 
@@ -269,11 +261,9 @@ public class ItinerariosManager {
             e.printStackTrace();
 
         }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: SearchCircleOfAdmin #!#";
-            contenido += "Clase : ItinerariosManager.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());
         }
 
         return 0;
@@ -320,11 +310,9 @@ public class ItinerariosManager {
         } catch (JSONException e) {
             e.printStackTrace();
         }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: SaveAsistenciasItinerario #!#";
-            contenido += "Clase : ItinerariosManager.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());
         }
 
     }
@@ -341,7 +329,7 @@ public class ItinerariosManager {
                 {"listObject",listObject.toString() }
         };
 
-        BD = new TaskExecuteHttpHandler(service, values, CONTEXTO, null);
+        BD = new TaskExecuteHttpHandler(service, values, null);
         String resultado;
         try {
 
@@ -362,11 +350,9 @@ public class ItinerariosManager {
             e.printStackTrace();
 
         }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: SearchCircleOfAdmin #!#";
-            contenido += "Clase : ItinerariosManager.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());
         }
 
     }

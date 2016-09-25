@@ -53,7 +53,7 @@ public class AdapterUserMenu {
         this.CONTEXTO = contexto;
         this.DB = db;
 
-        services = new ServicesPeticion(CONTEXTO);
+        services = new ServicesPeticion();
 
     }
     //</editor-fold>
@@ -99,12 +99,9 @@ public class AdapterUserMenu {
                     } catch (ExecutionException e) {
                         e.printStackTrace();
                     } catch (JSONException e) {
-                        e.printStackTrace();
-                        String contenido = "Error desde android #!#";
-                        contenido += " Funcion: ProcessLogin try 2 #!#";
-                        contenido += "Clase : Adaptermenu.java #!#";
-                        contenido += e.getMessage();
-                        services.SaveError(contenido);
+                        new ServicesPeticion().SaveError(e,
+                                new Exception().getStackTrace()[0].getMethodName().toString(),
+                                this.getClass().getName());//Envio la informacion de la excepcion al server
 
                     }
 
@@ -117,11 +114,9 @@ public class AdapterUserMenu {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: ProcessLogin try 1 #!#";
-            contenido += "Clase : Adaptermenu.java #!#";
-            contenido += e.getMessage();
-            services.SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
         }
 
         return status;
@@ -207,12 +202,9 @@ public class AdapterUserMenu {
         } catch (JSONException e) {
             e.printStackTrace();
 
-
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: ProcessLogout #!#";
-            contenido += "Clase : Adaptermenu.java #!#";
-            contenido += e.getMessage();
-            services.SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
 
         }
 
@@ -250,12 +242,9 @@ public class AdapterUserMenu {
             } catch (JSONException e) {
                 e.printStackTrace();
 
-
-                String contenido = "Error desde android #!#";
-                contenido += " Funcion: CreateObjectResultSQL #!#";
-                contenido += "Clase : Adaptermenu.java #!#";
-                contenido += e.getMessage();
-                services.SaveError(contenido);
+                new ServicesPeticion().SaveError(e,
+                        new Exception().getStackTrace()[0].getMethodName().toString(),
+                        this.getClass().getName());//Envio la informacion de la excepcion al server
 
             }
 
@@ -286,11 +275,9 @@ public class AdapterUserMenu {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: DeleteUser #!#";
-            contenido += "Clase : Adaptermenu.java #!#";
-            contenido += e.getMessage();
-            services.SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
         }
 
     }
@@ -336,11 +323,9 @@ public class AdapterUserMenu {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: ComproveUser #!#";
-            contenido += "Clase : Adaptermenu.java #!#";
-            contenido += e.getMessage();
-            services.SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
         }
     }
     //</editor-fold> actualmente

@@ -39,19 +39,16 @@ public class TaskExecuteHttpHandler extends AsyncTask<Void, Void, String> {
     private final String Server = ServerUri.Server;
     private String SERVICE;
     private String[][] CAMPOS;
-    private Context CONTEXTO;
     private String result;
 
     public TaskExecuteHttpHandler(String service,//nombre del servicio
                                   String[][] campos,
-                                  Context contesto,//contexto
                                   ProgressDialog pdialog
     ) {
 
 
         this.SERVICE = service;
         this.CAMPOS = campos;
-        this.CONTEXTO = contesto;
         this.pDialog = pdialog;
 
     }

@@ -115,11 +115,9 @@ public class ChatPsicologiaManager {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: ComproveUser #!#";
-            contenido += "Clase : ChatPsicologia.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
         }
 
         return resultado;
@@ -140,11 +138,9 @@ public class ChatPsicologiaManager {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: SearchChatPendientes #!#";
-            contenido += "Clase : ChatPsicologiaManager.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
         }
 
         return resultResponse;
@@ -164,18 +160,16 @@ public class ChatPsicologiaManager {
                 {"tipuser",CodMessajes.UsrPsicologa}
         };
 
-        BD = new TaskExecuteHttpHandler(service, values,CONTEXTO, pdialog);
+        BD = new TaskExecuteHttpHandler(service, values, pdialog);
         String resultado="";
         try {
             resultado = BD.execute().get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: GetChatPendientesExists #!#";
-            contenido += "Clase : ChatPsicologiaManager.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
         }
 
         try {
@@ -201,11 +195,9 @@ public class ChatPsicologiaManager {
             e.printStackTrace();
 
         }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: GetChatPendientesExists #!#";
-            contenido += "Clase : ChatPsicologiaManager.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
         }
 
         return arrayResponse;
@@ -250,11 +242,9 @@ public class ChatPsicologiaManager {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: getIdUser #!#";
-            contenido += "Clase : CircleList.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
         }
 
         return null;
@@ -329,11 +319,9 @@ public class ChatPsicologiaManager {
         /*} catch (InterruptedException e) {
             e.printStackTrace();*/
         }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: AddMesagesChat #!#";
-            contenido += "Clase : ChatPsicologiaManager.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
         }
 
 
@@ -354,18 +342,16 @@ public class ChatPsicologiaManager {
                 {"mensaje",mensaje}
         };
 
-        BD = new TaskExecuteHttpHandler(service, values,CONTEXTO, null);
+        BD = new TaskExecuteHttpHandler(service, values, null);
         String resultado="";
         try {
             resultado = BD.execute().get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: GetMensajesPendientesExists #!#";
-            contenido += "Clase : ChatPsicologiaManager.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
         }
 
         try {
@@ -387,11 +373,9 @@ public class ChatPsicologiaManager {
             e.printStackTrace();
 
         }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: GetMensajesPendientesExists #!#";
-            contenido += "Clase : ChatPsicologiaManager.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
         }
 
         return arrayResponse;
@@ -413,18 +397,16 @@ public class ChatPsicologiaManager {
                 {"usuario",idUser}
         };
 
-        BD = new TaskExecuteHttpHandler(service, values,CONTEXTO, null);
+        BD = new TaskExecuteHttpHandler(service, values, null);
         String resultado="";
         try {
             resultado = BD.execute().get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: getIdPsicologiaUser #!#";
-            contenido += "Clase : ChatPsicologiaManager.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
         }
 
         try {
@@ -453,11 +435,9 @@ public class ChatPsicologiaManager {
             e.printStackTrace();
 
         }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: getIdPsicologiaUser #!#";
-            contenido += "Clase : ChatPsicologiaManager.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
         }
 
         return null;

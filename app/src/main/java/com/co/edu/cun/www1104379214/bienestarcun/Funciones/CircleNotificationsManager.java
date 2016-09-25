@@ -50,11 +50,9 @@ public class CircleNotificationsManager {
             }
 
         } catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: SearchNotifications #!#";
-            contenido += "Clase : CircleNotificationsManager.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
         }
 
     }

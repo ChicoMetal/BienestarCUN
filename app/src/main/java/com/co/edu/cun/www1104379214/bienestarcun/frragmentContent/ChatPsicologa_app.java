@@ -131,11 +131,9 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
         }catch (URISyntaxException e){
             e.printStackTrace();
         }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: OnCreateView #!#";
-            contenido += "Clase : ChatPsicologia_app.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
         }
 
 
@@ -161,11 +159,9 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }catch (Exception e){
-                    String contenido = "Error desde android #!#";
-                    contenido += " Funcion: evento recibir mensajes del socket #!#";
-                    contenido += "Clase : ChatPsicologia_app.java #!#";
-                    contenido += e.getMessage();
-                    new ServicesPeticion(CONTEXTO).SaveError(contenido);
+                    new ServicesPeticion().SaveError(e,
+                            new Exception().getStackTrace()[0].getMethodName().toString(),
+                            this.getClass().getName());//Envio la informacion de la excepcion al server
                 }
 
             }
@@ -195,11 +191,9 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }catch (Exception e){
-                    String contenido = "Error desde android #!#";
-                    contenido += " Funcion: AddMesagesChat #!#";
-                    contenido += "Clase : ChatPsicologia_app.java #!#";
-                    contenido += e.getMessage();
-                    new ServicesPeticion(CONTEXTO).SaveError(contenido);
+                    new ServicesPeticion().SaveError(e,
+                            new Exception().getStackTrace()[0].getMethodName().toString(),
+                            this.getClass().getName());//Envio la informacion de la excepcion al server
                 }
 
             }
@@ -224,11 +218,9 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
                     socket.emit(EVENT_SEND_IDSOCKET, newConversasion);//envio la informasion al server para guardar el socket
 
                 }catch(Exception e){
-                    String contenido = "Error desde android #!#";
-                    contenido += " Funcion: evento socket conexion creada #!#";
-                    contenido += "Clase : ChatPsicologia_app.java #!#";
-                    contenido += e.getMessage();
-                    new ServicesPeticion(CONTEXTO).SaveError(contenido);
+                    new ServicesPeticion().SaveError(e,
+                            new Exception().getStackTrace()[0].getMethodName().toString(),
+                            this.getClass().getName());//Envio la informacion de la excepcion al server
                 }
 
 
@@ -383,18 +375,16 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
                 {"receptor",receptor}
         };
 
-        BD = new TaskExecuteHttpHandler(service, values,CONTEXTO, pDialog);
+        BD = new TaskExecuteHttpHandler(service, values, pDialog);
         String resultado="";
         try {
             resultado = BD.execute().get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: GetMensajesPendientesExists #!#";
-            contenido += "Clase : ChatPsicologa_app.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
         }
 
         try {
@@ -416,11 +406,9 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
             e.printStackTrace();
 
         }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: GetMensajesPendientesExists #!#";
-            contenido += "Clase : ChatPsicologia_app.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
         }
 
         return arrayResponse;

@@ -1,16 +1,25 @@
 package com.co.edu.cun.www1104379214.bienestarcun.WebServices;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ContentResults.ResponseContent;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.Interface.SendError;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.concurrent.ExecutionException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by Krlos guzman on 31/10/15.
@@ -22,11 +31,7 @@ public class ServicesPeticion {
     TaskExecuteHttpHandler BD;
     CodMessajes mss = new CodMessajes();
     DBManager DB;
-    Context CONTEXTO;
 
-    public ServicesPeticion(Context contexto) {
-        this.CONTEXTO = contexto;
-    }
 
     //<editor-fold desc="Verificar el usuario en la BD remota">
     public String[][] ConfirmarUser(Context context, String user, String pass)
@@ -42,7 +47,7 @@ public class ServicesPeticion {
         };
 
 
-        BD = new TaskExecuteHttpHandler(service, parametros, CONTEXTO,null);
+        BD = new TaskExecuteHttpHandler(service, parametros, null);
 
         try {
             result = BD.execute().get();
@@ -50,11 +55,9 @@ public class ServicesPeticion {
             e.printStackTrace();
 
         }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: ConfirmarUser #!#";
-            contenido += "Clase : ServicesPeticion.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());
         }
 
 
@@ -91,11 +94,9 @@ public class ServicesPeticion {
             e.printStackTrace();
 
         }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: ConfirmarUser #!#";
-            contenido += "Clase : ServicesPeticion.java #!#";
-            contenido += e.getMessage();
-            SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());
         }
 
         return values;
@@ -153,7 +154,7 @@ public class ServicesPeticion {
 
         String[][] values = JSONObjectToMatrix(valuesJSON, campos); //obtener matrix desde objeto
 
-        BD = new TaskExecuteHttpHandler(service, values, CONTEXTO, null);
+        BD = new TaskExecuteHttpHandler(service, values, null);
 
         try {
            result = BD.execute().get();
@@ -161,11 +162,9 @@ public class ServicesPeticion {
             e.printStackTrace();
 
         }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: SaveLog #!#";
-            contenido += "Clase : ServicesPeticion.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());
         }
 
         JSONArray arrayResponse = new JSONArray( result ); // obtengo el array con la result del server
@@ -209,7 +208,7 @@ public class ServicesPeticion {
                 {"token",loginSave.getString(DB.CN_TOKEN_LOGIN)}
         };
 
-        BD = new TaskExecuteHttpHandler(service, values, CONTEXTO, null);
+        BD = new TaskExecuteHttpHandler(service, values,  null);
 
         try {
             result = BD.execute().get();
@@ -217,11 +216,10 @@ public class ServicesPeticion {
             e.printStackTrace();
 
         }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: LogoutUser #!#";
-            contenido += "Clase : ServicesPeticion.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());
         }
 
         JSONArray arrayResponse = new JSONArray( result ); // obtengo el array con la result del server
@@ -233,118 +231,70 @@ public class ServicesPeticion {
     //</editor-fold>
 
     //<editor-fold desc="Enviar reporte de error">
-    public void SaveError( String contenido ) {
+    public void SaveError( Exception e, String function, String clase ) {
 
-        final String service = "saveFatalError.php";
 
-        String[][] values = new String[][]{
-                {"contenido",contenido}
-        };
+        String contenido = "Error desde android #!#";
+        contenido += " Funcion: "+function+" #!#";
+        contenido += "Clase : "+clase+".java #!#";
+        contenido += e.getMessage();
 
-        BD = new TaskExecuteHttpHandler(service, values, CONTEXTO, null);
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(ServerUri.Server)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
-        try {
-            BD.execute().get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+        SendError enviarError = retrofit.create(SendError.class);
 
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
+
+        Call<ResponseContent> call = enviarError.SendError( contenido );
+
+
+        call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
+            @Override
+            public void onResponse(Call<ResponseContent> call, Response<ResponseContent> response) {//obtener datos
+                ResponseContent data = response.body();
+
+                JSONArray msm = data.getBody();
+
+                try {
+
+                    if( msm.getString(0).toString().equals("msm") )
+
+                        Log.e( mss.TAG1, "Respuesta al guardar debug: "+
+                                mss.msmServices.getString( msm.getString(1).toString() ) );
+
+                } catch (JSONException e1) {
+                    e1.printStackTrace();
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
+
+                Log.e( mss.TAG1, "Error en la peticion al hacer debug "+ t.toString());
+
+            }
+        });
+
+
 
     }
     //</editor-fold>
 
 
 
-/*
-    public void GuardarPerson(String name, String lastname, String edad) throws InterruptedException {
-
-        final String Service = "services.php";
-        String respuesta;
-
-        String[][] Datos = new String[][]{
-                {"nombres", name},
-                {"apellidos", lastname},
-                {"edad", edad},
-                {"modo", BD.modo},
-                {"accion",BD.insert}
-        };
-
-        respuesta = BD.HttpRequestServer(Service, Datos);
-
-    }
-
-    public void ListPerson(Context v) throws InterruptedException {
-
-        final String service = "services.php";
-
-        parametros = new String[][]{ //array parametros a enviar
-                {"modo",BD.modo},
-                {"accion",BD.search}
-        };
-
-
-        result = BD.HttpRequestServer(service, parametros);
-
-
+    /* causar excepciones
         try {
+            int n = Integer.parseInt("M");
+        }catch ( Exception e){
 
-            JSONArray arrayResponse = new JSONArray( result ); // obtengo el array con la result del server
-
-            if( arrayResponse.getString(0).toString().equals("msm")  ){
-
-                Toast.makeText(v.getApplicationContext(),
-                        mss.msmServices.getString( arrayResponse.getString(1).toString() ) ,
-                        Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
-
-
-            }else {
-
-
-                JSONObject objectIndex = arrayResponse.getJSONObject(1); //obtengo los indices de la consulta
-
-
-                JSONArray arrayResult = arrayResponse.getJSONArray(0);//obtengo el array de objetos con los registros
-
-                //String[] arrayResult = new String[]{ arrayResponse.getJSONArray(0) }; //obtengo el array con los resultados
-
-
-                String[] array = new String[arrayResult.length()];
-
-                for (int c = 0; c < arrayResult.length(); c++) {
-
-                    JSONObject registro = arrayResult.getJSONObject(c);
-
-                    array[c] =
-                            objectIndex.getString("1") + ": " +
-                                    registro.getString(objectIndex.getString("1")) + "\r\n" +
-                            objectIndex.getString("2") + ": " +
-                                    registro.getString(objectIndex.getString("2")) + "\r\n" +
-                            objectIndex.getString("3") + ": " +
-                                    registro.getString(objectIndex.getString("3")); //obtengo el array con los resultados
-
-
-                }
-
-                Toast.makeText(v, array[0].toString(), Toast.LENGTH_SHORT).show();
-                ArrayAdapter<String> adaptador;
-                //adaptador = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, array );
-
-                //listPerson.setAdapter(adaptador);
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: ListPerson #!#";
-            contenido += "Clase : ServicesPeticion.java #!#";
-            contenido += e.getMessage();
-            SaveError(contenido);
-
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());
         }
-
-    }
-*/
+     */
 }

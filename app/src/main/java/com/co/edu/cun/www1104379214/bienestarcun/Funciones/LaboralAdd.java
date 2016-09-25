@@ -85,7 +85,7 @@ public class LaboralAdd {
 
         try {
 
-            BD = new TaskExecuteHttpHandler(service, parametros, CONTEXTO, null);
+            BD = new TaskExecuteHttpHandler(service, parametros, null);
             String resultado="";
             try {
                 resultado = BD.execute().get();
@@ -93,11 +93,9 @@ public class LaboralAdd {
                 e.printStackTrace();
 
             }catch (Exception e){
-                String contenido = "Error desde android #!#";
-                contenido += " Funcion: SendServerNewLaboral try 2#!#";
-                contenido += "Clase : laboralAdd.java #!#";
-                contenido += e.getMessage();
-                new ServicesPeticion(CONTEXTO).SaveError(contenido);
+                new ServicesPeticion().SaveError(e,
+                        new Exception().getStackTrace()[0].getMethodName().toString(),
+                        this.getClass().getName());//Envio la informacion de la excepcion al server
             }
 
 
@@ -117,11 +115,9 @@ public class LaboralAdd {
 
         }catch (Exception e){
 
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: SendServerNewLaboral try 1 #!#";
-            contenido += "Clase : laboralAdd.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
 
         }
 
@@ -168,7 +164,7 @@ public class LaboralAdd {
 
         try {
 
-            BD = new TaskExecuteHttpHandler(service, parametros, CONTEXTO, null);
+            BD = new TaskExecuteHttpHandler(service, parametros, null);
             String resultado="";
             try {
                 resultado = BD.execute().get();
@@ -176,11 +172,9 @@ public class LaboralAdd {
                 e.printStackTrace();
 
             }catch (Exception e){
-                String contenido = "Error desde android #!#";
-                contenido += " Funcion: SendServerNewLaboralStatus try 2#!#";
-                contenido += "Clase : laboralAdd.java #!#";
-                contenido += e.getMessage();
-                new ServicesPeticion(CONTEXTO).SaveError(contenido);
+                new ServicesPeticion().SaveError(e,
+                        new Exception().getStackTrace()[0].getMethodName().toString(),
+                        this.getClass().getName());//Envio la informacion de la excepcion al server
             }
 
             arrayResponse = new JSONArray( resultado ); // obtengo el array con la result del server
@@ -199,11 +193,9 @@ public class LaboralAdd {
 
         }catch (Exception e){
 
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: SendServerNewLaboralStatus try 1 #!#";
-            contenido += "Clase : laboralAdd.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
 
         }
 

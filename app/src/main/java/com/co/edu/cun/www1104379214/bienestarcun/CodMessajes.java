@@ -32,8 +32,8 @@ public class CodMessajes {
     //TODO: agregar una identificacion para que el usuario la elija y asi pertenezca a la sede que seleccione (las sedes deben ingresarse manualmente)
 
     private static final String sedeSincelejo = "Sincelejo",
-        sedeBogota = "Bogota",
-        SedeMonteria = "Monteria";//sedes
+                                sedeBogota = "Bogota",
+                                SedeMonteria = "Monteria";//sedes
 
     public static final String[] DftUsrNameSedes = {sedeSincelejo, sedeBogota,SedeMonteria };//indices para mostrar (deben ser iguales a las llaves de los codigos)
 

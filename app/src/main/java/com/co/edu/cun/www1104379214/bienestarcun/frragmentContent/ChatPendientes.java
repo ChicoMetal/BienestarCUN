@@ -205,11 +205,9 @@ public class ChatPendientes extends Fragment {
             } catch (JSONException e) {
                 e.printStackTrace();
             }catch (Exception e){
-                String contenido = "Error desde android #!#";
-                contenido += " Funcion: onCreateView #!#";
-                contenido += "Clase : ChatPendientes.java #!#";
-                contenido += e.getMessage();
-                new ServicesPeticion(getActivity().getApplicationContext()).SaveError(contenido);
+                new ServicesPeticion().SaveError(e,
+                        new Exception().getStackTrace()[0].getMethodName().toString(),
+                        this.getClass().getName());
             }
 
 

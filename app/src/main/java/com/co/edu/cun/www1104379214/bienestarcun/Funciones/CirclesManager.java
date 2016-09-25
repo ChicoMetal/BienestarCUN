@@ -63,11 +63,9 @@ public class CirclesManager {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: SearchChatPendientes #!#";
-            contenido += "Clase : CircleList.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
         }
 
         return resultResponse;
@@ -77,7 +75,7 @@ public class CirclesManager {
 
 
 
-    private String getIdUser() {//obtengo el id del usuario logueado
+    public String getIdUser() {//obtengo el id del usuario logueado
 
         String idUser="";
 
@@ -110,11 +108,9 @@ public class CirclesManager {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: getIdUser #!#";
-            contenido += "Clase : CircleList.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
         }
 
         return null;
@@ -124,7 +120,6 @@ public class CirclesManager {
     public JSONArray GetCirclesExists(String idUser, String service, ProgressDialog pdialog) throws InterruptedException {
     //obtengo el array de objeto con los circulos
 
-        String[][] values = null;
 
 
         JSONArray arrayResponse = null;
@@ -133,18 +128,16 @@ public class CirclesManager {
                 {"user",idUser}
         };
 
-        BD = new TaskExecuteHttpHandler(service, parametros, CONTEXTO, pdialog);
+        BD = new TaskExecuteHttpHandler(service, parametros, pdialog);
         String resultado="";
         try {
             resultado = BD.execute().get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: GetCirclesExists #!#";
-            contenido += "Clase : CircleManager.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
         }
 
         try {
@@ -170,11 +163,9 @@ public class CirclesManager {
             e.printStackTrace();
 
         }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: GetChatPendientesExists #!#";
-            contenido += "Clase : CircleManager.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
         }
 
         return arrayResponse;
@@ -203,18 +194,16 @@ public class CirclesManager {
 
         try {
 
-            BD = new TaskExecuteHttpHandler(service, parametros, CONTEXTO,null);
+            BD = new TaskExecuteHttpHandler(service, parametros, null);
             String resultado="";
             try {
                 resultado = BD.execute().get();
             } catch (ExecutionException e) {
                 e.printStackTrace();
             }catch (Exception e){
-                String contenido = "Error desde android #!#";
-                contenido += " Funcion: SaveCircleUser #!#";
-                contenido += "Clase : CircleManager.java #!#";
-                contenido += e.getMessage();
-                new ServicesPeticion(CONTEXTO).SaveError(contenido);
+                new ServicesPeticion().SaveError(e,
+                        new Exception().getStackTrace()[0].getMethodName().toString(),
+                        this.getClass().getName());//Envio la informacion de la excepcion al server
             }
 
 
@@ -233,11 +222,9 @@ public class CirclesManager {
             e.printStackTrace();
 
         }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: SaveCircleUser #!#";
-            contenido += "Clase : CircleManager.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
         }
 
     }
@@ -256,7 +243,7 @@ public class CirclesManager {
 
         try {
 
-            BD = new TaskExecuteHttpHandler(service, parametros, CONTEXTO, null);
+            BD = new TaskExecuteHttpHandler(service, parametros, null);
             String resultado="";
             try {
                 resultado = BD.execute().get();
@@ -264,11 +251,9 @@ public class CirclesManager {
                 e.printStackTrace();
 
             }catch (Exception e){
-                String contenido = "Error desde android #!#";
-                contenido += " Funcion: DeleteCircleUser #!#";
-                contenido += "Clase : CircleManager.java #!#";
-                contenido += e.getMessage();
-                new ServicesPeticion(CONTEXTO).SaveError(contenido);
+                new ServicesPeticion().SaveError(e,
+                        new Exception().getStackTrace()[0].getMethodName().toString(),
+                        this.getClass().getName());//Envio la informacion de la excepcion al server
             }
 
 
@@ -287,11 +272,9 @@ public class CirclesManager {
             e.printStackTrace();
 
         }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: SaveCircleUser #!#";
-            contenido += "Clase : CircleManager.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
         }
 
     }

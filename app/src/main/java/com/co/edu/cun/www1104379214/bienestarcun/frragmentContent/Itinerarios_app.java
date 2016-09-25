@@ -222,11 +222,9 @@ public class Itinerarios_app extends Fragment {
             } catch (JSONException e) {
                 e.printStackTrace();
             }catch (Exception e){
-                String contenido = "Error desde android #!#";
-                contenido += " Funcion: onCreateView #!#";
-                contenido += "Clase : Itinerarios_app.java #!#";
-                contenido += e.getMessage();
-                new ServicesPeticion(getActivity().getApplicationContext()).SaveError(contenido);
+                new ServicesPeticion().SaveError(e,
+                        new Exception().getStackTrace()[0].getMethodName().toString(),
+                        this.getClass().getName());//Envio la informacion de la excepcion al server
             }
 
 

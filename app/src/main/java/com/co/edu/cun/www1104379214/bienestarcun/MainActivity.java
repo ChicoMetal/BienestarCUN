@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setToolbar(); // Setear Toolbar como action bar
 
-        services = new ServicesPeticion( getApplicationContext() );
+        services = new ServicesPeticion();
 
         BDManager();
 
@@ -169,11 +169,9 @@ public class MainActivity extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: onCreate #!#";
-            contenido += "Clase : MainActivity.java #!#";
-            contenido += e.getMessage();
-            services.SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
         }
     }
 
@@ -594,11 +592,9 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, mss.ProcesImgError +e.getMessage(),
                         Toast.LENGTH_SHORT).show();
 
-                String contenido = "Error desde android #!#";
-                contenido += " Funcion: onActivityResul( try 2 change position) #!#";
-                contenido += "Clase : MainActivity.java #!#";
-                contenido += e.getMessage();
-                new ServicesPeticion(getApplicationContext()).SaveError(contenido);
+                new ServicesPeticion().SaveError(e,
+                        new Exception().getStackTrace()[0].getMethodName().toString(),
+                        this.getClass().getName());//Envio la informacion de la excepcion al server
 
             }
 
@@ -618,21 +614,17 @@ public class MainActivity extends AppCompatActivity {
 
 
             Toast.makeText(MainActivity.this, mss.CarryImageError+e.getMessage(), Toast.LENGTH_SHORT).show();
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: onActivityResult(try 1 get image FileNotFoundException) #!#";
-            contenido += "Clase : MainActivity.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(getApplicationContext()).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
 
 
         } catch (IOException e) {
 
             Toast.makeText(MainActivity.this, mss.CarryImageError+e.getMessage(), Toast.LENGTH_SHORT).show();
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: onActivityResult(try 1 get image IOException) #!#";
-            contenido += "Clase : MainActivity.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(getApplicationContext()).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
 
         }
 
@@ -680,20 +672,16 @@ public class MainActivity extends AppCompatActivity {
         } catch (UnsupportedEncodingException e) {
 
             Toast.makeText(MainActivity.this, mss.SendImageError + e.getMessage(), Toast.LENGTH_SHORT).show();
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: OnInsert(UnsupportedEncodingException) #!#";
-            contenido += "Clase : MainActivity.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(getApplicationContext()).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
 
         }catch (IOException e) {
 
             Toast.makeText(MainActivity.this, mss.SendImageError + e.getMessage(), Toast.LENGTH_SHORT).show();
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: OnInsert(IOException) #!#";
-            contenido += "Clase : MainActivity.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(getApplicationContext()).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
 
         }
 
@@ -713,11 +701,9 @@ public class MainActivity extends AppCompatActivity {
             } catch (IOException e) {
 
                 Toast.makeText(MainActivity.this, mss.SendImageError+ e.getMessage(), Toast.LENGTH_SHORT).show();
-                String contenido = "Error desde android #!#";
-                contenido += " Funcion: doInBackground #!#";
-                contenido += "Clase : MainActivity.java ServerUpdate#!#";
-                contenido += e.getMessage();
-                new ServicesPeticion(getApplicationContext()).SaveError(contenido);
+                new ServicesPeticion().SaveError(e,
+                        new Exception().getStackTrace()[0].getMethodName().toString(),
+                        this.getClass().getName());//Envio la informacion de la excepcion al server
 
             }
 

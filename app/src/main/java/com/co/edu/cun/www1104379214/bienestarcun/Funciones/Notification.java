@@ -29,7 +29,7 @@ public class Notification {
     Context CONTEXTO;
 
     TaskExecuteHttpHandler BD;
-    ServicesPeticion services = new ServicesPeticion(CONTEXTO);
+    ServicesPeticion services = new ServicesPeticion();
     CodMessajes mss = new CodMessajes();
     TaskExecuteSQLSearchConditions sqliteSearchconditions;
     TaskExecuteSQLSearch sqliteSearch;
@@ -86,11 +86,9 @@ public class Notification {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: getIdUser #!#";
-            contenido += "Clase : Notification.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
         }
 
         return null;
@@ -124,11 +122,9 @@ public class Notification {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: getNotificationsOld #!#";
-            contenido += "Clase : Notification.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
         }
 
         return jsonNotifications;
@@ -147,7 +143,7 @@ public class Notification {
 
         try {
 
-            BD = new TaskExecuteHttpHandler(service, parametros, CONTEXTO, pdialog);
+            BD = new TaskExecuteHttpHandler(service, parametros, pdialog);
             String resultado="";
             try {
                 resultado = BD.execute().get();
@@ -155,11 +151,9 @@ public class Notification {
                 e.printStackTrace();
 
             }catch (Exception e){
-                String contenido = "Error desde android #!#";
-                contenido += " Funcion: GetNotifications #!#";
-                contenido += "Clase : Notification.java #!#";
-                contenido += e.getMessage();
-                new ServicesPeticion(CONTEXTO).SaveError(contenido);
+                new ServicesPeticion().SaveError(e,
+                        new Exception().getStackTrace()[0].getMethodName().toString(),
+                        this.getClass().getName());//Envio la informacion de la excepcion al server
             }
 
             arrayResponse = new JSONArray( resultado ); // obtengo el array con la result del server
@@ -182,11 +176,9 @@ public class Notification {
             e.printStackTrace();
 
         }catch (Exception e){
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: GetNotifications #!#";
-            contenido += "Clase : Notification.java #!#";
-            contenido += e.getMessage();
-            new ServicesPeticion(CONTEXTO).SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
         }
         return null;
     }
@@ -228,12 +220,9 @@ public class Notification {
             return array;
 
         } catch (JSONException e) {
-            e.printStackTrace();
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: ShowNotificationsNew #!#";
-            contenido += "Clase : Notification.java #!#";
-            contenido += e.getMessage();
-            services.SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
         }
 
         return null;
@@ -269,11 +258,9 @@ public class Notification {
 
         } catch (JSONException e) {
             e.printStackTrace();
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: SearchNotificationsGetExists #!#";
-            contenido += "Clase : Notification.java #!#";
-            contenido += e.getMessage();
-            services.SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
         }
 
         return resultExists;
@@ -306,11 +293,9 @@ public class Notification {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
-            String contenido = "Error desde android #!#";
-            contenido += " Funcion: SaveNotificationRead #!#";
-            contenido += "Clase : Notification.java #!#";
-            contenido += e.getMessage();
-            services.SaveError(contenido);
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
         }
 
         return resultInsert;

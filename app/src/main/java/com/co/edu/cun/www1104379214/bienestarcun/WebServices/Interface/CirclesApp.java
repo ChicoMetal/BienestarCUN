@@ -14,7 +14,23 @@ import retrofit2.http.POST;
 public interface CirclesApp {
 
     @FormUrlEncoded
-    @POST("GetCirclesExists")
+    @POST("GetCirclesExists")//buscar actividades sin vincular
     Call<ResponseContent> getActivities(@Field("user") String user);
+
+    @FormUrlEncoded
+    @POST("SearchCircleAdd")//buscar actividades vinculadas
+    Call<ResponseContent> getActivitiesAdd(@Field("user") String user);
+
+    @FormUrlEncoded
+    @POST("saveAddCircle")//vincular actividad
+    Call<ResponseContent> SaveActivityUser(@Field("user") String user, @Field("circle") int circle);
+
+    @FormUrlEncoded
+    @POST("DeleteActivityUser")//desvincular actividad
+    Call<ResponseContent> DeleteActivityUser(@Field("user") String user, @Field("circle") int circle);
+
+    @FormUrlEncoded
+    @POST("GetItinerariosCircle")//buscar actividades vinculadas
+    Call<ResponseContent> getItinerariosActivity(@Field("circle") int circle);
 
 }

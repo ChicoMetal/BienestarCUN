@@ -9,17 +9,23 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.ItinerariosManager;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.CircleList;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ContentResults.ResponseContent;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.Interface.CirclesApp;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ItinerarioList;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServerUri;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
 import com.co.edu.cun.www1104379214.bienestarcun.ui.ItemOffsetDecoration;
 import com.co.edu.cun.www1104379214.bienestarcun.ui.adapter.HypedItinerarioAdapter;
@@ -30,12 +36,14 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 
 public class Show_itinerario_circle extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
 
     public static int idCirculo;
@@ -48,9 +56,6 @@ public class Show_itinerario_circle extends Fragment {
     private static int INSTANCE;
     private CodMessajes mss = new CodMessajes();
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
@@ -73,10 +78,7 @@ public class Show_itinerario_circle extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
         adapter = new HypedItinerarioAdapter( getActivity(), DB, INSTANCE, idCirculo, fragmentManager );
     }
 
@@ -91,7 +93,19 @@ public class Show_itinerario_circle extends Fragment {
         IconManager icon = new IconManager();
         icon.setBackgroundApp((LinearLayout)root.findViewById(R.id.contentShowItinerarios));
 
-        new InterfaceNoBlock().execute();
+        SetudItinerariosList();
+
+        try {
+
+            CasthConentAdapter();//lleno el adaptador
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }catch (Exception e){
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
+        }
 
         return root;
     }
@@ -128,85 +142,94 @@ public class Show_itinerario_circle extends Fragment {
                         NUM_COLUMNS) );
 
         mHypedItinerarioAdapter.setAdapter(adapter);
-        mHypedItinerarioAdapter.addItemDecoration( new ItemOffsetDecoration( getActivity().getApplicationContext(), R.integer.offset ) );
+        mHypedItinerarioAdapter.addItemDecoration( new ItemOffsetDecoration(
+                                                            getActivity().getApplicationContext(),
+                                                            R.integer.offset ) );
     }
 
-    private void CasthConentAdapter(ProgressDialog pdialog) throws JSONException {
+    private void CasthConentAdapter() throws JSONException {
 
-        ItinerariosManager getItinerarios = new ItinerariosManager( getActivity().getApplicationContext() );//busco en BD los circulos existentes
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(ServerUri.Server+"circles/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
-        JSONArray ItinerariosResult = getItinerarios.SearchItinerarios(idCirculo, pdialog);
-        JSONObject indexItinerarios = getItinerarios.IndexItinerario();
+        CirclesApp actividades = retrofit.create(CirclesApp.class);
+
+        Call<ResponseContent> call = actividades.getItinerariosActivity( idCirculo );
+
+        call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
+            @Override
+            public void onResponse(Call<ResponseContent> call, Response<ResponseContent> response) {//obtener datos
+
+                ResponseContent data = response.body();
+
+                ValidateResponse( data );
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
+
+                Log.e( mss.TAG1, "error "+ t.toString());
+
+            }
+        });
+    }
+
+    private void ValidateResponse(ResponseContent data) {
+        //procesa la respuesta enviada del server
+
+        try {
+
+            if( data.getBody().getString(0).toString().equals("msm") ){//verifico si es un mensaje
+
+                Toast.makeText(getActivity().getApplicationContext(),
+                        mss.msmServices.getString(data.getBody().getString(1).toString()),
+                        Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
+
+            }else{
+
+                JSONArray circlesResult = data.getResults();
+                JSONObject indexCircles = data.getIndex();
+
+                ShowCards(circlesResult, indexCircles);
+
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
+        }
+
+    }
+
+    private void ShowCards( JSONArray ItinerariosResult, JSONObject indexCircles){
+        //Agregar las cartas de los resultados
 
         if( ItinerariosResult != null ){
 
-            ArrayList<ItinerarioList> itinerarios = new ArrayList<>();
+            itinerarios = new ArrayList<>();
 
             for (int i=0; i < ItinerariosResult.length(); i++){
 
-                itinerarios.add(new ItinerarioList(ItinerariosResult.getString(i), indexItinerarios));
+                try {
+                    itinerarios.add(new ItinerarioList(ItinerariosResult.getString(i), indexCircles));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    new ServicesPeticion().SaveError(e,
+                            new Exception().getStackTrace()[0].getMethodName().toString(),
+                            this.getClass().getName());//Envio la informacion de la excepcion al server
+                }
 
             }
 
-            adapter.AddAll(itinerarios);
-
-        }
-    }
-
-    public class InterfaceNoBlock extends AsyncTask<Void, Void, Void> {
-
-        ProgressDialog pDialog;
-
-        int a = 1;
-        @Override
-        protected void onPreExecute() {
-
-            pDialog = new ProgressDialog( getActivity() );
-            pDialog.setMessage("Un momento...");
-            pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            pDialog.setCancelable(false);
-            pDialog.setIndeterminate(true);
-            pDialog.setProgress(0);
-            pDialog.show();
-
-            SetudItinerariosList();
+            adapter.AddAll( itinerarios );
 
         }
 
-
-        @Override
-        protected Void doInBackground(Void... params) {
-
-            try {
-                Thread.sleep (mss.TiempoEsperaTask);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-
-            super.onPostExecute(aVoid);
-
-            //pDialog.dismiss();
-
-            try {
-
-                CasthConentAdapter(pDialog);//lleno el adaptador
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }catch (Exception e){
-                new ServicesPeticion().SaveError(e,
-                        new Exception().getStackTrace()[0].getMethodName().toString(),
-                        this.getClass().getName());//Envio la informacion de la excepcion al server
-            }
-
-
-        }
     }
 
 }

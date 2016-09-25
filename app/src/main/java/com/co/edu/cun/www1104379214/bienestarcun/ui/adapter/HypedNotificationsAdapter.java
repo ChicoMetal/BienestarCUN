@@ -103,7 +103,7 @@ public class HypedNotificationsAdapter extends RecyclerView.Adapter<HypedNotific
                     String idNotification = v.getId()+"";
                     Notification notification = new Notification(context,DB);
                     notification.SaveNotificationRead(idNotification, mss.tipeNotification[1][0]);
-                    //new CirclesManager(context, DB).SaveCircleUser(v.getId());
+                    //new CirclesManager(context, DB).SaveActivityUser(v.getId());
 
                     notifications.remove(getAdapterPosition()); // remover un itemview
                     notifyItemRemoved(getAdapterPosition()); //remover un itemview

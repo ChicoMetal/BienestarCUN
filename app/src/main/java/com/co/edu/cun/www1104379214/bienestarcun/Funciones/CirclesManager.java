@@ -1,41 +1,42 @@
 package com.co.edu.cun.www1104379214.bienestarcun.Funciones;
 
-import android.app.ProgressDialog;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLSearch;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ContentResults.ResponseContent;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.Interface.CirclesApp;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServerUri;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
-import com.co.edu.cun.www1104379214.bienestarcun.WebServices.TaskExecuteHttpHandler;
 import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Show_itinerario_circle;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.concurrent.ExecutionException;
 
-/**
- * Created by root on 26/10/15.
- */
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+
 public class CirclesManager {
 
-    TaskExecuteHttpHandler BD;
-    String[][] parametros;
     CodMessajes mss = new CodMessajes();
     Context CONTEXTO;
     TaskExecuteSQLSearch userSearch;
     DBManager DB;
-    JSONObject indexCircles;
-    JSONArray result = null;
-    JSONArray resultResponse = null;
     private int SHOW_ITINERARIO_OFF = 0;
 
     public CirclesManager(Context contexto, DBManager db) {
@@ -43,37 +44,6 @@ public class CirclesManager {
         this.DB = db;
 
     }
-
-    public JSONArray SearchCircles(int servicePetition, ProgressDialog pdialog) { //buscar circulo existente en la BD o los agregados por el usuario
-        final String service;
-
-        if( servicePetition == 0){
-            service = "circles/GetCirclesExists.php";
-        }else{
-            service = "circles/SearchCircleAdd.php";
-        }
-
-
-        try {
-
-            result = GetCirclesExists(getIdUser(), service, pdialog);
-            resultResponse = result.getJSONArray(0);
-            indexCircles = result.getJSONObject(1);
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }catch (Exception e){
-            new ServicesPeticion().SaveError(e,
-                    new Exception().getStackTrace()[0].getMethodName().toString(),
-                    this.getClass().getName());//Envio la informacion de la excepcion al server
-        }
-
-        return resultResponse;
-
-
-    }
-
-
 
     public String getIdUser() {//obtengo el id del usuario logueado
 
@@ -116,166 +86,71 @@ public class CirclesManager {
         return null;
     }
 
+    public void SaveCircleUser( int idCircle) {//agrego el usuario al circulo
 
-    public JSONArray GetCirclesExists(String idUser, String service, ProgressDialog pdialog) throws InterruptedException {
-    //obtengo el array de objeto con los circulos
-
-
-
-        JSONArray arrayResponse = null;
-
-        parametros = new String[][]{ //array parametros a enviar
-                {"user",idUser}
-        };
-
-        BD = new TaskExecuteHttpHandler(service, parametros, pdialog);
-        String resultado="";
-        try {
-            resultado = BD.execute().get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }catch (Exception e){
-            new ServicesPeticion().SaveError(e,
-                    new Exception().getStackTrace()[0].getMethodName().toString(),
-                    this.getClass().getName());//Envio la informacion de la excepcion al server
-        }
-
-        try {
-
-            arrayResponse = new JSONArray( resultado ); // obtengo el array con la result del server
-
-            if( arrayResponse.getString(0).toString().equals("msm")  ){
-
-                Toast.makeText(CONTEXTO.getApplicationContext(),
-                        mss.msmServices.getString(arrayResponse.getString(1).toString()),
-                        Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
-
-                return null;
-
-            }else {
-
-                return arrayResponse;
-
-            }
-
-        } catch (JSONException e) {
-
-            e.printStackTrace();
-
-        }catch (Exception e){
-            new ServicesPeticion().SaveError(e,
-                    new Exception().getStackTrace()[0].getMethodName().toString(),
-                    this.getClass().getName());//Envio la informacion de la excepcion al server
-        }
-
-        return arrayResponse;
-
-    }
-
-    public JSONObject IndexCircles() { //retornar los index dell objeto traido de la BD
-
-        return indexCircles;
-    }
-
-    public void SaveCircleUser( int idCircle1) {//agrego el usuario al circulo
-
-        String idCircle = idCircle1+"";
-        final String service = "circles/saveAddCircle.php";
-        JSONArray arrayResponse = null;
 
         String idUser = getIdUser();
 
-        parametros = new String[][]{ //array parametros a enviar
-                {"user",idUser},
-                {"circle", idCircle}
-        };
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(ServerUri.Server+"circles/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
+        CirclesApp actividades = retrofit.create(CirclesApp.class);
 
+        Call<ResponseContent> call = actividades.SaveActivityUser(idUser, idCircle);
 
-        try {
+        call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
+            @Override
+            public void onResponse(Call<ResponseContent> call, Response<ResponseContent> response) {//obtener datos
 
-            BD = new TaskExecuteHttpHandler(service, parametros, null);
-            String resultado="";
-            try {
-                resultado = BD.execute().get();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }catch (Exception e){
-                new ServicesPeticion().SaveError(e,
-                        new Exception().getStackTrace()[0].getMethodName().toString(),
-                        this.getClass().getName());//Envio la informacion de la excepcion al server
-            }
+                ResponseContent data = response.body();
 
-
-            arrayResponse = new JSONArray( resultado ); // obtengo el array con la result del server
-
-            if( arrayResponse.getString(0).toString().equals("msm")  ){
-
-                Toast.makeText(CONTEXTO.getApplicationContext(),
-                        mss.msmServices.getString(arrayResponse.getString(1).toString()),
-                        Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
+                ValidateResponse( data );
 
             }
 
-        } catch (JSONException e) {
+            @Override
+            public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
-            e.printStackTrace();
+                Log.e( mss.TAG1, "error "+ t.toString());
 
-        }catch (Exception e){
-            new ServicesPeticion().SaveError(e,
-                    new Exception().getStackTrace()[0].getMethodName().toString(),
-                    this.getClass().getName());//Envio la informacion de la excepcion al server
-        }
+            }
+        });
 
     }
 
     public void DeleteCircleUser( int idCircle) {//elimino el usuario del circulo
 
-        final String service = "circles/DeleteCircleUser.php";
-        JSONArray arrayResponse = null;
 
         String idUser = getIdUser();
 
-        parametros = new String[][]{ //array parametros a enviar
-                {"user",idUser},
-                {"circle",idCircle+""}
-        };
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(ServerUri.Server+"circles/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
-        try {
+        CirclesApp actividades = retrofit.create(CirclesApp.class);
 
-            BD = new TaskExecuteHttpHandler(service, parametros, null);
-            String resultado="";
-            try {
-                resultado = BD.execute().get();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
+        Call<ResponseContent> call = actividades.DeleteActivityUser(idUser, idCircle);
 
-            }catch (Exception e){
-                new ServicesPeticion().SaveError(e,
-                        new Exception().getStackTrace()[0].getMethodName().toString(),
-                        this.getClass().getName());//Envio la informacion de la excepcion al server
-            }
+        call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
+            @Override
+            public void onResponse(Call<ResponseContent> call, Response<ResponseContent> response) {//obtener datos
 
+                ResponseContent data = response.body();
 
-            arrayResponse = new JSONArray( resultado ); // obtengo el array con la result del server
-
-            if( arrayResponse.getString(0).toString().equals("msm")  ){
-
-                Toast.makeText(CONTEXTO.getApplicationContext(),
-                        mss.msmServices.getString(arrayResponse.getString(1).toString()),
-                        Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
+                ValidateResponse( data );
 
             }
 
-        } catch (JSONException e) {
+            @Override
+            public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
-            e.printStackTrace();
+                Log.e( mss.TAG1, "error "+ t.toString());
 
-        }catch (Exception e){
-            new ServicesPeticion().SaveError(e,
-                    new Exception().getStackTrace()[0].getMethodName().toString(),
-                    this.getClass().getName());//Envio la informacion de la excepcion al server
-        }
+            }
+        });
 
     }
 
@@ -293,5 +168,31 @@ public class CirclesManager {
                 .beginTransaction()
                 .replace(R.id.main_content, fragment)
                 .commit();
+    }
+
+    private void ValidateResponse(ResponseContent data) {
+        //procesa la respuesta enviada del server
+
+        try {
+
+            if( data.getBody().getString(0).toString().equals("msm") ){//verifico si es un mensaje
+
+                Toast.makeText(CONTEXTO.getApplicationContext(),
+                        mss.msmServices.getString(data.getBody().getString(1).toString()),
+                        Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
+
+            }else{
+
+                Log.i( mss.TAG1, data.getBody().toString() );
+
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
+        }
+
     }
 }

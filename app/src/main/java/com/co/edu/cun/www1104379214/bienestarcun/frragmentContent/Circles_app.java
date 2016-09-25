@@ -183,8 +183,6 @@ public class Circles_app extends Fragment {
                 JSONArray circlesResult = data.getResults();
                 JSONObject indexCircles = data.getIndex();
 
-                Log.i( mss.TAG1, data.getBody().toString());
-
                 ShowCards(circlesResult, indexCircles);
 
             }
@@ -203,12 +201,12 @@ public class Circles_app extends Fragment {
 
         if( circlesResult != null ){
 
-            ArrayList<CircleList> circles = new ArrayList<>();
+            activities = new ArrayList<>();
 
             for (int i=0; i < circlesResult.length(); i++){
 
                 try {
-                    circles.add( new CircleList( circlesResult.getString(i), indexCircles ) );
+                    activities.add( new CircleList( circlesResult.getString(i), indexCircles ) );
                 } catch (JSONException e) {
                     e.printStackTrace();
                     new ServicesPeticion().SaveError(e,
@@ -218,7 +216,7 @@ public class Circles_app extends Fragment {
 
             }
 
-            adapter.AddAll(circles);
+            adapter.AddAll( activities );
 
         }
 

@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
@@ -11,6 +12,7 @@ import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLInsert;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLSearch;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLSearchConditions;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ContentResults.ResponseContent;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.TaskExecuteHttpHandler;
 
@@ -18,6 +20,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -53,7 +57,7 @@ public class Notification {
         this.CONTEXTO = contexto;
     }
 
-    private String getIdUser() {//obtengo el id del usuario logueado
+    public String getIdUser() {//obtengo el id del usuario logueado
 
         String idUser="";
 
@@ -94,7 +98,8 @@ public class Notification {
         return null;
     }
 
-    private JSONObject getNotificationsOld(String[] tipeNotifications){//buscar notificaciones guardadas en sqlite (leidas)
+    //<editor-fold desc="buscar notificaciones guardadas en sqlite (leidas)">
+    private JSONObject getNotificationsOld(String[] tipeNotifications){
 
         JSONObject jsonNotifications = null;
 
@@ -129,10 +134,11 @@ public class Notification {
 
         return jsonNotifications;
     }
+    //</editor-fold>
 
     public JSONArray GetNotifications(String[] tipeNotifications, String service, ProgressDialog pdialog){//obtener notificaciones en la BD remota
 
-        String[][] parametros;
+        /*String[][] parametros;
 
         JSONArray arrayResponse;
 
@@ -180,11 +186,14 @@ public class Notification {
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());//Envio la informacion de la excepcion al server
         }
-        return null;
+        return null;*/
+        return  null;
     }
 
-    private JSONArray ShowNotificationsNew(JSONArray arrayResponse,
-                                      String[] tipeNotifications) {
+    public ResponseContent ShowNotificationsNew(JSONArray arrayResponse,
+                                                String[] tipeNotifications) {
+
+        ResponseContent response = new ResponseContent();
 
         newresultNotifications = new JSONArray();
 
@@ -214,10 +223,13 @@ public class Notification {
 
             }
 
-            JSONArray array = new JSONArray(); //nuevo array
-            array.put(newresultNotifications);
-            array.put(indexNotifications);
-            return array;
+            ArrayList array = new ArrayList(); //nuevo array
+            array.add(newresultNotifications);
+            array.add(indexNotifications);
+
+            response.setContent( array );
+
+            return response;
 
         } catch (JSONException e) {
             new ServicesPeticion().SaveError(e,

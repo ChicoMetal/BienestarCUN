@@ -7,6 +7,8 @@ import android.widget.Toast;
 import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ContentResults.ResponseContent;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.Interface.CirclesApp;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.Interface.LogUser;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.Interface.SendError;
 
 import org.json.JSONArray;
@@ -33,78 +35,8 @@ public class ServicesPeticion {
     DBManager DB;
 
 
-    //<editor-fold desc="Verificar el usuario en la BD remota">
-    public String[][] ConfirmarUser(Context context, String user, String pass)
-            throws InterruptedException {
-
-        String[][] values = null;
-
-        final String service = "user/login.php";
-
-        String[][] parametros = new String[][]{ //array parametros a enviar
-                {"user",user},
-                {"password",pass}
-        };
-
-
-        BD = new TaskExecuteHttpHandler(service, parametros, null);
-
-        try {
-            result = BD.execute().get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-
-        }catch (Exception e){
-            new ServicesPeticion().SaveError(e,
-                    new Exception().getStackTrace()[0].getMethodName().toString(),
-                    this.getClass().getName());
-        }
-
-
-        try {
-
-            JSONArray arrayResponse = new JSONArray( result ); // obtengo el array con la result del server
-
-            if( arrayResponse.getString(0).toString().equals("msm")  ){
-
-                Toast.makeText(context.getApplicationContext(),
-                        mss.msmServices.getString( arrayResponse.getString(1).toString() ) ,
-                        Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
-
-                return null;
-
-            }else {
-
-
-                JSONObject objectIndex = arrayResponse.getJSONObject(1); //obtengo los indices de la consulta
-
-
-                JSONArray arrayResult = arrayResponse.getJSONArray(0);//obtengo el array de objetos con los registros
-
-                values = GenerateUserLoginValue(arrayResponse,
-                        objectIndex,
-                        arrayResult); //genero los valores de la insercion
-
-                return values;
-
-            }
-
-        } catch (JSONException e) {
-
-            e.printStackTrace();
-
-        }catch (Exception e){
-            new ServicesPeticion().SaveError(e,
-                    new Exception().getStackTrace()[0].getMethodName().toString(),
-                    this.getClass().getName());
-        }
-
-        return values;
-    }
-    //</editor-fold>
-
     //<editor-fold desc="Obtiene los datos del usuario que se loguea">
-    private String[][] GenerateUserLoginValue(JSONArray arrayResponse,
+    public String[][] GenerateUserLoginValue(JSONArray arrayResponse,
                                                  JSONObject objectIndex,
                                                  JSONArray arrayResult) throws JSONException {
                                                  //crear matrix para insercion de usuario en sqlite
@@ -136,7 +68,7 @@ public class ServicesPeticion {
                 },
                 {
                     DBManager.CN_TOKEN_LOGIN,
-                    arrayResponse.getString(2)
+                    arrayResponse.getString(2)//obtengo el token generado en php y agregado al array principal
                 }
         };
 
@@ -147,84 +79,92 @@ public class ServicesPeticion {
     //</editor-fold>
 
     //<editor-fold desc="Guarda el login ralizado">
-    public String SaveLog( JSONObject valuesJSON, String[] campos)
+    public void SaveLog(JSONObject valuesJSON, final Context contexto)
             throws JSONException, InterruptedException {
 
-        final String service = "user/log_save.php";
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(ServerUri.Server+"user/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
-        String[][] values = JSONObjectToMatrix(valuesJSON, campos); //obtener matrix desde objeto
+        LogUser logUser = retrofit.create(LogUser.class);
 
-        BD = new TaskExecuteHttpHandler(service, values, null);
+        Call<ResponseContent> call = logUser.SaveLog(valuesJSON.getString(DB.CN_ID_USER_BD),
+                                                        valuesJSON.getString(DB.CN_TOKEN_LOGIN));
 
-        try {
-           result = BD.execute().get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+        call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
+            @Override
+            public void onResponse(Call<ResponseContent> call, Response<ResponseContent> response) {//obtener datos
 
-        }catch (Exception e){
-            new ServicesPeticion().SaveError(e,
-                    new Exception().getStackTrace()[0].getMethodName().toString(),
-                    this.getClass().getName());
-        }
+                ResponseContent data = response.body();
 
-        JSONArray arrayResponse = new JSONArray( result ); // obtengo el array con la result del server
+                Log.i( mss.TAG1, "error "+ data.getBody().toString() );
 
-        return arrayResponse.getString(1).toString();
+            }
 
+            @Override
+            public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
-    }
-    //</editor-fold>
+                Log.e( mss.TAG1, "error "+ t.toString());
 
-    //<editor-fold desc="Generar objeto a partir de una matrix">
-    public String[][] JSONObjectToMatrix(JSONObject arrayResult, String[] campos)
-            throws JSONException {
-
-        String[][] Matrix = new String[campos.length][2];
-
-        for (int c = 0; c < campos.length; c++) {//pasar JSONArray a matrix
-
-
-            Matrix[c][0] = campos[c].toString(); //campo
-            Matrix[c][1] = arrayResult.getString( campos[c] );//valor
-
-        }
-
-        return Matrix;
+            }
+        });
 
 
     }
     //</editor-fold>
 
     //<editor-fold desc="Cerrar la sesion del usuario">
-    public String LogoutUser( JSONObject valuesJSON)
+    public void LogoutUser(JSONObject valuesJSON, final Context contexto)
             throws JSONException, InterruptedException {
-
-        final String service = "user/logout.php";
 
         JSONObject loginSave = valuesJSON.getJSONObject("ROW0");
 
-        String[][] values = new String[][]{
-                {"user",loginSave.getString(DB.CN_ID_USER_BD)},
-                {"token",loginSave.getString(DB.CN_TOKEN_LOGIN)}
-        };
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(ServerUri.Server+"user/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
-        BD = new TaskExecuteHttpHandler(service, values,  null);
+        LogUser logUser = retrofit.create(LogUser.class);
 
-        try {
-            result = BD.execute().get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+        Call<ResponseContent> call = logUser.LogoutUser(loginSave.getString(DB.CN_ID_USER_BD),
+                                                        loginSave.getString(DB.CN_TOKEN_LOGIN) );
 
-        }catch (Exception e){
+        call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
+            @Override
+            public void onResponse(Call<ResponseContent> call, Response<ResponseContent> response) {//obtener datos
 
-            new ServicesPeticion().SaveError(e,
-                    new Exception().getStackTrace()[0].getMethodName().toString(),
-                    this.getClass().getName());
-        }
+                ResponseContent data = response.body();
 
-        JSONArray arrayResponse = new JSONArray( result ); // obtengo el array con la result del server
+                try {
 
-        return arrayResponse.getString(1).toString();
+                    if( data.getBody().getString(0).toString().equals("msm") ){//verifico si es un mensaje
+
+                        Toast.makeText(contexto.getApplicationContext(),
+                                mss.msmServices.getString(data.getBody().getString(1).toString()),
+                                Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
+
+                    }else{
+
+                        Log.i( mss.TAG1, data.getBody().toString() );
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    new ServicesPeticion().SaveError(e,
+                            new Exception().getStackTrace()[0].getMethodName().toString(),
+                            this.getClass().getName());//Envio la informacion de la excepcion al server
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
+
+                Log.e( mss.TAG1, "error "+ t.toString());
+
+            }
+        });
 
 
     }

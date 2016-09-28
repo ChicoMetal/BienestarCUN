@@ -1,4 +1,4 @@
-package com.co.edu.cun.www1104379214.bienestarcun.frragmentContent;
+package com.co.edu.cun.www1104379214.bienestarcun.ui.frragmentContent;
 
 import android.app.Activity;
 import android.app.ProgressDialog;

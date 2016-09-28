@@ -1,9 +1,10 @@
-package com.co.edu.cun.www1104379214.bienestarcun.frragmentContent;
+package com.co.edu.cun.www1104379214.bienestarcun.ui.frragmentContent;
 
-import android.app.ProgressDialog;
+import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,18 +15,16 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
-import com.co.edu.cun.www1104379214.bienestarcun.Funciones.CirclesManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
-import com.co.edu.cun.www1104379214.bienestarcun.Splash;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ContentResults.ResponseContent;
-import com.co.edu.cun.www1104379214.bienestarcun.WebServices.CircleList;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.Interface.CirclesApp;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ItinerarioList;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServerUri;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
 import com.co.edu.cun.www1104379214.bienestarcun.ui.ItemOffsetDecoration;
-import com.co.edu.cun.www1104379214.bienestarcun.ui.adapter.HypedActivitiesAdapter;
+import com.co.edu.cun.www1104379214.bienestarcun.ui.adapter.HypedItinerarioAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,35 +39,35 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
+public class Show_itinerario_circle extends Fragment {
 
-public class Circles_app extends Fragment {
 
+    public static int idCirculo;
     private static DBManager DB;
-    ArrayList<CircleList> activities;
-
+    ArrayList<ItinerarioList> itinerarios;
     public static final int NUM_COLUMNS = 1;
-
-    private RecyclerView mHyperdActivitiesList;
-    private HypedActivitiesAdapter adapter;
+    private RecyclerView mHypedItinerarioAdapter;
+    private HypedItinerarioAdapter adapter;
+    public static FragmentManager fragmentManager;
+    private static int INSTANCE;
     private CodMessajes mss = new CodMessajes();
-    CirclesManager getCircles;
-    Splash PDialog = new Splash();
-
 
 
     private OnFragmentInteractionListener mListener;
 
 
-    public static Circles_app newInstance(DBManager db, String param2) {
-        Circles_app fragment = new Circles_app();
+    public static Show_itinerario_circle newInstance(int circulo, DBManager db, int instance, FragmentManager fragments) {
+        Show_itinerario_circle fragment = new Show_itinerario_circle();
         Bundle args = new Bundle();
+        idCirculo = circulo;
         DB = db;
-
+        fragmentManager = fragments;
+        INSTANCE = instance;
         fragment.setArguments(args);
         return fragment;
     }
 
-    public Circles_app() {
+    public Show_itinerario_circle() {
         // Required empty public constructor
     }
 
@@ -76,23 +75,21 @@ public class Circles_app extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        adapter = new HypedActivitiesAdapter(getActivity(), DB, 0,null);
-
+        adapter = new HypedItinerarioAdapter( getActivity(), DB, INSTANCE, idCirculo, fragmentManager );
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_activities_app, container, false);
+        View root = inflater.inflate(R.layout.fragment_show_itinerario_circle, container, false);
 
-        getCircles = new CirclesManager( getActivity().getApplicationContext(), DB );
+        mHypedItinerarioAdapter = (RecyclerView) root.findViewById(R.id.hyper_show_itinerario_circle);
 
-        mHyperdActivitiesList = (RecyclerView) root.findViewById(R.id.hyper_activities_list);
         IconManager icon = new IconManager();
-        icon.setBackgroundApp((LinearLayout)root.findViewById(R.id.contentActivitiesList));
+        icon.setBackgroundApp((LinearLayout)root.findViewById(R.id.contentShowItinerarios));
 
-        SetudActivitiesList();
+        SetudItinerariosList();
 
         try {
 
@@ -103,10 +100,29 @@ public class Circles_app extends Fragment {
         }catch (Exception e){
             new ServicesPeticion().SaveError(e,
                     new Exception().getStackTrace()[0].getMethodName().toString(),
-                    this.getClass().getName());
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
         }
 
         return root;
+    }
+
+    // TODO: Rename method, update argument and hook method into UI event
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
 
 
@@ -115,25 +131,19 @@ public class Circles_app extends Fragment {
         public void onFragmentInteraction(Uri uri);
     }
 
+    private void SetudItinerariosList(){
 
-    private void SetudActivitiesList(){
-
-        mHyperdActivitiesList.setLayoutManager(
+        mHypedItinerarioAdapter.setLayoutManager(
                 new GridLayoutManager(getActivity(),
                         NUM_COLUMNS) );
 
-
-
-        mHyperdActivitiesList.setAdapter(adapter);
-
-        mHyperdActivitiesList.addItemDecoration( new ItemOffsetDecoration( getActivity().getApplicationContext(), R.integer.offset ) );
+        mHypedItinerarioAdapter.setAdapter(adapter);
+        mHypedItinerarioAdapter.addItemDecoration( new ItemOffsetDecoration(
+                                                            getActivity().getApplicationContext(),
+                                                            R.integer.offset ) );
     }
 
     private void CasthConentAdapter() throws JSONException {
-
-
-        final ProgressDialog pDialog= PDialog.getpDialog(getActivity());
-        pDialog.show();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(ServerUri.Server+"circles/")
@@ -142,7 +152,7 @@ public class Circles_app extends Fragment {
 
         CirclesApp actividades = retrofit.create(CirclesApp.class);
 
-        Call<ResponseContent> call = actividades.getActivities(getCircles.getIdUser());
+        Call<ResponseContent> call = actividades.getItinerariosActivity( idCirculo );
 
         call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
             @Override
@@ -152,8 +162,6 @@ public class Circles_app extends Fragment {
 
                 ValidateResponse( data );
 
-                pDialog.dismiss();
-
             }
 
             @Override
@@ -161,10 +169,8 @@ public class Circles_app extends Fragment {
 
                 Log.e( mss.TAG1, "error "+ t.toString());
 
-                pDialog.dismiss();
             }
         });
-
     }
 
     private void ValidateResponse(ResponseContent data) {
@@ -196,17 +202,17 @@ public class Circles_app extends Fragment {
 
     }
 
-    private void ShowCards( JSONArray circlesResult, JSONObject indexCircles){
+    private void ShowCards( JSONArray ItinerariosResult, JSONObject indexCircles){
         //Agregar las cartas de los resultados
 
-        if( circlesResult != null ){
+        if( ItinerariosResult != null ){
 
-            activities = new ArrayList<>();
+            itinerarios = new ArrayList<>();
 
-            for (int i=0; i < circlesResult.length(); i++){
+            for (int i=0; i < ItinerariosResult.length(); i++){
 
                 try {
-                    activities.add( new CircleList( circlesResult.getString(i), indexCircles ) );
+                    itinerarios.add(new ItinerarioList(ItinerariosResult.getString(i), indexCircles));
                 } catch (JSONException e) {
                     e.printStackTrace();
                     new ServicesPeticion().SaveError(e,
@@ -216,13 +222,10 @@ public class Circles_app extends Fragment {
 
             }
 
-            adapter.AddAll( activities );
+            adapter.AddAll( itinerarios );
 
         }
 
     }
-
-
-
 
 }

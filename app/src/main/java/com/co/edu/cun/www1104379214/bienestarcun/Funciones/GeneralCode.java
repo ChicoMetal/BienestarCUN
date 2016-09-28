@@ -183,7 +183,7 @@ public class GeneralCode {
                                 {DBManager.CN_PASSWORD, mss.DftUsrPass },
                                 {DBManager.CN_TIPE_USER, mss.UsrLoginOff },
                                 {DBManager.CN_TOKEN_LOGIN, mss.DftUsrToken }
-                        };
+                        };//TODO: revisar que se este insertando el usuario correspondiente a la sede
 
                         ContentValues UserValues = DB.GenerateValues( UserDefault );
 

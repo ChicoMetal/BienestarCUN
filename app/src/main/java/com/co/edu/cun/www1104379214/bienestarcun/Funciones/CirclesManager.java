@@ -17,7 +17,7 @@ import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ContentResults.Resp
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.Interface.CirclesApp;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServerUri;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
-import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Show_itinerario_circle;
+import com.co.edu.cun.www1104379214.bienestarcun.ui.frragmentContent.Show_itinerario_circle;
 
 import org.json.JSONException;
 import org.json.JSONObject;

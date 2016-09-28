@@ -2,7 +2,6 @@ package com.co.edu.cun.www1104379214.bienestarcun;
 
 
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -14,7 +13,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.PersistableBundle;
 import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -27,9 +25,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -37,7 +32,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -53,22 +47,22 @@ import com.co.edu.cun.www1104379214.bienestarcun.Funciones.NewItinerarioManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServerUri;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
-import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Abaut;
-import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.ChatPendientes;
-import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Circles_app;
-import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.ChatPsicologa_app;
-import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.CircleAdministration_app;
-import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Desertion_app;
-import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Developers;
-import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Help;
-import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.HistoryLaboral_app;
-import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Home_app;
-import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.DelActivities_app;
-import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Itinerarios_app;
-import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.LaboralStatus;
-import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.LoginUser;
-import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Notifications_app;
-import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Show_itinerario_circle;
+import com.co.edu.cun.www1104379214.bienestarcun.ui.frragmentContent.Abaut;
+import com.co.edu.cun.www1104379214.bienestarcun.ui.frragmentContent.ChatPendientes;
+import com.co.edu.cun.www1104379214.bienestarcun.ui.frragmentContent.Circles_app;
+import com.co.edu.cun.www1104379214.bienestarcun.ui.frragmentContent.ChatPsicologa_app;
+import com.co.edu.cun.www1104379214.bienestarcun.ui.frragmentContent.CircleAdministration_app;
+import com.co.edu.cun.www1104379214.bienestarcun.ui.frragmentContent.Desertion_app;
+import com.co.edu.cun.www1104379214.bienestarcun.ui.frragmentContent.Developers;
+import com.co.edu.cun.www1104379214.bienestarcun.ui.frragmentContent.Help;
+import com.co.edu.cun.www1104379214.bienestarcun.ui.frragmentContent.HistoryLaboral_app;
+import com.co.edu.cun.www1104379214.bienestarcun.ui.frragmentContent.Home_app;
+import com.co.edu.cun.www1104379214.bienestarcun.ui.frragmentContent.DelActivities_app;
+import com.co.edu.cun.www1104379214.bienestarcun.ui.frragmentContent.Itinerarios_app;
+import com.co.edu.cun.www1104379214.bienestarcun.ui.frragmentContent.LaboralStatus;
+import com.co.edu.cun.www1104379214.bienestarcun.ui.frragmentContent.LoginUser;
+import com.co.edu.cun.www1104379214.bienestarcun.ui.frragmentContent.Notifications_app;
+import com.co.edu.cun.www1104379214.bienestarcun.ui.frragmentContent.Show_itinerario_circle;
 
 
 import org.apache.http.HttpVersion;
@@ -106,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
     File file;
     String nameFileImagen;
 
-    AdapterUserMenu metodos;//clase con metodos para usar
+    AdapterUserMenu adapterMenu;//clase con adapterMenu para usar
     CodMessajes mss = new CodMessajes();
     ServicesPeticion services;
     IconManager icon;
@@ -135,9 +129,9 @@ public class MainActivity extends AppCompatActivity {
 
         services = new ServicesPeticion();
 
-        BDManager();
+        BDManager();//crear/instanciar la BD local
 
-        metodos = new AdapterUserMenu( getApplicationContext(), db );
+        adapterMenu = new AdapterUserMenu( getApplicationContext(), db );
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);//instancio menu lateral
         navigationView = (NavigationView) findViewById(R.id.nav_view);//instancio contenedor de menu lateral
@@ -241,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
         icon = new IconManager();
         icon.SetIconMenu(navigationView);
 
-        metodos.ComproveUser(navigationView);//verficar si existe un usuario logueado
+        adapterMenu.ComproveUser(navigationView);//verficar si existe un usuario logueado
         //navigationView.getMenu().findItem(R.id.nav_cart).setVisible(false);
         //navigationView.getMenu().findItem(R.id.nav_products).setVisible(false);
     }
@@ -366,7 +360,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.nav_login:
-                fragment =  LoginUser.newInstance("", "");
+                fragment =  LoginUser.newInstance("","");
                 break;
 
         }
@@ -423,19 +417,19 @@ public class MainActivity extends AppCompatActivity {
         user = (EditText) findViewById(R.id.et_user_login);
         pass = (EditText) findViewById(R.id.et_password_login);
 
-        if ( metodos.ProcessLogin(user, pass, navigationView) ){
-
-            drawerTitle = "Inicio";
-            selectItem(drawerTitle, R.id.nav_home);
-            setnameUserHead();
-
-        }
-
+        adapterMenu.ProcessLogin(user, pass, navigationView, this);
 
     }
 
+    public void LoginChange(){
+        //cuando se verifica el login se invoca este metodo, para cambiar de framengt
+        drawerTitle = "Inicio";
+        selectItem(drawerTitle, R.id.nav_home);
+        setnameUserHead();
+    }
+
     public void Logout(){
-        metodos.ProcessLogout(navigationView, this);
+        adapterMenu.ProcessLogout(navigationView, this);
         int id = R.id.nav_home;
         drawerTitle = "Inicio";
         selectItem(drawerTitle, id);

@@ -1,31 +1,37 @@
 package com.co.edu.cun.www1104379214.bienestarcun.Funciones;
 
 
-import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.NavigationView;
-import android.view.View;
-import android.view.Window;
-import android.widget.ArrayAdapter;
+import android.util.Log;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.Spinner;
 import android.widget.Toast;
 import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
+import com.co.edu.cun.www1104379214.bienestarcun.MainActivity;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLDelete;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLInsert;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLSearch;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ContentResults.ResponseContent;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.Interface.LogUser;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServerUri;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.TaskExecuteHttpHandler;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.concurrent.ExecutionException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by root on 30/10/15.
@@ -35,7 +41,9 @@ public class AdapterUserMenu {
 
     Context CONTEXTO;
     DBManager DB;
+    TaskExecuteHttpHandler BD;
     ServicesPeticion services;
+    MainActivity MAIN;
 
     TaskExecuteSQLInsert sqliteInsert;
     TaskExecuteSQLSearch sqliteSearch;
@@ -46,6 +54,7 @@ public class AdapterUserMenu {
 
 
     Cursor result;
+    String result1;
 
     //<editor-fold desc="Constructor">
     public AdapterUserMenu(Context contexto, DBManager db) {
@@ -59,18 +68,105 @@ public class AdapterUserMenu {
     //</editor-fold>
 
     //<editor-fold desc="Login">
-    public  boolean ProcessLogin(EditText user, EditText pass, NavigationView menu){
+    public  boolean ProcessLogin(EditText user, EditText pass, NavigationView menu, MainActivity main){
         boolean status = false;
-        String[][] values;
 
+        this.MAIN = main;
 
         try {
 
-            values = services.ConfirmarUser(CONTEXTO,
+            ConfirmarUser(menu,
                     user.getText().toString(),
                     pass.getText().toString()); //Peticion login
 
-            if ( values != null  ){ //si el logueo fue correcto
+
+        }catch (Exception e){
+            e.printStackTrace();
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
+        }
+
+        return status;
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="Verificar el usuario en la BD remota">
+    public void ConfirmarUser(final NavigationView menu,
+                              String user,
+                              final String pass)
+
+            throws InterruptedException {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(ServerUri.Server+"user/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        LogUser logUser = retrofit.create(LogUser.class);
+
+        Call<ResponseContent> call = logUser.LoginUser( user, pass );
+
+        call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
+            @Override
+            public void onResponse(Call<ResponseContent> call, Response<ResponseContent> response) {//obtener datos
+
+                ResponseContent data = response.body();
+
+                ValidateResponseLogin( data, menu );//continua login
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
+
+                Log.e( mss.TAG1, "error "+ t.toString());
+
+            }
+        });
+
+
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="validar la informacion obtenida">
+    private void ValidateResponseLogin(ResponseContent data, final NavigationView menu){
+        try {
+
+
+            if( data.getBody().getString(0).toString().equals("msm")   ){
+
+                Toast.makeText(CONTEXTO.getApplicationContext(),
+                        mss.msmServices.getString(data.getBody().getString(1).toString()),
+                        Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
+
+
+            }else {
+
+
+                String[][] values = services.GenerateUserLoginValue(data.getBody(),
+                        data.getIndex(),
+                        data.getResults()); //genero los valores de la insercion en la BD local
+
+                ProcedureConfirmLogin( values, menu );
+
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());
+        }
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="una vez confirmado el usuario, continua esta secuencia">
+    private void ProcedureConfirmLogin( String[][] values, final NavigationView menu ){
+
+        if ( values != null  ){ //Si se obtubo la informacion correctamente
+
+            try{
 
                 DeleteUser();
                 ContentValues UserValues = DB.GenerateValues( values );
@@ -82,44 +178,30 @@ public class AdapterUserMenu {
 
                 if ( sqliteInsert.execute().get() ){//verifico el guardado del usuario
 
-                    try {
 
-                       if ( Save_log() ) { //envio el registro de login
+                    if ( Save_log() ) { //envio el registro de login
 
-                           PrepareMenuUser(UserValues.getAsString(DB.CN_TIPE_USER), menu);//ajuste menu
+                        PrepareMenuUser(UserValues.getAsString(DB.CN_TIPE_USER), menu);//ajuste menu
 
-                           Toast.makeText(CONTEXTO,
-                                   mss.LoginWell,
-                                   Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CONTEXTO,
+                                mss.LoginWell,
+                                Toast.LENGTH_SHORT).show();
 
-                           status = true;
-
-                       }
-
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    } catch (JSONException e) {
-                        new ServicesPeticion().SaveError(e,
-                                new Exception().getStackTrace()[0].getMethodName().toString(),
-                                this.getClass().getName());//Envio la informacion de la excepcion al server
+                        MAIN.LoginChange();
 
                     }
 
-                }
 
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+                new ServicesPeticion().SaveError(e,
+                        new Exception().getStackTrace()[0].getMethodName().toString(),
+                        this.getClass().getName());
             }
 
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }catch (Exception e){
-            new ServicesPeticion().SaveError(e,
-                    new Exception().getStackTrace()[0].getMethodName().toString(),
-                    this.getClass().getName());//Envio la informacion de la excepcion al server
         }
 
-        return status;
     }
     //</editor-fold>
 
@@ -145,9 +227,9 @@ public class AdapterUserMenu {
 
         if ( user_log.length() > 0 ){
 
-            JSONObject arrayResult = user_log.getJSONObject( "ROW0");
+            JSONObject arrayResult = user_log.getJSONObject( "ROW0");//
 
-            String resultLog = services.SaveLog(arrayResult, camposSeacrh);
+            services.SaveLog(arrayResult, CONTEXTO);//envio el registro de log a la BD remota
 
             return true;
 
@@ -188,11 +270,8 @@ public class AdapterUserMenu {
 
                 PrepareMenuUser( mss.UsrLoginOff, menu );//ajuste menu
 
-                String result_service = services.LogoutUser( result_object );
+                services.LogoutUser( result_object, CONTEXTO );
 
-                Toast.makeText(CONTEXTO,
-                        mss.msmServices.getString( result_service ),
-                        Toast.LENGTH_SHORT).show();
             }
 
         } catch (InterruptedException e) {
@@ -331,8 +410,12 @@ public class AdapterUserMenu {
     //</editor-fold> actualmente
 
 
+    /* ******************************************* */
+    /* ******************************************* */
+    /* ******************************************* */
+    /* ******************************************* */
 
-    //<editor-fold desc="Ocutacion de items de menu segun el usuario">
+    //<editor-fold desc="Ocultacion de items de menu segun el usuario">
     public void PrepareMenuUser( String targetUser, NavigationView menu ){//adapto el menu del usuario
         switch ( targetUser ){
             case CodMessajes.UsrLoginOff:

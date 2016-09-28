@@ -1,4 +1,4 @@
-package com.co.edu.cun.www1104379214.bienestarcun.frragmentContent;
+package com.co.edu.cun.www1104379214.bienestarcun.ui.frragmentContent;
 
 import android.app.Activity;
 import android.net.Uri;
@@ -8,27 +8,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link EvidenciasActivities.OnFragmentInteractionListener} interface
+ * {@link CircleAdministration_app.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link EvidenciasActivities#newInstance} factory method to
+ * Use the {@link CircleAdministration_app#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EvidenciasActivities extends Fragment {
-
-    private static int CIRCLE;
-    public static int ITINERARIO;
+public class CircleAdministration_app extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "itinerario";
+    private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
@@ -37,19 +33,25 @@ public class EvidenciasActivities extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment CircleAdministration_app.
+     */
     // TODO: Rename and change types and number of parameters
-    public static EvidenciasActivities newInstance(int circle1, int itinerario1) {
-        EvidenciasActivities fragment = new EvidenciasActivities();
+    public static CircleAdministration_app newInstance(String param1, String param2) {
+        CircleAdministration_app fragment = new CircleAdministration_app();
         Bundle args = new Bundle();
-        CIRCLE = circle1;
-        ITINERARIO = itinerario1;
-        args.putString(ARG_PARAM1, itinerario1+"");
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public EvidenciasActivities() {
+    public CircleAdministration_app() {
         // Required empty public constructor
     }
 
@@ -66,13 +68,11 @@ public class EvidenciasActivities extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_evidencias_activities, container, false);
+        View root = inflater.inflate(R.layout.fragment_circle_administration_app, container, false);
 
         IconManager icon = new IconManager();
-        icon.setBackgroundApp((FrameLayout)root.findViewById(R.id.contentEvidencias));
 
-        TextView contentId = (TextView) root.findViewById(R.id.ItinerarioId);
-        contentId.setText( ITINERARIO+"" );
+        icon.setBackgroundApp((FrameLayout)root.findViewById(R.id.contentCircleAdmin));
 
         return root;
     }

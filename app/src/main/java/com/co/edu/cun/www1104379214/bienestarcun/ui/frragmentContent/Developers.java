@@ -1,6 +1,5 @@
-package com.co.edu.cun.www1104379214.bienestarcun.frragmentContent;
+package com.co.edu.cun.www1104379214.bienestarcun.ui.frragmentContent;
 
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,25 +11,19 @@ import android.widget.FrameLayout;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link Abaut.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link Abaut#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class Abaut extends Fragment {
+
+public class Developers extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public Abaut() {
+    public Developers() {
         // Required empty public constructor
     }
 
 
-    public static Abaut newInstance() {
-        Abaut fragment = new Abaut();
+    // TODO: Rename and change types and number of parameters
+    public static Developers newInstance() {
+        Developers fragment = new Developers();
         Bundle args = new Bundle();
 
         fragment.setArguments(args);
@@ -47,11 +40,12 @@ public class Abaut extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_abaut, container, false);
+        View root = inflater.inflate(R.layout.fragment_developers, container, false);
 
         IconManager icon = new IconManager();
-        icon.setBackgroundApp((FrameLayout)root.findViewById(R.id.content_information_about));
+        icon.setBackgroundApp((FrameLayout)root.findViewById(R.id.content_information_developers));
         return root;
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -74,7 +68,7 @@ public class Abaut extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
+     * <p/>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.

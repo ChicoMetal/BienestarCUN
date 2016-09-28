@@ -13,8 +13,8 @@ import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.TaskExecuteHttpHandler;
-import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.AsistenciaCircleActivities;
-import com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.EvidenciasActivities;
+import com.co.edu.cun.www1104379214.bienestarcun.ui.frragmentContent.AsistenciaCircleActivities;
+import com.co.edu.cun.www1104379214.bienestarcun.ui.frragmentContent.EvidenciasActivities;
 
 import org.json.JSONArray;
 import org.json.JSONException;

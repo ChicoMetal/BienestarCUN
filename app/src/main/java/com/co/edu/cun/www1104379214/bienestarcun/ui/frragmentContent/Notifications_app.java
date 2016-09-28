@@ -1,12 +1,9 @@
-package com.co.edu.cun.www1104379214.bienestarcun.frragmentContent;
+package com.co.edu.cun.www1104379214.bienestarcun.ui.frragmentContent;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,17 +14,17 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
-import com.co.edu.cun.www1104379214.bienestarcun.Funciones.CirclesManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
+import com.co.edu.cun.www1104379214.bienestarcun.Funciones.Notification;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
-import com.co.edu.cun.www1104379214.bienestarcun.WebServices.CircleList;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ContentResults.ResponseContent;
-import com.co.edu.cun.www1104379214.bienestarcun.WebServices.Interface.CirclesApp;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.Interface.Notifications;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.NotificationsList;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServerUri;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
 import com.co.edu.cun.www1104379214.bienestarcun.ui.ItemOffsetDecoration;
-import com.co.edu.cun.www1104379214.bienestarcun.ui.adapter.HypedActivitiesAdapter;
+import com.co.edu.cun.www1104379214.bienestarcun.ui.adapter.HypedNotificationsAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,33 +39,31 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class Itinerarios_app extends Fragment {
+public class Notifications_app extends Fragment {
 
-
+    Notification notificaciones;
     private static DBManager DB;
-    ArrayList<CircleList> activities;
-    public static FragmentManager fragmentManager;
+    ArrayList<NotificationsList> listNotificaciones;
 
     public static final int NUM_COLUMNS = 1;
 
-    private RecyclerView mHyperdActivitiesList;
-    private HypedActivitiesAdapter adapter;
-    private CodMessajes mss = new CodMessajes();
-    CirclesManager getCircles;
+    private RecyclerView mHyperdNotificationsList;
+    private HypedNotificationsAdapter adapter;
+
+    CodMessajes mss = new CodMessajes();
 
     private OnFragmentInteractionListener mListener;
 
 
-    public static Itinerarios_app newInstance(DBManager db, FragmentManager fragmentManager1) {
-        Itinerarios_app fragment = new Itinerarios_app();
+    public static Notifications_app newInstance(DBManager db, String param2) {
+        Notifications_app fragment = new Notifications_app();
         Bundle args = new Bundle();
         DB = db;
-        fragmentManager = fragmentManager1;
         fragment.setArguments(args);
         return fragment;
     }
 
-    public Itinerarios_app() {
+    public Notifications_app() {
         // Required empty public constructor
     }
 
@@ -76,27 +71,26 @@ public class Itinerarios_app extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-        adapter = new HypedActivitiesAdapter(getActivity(), DB, 2, fragmentManager );
+        adapter = new HypedNotificationsAdapter(getActivity(), DB);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_itinerarios_app, container, false);
+        View root = inflater.inflate(R.layout.fragment_notifications_app, container, false);
 
-        mHyperdActivitiesList = (RecyclerView) root.findViewById(R.id.hyper_show_itinerario);
-        getCircles = new CirclesManager( getActivity().getApplicationContext(), DB );
+        mHyperdNotificationsList = (RecyclerView) root.findViewById(R.id.hyper_notifications_list);
+        notificaciones = new Notification( getActivity().getApplicationContext(), DB );
 
         IconManager icon = new IconManager();
-        icon.setBackgroundApp((LinearLayout)root.findViewById(R.id.contentItinerarios));
+        icon.setBackgroundApp((LinearLayout)root.findViewById(R.id.contentNotifications));
 
-        SetudActivitiesList();
+        SetudNotificationList();
 
         try {
 
-            CasthConentAdapter( );//lleno el adaptador
+            CasthConentAdapter();//lleno el adaptador
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -130,32 +124,34 @@ public class Itinerarios_app extends Fragment {
 
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
+
         public void onFragmentInteraction(Uri uri);
     }
 
-    private void SetudActivitiesList(){
+    private void SetudNotificationList(){
 
-        mHyperdActivitiesList.setLayoutManager(
+        mHyperdNotificationsList.setLayoutManager(
                 new GridLayoutManager(getActivity(),
-                        NUM_COLUMNS) );
+                        NUM_COLUMNS));
 
-        mHyperdActivitiesList.setAdapter(adapter);
-        mHyperdActivitiesList.addItemDecoration( new ItemOffsetDecoration(
-                                                            getActivity().getApplicationContext(),
-                                                            R.integer.offset ) );
+
+
+        mHyperdNotificationsList.setAdapter(adapter);
+        mHyperdNotificationsList.addItemDecoration( new ItemOffsetDecoration( getActivity().getApplicationContext(), R.integer.offset ) );
     }
 
+    //<editor-fold desc="Peticion al server">
     private void CasthConentAdapter() throws JSONException {
 
+
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ServerUri.Server+"circles/")
+                .baseUrl(ServerUri.Server+"notifications/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        CirclesApp actividades = retrofit.create(CirclesApp.class);
+        Notifications notificationsResponse = retrofit.create(Notifications.class);
 
-        Call<ResponseContent> call = actividades.getActivitiesAdd(getCircles.getIdUser());
+        Call<ResponseContent> call = notificationsResponse.getNotifications( notificaciones.getIdUser() );
 
         call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
             @Override
@@ -164,7 +160,6 @@ public class Itinerarios_app extends Fragment {
                 ResponseContent data = response.body();
 
                 ValidateResponse( data );
-
 
             }
 
@@ -176,9 +171,10 @@ public class Itinerarios_app extends Fragment {
             }
         });
     }
+    //</editor-fold>
 
+    //<editor-fold desc="procesa la respuesta enviada del server">
     private void ValidateResponse(ResponseContent data) {
-        //procesa la respuesta enviada del server
 
         try {
 
@@ -189,9 +185,14 @@ public class Itinerarios_app extends Fragment {
                         Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
 
             }else{
+                Log.i(mss.TAG1, data.getBody().toString() );
+                ResponseContent showNotifications = notificaciones.ShowNotificationsNew(
+                                                        data.getBody(),
+                                                        mss.tipeNotification[1] );
+                                                        //filtro las notificaciones con las ocultadas
 
-                JSONArray circlesResult = data.getResults();
-                JSONObject indexCircles = data.getIndex();
+                JSONArray circlesResult = showNotifications.getResults();
+                JSONObject indexCircles = showNotifications.getIndex();
 
                 ShowCards(circlesResult, indexCircles);
 
@@ -205,18 +206,20 @@ public class Itinerarios_app extends Fragment {
         }
 
     }
+    //</editor-fold>
 
-    private void ShowCards( JSONArray circlesResult, JSONObject indexCircles){
-        //Agregar las cartas de los resultados
+    //<editor-fold desc="Agregar las cartas de los resultados">
+    private void ShowCards( JSONArray notificationsResult, JSONObject indexNotification){
 
-        if( circlesResult != null ){
 
-            activities = new ArrayList<>();
+        if( notificationsResult != null ){
 
-            for (int i=0; i < circlesResult.length(); i++){
+            listNotificaciones = new ArrayList<>();
+
+            for (int i=0; i < notificationsResult.length(); i++){
 
                 try {
-                    activities.add( new CircleList( circlesResult.getString(i), indexCircles ) );
+                    listNotificaciones.add(new NotificationsList(notificationsResult.getString(i), indexNotification));
                 } catch (JSONException e) {
                     e.printStackTrace();
                     new ServicesPeticion().SaveError(e,
@@ -226,12 +229,10 @@ public class Itinerarios_app extends Fragment {
 
             }
 
-            adapter.AddAll( activities );
+            adapter.AddAll( listNotificaciones );
 
         }
 
     }
-
-
-
+    //</editor-fold>
 }

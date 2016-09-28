@@ -1,4 +1,4 @@
-package com.co.edu.cun.www1104379214.bienestarcun.frragmentContent;
+package com.co.edu.cun.www1104379214.bienestarcun.ui.frragmentContent;
 
 import android.app.Activity;
 import android.net.Uri;
@@ -7,24 +7,27 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
-
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link Home_app.OnFragmentInteractionListener} interface
+ * {@link EvidenciasActivities.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link Home_app#newInstance} factory method to
+ * Use the {@link EvidenciasActivities#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Home_app extends Fragment {
+public class EvidenciasActivities extends Fragment {
+
+    private static int CIRCLE;
+    public static int ITINERARIO;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM1 = "itinerario";
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
@@ -33,25 +36,19 @@ public class Home_app extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Home_app.
-     */
+
     // TODO: Rename and change types and number of parameters
-    public static Home_app newInstance(String param1, String param2) {
-        Home_app fragment = new Home_app();
+    public static EvidenciasActivities newInstance(int circle1, int itinerario1) {
+        EvidenciasActivities fragment = new EvidenciasActivities();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        CIRCLE = circle1;
+        ITINERARIO = itinerario1;
+        args.putString(ARG_PARAM1, itinerario1+"");
         fragment.setArguments(args);
         return fragment;
     }
 
-    public Home_app() {
+    public EvidenciasActivities() {
         // Required empty public constructor
     }
 
@@ -62,23 +59,21 @@ public class Home_app extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        View root = inflater.inflate(R.layout.fragment_evidencias_activities, container, false);
 
-        View view = inflater.inflate(R.layout.fragment_home_app, container, false);
+        IconManager icon = new IconManager();
+        icon.setBackgroundApp((FrameLayout)root.findViewById(R.id.contentEvidencias));
 
-        // Ubicar argumento en el text view de section_fragment.xml
+        TextView contentId = (TextView) root.findViewById(R.id.ItinerarioId);
+        contentId.setText( ITINERARIO+"" );
 
-        ImageView img = (ImageView) view.findViewById(R.id.svgimg);
-        img.setImageResource(R.drawable.cunnegro);
-
-
-        return view;
+        return root;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

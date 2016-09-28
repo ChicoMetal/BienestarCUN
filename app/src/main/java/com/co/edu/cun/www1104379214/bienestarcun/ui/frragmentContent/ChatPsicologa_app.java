@@ -1,4 +1,4 @@
-package com.co.edu.cun.www1104379214.bienestarcun.frragmentContent;
+package com.co.edu.cun.www1104379214.bienestarcun.ui.frragmentContent;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -16,7 +16,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
@@ -152,7 +151,7 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
 
                         mWorkerThread.prepareHandler();
                         mWorkerThread.postTask(task);
-                        //Log.i("RESPONSE", args[0].toString());
+                        //LogUser.i("RESPONSE", args[0].toString());
 
                     }
 

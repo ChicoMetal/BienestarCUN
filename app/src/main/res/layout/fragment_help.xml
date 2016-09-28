@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.co.edu.cun.www1104379214.bienestarcun.frragmentContent.Help"
+    tools:context=".ui.frragmentContent.Help"
     android:id="@+id/content_information_help">
 
     <!-- TODO: Update blank fragment layout -->

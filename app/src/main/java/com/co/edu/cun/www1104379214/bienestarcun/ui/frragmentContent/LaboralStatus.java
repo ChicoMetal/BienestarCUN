@@ -1,4 +1,4 @@
-package com.co.edu.cun.www1104379214.bienestarcun.frragmentContent;
+package com.co.edu.cun.www1104379214.bienestarcun.ui.frragmentContent;
 
 import android.app.Activity;
 import android.net.Uri;
@@ -7,22 +7,22 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.DatePicker;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 
-
-public class HistoryLaboral_app extends Fragment {
-
-    CheckBox working;
-    DatePicker fechaEnd;
-
+/**
+ * A simple {@link Fragment} subclass.
+ * Activities that contain this fragment must implement the
+ * {@link LaboralStatus.OnFragmentInteractionListener} interface
+ * to handle interaction events.
+ * Use the {@link LaboralStatus#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class LaboralStatus extends Fragment {
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -32,8 +32,17 @@ public class HistoryLaboral_app extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public static HistoryLaboral_app newInstance(String param1, String param2) {
-        HistoryLaboral_app fragment = new HistoryLaboral_app();
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment LaboralStatus.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static LaboralStatus newInstance(String param1, String param2) {
+        LaboralStatus fragment = new LaboralStatus();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -41,7 +50,7 @@ public class HistoryLaboral_app extends Fragment {
         return fragment;
     }
 
-    public HistoryLaboral_app() {
+    public LaboralStatus() {
         // Required empty public constructor
     }
 
@@ -58,27 +67,11 @@ public class HistoryLaboral_app extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_history_laboral_app, container, false);
-
-        working = (CheckBox) root.findViewById( R.id.chk_continua_trabajando);
-        fechaEnd = (DatePicker) root.findViewById( R.id.pickerFechaLaboralEnd );
-
-        working.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-
-                if( working.isChecked() )
-                    fechaEnd.setVisibility(View.INVISIBLE);
-                else
-                    fechaEnd.setVisibility(View.VISIBLE);
-
-
-            }
-        });//evento del checkbox
+        View root = inflater.inflate(R.layout.fragment_laboral_status, container, false);
 
         IconManager icon = new IconManager();
-        icon.setBackgroundApp((FrameLayout)root.findViewById(R.id.contentHistoryLaboral));
+        icon.setBackgroundApp((FrameLayout)root.findViewById(R.id.contentStatusLaboral));
+
         return root;
     }
 
@@ -101,11 +94,19 @@ public class HistoryLaboral_app extends Fragment {
         mListener = null;
     }
 
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     * <p/>
+     * See the Android Training lesson <a href=
+     * "http://developer.android.com/training/basics/fragments/communicating.html"
+     * >Communicating with Other Fragments</a> for more information.
+     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
-
-
 
 }

@@ -1,11 +1,10 @@
-package com.co.edu.cun.www1104379214.bienestarcun.frragmentContent;
+package com.co.edu.cun.www1104379214.bienestarcun.ui.frragmentContent;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -41,11 +40,12 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
+public class Itinerarios_app extends Fragment {
 
-public class DelActivities_app extends Fragment {
 
     private static DBManager DB;
     ArrayList<CircleList> activities;
+    public static FragmentManager fragmentManager;
 
     public static final int NUM_COLUMNS = 1;
 
@@ -54,19 +54,19 @@ public class DelActivities_app extends Fragment {
     private CodMessajes mss = new CodMessajes();
     CirclesManager getCircles;
 
-
     private OnFragmentInteractionListener mListener;
 
-    public static DelActivities_app newInstance(DBManager db, String param2) {
-        DelActivities_app fragment = new DelActivities_app();
+
+    public static Itinerarios_app newInstance(DBManager db, FragmentManager fragmentManager1) {
+        Itinerarios_app fragment = new Itinerarios_app();
         Bundle args = new Bundle();
         DB = db;
-
+        fragmentManager = fragmentManager1;
         fragment.setArguments(args);
         return fragment;
     }
 
-    public DelActivities_app() {
+    public Itinerarios_app() {
         // Required empty public constructor
     }
 
@@ -74,26 +74,27 @@ public class DelActivities_app extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        adapter = new HypedActivitiesAdapter(getActivity(), DB, 1,null);
+
+        adapter = new HypedActivitiesAdapter(getActivity(), DB, 2, fragmentManager );
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_delactivities_app, container, false);
+        View root = inflater.inflate(R.layout.fragment_itinerarios_app, container, false);
 
-        mHyperdActivitiesList = (RecyclerView) root.findViewById(R.id.hyper_delactivities);
+        mHyperdActivitiesList = (RecyclerView) root.findViewById(R.id.hyper_show_itinerario);
         getCircles = new CirclesManager( getActivity().getApplicationContext(), DB );
 
         IconManager icon = new IconManager();
-        icon.setBackgroundApp((LinearLayout)root.findViewById(R.id.contentActivitiesListDel));
+        icon.setBackgroundApp((LinearLayout)root.findViewById(R.id.contentItinerarios));
 
         SetudActivitiesList();
 
         try {
 
-            CasthConentAdapter();//lleno el adaptador
+            CasthConentAdapter( );//lleno el adaptador
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -137,10 +138,10 @@ public class DelActivities_app extends Fragment {
                 new GridLayoutManager(getActivity(),
                         NUM_COLUMNS) );
 
-
         mHyperdActivitiesList.setAdapter(adapter);
-        mHyperdActivitiesList.addItemDecoration( new ItemOffsetDecoration( getActivity().getApplicationContext(), R.integer.offset ) );
-
+        mHyperdActivitiesList.addItemDecoration( new ItemOffsetDecoration(
+                                                            getActivity().getApplicationContext(),
+                                                            R.integer.offset ) );
     }
 
     private void CasthConentAdapter() throws JSONException {
@@ -161,6 +162,7 @@ public class DelActivities_app extends Fragment {
                 ResponseContent data = response.body();
 
                 ValidateResponse( data );
+
 
             }
 
@@ -227,6 +229,7 @@ public class DelActivities_app extends Fragment {
         }
 
     }
+
 
 
 }

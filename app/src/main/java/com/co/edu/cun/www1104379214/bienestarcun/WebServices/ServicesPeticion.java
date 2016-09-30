@@ -29,8 +29,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ServicesPeticion {
 
 
-    String result;
-    TaskExecuteHttpHandler BD;
+
     CodMessajes mss = new CodMessajes();
     DBManager DB;
 

@@ -66,8 +66,8 @@ public class ItinerariosManager {
 
     }
 
+    //<editor-fold desc="obtengo el array de objeto con los itinerarios">
     public JSONArray GetItinerariosExitst(int idCircle1, String service, ProgressDialog pdialog) throws InterruptedException {
-        //obtengo el array de objeto con los itinerarios
 
         String[][] values;
         String idCircle = idCircle1+"";
@@ -120,11 +120,8 @@ public class ItinerariosManager {
         return arrayResponse;
 
     }
+    //</editor-fold>
 
-    public JSONObject IndexItinerario() { //retornar los index dell objeto traido de la BD
-
-        return indexItinerarios;
-    }
 
     public void ShowAsistenciaItinerarios(int idItinerario, int idCircle, int INSTANCE, FragmentManager fragmentManager) {
 

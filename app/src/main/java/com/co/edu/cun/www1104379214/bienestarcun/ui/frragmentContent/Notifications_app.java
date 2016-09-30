@@ -187,8 +187,7 @@ public class Notifications_app extends Fragment {
             }else{
                 Log.i(mss.TAG1, data.getBody().toString() );
                 ResponseContent showNotifications = notificaciones.ShowNotificationsNew(
-                                                        data.getBody(),
-                                                        mss.tipeNotification[1] );
+                                                        data.getBody() );
                                                         //filtro las notificaciones con las ocultadas
 
                 JSONArray circlesResult = showNotifications.getResults();

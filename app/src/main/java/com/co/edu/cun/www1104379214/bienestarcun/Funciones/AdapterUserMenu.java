@@ -9,7 +9,7 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
-import com.co.edu.cun.www1104379214.bienestarcun.MainActivity;
+import com.co.edu.cun.www1104379214.bienestarcun.ui.MainActivity;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLDelete;
@@ -21,7 +21,6 @@ import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServerUri;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.TaskExecuteHttpHandler;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -54,10 +53,9 @@ public class AdapterUserMenu {
 
 
     Cursor result;
-    String result1;
 
     //<editor-fold desc="Constructor">
-    public AdapterUserMenu(Context contexto, DBManager db) {
+    public AdapterUserMenu( Context contexto, DBManager db) {
 
         this.CONTEXTO = contexto;
         this.DB = db;
@@ -68,7 +66,7 @@ public class AdapterUserMenu {
     //</editor-fold>
 
     //<editor-fold desc="Login">
-    public  boolean ProcessLogin(EditText user, EditText pass, NavigationView menu, MainActivity main){
+    public  boolean ProcessLogin(MainActivity main, EditText user, EditText pass, NavigationView menu ){
         boolean status = false;
 
         this.MAIN = main;
@@ -187,7 +185,8 @@ public class AdapterUserMenu {
                                 mss.LoginWell,
                                 Toast.LENGTH_SHORT).show();
 
-                        MAIN.LoginChange();
+                        MAIN.selectItem(mss.TitleMenuHome, R.id.nav_home);
+                        MAIN.setnameUserHead();
 
                     }
 
@@ -408,12 +407,6 @@ public class AdapterUserMenu {
         }
     }
     //</editor-fold> actualmente
-
-
-    /* ******************************************* */
-    /* ******************************************* */
-    /* ******************************************* */
-    /* ******************************************* */
 
     //<editor-fold desc="Ocultacion de items de menu segun el usuario">
     public void PrepareMenuUser( String targetUser, NavigationView menu ){//adapto el menu del usuario

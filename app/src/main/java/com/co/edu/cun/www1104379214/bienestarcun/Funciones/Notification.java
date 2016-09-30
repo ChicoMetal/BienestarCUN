@@ -4,14 +4,11 @@ import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLInsert;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLSearch;
-import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLSearchConditions;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ContentResults.ResponseContent;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.TaskExecuteHttpHandler;
@@ -21,7 +18,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -32,10 +28,6 @@ public class Notification {
     DBManager DB;
     Context CONTEXTO;
 
-    TaskExecuteHttpHandler BD;
-    ServicesPeticion services = new ServicesPeticion();
-    CodMessajes mss = new CodMessajes();
-    TaskExecuteSQLSearchConditions sqliteSearchconditions;
     TaskExecuteSQLSearch sqliteSearch;
     TaskExecuteSQLInsert sqliteInsert;
 
@@ -43,15 +35,7 @@ public class Notification {
     JSONObject indexNotifications;
     JSONArray newresultNotifications;
 
-    /**
-     **********************
-     **********************
-     **********************
-     * 1 = notificaciones de los circulos
-     * 0 = notificaciones de los egresados
-     **********************
-     **********************
-     */
+
     public Notification(Context contexto, DBManager db){
         this.DB = db;
         this.CONTEXTO = contexto;
@@ -99,25 +83,23 @@ public class Notification {
     }
 
     //<editor-fold desc="buscar notificaciones guardadas en sqlite (leidas)">
-    private JSONObject getNotificationsOld(String[] tipeNotifications){
+    private JSONObject getNotificationsOld(){
 
         JSONObject jsonNotifications = null;
 
         String[] camposSeacrh = new String[]{
-                DB.CN_COD_NOTIFICACION,
-                DB.CN_TIPE_NOTIFICATION
+                DB.CN_COD_NOTIFICACION
         };
 
-        sqliteSearchconditions = new TaskExecuteSQLSearchConditions(DB.TABLE_NAME_NOTIFICATION,
+        sqliteSearch = new TaskExecuteSQLSearch(DB.TABLE_NAME_NOTIFICATION,
                 camposSeacrh,
                 CONTEXTO,
-                DB,
-                tipeNotifications
+                DB
         ); //busqueda
 
         try {
 
-            Cursor result = sqliteSearchconditions.execute().get();
+            Cursor result = sqliteSearch.execute().get();
 
             jsonNotifications = new AdapterUserMenu(CONTEXTO, DB).CreateObjectResultSQL(result, camposSeacrh);
 
@@ -136,62 +118,8 @@ public class Notification {
     }
     //</editor-fold>
 
-    public JSONArray GetNotifications(String[] tipeNotifications, String service, ProgressDialog pdialog){//obtener notificaciones en la BD remota
 
-        /*String[][] parametros;
-
-        JSONArray arrayResponse;
-
-        parametros = new String[][]{ //array parametros a enviar
-                {"user",getIdUser()}
-        };
-
-
-        try {
-
-            BD = new TaskExecuteHttpHandler(service, parametros, pdialog);
-            String resultado="";
-            try {
-                resultado = BD.execute().get();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-
-            }catch (Exception e){
-                new ServicesPeticion().SaveError(e,
-                        new Exception().getStackTrace()[0].getMethodName().toString(),
-                        this.getClass().getName());//Envio la informacion de la excepcion al server
-            }
-
-            arrayResponse = new JSONArray( resultado ); // obtengo el array con la result del server
-
-            if( arrayResponse.getString(0).toString().equals("msm")  ){
-
-                Toast.makeText(CONTEXTO.getApplicationContext(),
-                        mss.msmServices.getString(arrayResponse.getString(1).toString()),
-                        Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
-
-
-            }else {
-
-                return ShowNotificationsNew( arrayResponse, tipeNotifications );
-
-            }
-
-        } catch (JSONException e) {
-
-            e.printStackTrace();
-
-        }catch (Exception e){
-            new ServicesPeticion().SaveError(e,
-                    new Exception().getStackTrace()[0].getMethodName().toString(),
-                    this.getClass().getName());//Envio la informacion de la excepcion al server
-        }
-        return null;*/
-        return  null;
-    }
-
-    public ResponseContent ShowNotificationsNew(JSONArray arrayResponse,
-                                                String[] tipeNotifications) {
+    public ResponseContent ShowNotificationsNew(JSONArray arrayResponse) {
 
         ResponseContent response = new ResponseContent();
 
@@ -202,7 +130,7 @@ public class Notification {
             resultNotifications = arrayResponse.getJSONArray(0);//array de objetos con los resultados
             indexNotifications = arrayResponse.getJSONObject(1);//objeto con los index de la consulta
 
-            JSONObject notificationOlds = getNotificationsOld(tipeNotifications);//notificaciones guardadas en sqlite
+            JSONObject notificationOlds = getNotificationsOld();//notificaciones guardadas en sqlite
 
             JSONObject notificationNew = null;
 
@@ -210,11 +138,11 @@ public class Notification {
 
                 notificationNew = resultNotifications.getJSONObject(c);
 
-                boolean existst = SearchNotificationsGetExists(tipeNotifications,
-                                    notificationNew.getString(
-                                            indexNotifications.getString("0")
-                                    ),
-                                    notificationOlds); //verifico el id de la notificacion traida con las guardadas
+                boolean existst = SearchNotificationsGetExists(
+                                                        notificationNew.getString(
+                                                                indexNotifications.getString("0")
+                                                        ),
+                                                        notificationOlds); //verifico el id de la notificacion traida con las guardadas
 
                 if( !existst ){
 
@@ -240,8 +168,7 @@ public class Notification {
         return null;
     }
 
-    private boolean SearchNotificationsGetExists(String[] tipeNotifications,
-                                                 String idNewNotification,
+    private boolean SearchNotificationsGetExists(String idNewNotification,
                                                  JSONObject notificationOlds){
         //confirmo si las notificaciones traidas del server ya estan guardadas para retirarlas
 
@@ -279,12 +206,11 @@ public class Notification {
     }
 
 
-    public boolean SaveNotificationRead( String idNotification, String tipeNotification ){
+    public boolean SaveNotificationRead( String idNotification ){
 
         boolean resultInsert = false;
 
         String[][] values = new String[][]{
-                {DB.CN_TIPE_NOTIFICATION,tipeNotification},
                 {DB.CN_COD_NOTIFICACION,idNotification}
         };
 

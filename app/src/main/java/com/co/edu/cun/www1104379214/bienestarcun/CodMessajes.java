@@ -50,6 +50,7 @@ public class CodMessajes {
 
 
 
+
     public static final String DftUsrName = "usuario";
     public static final String DftUsrPass = "usuario";
     public static final String DftUsrToken = "default";
@@ -134,8 +135,8 @@ public class CodMessajes {
     //************************************Variables globales
     //************************************
 
-    public static final String[][] tipeNotification = new String[][]{
-            {"0"},
-            {"1"}
-    };//tipo de notificaciones; 1:circulos; 0:ofertas laborales
+    public static final String TitleMenuHome = "Inicio";
+    public static final String hintListFacultades = "Selecciones una facultad";
+
+
 }

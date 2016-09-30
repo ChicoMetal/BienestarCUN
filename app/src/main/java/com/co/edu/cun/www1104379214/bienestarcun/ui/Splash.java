@@ -1,4 +1,4 @@
-package com.co.edu.cun.www1104379214.bienestarcun;
+package com.co.edu.cun.www1104379214.bienestarcun.ui;
 
 
 import android.app.ProgressDialog;

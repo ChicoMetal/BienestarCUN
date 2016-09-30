@@ -26,10 +26,6 @@ import java.util.ArrayList;
 public class HypedNotificationsAdapter extends RecyclerView.Adapter<HypedNotificationsAdapter.HypedNotificationsViewHolder> {
 
     ArrayList<NotificationsList> notifications;
-    CodMessajes mss = new CodMessajes();
-    IconManager icons = new IconManager();
-
-    FragmentManager fragmentManager;
 
     Context context;
     DBManager DB;
@@ -102,7 +98,7 @@ public class HypedNotificationsAdapter extends RecyclerView.Adapter<HypedNotific
                     // item clicked
                     String idNotification = v.getId()+"";
                     Notification notification = new Notification(context,DB);
-                    notification.SaveNotificationRead(idNotification, mss.tipeNotification[1][0]);
+                    notification.SaveNotificationRead( idNotification );
                     //new CirclesManager(context, DB).SaveActivityUser(v.getId());
 
                     notifications.remove(getAdapterPosition()); // remover un itemview

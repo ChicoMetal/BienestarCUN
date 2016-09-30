@@ -1,6 +1,7 @@
 package com.co.edu.cun.www1104379214.bienestarcun.Funciones;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -8,13 +9,24 @@ import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ContentResults.ResponseContent;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.Interface.CirclesApp;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.Interface.Itinerarios;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServerUri;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.TaskExecuteHttpHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.concurrent.ExecutionException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by root on 2/12/15.
@@ -24,8 +36,7 @@ public class NewItinerarioManager {
     DBManager DB;
     Context CONTEXTO;
 
-    String[][] parametros;
-    TaskExecuteHttpHandler BD;
+
     CodMessajes mss = new CodMessajes();
 
     public NewItinerarioManager(DBManager db, Context contexto) {
@@ -36,11 +47,11 @@ public class NewItinerarioManager {
     }
 
 
+    //<editor-fold desc="guardar en la BD los datos del nuevo itinerario">
     public void SaveNewItinerario( TextView contentNameActivitie,
                                    TextView contentDetailActivitie,
                                    DatePicker contentFecha,
-                                   TimePicker contentHora
-    ){//guardar en la BD los datos del nuevo itinerario
+                                   TimePicker contentHora ){
 
         GeneralCode code = new GeneralCode( DB, CONTEXTO );
 
@@ -57,63 +68,74 @@ public class NewItinerarioManager {
 
 
     }
+    //</editor-fold>
 
+    //<editor-fold desc="Enviar datos al server">
     private void SendServerItinerario( String idDocente,
                                        String name,
                                        String details,
                                        String fecha,
-                                       String hora) {//Enviar datos al server
+                                       String hora) {
 
 
-        final String service = "adminCircle/saveNewItinerario.php";
-        JSONArray arrayResponse = null;
 
-        parametros = new String[][]{ //array parametros a enviar
-                {"user",idDocente},
-                {"nameActiviti",name},
-                {"detailActivitie", details},
-                {"date", fecha},
-                {"hour", hora}
-        };
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(ServerUri.Server+"adminCircle/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
+        Itinerarios NewItinerario = retrofit.create(Itinerarios.class);
+
+        Call<ResponseContent> call = NewItinerario.SaveNewItinerario( idDocente,
+                                                                        name, details, fecha, hora);
+
+        call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
+            @Override
+            public void onResponse(Call<ResponseContent> call, Response<ResponseContent> response) {//obtener datos
+
+                ResponseContent data = response.body();
+
+                ValidateResponse( data );
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
+
+                Log.e( mss.TAG1, "error "+ t.toString());
+
+            }
+        });
+
+
+
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="procesa la respuesta enviada del server">
+    private void ValidateResponse(ResponseContent data) {
 
         try {
 
-            BD = new TaskExecuteHttpHandler(service, parametros, null);
-            String resultado="";
-            try {
-                resultado = BD.execute().get();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
+            if( data.getBody().getString(0).toString().equals("msm") ){//verifico si es un mensaje
 
-            }catch (Exception e){
-                new ServicesPeticion().SaveError(e,
-                        new Exception().getStackTrace()[0].getMethodName().toString(),
-                        this.getClass().getName());//Envio la informacion de la excepcion al server
-            }
-
-
-            arrayResponse = new JSONArray( resultado ); // obtengo el array con la result del server
-
-            if( arrayResponse.getString(0).toString().equals("msm")  ){
-
-                Toast.makeText(CONTEXTO,
-                        mss.msmServices.getString(arrayResponse.getString(1).toString()),
+                Toast.makeText(CONTEXTO.getApplicationContext(),
+                        mss.msmServices.getString(data.getBody().getString(1).toString()),
                         Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
+
+            }else{
+
+                Log.i( mss.TAG1,data.getBody().toString() );
 
             }
 
         } catch (JSONException e) {
-
             e.printStackTrace();
-
-        }catch (Exception e){
-
             new ServicesPeticion().SaveError(e,
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());//Envio la informacion de la excepcion al server
-
         }
 
     }
+    //</editor-fold>
 }

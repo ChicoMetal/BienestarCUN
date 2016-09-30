@@ -69,7 +69,6 @@
             android:text="@string/txt_btn_additinerario"
             android:id="@+id/btnAddNewItinerario"
             android:layout_gravity="center_horizontal"
-            android:onClick="SaveItinerarioNew"
             android:background="@color/backgroundBotton"
             android:layout_marginBottom="3dp"
             android:src="@mipmap/ic_btn_send"

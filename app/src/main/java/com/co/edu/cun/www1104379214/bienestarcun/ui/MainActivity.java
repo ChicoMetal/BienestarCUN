@@ -1,4 +1,4 @@
-package com.co.edu.cun.www1104379214.bienestarcun;
+package com.co.edu.cun.www1104379214.bienestarcun.ui;
 
 
 
@@ -33,9 +33,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.ChatPsicologiaManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.DesertionManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.GeneralCode;
@@ -43,7 +43,7 @@ import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.AdapterUserMenu;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.ItinerariosManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.LaboralAdd;
-import com.co.edu.cun.www1104379214.bienestarcun.Funciones.NewItinerarioManager;
+import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServerUri;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
@@ -112,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
 
     NavigationView navigationView;
     private DrawerLayout drawerLayout;
-    private String drawerTitle;
 
 
     private int SHOW_ITINERARIO_ASISTENCIA = 1;
@@ -143,10 +142,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        drawerTitle = "Inicio";
         if (savedInstanceState == null) {//Seleccionar item de menu por default o agregar el que tenia si existe
             int id = R.id.nav_home;
-            selectItem(drawerTitle, id);
+            selectItem(CodMessajes.TitleMenuHome, id);
 
         }
 
@@ -264,7 +262,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void selectItem(String title, int id) {
+    //<editor-fold desc="Permite la seleccion de un item en el menu lateral">
+    public void selectItem(String title, int id) {
 
         if( id != R.id.nav_logout){ //si se selecciona salir no llama fragmento, solo ejecuta es logout
 
@@ -280,7 +279,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+    //</editor-fold>
 
+    //<editor-fold desc="Cambia los fragmentos segun el iten seleccionado del menu lateral">
     private void ChangeFragment(int id){
         // Enviar título como arguemento del fragmento
         //abrir fragments
@@ -300,7 +301,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.nav_add_desertion:
-                fragment =  Desertion_app.newInstance("", "");
+                fragment =  Desertion_app.newInstance(db);
                 break;
 
             case R.id.nav_del_activities:
@@ -356,11 +357,11 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.nav_new_itinerario:
-                fragment =  CircleAdministration_app.newInstance("", "");
+                fragment =  CircleAdministration_app.newInstance( db );
                 break;
 
             case R.id.nav_login:
-                fragment =  LoginUser.newInstance("","");
+                fragment =  LoginUser.newInstance(navigationView, this, db);
                 break;
 
         }
@@ -373,6 +374,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+    //</editor-fold>
 
     //********************************************
     //********************************************Base de datos local
@@ -403,76 +405,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void setnameUserHead() {//cambiar el nombre del usuario (si es posible) y mostrarlo en el menu lateral
+    public void setnameUserHead() {//cambiar el nombre del usuario (si es posible) y mostrarlo en el menu lateral
         if( code == null)
             code = new GeneralCode(db, getApplicationContext());
 
         code.getNameUser((TextView) findViewById(R.id.lb_nameUser));//peticion para mostrar nombre de usuario en el header del menu
     }
 
-    public void Login(View v){ //ingresar usuario
-
-        EditText user, pass;
-
-        user = (EditText) findViewById(R.id.et_user_login);
-        pass = (EditText) findViewById(R.id.et_password_login);
-
-        adapterMenu.ProcessLogin(user, pass, navigationView, this);
-
-    }
-
-    public void LoginChange(){
-        //cuando se verifica el login se invoca este metodo, para cambiar de framengt
-        drawerTitle = "Inicio";
-        selectItem(drawerTitle, R.id.nav_home);
-        setnameUserHead();
-    }
-
     public void Logout(){
         adapterMenu.ProcessLogout(navigationView, this);
         int id = R.id.nav_home;
-        drawerTitle = "Inicio";
-        selectItem(drawerTitle, id);
+        selectItem(CodMessajes.TitleMenuHome, id);
 
         TextView nameUser = (TextView) findViewById(R.id.lb_nameUser);
         nameUser.setText("User");
-    }
-
-
-    public void SaveReportDesertion( View v ){//guadar reporte de desercio
-
-        DesertionManager desertion = new DesertionManager(db, getApplicationContext() );
-
-        EditText idEstudiante;
-        EditText Description;
-        RadioGroup horario;
-
-        idEstudiante = (EditText) findViewById( R.id.et_idDesertor);
-        Description = (EditText) findViewById( R.id.edt_description_desertioen);
-        horario = (RadioGroup) findViewById( R.id.rbg_horario);
-
-        desertion.SendReportDesertion(idEstudiante, Description, horario);
-
-
-    }
-
-    public void SaveItinerarioNew( View v ){//Guardar un nuevo itinerario
-
-        NewItinerarioManager newItinerario = new NewItinerarioManager(db, getApplicationContext() );
-
-        EditText nameActiviti, detailsActiviti;
-        DatePicker fecha;
-        TimePicker hora;
-
-
-        nameActiviti = (EditText) findViewById( R.id.txtNameActivitieNew);
-        detailsActiviti = (EditText) findViewById( R.id.txtDetailNewActiviti);
-        fecha = (DatePicker) findViewById( R.id.pickerFechaNewItinerario);
-        hora = (TimePicker) findViewById( R.id.pickerHoraNewItinerario);
-
-        newItinerario.SaveNewItinerario(nameActiviti, detailsActiviti, fecha, hora);
-
-
     }
 
     public void SaveHistoryLaboral( View v ){//Guardar un nuevo itinerario
@@ -526,9 +472,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //********************************************
-    //********************************************Subir fotos al server
+    //********************************************
     //********************************************
 
+    //<editor-fold desc="Subir fotos al server">
     public void getCamara(View v){//abre una ventana con la camara para tomar una foto
 
         imagen = (ImageView) findViewById( R.id.imgEvidencia);
@@ -743,4 +690,5 @@ public class MainActivity extends AppCompatActivity {
             new ServerUpdate().execute();
 
     }
+    //</editor-fold>
 }

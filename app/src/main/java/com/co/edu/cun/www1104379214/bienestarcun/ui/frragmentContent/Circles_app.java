@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.CirclesManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
-import com.co.edu.cun.www1104379214.bienestarcun.Splash;
+import com.co.edu.cun.www1104379214.bienestarcun.ui.Splash;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ContentResults.ResponseContent;

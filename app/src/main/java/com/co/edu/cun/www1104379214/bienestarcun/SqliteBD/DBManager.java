@@ -33,7 +33,6 @@ public class DBManager { //Creacion de tablas
 
     //campos tabla notificacion
     public static final String CN_ID_NOTIFICATIONS = "_id";
-    public static final String CN_TIPE_NOTIFICATION = "tipe_notification";//0:circulos; 1:egresados
     public static final String CN_COD_NOTIFICACION = "cod_notificacion";
 
     //campos tabla usuario
@@ -51,7 +50,6 @@ public class DBManager { //Creacion de tablas
 
     public static final String CREATE_TABLE_NOTIFICATIONS = " create table "+ TABLE_NAME_NOTIFICATION +
             "( " + CN_ID_NOTIFICATIONS +" integer primary key autoincrement,"+
-                CN_TIPE_NOTIFICATION+" integer not null,"+
                 CN_COD_NOTIFICACION+" integer not null"+
             ");"; //string de creacion de tables
 
@@ -101,11 +99,6 @@ public class DBManager { //Creacion de tablas
         return BD.query(TABLA,campos,null,null,null,null,null);
     }
 
-    public Cursor SearchDBConditions(String TABLA, String[] campos, String[] Conditions){
-        // String[] campos = new String[]{CN_TIPE_NOTIFICATION,CN_COD_NOTIFICACION};
-
-        return BD.query(TABLA,campos,CN_TIPE_NOTIFICATION+"=?",Conditions,null,null,null);
-    }
 
     public int  DeleteBD(){
         BD.delete(TABLE_NAME_NOTIFICATION, null, null);

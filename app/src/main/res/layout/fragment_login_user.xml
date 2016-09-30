@@ -67,7 +67,6 @@
             android:id="@+id/btn_login_send"
             android:layout_gravity="center_horizontal"
             android:contentDescription="@string/msm_btn_login_send"
-            android:onClick="Login"
             android:background="@color/backgroundBotton"
             android:layout_marginTop="10dp"
             android:src="@mipmap/ic_btn_send"

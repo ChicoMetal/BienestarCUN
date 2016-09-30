@@ -58,5 +58,19 @@ public class ResponseContent {
 
     }
 
+    public int getCount(){
+
+        try{
+
+            JSONArray arrayResponse = new JSONArray( result ).getJSONArray(0);
+
+            return arrayResponse.length();
+
+        }catch ( Exception e){
+            return 0;
+        }
+
+    }
+
 
 }

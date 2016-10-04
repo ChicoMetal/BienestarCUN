@@ -1,23 +1,25 @@
 package com.co.edu.cun.www1104379214.bienestarcun.ui.frragmentContent;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
-import com.co.edu.cun.www1104379214.bienestarcun.Funciones.ChatPsicologiaManager;
+import com.co.edu.cun.www1104379214.bienestarcun.Constantes;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ChatList;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ContentResults.ResponseContent;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.Interface.ChatPsicologia;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServerUri;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
 import com.co.edu.cun.www1104379214.bienestarcun.ui.ItemOffsetDecoration;
 import com.co.edu.cun.www1104379214.bienestarcun.ui.adapter.HypedChatAdapter;
@@ -27,6 +29,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 /**
@@ -40,31 +48,19 @@ import java.util.ArrayList;
 public class ChatPendientes extends Fragment {
 
     private static DBManager DB;
-    ArrayList<ChatList> activities;
+    ArrayList<ChatList> chats;
 
     public static final int NUM_COLUMNS = 1;
 
     private RecyclerView mHyperdChatList;
     private HypedChatAdapter adapter;
-    private CodMessajes mss = new CodMessajes();
+    private Constantes mss = new Constantes();
 
     public static FragmentManager fragmentManager;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-
     private OnFragmentInteractionListener mListener;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment ChatPendientes.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static ChatPendientes newInstance(DBManager db, FragmentManager fragmentManager1) {
         ChatPendientes fragment = new ChatPendientes();
         Bundle args = new Bundle();
@@ -93,7 +89,19 @@ public class ChatPendientes extends Fragment {
 
         mHyperdChatList = (RecyclerView) root.findViewById(R.id.hyper_chat_list);
 
-        new InterfaceNoBlock().execute();
+        SetudActivitiesList();
+
+        try {
+
+            CasthConentAdapter();//lleno el adaptador
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }catch (Exception e){
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());
+        }
 
 
         return root;
@@ -136,81 +144,91 @@ public class ChatPendientes extends Fragment {
         mHyperdChatList.addItemDecoration( new ItemOffsetDecoration( getActivity().getApplicationContext(), R.integer.offset ) );
     }
 
-    private void CasthConentAdapter( ProgressDialog pdialog ) throws JSONException {
+    private void CasthConentAdapter() throws JSONException {
 
-        ChatPsicologiaManager getChats = new ChatPsicologiaManager( getActivity().getApplicationContext(), DB );//busco en BD los circulos existentes
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(ServerUri.Server+"chatPsicologia/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
-        JSONArray ChatPendientesResult = getChats.SearchChatPendientes( pdialog );
-        JSONObject indexCircles = getChats.IndexChats();
+        ChatPsicologia chatsPsicologia = retrofit.create( ChatPsicologia.class );
+
+        Call<ResponseContent> call = chatsPsicologia.getChatsPendientes( Constantes.UsrPsicologa );
+
+        call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
+            @Override
+            public void onResponse(Call<ResponseContent> call, Response<ResponseContent> response) {//obtener datos
+
+                ResponseContent data = response.body();
+
+                ValidateResponse( data );
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
+
+                Log.e( mss.TAG1, "Error "+ t.toString());
+
+            }
+
+        });
+    }
+
+    private void ValidateResponse(ResponseContent data) {
+        //procesa la respuesta enviada del server
+
+        try {
+
+            if( data.getBody().getString(0).toString().equals("msm") ){//verifico si es un mensaje
+
+                Toast.makeText(getActivity().getApplicationContext(),
+                        mss.msmServices.getString(data.getBody().getString(1).toString()),
+                        Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
+
+            }else{
+
+                JSONArray circlesResult = data.getResults();
+                JSONObject indexCircles = data.getIndex();
+
+                ShowCards(circlesResult, indexCircles);
+
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
+        }
+
+    }
+
+    private void ShowCards( JSONArray ChatPendientesResult, JSONObject indexChats){
+        //Agregar las cartas de los resultados
 
         if( ChatPendientesResult != null ){
 
-            ArrayList<ChatList> chats = new ArrayList<>();
+            chats = new ArrayList<>();
 
             for (int i=0; i < ChatPendientesResult.length(); i++){
 
-                chats.add(new ChatList(ChatPendientesResult.getString(i), indexCircles));
+                try {
+                    chats.add(new ChatList( ChatPendientesResult.getString(i), indexChats) );
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    new ServicesPeticion().SaveError(e,
+                            new Exception().getStackTrace()[0].getMethodName().toString(),
+                            this.getClass().getName());//Envio la informacion de la excepcion al server
+                }
 
             }
 
-            adapter.AddAll(chats);
+            adapter.AddAll( chats );
 
         }
+
     }
 
-    public class InterfaceNoBlock extends AsyncTask<Void, Void, Void> {
 
-        ProgressDialog pDialog;
-
-        int a = 1;
-        @Override
-        protected void onPreExecute() {
-
-            pDialog = new ProgressDialog( getActivity() );
-            pDialog.setMessage("Un momento...");
-            pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            pDialog.setCancelable(false);
-            pDialog.setIndeterminate(true);
-            pDialog.setProgress(0);
-            pDialog.show();
-
-            SetudActivitiesList();
-
-        }
-
-
-        @Override
-        protected Void doInBackground(Void... params) {
-
-            try {
-                Thread.sleep (mss.TiempoEsperaTask);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-
-            super.onPostExecute(aVoid);
-
-            //pDialog.dismiss();
-
-            try {
-
-                CasthConentAdapter( pDialog );//lleno el adaptador
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }catch (Exception e){
-                new ServicesPeticion().SaveError(e,
-                        new Exception().getStackTrace()[0].getMethodName().toString(),
-                        this.getClass().getName());
-            }
-
-
-        }
-    }
 }

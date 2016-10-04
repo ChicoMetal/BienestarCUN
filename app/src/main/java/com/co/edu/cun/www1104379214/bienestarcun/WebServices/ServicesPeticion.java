@@ -4,18 +4,15 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
+import com.co.edu.cun.www1104379214.bienestarcun.Constantes;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ContentResults.ResponseContent;
-import com.co.edu.cun.www1104379214.bienestarcun.WebServices.Interface.CirclesApp;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.Interface.LogUser;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.Interface.SendError;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.concurrent.ExecutionException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,7 +27,7 @@ public class ServicesPeticion {
 
 
 
-    CodMessajes mss = new CodMessajes();
+    Constantes mss = new Constantes();
     DBManager DB;
 
 

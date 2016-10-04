@@ -9,7 +9,7 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
+import com.co.edu.cun.www1104379214.bienestarcun.Constantes;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.TaskExecuteHttpHandler;
@@ -31,7 +31,7 @@ public class ItinerariosManager {
     private String ITINERARIO_ASISTENCIA_FALSE = "000";
 
     TaskExecuteHttpHandler BD;
-    CodMessajes mss = new CodMessajes();
+    Constantes mss = new Constantes();
     Context CONTEXTO;
     JSONObject indexItinerarios;
     JSONArray result = null;

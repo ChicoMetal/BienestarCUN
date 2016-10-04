@@ -8,7 +8,7 @@ import android.support.design.widget.NavigationView;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
-import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
+import com.co.edu.cun.www1104379214.bienestarcun.Constantes;
 import com.co.edu.cun.www1104379214.bienestarcun.ui.MainActivity;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
@@ -47,7 +47,7 @@ public class AdapterUserMenu {
     TaskExecuteSQLInsert sqliteInsert;
     TaskExecuteSQLSearch sqliteSearch;
     TaskExecuteSQLDelete sqliteDelete;
-    CodMessajes mss = new CodMessajes();
+    Constantes mss = new Constantes();
     GeneralCode code;
 
 
@@ -411,35 +411,35 @@ public class AdapterUserMenu {
     //<editor-fold desc="Ocultacion de items de menu segun el usuario">
     public void PrepareMenuUser( String targetUser, NavigationView menu ){//adapto el menu del usuario
         switch ( targetUser ){
-            case CodMessajes.UsrLoginOff:
+            case Constantes.UsrLoginOff:
                 MenuLoginOf(menu);
                 break;
 
-            case CodMessajes.UsrStudent:
+            case Constantes.UsrStudent:
                 MenuStudent(menu);
                 break;
 
-            case CodMessajes.UsrExStudent:
+            case Constantes.UsrExStudent:
                 MenuExStudent(menu);
                 break;
 
-            case CodMessajes.UsrPsicologa:
+            case Constantes.UsrPsicologa:
                 MenuPsicologa(menu);
                 break;
 
-            case CodMessajes.UsrDocente:
+            case Constantes.UsrDocente:
                 MenuDocente(menu);
                 break;
 
-            case CodMessajes.UsrAdCircle:
+            case Constantes.UsrAdCircle:
                 MenuAdCircle(menu);
                 break;
 
-            case CodMessajes.UsrAd:
+            case Constantes.UsrAd:
                 MenuAd(menu);
                 break;
 
-            case CodMessajes.UsrSuperAd:
+            case Constantes.UsrSuperAd:
                 MenuAd(menu);
                 break;
 

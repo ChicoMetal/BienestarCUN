@@ -1,8 +1,7 @@
 package com.co.edu.cun.www1104379214.bienestarcun.WebServices;
 
-import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
+import com.co.edu.cun.www1104379214.bienestarcun.Constantes;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -11,7 +10,7 @@ import org.json.JSONObject;
  */
 public class NotificationsList {
 
-    CodMessajes mss = new CodMessajes();
+    Constantes mss = new Constantes();
     private String id_notifications;
     private String date_notification;
     private String circle_notification;

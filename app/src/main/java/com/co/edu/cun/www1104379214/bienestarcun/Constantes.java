@@ -8,7 +8,7 @@ import org.json.JSONObject;
 /**
  * Created by root on 31/10/15.
  */
-public class CodMessajes {
+public class Constantes {
     //*************************************
     //*************************************Constantes
     //*************************************
@@ -136,7 +136,11 @@ public class CodMessajes {
     //************************************
 
     public static final String TitleMenuHome = "Inicio";
-    public static final String hintListFacultades = "Selecciones una facultad";
+    public static final String hintListFacultades = "Seleccione una facultad";
+    public final static String EVENT_SEND_IDSOCKET = "saveIdSocket";
+    public final static String EVENT_SEND_GET_MESSAGE = "new message";
+    public final static int INDICADOR_MENSAJE_REMITENTE = 0;
+    public final static int INDICADOR_MENSAJE_RECEPTOR = 1;
 
 
 }

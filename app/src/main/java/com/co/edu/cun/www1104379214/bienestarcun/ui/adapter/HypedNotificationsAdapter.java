@@ -2,7 +2,6 @@ package com.co.edu.cun.www1104379214.bienestarcun.ui.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,8 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
-import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.Notification;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;

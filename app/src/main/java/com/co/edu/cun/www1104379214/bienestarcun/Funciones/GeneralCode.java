@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
@@ -12,7 +11,7 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
+import com.co.edu.cun.www1104379214.bienestarcun.Constantes;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLInsert;
@@ -37,7 +36,7 @@ public class GeneralCode {
 
     TaskExecuteSQLSearch userSearch;
 
-    CodMessajes mss = new CodMessajes();
+    Constantes mss = new Constantes();
     String[][] parametros;
     TaskExecuteHttpHandler BD;
 

@@ -7,20 +7,14 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
+import com.co.edu.cun.www1104379214.bienestarcun.Constantes;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ContentResults.ResponseContent;
-import com.co.edu.cun.www1104379214.bienestarcun.WebServices.Interface.CirclesApp;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.Interface.Itinerarios;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServerUri;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
-import com.co.edu.cun.www1104379214.bienestarcun.WebServices.TaskExecuteHttpHandler;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.concurrent.ExecutionException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,7 +31,7 @@ public class NewItinerarioManager {
     Context CONTEXTO;
 
 
-    CodMessajes mss = new CodMessajes();
+    Constantes mss = new Constantes();
 
     public NewItinerarioManager(DBManager db, Context contexto) {
 

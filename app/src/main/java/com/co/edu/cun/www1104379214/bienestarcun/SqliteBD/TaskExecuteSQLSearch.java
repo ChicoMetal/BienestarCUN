@@ -10,14 +10,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.widget.Toast;
-import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
-import org.json.JSONObject;
+import com.co.edu.cun.www1104379214.bienestarcun.Constantes;
 
 
 public class TaskExecuteSQLSearch extends AsyncTask<Void, Void, Cursor> {
 
     Cursor result_search;
-    CodMessajes mss = new CodMessajes();
+    Constantes mss = new Constantes();
 
     private String TABLA;
     private String[] CAMPOS; //Array para la busqueda de registros

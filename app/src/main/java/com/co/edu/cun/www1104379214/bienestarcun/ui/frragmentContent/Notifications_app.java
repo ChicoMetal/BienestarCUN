@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
+import com.co.edu.cun.www1104379214.bienestarcun.Constantes;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.Notification;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
@@ -50,7 +50,7 @@ public class Notifications_app extends Fragment {
     private RecyclerView mHyperdNotificationsList;
     private HypedNotificationsAdapter adapter;
 
-    CodMessajes mss = new CodMessajes();
+    Constantes mss = new Constantes();
 
     private OnFragmentInteractionListener mListener;
 

@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
+import com.co.edu.cun.www1104379214.bienestarcun.Constantes;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
@@ -50,7 +50,7 @@ public class Show_itinerario_circle extends Fragment {
     private HypedItinerarioAdapter adapter;
     public static FragmentManager fragmentManager;
     private static int INSTANCE;
-    private CodMessajes mss = new CodMessajes();
+    private Constantes mss = new Constantes();
 
 
     private OnFragmentInteractionListener mListener;

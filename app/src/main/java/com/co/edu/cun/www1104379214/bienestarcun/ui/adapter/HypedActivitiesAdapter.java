@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
+import com.co.edu.cun.www1104379214.bienestarcun.Constantes;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.CirclesManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
@@ -27,7 +27,7 @@ import java.util.ArrayList;
 public class HypedActivitiesAdapter extends RecyclerView.Adapter<HypedActivitiesAdapter.HypedActivitiesViewHolder> {
 
     ArrayList<CircleList> activities;
-    CodMessajes mss = new CodMessajes();
+    Constantes mss = new Constantes();
     IconManager icons = new IconManager();
 
     FragmentManager fragmentManager;

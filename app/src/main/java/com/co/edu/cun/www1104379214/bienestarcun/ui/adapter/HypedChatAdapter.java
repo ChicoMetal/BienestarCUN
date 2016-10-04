@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
+import com.co.edu.cun.www1104379214.bienestarcun.Constantes;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.ChatPsicologiaManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
@@ -25,7 +25,7 @@ import java.util.ArrayList;
 public class HypedChatAdapter extends RecyclerView.Adapter<HypedChatAdapter.HypedChatViewHolder> {
 
     ArrayList<ChatList> Chats;
-    CodMessajes mss = new CodMessajes();
+    Constantes mss = new Constantes();
     IconManager icons = new IconManager();
     FragmentManager fragmentManager;
 
@@ -90,7 +90,8 @@ public class HypedChatAdapter extends RecyclerView.Adapter<HypedChatAdapter.Hype
                 public void onClick(View v) {//evento de touch para agregar usuario a circulo
 
                 // item clicked
-                new ChatPsicologiaManager(context, DB).OpenChatPsicologia(v.getId(), fragmentManager);
+                new ChatPsicologiaManager(context, DB).OpenChatPsicologia(Long.parseLong(String.valueOf(v.getId())),
+                                                                            fragmentManager);
 
                 }
             });
@@ -107,6 +108,7 @@ public class HypedChatAdapter extends RecyclerView.Adapter<HypedChatAdapter.Hype
 
             //asigno los valores a los compnentes de las card
             icons.SetIconCards(imgcard, imgAdmin);
+            //TODO: cambiar la forma en la que se entrega el ID del remitente, ya que no se debe dejar un int sino un Long por el largo de las cedulas
             vistaItem.setId(Integer.parseInt(idActiviti));
         }
 

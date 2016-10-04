@@ -16,7 +16,7 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
+import com.co.edu.cun.www1104379214.bienestarcun.Constantes;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.DesertionManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
@@ -40,7 +40,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class Desertion_app extends Fragment implements View.OnClickListener{
 
     static DBManager DB;
-    CodMessajes mss = new CodMessajes();
+    Constantes mss = new Constantes();
 
     private OnFragmentInteractionListener mListener;
     EditText idEstudiante;

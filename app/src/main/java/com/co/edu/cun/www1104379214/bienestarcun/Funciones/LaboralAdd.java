@@ -7,7 +7,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
+import com.co.edu.cun.www1104379214.bienestarcun.Constantes;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
@@ -28,7 +28,7 @@ public class LaboralAdd {
 
     String[][] parametros;
     TaskExecuteHttpHandler BD;
-    CodMessajes mss = new CodMessajes();
+    Constantes mss = new Constantes();
 
     public LaboralAdd(DBManager db, Context contexto) {
 

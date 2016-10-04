@@ -1,6 +1,5 @@
 package com.co.edu.cun.www1104379214.bienestarcun.ui.frragmentContent;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,12 +15,17 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.co.edu.cun.www1104379214.bienestarcun.Constantes;
+import com.co.edu.cun.www1104379214.bienestarcun.Funciones.ChatPsicologiaManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
+import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ContentResults.ResponseContent;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.Interface.ChatPsicologia;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServerUri;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
-import com.co.edu.cun.www1104379214.bienestarcun.WebServices.TaskExecuteHttpHandler;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
@@ -31,7 +35,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
-import java.util.concurrent.ExecutionException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class ChatPsicologa_app extends Fragment implements View.OnClickListener {
@@ -43,31 +52,28 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
     LinearLayout ContentChat;
     ImageButton btn;
     EditText mensaje;
-    ProgressDialog pDialog;
 
-
-    //inicializacion necesarias para comunicacion con node
-    TaskExecuteHttpHandler BD;
     Context CONTEXTO;
+    private Constantes mss = new Constantes();
+    ChatPsicologiaManager ChatCodeInflateNull;
+    static DBManager DB;
+    static Retrofit retrofit;
+    static ChatPsicologia chatsPsicologia;
     private Handler mUiHandler = new Handler();
     private MyWorkerThread mWorkerThread;
     JSONObject MensajeEntrante;
-    JSONArray arrayresult;
-    JSONObject indexResult;
 
     Socket socket;
-    private final static String EVENT_SEND_IDSOCKET = "saveIdSocket";
-    private final static String EVENT_SEND_GET_MESSAGE = "new message";
 
 
+    public static ChatPsicologa_app newInstance(DBManager db, Long receptor) {
 
-    private OnFragmentInteractionListener mListener;
-
-    public static ChatPsicologa_app newInstance(long receptor, long remitente) {
         ChatPsicologa_app fragment = new ChatPsicologa_app();
+        DB = db;
 
-        mRemitente = remitente;
-        mReceptor = receptor;
+        if( receptor != null )
+            mReceptor = receptor;
+
 
         return fragment;
     }
@@ -86,7 +92,6 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_chat_psicologa_app, container, false);
 
         TVReceptor = (TextView) root.findViewById(R.id.TVRReceptor);
@@ -95,25 +100,296 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
         btn = (ImageButton) root.findViewById(R.id.btn_sendMsm);
         mensaje = (EditText) root.findViewById(R.id.etMensajePsicologia);
 
+        retrofit = new Retrofit.Builder()
+                .baseUrl(ServerUri.Server+"chatPsicologia/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        chatsPsicologia = retrofit.create( ChatPsicologia.class );
+
+        ChatCodeInflateNull = new ChatPsicologiaManager(
+                getActivity().getApplicationContext(), DB );
+
+        mRemitente = ChatCodeInflateNull.getIdUser();
+
+        if( ! ChatCodeInflateNull.ComproveUser() ){//dependiendo si el usuario es psicologo o no
+
+            getIdPsicologiaUser();
+
+        }else{
+            StartListenNode();
+        }
+
 
         IconManager icon = new IconManager();
-
         icon.setBackgroundApp((LinearLayout)root.findViewById(R.id.contentChat));
 
         btn.setOnClickListener(this);
 
         CONTEXTO = root.getContext();
 
+        return root;
 
-        pDialog = new ProgressDialog( getActivity() );
-        pDialog.setMessage("Un momento...");
-        pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        pDialog.setCancelable(false);
-        pDialog.setIndeterminate(true);
-        pDialog.setProgress(0);
-        pDialog.show();
+    }
+
+
+    public void onButtonPressed(Uri uri) {
+
+    }
+
+
+    @Override
+    public void onClick(View view) {
+        String msm =  mensaje.getText().toString();
+        JSONObject sendMensaje = new JSONObject();
+
+        if( mReceptor != 0 ){
+
+            try{//objeto con la informacion de la conversasion iniciada
+                sendMensaje.put("Mensaje", msm);
+                sendMensaje.put("Remitente", mRemitente+"");
+                sendMensaje.put("Destinatario", mReceptor+"");
+
+            }catch(Exception e){
+                Log.i("ERROR", e.getMessage());
+            }
+
+            socket.emit(Constantes.EVENT_SEND_GET_MESSAGE, sendMensaje);//envio la informasion al server para guardar el socket
+
+            mensaje.setText("");
+
+        }
+    }
+
+
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        public void onFragmentInteraction(Uri uri);
+    }
+
+    //<editor-fold desc="busco el id del usuario encargado del area de psicologia">
+    public void getIdPsicologiaUser() {
+
+        Call<ResponseContent> call = chatsPsicologia.getPsicologiaUser( mRemitente );
+
+        call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
+            @Override
+            public void onResponse(Call<ResponseContent> call, Response<ResponseContent> response) {//obtener datos
+
+                ResponseContent data = response.body();
+
+                try {
+
+                    if( data.getBody().getString(0).toString().equals("msm") ){//verifico si es un mensaje
+
+                        Toast.makeText(getActivity().getApplicationContext(),
+                                mss.msmServices.getString(data.getBody().getString(1).toString()),
+                                Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
+
+                    }else{
+
+                        JSONObject results = data.getResults().getJSONObject(0);
+                        JSONObject index = data.getIndex();
+
+                        mReceptor = results.getLong( index.getString("0") );
+
+                        StartListenNode();
+
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    new ServicesPeticion().SaveError(e,
+                            new Exception().getStackTrace()[0].getMethodName().toString(),
+                            this.getClass().getName());//Envio la informacion de la excepcion al server
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
+
+                Log.e( mss.TAG1, "Error "+ t.toString());
+
+            }
+
+        });
+
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="hilo para mensajes que salen y entran en una conversacion">
+    final Runnable task = new Runnable() {
+
+        @Override
+        public void run() {
+
+            mUiHandler.post(new Runnable() {
+                @Override
+                public void run(){
+                    try {
+
+                        TextView msmContent;
+
+                        if( MensajeEntrante.getString("Remitente").equals(mRemitente+"") ){
+
+                            msmContent = GenerarTextView(Constantes.INDICADOR_MENSAJE_REMITENTE,
+                                                            MensajeEntrante.getString("Mensaje") );
+
+                        }else{
+
+                            msmContent = GenerarTextView(Constantes.INDICADOR_MENSAJE_RECEPTOR,
+                                                            MensajeEntrante.getString("Mensaje") );
+
+                        }
+
+                        ContentChat.addView( msmContent );
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            });
+
+
+        }
+    };
+    //</editor-fold>
+
+    //<editor-fold desc="generar textview">
+    private TextView GenerarTextView(int origen, String mensaje){
+
+        TextView texto = new TextView(CONTEXTO);
+        if( origen == 0){
+
+            texto.setBackgroundResource(R.color.accent_transparency_remitente);
+            texto.setGravity(Gravity.LEFT);
+
+        }else{
+            texto.setBackgroundResource(R.color.accent_transparency_receptor);
+            texto.setGravity(Gravity.RIGHT);
+        }
+
+        texto.setTextColor(CONTEXTO.getResources().getColor(R.color.textBlack));
+        texto.setPadding(30, 5, 30, 5);
+        texto.setTextSize(20);
+        texto.setText(mensaje);
+
+        return texto;
+
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="obtengo el array de objeto con los mensajes">
+    public void GetMensajesPendientesExists( String remitente, String receptor) throws InterruptedException {
+
+        Call<ResponseContent> call = chatsPsicologia.getMensajesPendientes( remitente, receptor );
+
+        call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
+            @Override
+            public void onResponse(Call<ResponseContent> call, Response<ResponseContent> response) {//obtener datos
+
+                ResponseContent data = response.body();
+
+                ValidateResponse( data );
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
+
+                Log.e( mss.TAG1, "Error "+ t.toString());
+
+            }
+
+        });
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="procesa la respuesta enviada del server">
+    private void ValidateResponse(ResponseContent data) {
+
+        try {
+
+            if( data.getBody().getString(0).toString().equals("msm") ){//verifico si es un mensaje
+
+                Toast.makeText(getActivity().getApplicationContext(),
+                        mss.msmServices.getString(data.getBody().getString(1).toString()),
+                        Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
+
+            }else{
+
+                JSONArray circlesResult = data.getResults();
+                JSONObject indexMensajes = data.getIndex();
+
+                for( int c = 0; c < circlesResult.length(); c++){//itero por cada mensaje
+
+                    TextView msmContent;
+
+                    if( circlesResult.getJSONObject(c)
+                            .getLong( indexMensajes.getString("0") ) == mRemitente ){
+
+                        msmContent = GenerarTextView(Constantes.INDICADOR_MENSAJE_REMITENTE,
+                                            circlesResult.getJSONObject(c)
+                                                .getString( indexMensajes.getString("1") ) );
+                    }else{
+                        msmContent = GenerarTextView(Constantes.INDICADOR_MENSAJE_RECEPTOR,
+                                                circlesResult.getJSONObject(c)
+                                                    .getString( indexMensajes.getString("1") )  );
+                    }
+
+                    ContentChat.addView( msmContent );
+
+
+                }
+
+                UpdateStatusMsmPendientes();
+
+
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
+        }
+
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="Actualizar el estado de los mensajes pendientes ya entregados">
+    private void UpdateStatusMsmPendientes(){
+        Call<ResponseContent> call = chatsPsicologia.setMensajesPendientes( mRemitente, mReceptor );
+
+        call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
+            @Override
+            public void onResponse(Call<ResponseContent> call, Response<ResponseContent> response) {//obtener datos
+
+                ResponseContent data = response.body();
+
+                Log.i(  mss.TAG1, data.getBody().toString() );
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
+
+                Log.e( mss.TAG1, "Error "+ t.toString());
+
+            }
+
+        });
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="Una vez se tenga el remitente y el receptor se crea la conexion con node">
+    private void StartListenNode(){
+
 
         try{
+
+            GetMensajesPendientesExists( mRemitente+"", mReceptor+"");
 
             IO.Options opts = new IO.Options();
 
@@ -136,8 +412,8 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
         }
 
 
-        socket.on(EVENT_SEND_GET_MESSAGE, new Emitter.Listener(){
-         //evento emitir el envio de un mensaje y escuchar los nuevos mensajes
+        //<editor-fold desc="evento escuchar los nuevos mensajes">
+        socket.on(Constantes.EVENT_SEND_GET_MESSAGE, new Emitter.Listener(){
 
             @Override
             public void call(Object... args) {
@@ -165,42 +441,23 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
 
             }
         });
+        //</editor-fold>
 
-        socket.on(EVENT_SEND_IDSOCKET, new Emitter.Listener(){//evento identificar la conexion en el servidor
+        //<editor-fold desc="evento identificar la conexion en el servidor">
+        socket.on(Constantes.EVENT_SEND_IDSOCKET, new Emitter.Listener(){
 
             @Override
             public void call(Object... args) {
 
-                JSONArray resultMensajes;
-                try {
-
-                    final String service = "chatPsicologia/getMensajes.php";
-
-                    resultMensajes = GetMensajesPendientesExists(service, mRemitente+"", mReceptor+"");
-
-                    if (resultMensajes != null) {//si trae mensajes de vuelta
-
-                        arrayresult = resultMensajes.getJSONArray(0);
-                        indexResult = resultMensajes.getJSONObject(1);
-
-                        mWorkerThread.prepareHandler();
-                        mWorkerThread.postTask(task2);
-
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }catch (Exception e){
-                    new ServicesPeticion().SaveError(e,
-                            new Exception().getStackTrace()[0].getMethodName().toString(),
-                            this.getClass().getName());//Envio la informacion de la excepcion al server
-                }
+                Log.i( mss.TAG1, "Se ha guardado el socket de la conexion en node" );
 
             }
         });
+        //</editor-fold>
 
-
+        //<editor-fold desc="eventos de conexion y desconexion">
         socket.on(Socket.EVENT_CONNECT, new Emitter.Listener(){
-            //eventos de conexion y desconexion
+
 
             public void call(Object... args) {
 
@@ -209,12 +466,12 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
 
                     String socketId = socket.id().toString();
 
-                    newConversasion.put("remitente", mRemitente);
-                    newConversasion.put("receptor", mReceptor);
+                    newConversasion.put("remitente", mRemitente+"");
+                    newConversasion.put("receptor", mReceptor+"");
                     newConversasion.put("socket", socketId);
 
                     // Emit event
-                    socket.emit(EVENT_SEND_IDSOCKET, newConversasion);//envio la informasion al server para guardar el socket
+                    socket.emit(Constantes.EVENT_SEND_IDSOCKET, newConversasion);//envio la informasion al server para guardar el socket
 
                 }catch(Exception e){
                     new ServicesPeticion().SaveError(e,
@@ -233,194 +490,19 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
             }
 
         });
-
-        return root;
-
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-
-    @Override
-    public void onClick(View view) {
-        String msm =  mensaje.getText().toString();
-
-        JSONObject sendMensaje = new JSONObject();
-        try{//objeto con la informacion de la conversasion iniciada
-            sendMensaje.put("Mensaje", msm);
-            sendMensaje.put("Remitente", mRemitente);
-            sendMensaje.put("Destinatario", mReceptor);
-
-        }catch(Exception e){
-            Log.i("ERROR", e.getMessage());
-        }
-
-
-        socket.emit(EVENT_SEND_GET_MESSAGE, sendMensaje);//envio la informasion al server para guardar el socket
-
-        mensaje.setText("");
-    }
-
-
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
-    }
-
-    final Runnable task = new Runnable() {//hilo para mensajes que salen y entran en una conversacion
-
-        @Override
-        public void run() {
-
-            mUiHandler.post(new Runnable() {
-                @Override
-                public void run(){
-                    try {
-
-                        TextView msmContent;
-
-                        if( MensajeEntrante.getString("Remitente").equals(mRemitente+"") ){
-                            msmContent = GenerarTextView(0, MensajeEntrante.getString("Mensaje") );
-                        }else{
-                            msmContent = GenerarTextView(1, MensajeEntrante.getString("Mensaje") );
-
-                        }
-
-                        ContentChat.addView( msmContent );
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-            });
-
-
-        }
-    };
-
-    final Runnable task2 = new Runnable() {//obtener mensajes sin leer
-
-        @Override
-        public void run() {
-
-            mUiHandler.post(new Runnable() {
-                @Override
-                public void run(){
-                    try {
-
-
-                        for( int c = 0; c < arrayresult.length(); c++){//itero por cada mensaje
-
-                            TextView msmContent;
-
-                            if( arrayresult.getJSONObject(c).getLong( indexResult.getString("0") ) == mRemitente ){
-                               msmContent = GenerarTextView(0, arrayresult.getJSONObject(c).getString( indexResult.getString("1") ) );
-                            }else{
-                               msmContent = GenerarTextView(1, arrayresult.getJSONObject(c).getString( indexResult.getString("1") )  );
-                            }
-
-                            ContentChat.addView( msmContent );
-
-                        }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-            });
-
-
-        }
-    };
-
-
-    private TextView GenerarTextView(int origen, String mensaje){//generar textview
-
-        TextView texto = new TextView(CONTEXTO);
-        if( origen == 0){
-
-            texto.setBackgroundResource(R.color.accent_transparency_remitente);
-            texto.setGravity(Gravity.LEFT);
-
-        }else{
-            texto.setBackgroundResource(R.color.accent_transparency_receptor);
-            texto.setGravity(Gravity.RIGHT);
-        }
-
-        texto.setTextColor(CONTEXTO.getResources().getColor(R.color.textBlack));
-        texto.setPadding(30, 5, 30, 5);
-        texto.setTextSize(20);
-        texto.setText(mensaje);
-
-        return texto;
+        //</editor-fold>
 
     }
-
-    public JSONArray GetMensajesPendientesExists(String service, String remitente, String receptor) throws InterruptedException {
-        //obtengo el array de objeto con los mensajes
-
-
-
-        JSONArray arrayResponse = null;
-
-        String[][] values = new String[][]{ //array parametros a enviar
-                {"remitente",remitente},
-                {"receptor",receptor}
-        };
-
-        BD = new TaskExecuteHttpHandler(service, values, pDialog);
-        String resultado="";
-        try {
-            resultado = BD.execute().get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }catch (Exception e){
-            new ServicesPeticion().SaveError(e,
-                    new Exception().getStackTrace()[0].getMethodName().toString(),
-                    this.getClass().getName());//Envio la informacion de la excepcion al server
-        }
-
-        try {
-
-            arrayResponse = new JSONArray( resultado ); // obtengo el array con la result del server
-
-            if( arrayResponse.getString(0).toString().equals("msm")  ){
-
-                return null;
-
-            }else {
-
-                return arrayResponse;
-
-            }
-
-        } catch (JSONException e) {
-
-            e.printStackTrace();
-
-        }catch (Exception e){
-            new ServicesPeticion().SaveError(e,
-                    new Exception().getStackTrace()[0].getMethodName().toString(),
-                    this.getClass().getName());//Envio la informacion de la excepcion al server
-        }
-
-        return arrayResponse;
-
-    }
+    //</editor-fold>
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         socket.disconnect();
     }
-}
 
+
+}
 
 
 class MyWorkerThread extends HandlerThread {
@@ -442,4 +524,5 @@ class MyWorkerThread extends HandlerThread {
         mWorkerHandler = new Handler(getLooper());
 
     }
+
 }

@@ -5,7 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
+import com.co.edu.cun.www1104379214.bienestarcun.Constantes;
 
 /**
  * Created by root on 29/10/15.
@@ -14,7 +14,7 @@ public class DBManager { //Creacion de tablas
 
     private DBHelper helper;
     private SQLiteDatabase BD;
-    CodMessajes mss = new CodMessajes();
+    Constantes mss = new Constantes();
 
 
 

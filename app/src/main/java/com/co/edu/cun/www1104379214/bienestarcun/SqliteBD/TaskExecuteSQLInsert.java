@@ -2,15 +2,10 @@ package com.co.edu.cun.www1104379214.bienestarcun.SqliteBD;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.Toast;
 
-import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.co.edu.cun.www1104379214.bienestarcun.Constantes;
 
 /**
  * Created by root on 4/11/15.
@@ -18,7 +13,7 @@ import org.json.JSONObject;
 public class TaskExecuteSQLInsert extends AsyncTask<Void, Void, Boolean> {
 
 
-    CodMessajes mss = new CodMessajes();
+    Constantes mss = new Constantes();
 
     private String TABLA;
     private ContentValues VALORES;

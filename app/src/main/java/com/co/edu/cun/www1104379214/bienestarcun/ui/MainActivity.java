@@ -31,13 +31,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
+import com.co.edu.cun.www1104379214.bienestarcun.Constantes;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.ChatPsicologiaManager;
-import com.co.edu.cun.www1104379214.bienestarcun.Funciones.DesertionManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.GeneralCode;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.AdapterUserMenu;
@@ -101,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
     String nameFileImagen;
 
     AdapterUserMenu adapterMenu;//clase con adapterMenu para usar
-    CodMessajes mss = new CodMessajes();
+    Constantes mss = new Constantes();
     ServicesPeticion services;
     IconManager icon;
     GeneralCode code = null;
@@ -144,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {//Seleccionar item de menu por default o agregar el que tenia si existe
             int id = R.id.nav_home;
-            selectItem(CodMessajes.TitleMenuHome, id);
+            selectItem(Constantes.TitleMenuHome, id);
 
         }
 
@@ -343,15 +341,17 @@ public class MainActivity extends AppCompatActivity {
             case R.id.nav_new_chat:
 
 
-                ChatPsicologiaManager ChatCodeInflateNull = new ChatPsicologiaManager(getApplicationContext(), db );
+                ChatPsicologiaManager ChatCodeInflateNull = new ChatPsicologiaManager(
+                                                                getApplicationContext(), db );
 
                 if( ChatCodeInflateNull.ComproveUser() ){//dependiendo si el usuario es psicologo o no
+
                     FragmentManager fragmentManagerChat = getSupportFragmentManager();
                     fragment =  ChatPendientes.newInstance(db, fragmentManagerChat);
 
                 }else{
 
-                    fragment =  ChatPsicologa_app.newInstance( getPsicologiaUser() , Integer.parseInt( ChatCodeInflateNull.getIdUser() ));//se le envia 0 dado que aun no tengo el destinatario
+                    fragment =  ChatPsicologa_app.newInstance( db, null );//se le envia 0 dado que aun no tengo el destinatario
                 }
 
                 break;
@@ -415,7 +415,7 @@ public class MainActivity extends AppCompatActivity {
     public void Logout(){
         adapterMenu.ProcessLogout(navigationView, this);
         int id = R.id.nav_home;
-        selectItem(CodMessajes.TitleMenuHome, id);
+        selectItem(Constantes.TitleMenuHome, id);
 
         TextView nameUser = (TextView) findViewById(R.id.lb_nameUser);
         nameUser.setText("User");
@@ -459,17 +459,6 @@ public class MainActivity extends AppCompatActivity {
         new ItinerariosManager( getApplicationContext() ).SaveAsistenciasItinerario(layout, idItinerario);
     }
 
-    private long getPsicologiaUser(){
-        if( code == null )
-            code = new GeneralCode(db, getApplicationContext());
-
-        String idUserPsicologia =  new ChatPsicologiaManager(getApplicationContext(), db ).getIdPsicologiaUser( code.getIdUser() );
-
-        if( idUserPsicologia != null )
-            return Long.parseLong( idUserPsicologia );
-        else
-            return 0;
-    }
 
     //********************************************
     //********************************************

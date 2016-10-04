@@ -1,17 +1,14 @@
 package com.co.edu.cun.www1104379214.bienestarcun.Funciones;
 
-import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
-import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLInsert;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLSearch;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ContentResults.ResponseContent;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
-import com.co.edu.cun.www1104379214.bienestarcun.WebServices.TaskExecuteHttpHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
+import com.co.edu.cun.www1104379214.bienestarcun.Constantes;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.CirclesManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.ui.Splash;
@@ -50,7 +50,7 @@ public class Circles_app extends Fragment {
 
     private RecyclerView mHyperdActivitiesList;
     private HypedActivitiesAdapter adapter;
-    private CodMessajes mss = new CodMessajes();
+    private Constantes mss = new Constantes();
     CirclesManager getCircles;
     Splash PDialog = new Splash();
 

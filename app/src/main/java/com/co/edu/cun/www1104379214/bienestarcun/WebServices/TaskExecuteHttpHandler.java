@@ -1,18 +1,15 @@
 package com.co.edu.cun.www1104379214.bienestarcun.WebServices;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
-import com.co.edu.cun.www1104379214.bienestarcun.CodMessajes;
+import com.co.edu.cun.www1104379214.bienestarcun.Constantes;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -34,7 +31,7 @@ public class TaskExecuteHttpHandler extends AsyncTask<Void, Void, String> {
 
     ProgressDialog pDialog;
 
-    CodMessajes messajes = new CodMessajes();
+    Constantes messajes = new Constantes();
 
     private final String Server = ServerUri.Server;
     private String SERVICE;

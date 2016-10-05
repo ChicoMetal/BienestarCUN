@@ -10,31 +10,33 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
+import com.co.edu.cun.www1104379214.bienestarcun.Funciones.LaboralAdd;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
+import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 
 
-public class HistoryLaboral_app extends Fragment {
+public class HistoryLaboral_app extends Fragment implements View.OnClickListener{
 
+    LaboralAdd newlaboral;
+    static DBManager DB;
+
+    EditText nameEmpresa, cargoEmpresa;
+    DatePicker fechaStart, fechaEnd;
     CheckBox working;
-    DatePicker fechaEnd;
+    ImageButton btn;
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
-    public static HistoryLaboral_app newInstance(String param1, String param2) {
+    public static HistoryLaboral_app newInstance( DBManager db ) {
+        DB = db;
         HistoryLaboral_app fragment = new HistoryLaboral_app();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -46,10 +48,6 @@ public class HistoryLaboral_app extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -57,9 +55,15 @@ public class HistoryLaboral_app extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_history_laboral_app, container, false);
+        newlaboral = new LaboralAdd(DB, getActivity().getApplicationContext() );
 
         working = (CheckBox) root.findViewById( R.id.chk_continua_trabajando);
         fechaEnd = (DatePicker) root.findViewById( R.id.pickerFechaLaboralEnd );
+        nameEmpresa = (EditText) root.findViewById( R.id.txt_nameEmpresa);
+        cargoEmpresa = (EditText) root.findViewById( R.id.txt_cargoEmpresa);
+        fechaStart = (DatePicker) root.findViewById( R.id.pickerFechaLaboralStart);
+        btn = (ImageButton) root.findViewById( R.id.btn_sendLaboral);
+        btn.setOnClickListener(this);
 
         working.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
@@ -80,7 +84,7 @@ public class HistoryLaboral_app extends Fragment {
         return root;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
+
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -97,6 +101,13 @@ public class HistoryLaboral_app extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        newlaboral.SaveNewHistoryLaboral(nameEmpresa, cargoEmpresa, fechaStart, working, fechaEnd);
+
     }
 
     public interface OnFragmentInteractionListener {

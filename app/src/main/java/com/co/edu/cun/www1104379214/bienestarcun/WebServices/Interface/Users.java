@@ -11,7 +11,7 @@ import retrofit2.http.POST;
  * Created by Satellite on 26/09/2016.
  */
 
-public interface LogUser {
+public interface Users {
 
     @FormUrlEncoded
     @POST("login")//Iniciar sesion
@@ -24,6 +24,10 @@ public interface LogUser {
     @FormUrlEncoded
     @POST("log_save")//Guarda sesion
     Call<ResponseContent> SaveLog(@Field("id_user") String id_user, @Field("Token") String Token);
+
+    @FormUrlEncoded
+    @POST("getNameUser")//Obtener nombre de usuario
+    Call<ResponseContent> getUserName( @Field("user") String user );
 
 
 }

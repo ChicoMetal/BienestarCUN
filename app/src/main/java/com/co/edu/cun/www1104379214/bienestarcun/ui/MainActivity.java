@@ -4,6 +4,7 @@ package com.co.edu.cun.www1104379214.bienestarcun.ui;
 
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -22,6 +23,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -149,10 +151,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
     @Override
     protected void onStart() {
         super.onStart();
+
+        if( code == null )
+            code = new GeneralCode(db, getApplicationContext()  );
 
         try {
             Ejecutar();
@@ -163,6 +167,8 @@ public class MainActivity extends AppCompatActivity {
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());//Envio la informacion de la excepcion al server
         }
+
+
     }
 
     //********************************************
@@ -312,7 +318,7 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.nav_asistencia:
 
-                fragment = Show_itinerario_circle.newInstance(getCircleOfAdmin(),
+                fragment = Show_itinerario_circle.newInstance(code.getCircleOfAdmin(),
                         db,
                         SHOW_ITINERARIO_ASISTENCIA,
                         getSupportFragmentManager());
@@ -320,18 +326,18 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.nav_evidencias:
 
-                fragment = Show_itinerario_circle.newInstance(getCircleOfAdmin(),
+                fragment = Show_itinerario_circle.newInstance(code.getCircleOfAdmin(),
                         db,
                         SHOW_ITINERARIO_EVIDENCIAS,
                         getSupportFragmentManager());
                 break;
 
             case R.id.nav_add_laboral:
-                fragment =  HistoryLaboral_app.newInstance("", "");
+                fragment =  HistoryLaboral_app.newInstance( db );
                 break;
 
             case R.id.nav_update_laboral_state:
-                fragment =  LaboralStatus.newInstance("", "");
+                fragment =  LaboralStatus.newInstance(db);
                 break;
 
             case R.id.nav_show_notifications:
@@ -393,61 +399,30 @@ public class MainActivity extends AppCompatActivity {
 
     private void Ejecutar() throws InterruptedException {
 
-
         setnameUserHead();
-
-        if( code == null)
-            code = new GeneralCode(db, getApplicationContext());
 
         code.ChoseUserDefault(this);//mostrar lista para seleccionar la sede para los usuarios sin loguear
 
-        //services.ListPerson(getApplicationContext());
     }
 
 
-    public void setnameUserHead() {//cambiar el nombre del usuario (si es posible) y mostrarlo en el menu lateral
-        if( code == null)
-            code = new GeneralCode(db, getApplicationContext());
+    //<editor-fold desc="cambiar el nombre del usuario (si es posible) y mostrarlo en el menu lateral">
+    public void setnameUserHead() {
 
         code.getNameUser((TextView) findViewById(R.id.lb_nameUser));//peticion para mostrar nombre de usuario en el header del menu
     }
+    //</editor-fold>
 
+    //<editor-fold desc="Trigger logout">
     public void Logout(){
         adapterMenu.ProcessLogout(navigationView, this);
         int id = R.id.nav_home;
         selectItem(Constantes.TitleMenuHome, id);
 
         TextView nameUser = (TextView) findViewById(R.id.lb_nameUser);
-        nameUser.setText("User");
+        nameUser.setText(Constantes.DftUsrName);
     }
-
-    public void SaveHistoryLaboral( View v ){//Guardar un nuevo itinerario
-
-        LaboralAdd newlaboral = new LaboralAdd(db, getApplicationContext() );
-
-        EditText nameEmpresa, cargoEmpresa;
-        DatePicker fechaStart, fechaEnd;
-        CheckBox working;
-
-        nameEmpresa = (EditText) findViewById( R.id.txt_nameEmpresa);
-        cargoEmpresa = (EditText) findViewById( R.id.txt_cargoEmpresa);
-        fechaStart = (DatePicker) findViewById( R.id.pickerFechaLaboralStart);
-        fechaEnd = (DatePicker) findViewById( R.id.pickerFechaLaboralEnd);
-        working = (CheckBox) findViewById( R.id.chk_continua_trabajando );
-
-        newlaboral.SaveNewHistoryLaboral(nameEmpresa, cargoEmpresa, fechaStart, working, fechaEnd);
-
-    }
-
-    public int getCircleOfAdmin(){//buscar el circulo que el usuario tiene a cargo
-
-        String user = code.getIdUser();
-
-        int circle = new ItinerariosManager( getApplicationContext() ).SearchCircleOfAdmin(user);
-
-        return circle;
-
-    }
+    //</editor-fold>
 
     public void SaveAsistenciaItinerario( View v ){//guarda la lista de asistencia del itinerario
 

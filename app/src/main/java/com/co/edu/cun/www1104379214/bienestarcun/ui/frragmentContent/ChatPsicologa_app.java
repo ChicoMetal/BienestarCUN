@@ -427,7 +427,7 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
 
                         mWorkerThread.prepareHandler();
                         mWorkerThread.postTask(task);
-                        //LogUser.i("RESPONSE", args[0].toString());
+                        //Users.i("RESPONSE", args[0].toString());
 
                     }
 

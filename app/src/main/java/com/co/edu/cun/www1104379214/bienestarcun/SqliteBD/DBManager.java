@@ -29,7 +29,7 @@ public class DBManager { //Creacion de tablas
 
 
     public static final String TABLE_NAME_NOTIFICATION = "Notifications";
-    public static final String TABLE_NAME_USER = "LogUser";
+    public static final String TABLE_NAME_USER = "Users";
 
     //campos tabla notificacion
     public static final String CN_ID_NOTIFICATIONS = "_id";

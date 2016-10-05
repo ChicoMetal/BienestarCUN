@@ -7,7 +7,7 @@ import android.widget.Toast;
 import com.co.edu.cun.www1104379214.bienestarcun.Constantes;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ContentResults.ResponseContent;
-import com.co.edu.cun.www1104379214.bienestarcun.WebServices.Interface.LogUser;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.Interface.Users;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.Interface.SendError;
 
 import org.json.JSONArray;
@@ -83,9 +83,9 @@ public class ServicesPeticion {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        LogUser logUser = retrofit.create(LogUser.class);
+        Users users = retrofit.create(Users.class);
 
-        Call<ResponseContent> call = logUser.SaveLog(valuesJSON.getString(DB.CN_ID_USER_BD),
+        Call<ResponseContent> call = users.SaveLog(valuesJSON.getString(DB.CN_ID_USER_BD),
                                                         valuesJSON.getString(DB.CN_TOKEN_LOGIN));
 
         call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
@@ -121,9 +121,9 @@ public class ServicesPeticion {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        LogUser logUser = retrofit.create(LogUser.class);
+        Users users = retrofit.create(Users.class);
 
-        Call<ResponseContent> call = logUser.LogoutUser(loginSave.getString(DB.CN_ID_USER_BD),
+        Call<ResponseContent> call = users.LogoutUser(loginSave.getString(DB.CN_ID_USER_BD),
                                                         loginSave.getString(DB.CN_TOKEN_LOGIN) );
 
         call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor

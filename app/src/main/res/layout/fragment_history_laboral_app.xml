@@ -87,7 +87,6 @@
             android:id="@+id/btn_sendLaboral"
             android:layout_gravity="center_horizontal"
             android:background="@color/backgroundBotton"
-            android:onClick="SaveHistoryLaboral"
             android:layout_marginBottom="5dp"
             android:src="@mipmap/ic_btn_send"
             android:contentDescription="@string/atr_send_history_laboral"

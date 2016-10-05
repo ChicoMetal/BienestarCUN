@@ -55,10 +55,6 @@ public class Circles_app extends Fragment {
     Splash PDialog = new Splash();
 
 
-
-    private OnFragmentInteractionListener mListener;
-
-
     public static Circles_app newInstance(DBManager db, String param2) {
         Circles_app fragment = new Circles_app();
         Bundle args = new Bundle();
@@ -167,8 +163,8 @@ public class Circles_app extends Fragment {
 
     }
 
+    //<editor-fold desc="procesa la respuesta enviada del server">
     private void ValidateResponse(ResponseContent data) {
-        //procesa la respuesta enviada del server
 
         try {
 
@@ -195,6 +191,7 @@ public class Circles_app extends Fragment {
         }
 
     }
+    //</editor-fold>
 
     private void ShowCards( JSONArray circlesResult, JSONObject indexCircles){
         //Agregar las cartas de los resultados

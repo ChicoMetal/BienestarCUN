@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.co.edu.cun.www1104379214.bienestarcun.Constantes;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.Interface.Users;
 import com.co.edu.cun.www1104379214.bienestarcun.ui.MainActivity;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
@@ -16,7 +17,6 @@ import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLDelete;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLInsert;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLSearch;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ContentResults.ResponseContent;
-import com.co.edu.cun.www1104379214.bienestarcun.WebServices.Interface.LogUser;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServerUri;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.TaskExecuteHttpHandler;
@@ -40,7 +40,6 @@ public class AdapterUserMenu {
 
     Context CONTEXTO;
     DBManager DB;
-    TaskExecuteHttpHandler BD;
     ServicesPeticion services;
     MainActivity MAIN;
 
@@ -101,9 +100,9 @@ public class AdapterUserMenu {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        LogUser logUser = retrofit.create(LogUser.class);
+        Users users = retrofit.create(Users.class);
 
-        Call<ResponseContent> call = logUser.LoginUser( user, pass );
+        Call<ResponseContent> call = users.LoginUser( user, pass );
 
         call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
             @Override

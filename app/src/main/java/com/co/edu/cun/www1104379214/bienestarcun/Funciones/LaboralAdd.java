@@ -1,6 +1,7 @@
 package com.co.edu.cun.www1104379214.bienestarcun.Funciones;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.RadioGroup;
@@ -10,13 +11,16 @@ import android.widget.Toast;
 import com.co.edu.cun.www1104379214.bienestarcun.Constantes;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ContentResults.ResponseContent;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.Interface.Laboral;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServerUri;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
-import com.co.edu.cun.www1104379214.bienestarcun.WebServices.TaskExecuteHttpHandler;
-
-import org.json.JSONArray;
 import org.json.JSONException;
-
-import java.util.concurrent.ExecutionException;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by root on 2/12/15.
@@ -25,9 +29,6 @@ public class LaboralAdd {
 
     DBManager DB;
     Context CONTEXTO;
-
-    String[][] parametros;
-    TaskExecuteHttpHandler BD;
     Constantes mss = new Constantes();
 
     public LaboralAdd(DBManager db, Context contexto) {
@@ -38,12 +39,13 @@ public class LaboralAdd {
     }
 
 
+    //<editor-fold desc="guardar en la BD los datos del nuevo historial laboral">
     public void SaveNewHistoryLaboral( TextView contentNameActivitie,
                                    TextView contentDetailActivitie,
                                    DatePicker contentFechaStart,
                                    CheckBox working,
                                    DatePicker contentFechaEnd
-    ){//guardar en la BD los datos del nuevo historial laboral
+    ){
 
         GeneralCode code = new GeneralCode( DB, CONTEXTO );
 
@@ -63,68 +65,50 @@ public class LaboralAdd {
 
 
     }
+    //</editor-fold>
 
+    //<editor-fold desc="Enviar datos al server del historial laboral">
     private void SendServerNewLaboral(String idDocente,
                                       String empresa,
                                       String cargo,
                                       String dateStart,
-                                      String dateEnd) {//Enviar datos al server
+                                      String dateEnd) {
 
 
-        final String service = "laboral/saveNewLaboralHistory.php";
-        JSONArray arrayResponse = null;
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(ServerUri.Server+"laboral/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
-        parametros = new String[][]{ //array parametros a enviar
-                {"user",idDocente},
-                {"empresa", empresa},
-                {"cargo", cargo},
-                {"dateStart", dateStart},
-                {"dateEnd", dateEnd}
-        };
+        Laboral laboral = retrofit.create(Laboral.class);
 
+        Call<ResponseContent> call = laboral.saveNewLaboral( idDocente,
+                                                        empresa, cargo, dateStart, dateEnd);
 
-        try {
+        call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
+            @Override
+            public void onResponse(Call<ResponseContent> call, Response<ResponseContent> response) {//obtener datos
 
-            BD = new TaskExecuteHttpHandler(service, parametros, null);
-            String resultado="";
-            try {
-                resultado = BD.execute().get();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
+                ResponseContent data = response.body();
 
-            }catch (Exception e){
-                new ServicesPeticion().SaveError(e,
-                        new Exception().getStackTrace()[0].getMethodName().toString(),
-                        this.getClass().getName());//Envio la informacion de la excepcion al server
-            }
+                ValidateResponse( data );
 
-
-            arrayResponse = new JSONArray( resultado ); // obtengo el array con la result del server
-
-            if( arrayResponse.getString(0).toString().equals("msm")  ){
-
-                Toast.makeText(CONTEXTO,
-                        mss.msmServices.getString(arrayResponse.getString(1).toString()),
-                        Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
 
             }
 
-        } catch (JSONException e) {
+            @Override
+            public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
-            e.printStackTrace();
+                Log.e( mss.TAG1, "error "+ t.toString());
 
-        }catch (Exception e){
-
-            new ServicesPeticion().SaveError(e,
-                    new Exception().getStackTrace()[0].getMethodName().toString(),
-                    this.getClass().getName());//Envio la informacion de la excepcion al server
-
-        }
+            }
+        });
 
     }
+    //</editor-fold>
 
-
-    public void SaveNewHistoryLaboral( RadioGroup ContentStatus){//guardar en la BD los datos del nuevo historial laboral
+    //<editor-fold desc="guardar en la BD los datos del nuevo historial laboral">
+    public void SaveNewHistoryLabora( RadioGroup ContentStatus){
 
         GeneralCode code = new GeneralCode( DB, CONTEXTO );
         String status = "";
@@ -149,56 +133,68 @@ public class LaboralAdd {
 
 
     }
+    //</editor-fold>
 
-    private void SendServerNewLaboralStatus(String idDocente, String status) {//Enviar datos al server
+    //<editor-fold desc="Enviar datos al server">
+    private void SendServerNewLaboralStatus(String idEgresado, String status) {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(ServerUri.Server+"laboral/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        Laboral laboral = retrofit.create(Laboral.class);
+
+        Call<ResponseContent> call = laboral.UpdateStatusLaboral( idEgresado, status);
+
+        call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
+            @Override
+            public void onResponse(Call<ResponseContent> call, Response<ResponseContent> response) {//obtener datos
+
+                ResponseContent data = response.body();
+
+                ValidateResponse( data );
 
 
-        final String service = "laboral/updateStatusLaboral.php";
-        JSONArray arrayResponse = null;
+            }
 
-        parametros = new String[][]{ //array parametros a enviar
-                {"user",idDocente},
-                {"status", status}
-        };
+            @Override
+            public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
+                Log.e( mss.TAG1, "error "+ t.toString());
+
+            }
+        });
+
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="procesa la respuesta enviada del server">
+    private void ValidateResponse(ResponseContent data) {
 
         try {
 
-            BD = new TaskExecuteHttpHandler(service, parametros, null);
-            String resultado="";
-            try {
-                resultado = BD.execute().get();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
+            if( data.getBody().getString(0).toString().equals("msm") ){//verifico si es un mensaje
 
-            }catch (Exception e){
-                new ServicesPeticion().SaveError(e,
-                        new Exception().getStackTrace()[0].getMethodName().toString(),
-                        this.getClass().getName());//Envio la informacion de la excepcion al server
-            }
-
-            arrayResponse = new JSONArray( resultado ); // obtengo el array con la result del server
-
-            if( arrayResponse.getString(0).toString().equals("msm")  ){
-
-                Toast.makeText(CONTEXTO,
-                        mss.msmServices.getString(arrayResponse.getString(1).toString()),
+                Toast.makeText(CONTEXTO.getApplicationContext(),
+                        mss.msmServices.getString(data.getBody().getString(1).toString()),
                         Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
+
+            }else{
+
+                Log.i( mss.TAG1, data.getBody().toString() );
 
             }
 
         } catch (JSONException e) {
-
             e.printStackTrace();
-
-        }catch (Exception e){
-
             new ServicesPeticion().SaveError(e,
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());//Envio la informacion de la excepcion al server
-
         }
 
     }
+    //</editor-fold>
+
 }
 

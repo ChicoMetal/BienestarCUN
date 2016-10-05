@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
@@ -16,6 +17,9 @@ import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLInsert;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLSearch;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ContentResults.ResponseContent;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.Interface.Users;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServerUri;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.TaskExecuteHttpHandler;
 
@@ -24,6 +28,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.concurrent.ExecutionException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by root on 30/11/15.
@@ -37,8 +47,6 @@ public class GeneralCode {
     TaskExecuteSQLSearch userSearch;
 
     Constantes mss = new Constantes();
-    String[][] parametros;
-    TaskExecuteHttpHandler BD;
 
     Spinner lista;
     ImageButton BtnChoseSede;
@@ -95,62 +103,79 @@ public class GeneralCode {
     }
 
 
-    public void getNameUser(TextView ContentNameUser){//obtener el nombre del usuario
+    //<editor-fold desc="obtener el nombre del usuario">
+    public void getNameUser(final TextView ContentNameUser){
 
-        String idUser = getIdUser();
+        final String idUser = getIdUser();
 
-        final String service = "user/getNameUser.php";
-        JSONArray arrayResponse = null;
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(ServerUri.Server+"user/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
-        parametros = new String[][]{ //array parametros a enviar
-                {"user",idUser}
-        };
+        Users user = retrofit.create(Users.class);
 
+        Call<ResponseContent> call = user.getUserName( idUser );
+
+        call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
+            @Override
+            public void onResponse(Call<ResponseContent> call, Response<ResponseContent> response) {//obtener datos
+
+                ResponseContent data = response.body();
+
+                ValidateResponse( data, ContentNameUser, idUser );
+
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
+
+                Log.e( mss.TAG1, "error "+ t.toString());
+
+            }
+        });
+
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="procesa la respuesta enviada del server">
+    private void ValidateResponse(ResponseContent data, TextView ContentNameUser, String idUser) {
 
         try {
 
-            BD = new TaskExecuteHttpHandler(service, parametros, null);
-            String resultado="";
-
-
-            resultado = BD.execute().get();
-
-
-            arrayResponse = new JSONArray( resultado ); // obtengo el array con la result del server
-
-            if( arrayResponse.getString(0).toString().equals("msm")  ){
+            if( data.getBody().getString(0).toString().equals("msm") ){//verifico si es un mensaje
 
                 if( idUser.equals( mss.DftUsrId ) )
                     ContentNameUser.setText(mss.DftUsrName);
                 else
                     ContentNameUser.setText("");
 
+                Log.i( mss.TAG1, data.getBody().toString() );
+
             }else{
 
-                JSONArray nameUser =  arrayResponse.getJSONArray(0);
-                JSONObject index = arrayResponse.getJSONObject(1);
+                JSONArray nameUser = data.getResults();
+                JSONObject index = data.getIndex();
 
                 ContentNameUser.setText(
                         nameUser.getJSONObject(0).getString( index.getString("0")  )+" "+
-                        nameUser.getJSONObject(0).getString( index.getString("1")  )
+                                nameUser.getJSONObject(0).getString( index.getString("1")  )
                 );
+
+
 
             }
 
         } catch (JSONException e) {
-
             e.printStackTrace();
-
-        }catch (Exception e){
-
             new ServicesPeticion().SaveError(e,
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());//Envio la informacion de la excepcion al server
-
         }
 
-
     }
+    //</editor-fold>
 
     public void ChoseUserDefault(Context activity){
         // custom dialog
@@ -217,6 +242,16 @@ public class GeneralCode {
 
     }
 
+    //<editor-fold desc="buscar el circulo que el usuario tiene a cargo">
+    public int getCircleOfAdmin(){
 
+        String user = getIdUser();
+
+        int circle = new ItinerariosManager( CONTEXTO.getApplicationContext() ).SearchCircleOfAdmin(user);
+
+        return circle;
+
+    }
+    //</editor-fold>
 
 }

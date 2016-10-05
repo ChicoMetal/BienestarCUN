@@ -33,94 +33,11 @@ public class ItinerariosManager {
     TaskExecuteHttpHandler BD;
     Constantes mss = new Constantes();
     Context CONTEXTO;
-    JSONObject indexItinerarios;
-    JSONArray result = null;
-    JSONArray resultResponse = null;
 
     public ItinerariosManager(Context contexto) {
         this.CONTEXTO = contexto;
 
     }
-
-    public JSONArray SearchItinerarios(int idCircle, ProgressDialog pdialog) { //buscar circulo existente en la BD o los agregados por el usuario
-
-        String service = "circles/GetItinerariosCircle.php";
-
-
-        try {
-
-            result = GetItinerariosExitst(idCircle, service, pdialog);
-            resultResponse = result.getJSONArray(0);
-            indexItinerarios = result.getJSONObject(1);
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }catch (Exception e){
-            new ServicesPeticion().SaveError(e,
-                    new Exception().getStackTrace()[0].getMethodName().toString(),
-                    this.getClass().getName());
-        }
-
-        return resultResponse;
-
-
-    }
-
-    //<editor-fold desc="obtengo el array de objeto con los itinerarios">
-    public JSONArray GetItinerariosExitst(int idCircle1, String service, ProgressDialog pdialog) throws InterruptedException {
-
-        String[][] values;
-        String idCircle = idCircle1+"";
-
-        JSONArray arrayResponse = null;
-
-        values = new String[][]{ //array parametros a enviar
-                {"circle",idCircle}
-        };
-
-        BD = new TaskExecuteHttpHandler(service, values, pdialog);
-        String resultado="";
-        try {
-            resultado = BD.execute().get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-
-        }catch (Exception e){
-            new ServicesPeticion().SaveError(e,
-                    new Exception().getStackTrace()[0].getMethodName().toString(),
-                    this.getClass().getName());
-        }
-
-        try {
-
-            arrayResponse = new JSONArray( resultado ); // obtengo el array con la result del server
-
-            if( arrayResponse.getString(0).toString().equals("msm")  ){
-
-                Toast.makeText(CONTEXTO,
-                        mss.msmServices.getString(arrayResponse.getString(1).toString()),
-                        Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
-
-            }else {
-
-                return arrayResponse;
-
-            }
-
-        } catch (JSONException e) {
-
-            e.printStackTrace();
-
-        }catch (Exception e){
-            new ServicesPeticion().SaveError(e,
-                    new Exception().getStackTrace()[0].getMethodName().toString(),
-                    this.getClass().getName());
-        }
-
-        return arrayResponse;
-
-    }
-    //</editor-fold>
 
 
     public void ShowAsistenciaItinerarios(int idItinerario, int idCircle, int INSTANCE, FragmentManager fragmentManager) {

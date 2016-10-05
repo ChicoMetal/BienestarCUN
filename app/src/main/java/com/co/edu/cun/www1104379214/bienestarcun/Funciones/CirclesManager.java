@@ -45,7 +45,8 @@ public class CirclesManager {
 
     }
 
-    public String getIdUser() {//obtengo el id del usuario logueado
+    //<editor-fold desc="obtengo el id del usuario logueado">
+    public String getIdUser() {
 
         String idUser="";
 
@@ -85,8 +86,10 @@ public class CirclesManager {
 
         return null;
     }
+    //</editor-fold>
 
-    public void SaveCircleUser( int idCircle) {//agrego el usuario al circulo
+    //<editor-fold desc="agrego el usuario al circulo">
+    public void SaveCircleUser( int idCircle) {
 
 
         String idUser = getIdUser();
@@ -119,8 +122,10 @@ public class CirclesManager {
         });
 
     }
+    //</editor-fold>
 
-    public void DeleteCircleUser( int idCircle) {//elimino el usuario del circulo
+    //<editor-fold desc="elimino el usuario del circulo">
+    public void DeleteCircleUser( int idCircle) {
 
 
         String idUser = getIdUser();
@@ -153,7 +158,9 @@ public class CirclesManager {
         });
 
     }
+    //</editor-fold>
 
+    //<editor-fold desc="Metodo invocado al tocar una card de circulo/actividad, para mostrar los itinerarios correspondientes">
     public void ShowItinerariosCircle(int idCircle, FragmentManager fragmentManager) {
 
         Bundle args = new Bundle();
@@ -169,9 +176,10 @@ public class CirclesManager {
                 .replace(R.id.main_content, fragment)
                 .commit();
     }
+    //</editor-fold>
 
+    //<editor-fold desc="procesa la respuesta enviada del server">
     private void ValidateResponse(ResponseContent data) {
-        //procesa la respuesta enviada del server
 
         try {
 
@@ -195,4 +203,5 @@ public class CirclesManager {
         }
 
     }
+    //</editor-fold>
 }

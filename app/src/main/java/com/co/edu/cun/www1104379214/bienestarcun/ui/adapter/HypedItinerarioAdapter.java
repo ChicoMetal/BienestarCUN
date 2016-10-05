@@ -38,13 +38,13 @@ public class HypedItinerarioAdapter extends RecyclerView.Adapter<HypedItinerario
     DBManager DB;
 
 
-    public HypedItinerarioAdapter( Context context, DBManager db, int instance,int circle, FragmentManager fragmentManager) {
+    public HypedItinerarioAdapter( Context context, DBManager db,
+                                   int instance, FragmentManager fragmentManager) {
 
         this.context = context;
         this.itinerario = new ArrayList<>();
         this.INSTANCE = instance;
         this.DB = db;
-        this.CIRCLE = circle;
 
         if( fragmentManager != null )
             this.fragmentManager = fragmentManager;
@@ -77,10 +77,10 @@ public class HypedItinerarioAdapter extends RecyclerView.Adapter<HypedItinerario
         return itinerario.size();
     }
 
-    public void AddAll(@NonNull ArrayList<ItinerarioList> itinerario){
+    public void AddAll(@NonNull ArrayList<ItinerarioList> itinerario, int circle){
         if( itinerario == null)
             throw new NullPointerException("The items can not be null");
-
+        this.CIRCLE = circle;
         this.itinerario.addAll(itinerario);
         notifyItemRangeChanged(getItemCount() - 1, itinerario.size());
     }

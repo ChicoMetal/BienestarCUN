@@ -141,6 +141,11 @@ public class Constantes {
     public final static String EVENT_SEND_GET_MESSAGE = "new message";
     public final static int INDICADOR_MENSAJE_REMITENTE = 0;
     public final static int INDICADOR_MENSAJE_RECEPTOR = 1;
+    public int SHOW_ITINERARIO_ASISTENCIA = 1;
+    public int SHOW_ITINERARIO_EVIDENCIAS = 2;
+    public String ITINERARIO_ASISTENCIA_TRUE = "111";
+    public String ITINERARIO_ASISTENCIA_FALSE = "000";
+    public int INSTANCE_ITINERARIOS_ADMIN_CIRCLE = 0;
 
 
 }

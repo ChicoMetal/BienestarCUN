@@ -11,7 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import com.co.edu.cun.www1104379214.bienestarcun.Constantes;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
@@ -21,14 +20,10 @@ import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ContentResults.Resp
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.Interface.Users;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServerUri;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
-import com.co.edu.cun.www1104379214.bienestarcun.WebServices.TaskExecuteHttpHandler;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.concurrent.ExecutionException;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -43,16 +38,13 @@ public class GeneralCode {
 
     DBManager DB;
     Context CONTEXTO;
-
     TaskExecuteSQLSearch userSearch;
-
     Constantes mss = new Constantes();
 
     Spinner lista;
     ImageButton BtnChoseSede;
     String[][] UserDefault;
     TaskExecuteSQLInsert sqliteInsert;
-    ServicesPeticion services = new ServicesPeticion();
 
     public GeneralCode(DBManager db, Context contexto) {
 
@@ -61,7 +53,8 @@ public class GeneralCode {
 
     }
 
-    public String getIdUser() {//obtengo el id del usuario logueado
+    //<editor-fold desc="obtengo el id del usuario logueado">
+    public String getIdUser() {
 
         String idUser="";
 
@@ -101,6 +94,7 @@ public class GeneralCode {
 
         return null;
     }
+    //</editor-fold>
 
 
     //<editor-fold desc="obtener el nombre del usuario">
@@ -177,8 +171,8 @@ public class GeneralCode {
     }
     //</editor-fold>
 
+    //<editor-fold desc="custom dialog">
     public void ChoseUserDefault(Context activity){
-        // custom dialog
 
         String user = getIdUser();
 
@@ -241,17 +235,7 @@ public class GeneralCode {
 
 
     }
-
-    //<editor-fold desc="buscar el circulo que el usuario tiene a cargo">
-    public int getCircleOfAdmin(){
-
-        String user = getIdUser();
-
-        int circle = new ItinerariosManager( CONTEXTO.getApplicationContext() ).SearchCircleOfAdmin(user);
-
-        return circle;
-
-    }
     //</editor-fold>
+
 
 }

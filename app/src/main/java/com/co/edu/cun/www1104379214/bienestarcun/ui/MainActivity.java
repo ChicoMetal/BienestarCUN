@@ -114,8 +114,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
 
 
-    private int SHOW_ITINERARIO_ASISTENCIA = 1;
-    private int SHOW_ITINERARIO_EVIDENCIAS = 2;
+
 
 
 
@@ -318,18 +317,18 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.nav_asistencia:
 
-                fragment = Show_itinerario_circle.newInstance(code.getCircleOfAdmin(),
-                        db,
-                        SHOW_ITINERARIO_ASISTENCIA,
-                        getSupportFragmentManager());
+                fragment = Show_itinerario_circle.newInstance(mss.INSTANCE_ITINERARIOS_ADMIN_CIRCLE,
+                                                                db,
+                                                                mss.SHOW_ITINERARIO_ASISTENCIA,
+                                                                getSupportFragmentManager());
                 break;
 
             case R.id.nav_evidencias:
 
-                fragment = Show_itinerario_circle.newInstance(code.getCircleOfAdmin(),
-                        db,
-                        SHOW_ITINERARIO_EVIDENCIAS,
-                        getSupportFragmentManager());
+                fragment = Show_itinerario_circle.newInstance(mss.INSTANCE_ITINERARIOS_ADMIN_CIRCLE,
+                                                                db,
+                                                                mss.SHOW_ITINERARIO_EVIDENCIAS,
+                                                                getSupportFragmentManager());
                 break;
 
             case R.id.nav_add_laboral:

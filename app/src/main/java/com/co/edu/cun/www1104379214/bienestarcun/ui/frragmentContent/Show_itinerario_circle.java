@@ -15,10 +15,12 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.Constantes;
+import com.co.edu.cun.www1104379214.bienestarcun.Funciones.GeneralCode;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ContentResults.ResponseContent;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.Interface.AdminCircles;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.Interface.CirclesApp;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ItinerarioList;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServerUri;
@@ -41,25 +43,28 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Show_itinerario_circle extends Fragment {
 
-
-    public static int idCirculo;
+    GeneralCode code;
     private static DBManager DB;
     ArrayList<ItinerarioList> itinerarios;
     public static final int NUM_COLUMNS = 1;
     private RecyclerView mHypedItinerarioAdapter;
-    private HypedItinerarioAdapter adapter;
+    static private HypedItinerarioAdapter adapter;
     public static FragmentManager fragmentManager;
     private static int INSTANCE;
     private Constantes mss = new Constantes();
+    static int idCirculo;
 
 
     private OnFragmentInteractionListener mListener;
 
 
-    public static Show_itinerario_circle newInstance(int circulo, DBManager db, int instance, FragmentManager fragments) {
+    public static Show_itinerario_circle newInstance(int idcirculo,DBManager db, int instance,
+                                                     FragmentManager fragments) {
+
         Show_itinerario_circle fragment = new Show_itinerario_circle();
         Bundle args = new Bundle();
-        idCirculo = circulo;
+
+        idCirculo = idcirculo;
         DB = db;
         fragmentManager = fragments;
         INSTANCE = instance;
@@ -75,7 +80,12 @@ public class Show_itinerario_circle extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        adapter = new HypedItinerarioAdapter( getActivity(), DB, INSTANCE, idCirculo, fragmentManager );
+        adapter = new HypedItinerarioAdapter( getActivity(), DB, INSTANCE, fragmentManager );
+        code = new GeneralCode(DB, getActivity() );
+
+        if( idCirculo == 0)//si es 0 debo obtener el id del circulo
+            SearchCircleOfAdmin();
+
     }
 
     @Override
@@ -91,17 +101,8 @@ public class Show_itinerario_circle extends Fragment {
 
         SetudItinerariosList();
 
-        try {
-
-            CasthConentAdapter();//lleno el adaptador
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }catch (Exception e){
-            new ServicesPeticion().SaveError(e,
-                    new Exception().getStackTrace()[0].getMethodName().toString(),
-                    this.getClass().getName());//Envio la informacion de la excepcion al server
-        }
+        if( idCirculo != 0 )//si es distinto de 0, fue invocado por un administrador de circulo
+            PrepareAdapter();
 
         return root;
     }
@@ -143,7 +144,7 @@ public class Show_itinerario_circle extends Fragment {
                                                             R.integer.offset ) );
     }
 
-    private void CasthConentAdapter() throws JSONException {
+    private void CasthConentAdapter( int idCircle ) throws JSONException {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(ServerUri.Server+"circles/")
@@ -152,7 +153,7 @@ public class Show_itinerario_circle extends Fragment {
 
         CirclesApp actividades = retrofit.create(CirclesApp.class);
 
-        Call<ResponseContent> call = actividades.getItinerariosActivity( idCirculo );
+        Call<ResponseContent> call = actividades.getItinerariosActivity( idCircle );
 
         call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
             @Override
@@ -173,8 +174,117 @@ public class Show_itinerario_circle extends Fragment {
         });
     }
 
+
+    //<editor-fold desc="Agregar las cartas de los resultados">
+    private void ShowCards( JSONArray ItinerariosResult, JSONObject indexCircles){
+
+        if( ItinerariosResult != null ){
+
+            itinerarios = new ArrayList<>();
+
+            for (int i=0; i < ItinerariosResult.length(); i++){
+
+                try {
+                    itinerarios.add(new ItinerarioList(ItinerariosResult.getString(i), indexCircles));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    new ServicesPeticion().SaveError(e,
+                            new Exception().getStackTrace()[0].getMethodName().toString(),
+                            this.getClass().getName());//Envio la informacion de la excepcion al server
+                }
+
+            }
+
+            adapter.AddAll( itinerarios, idCirculo );
+
+        }
+
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="buscar el circulo al cual esta encargado">
+    public void SearchCircleOfAdmin( ){
+
+        final String user = code.getIdUser();
+
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(ServerUri.Server+"adminCircle/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        AdminCircles circle = retrofit.create(AdminCircles.class);
+
+        Call<ResponseContent> call = circle.getCircleDocente( user );
+
+        call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
+            @Override
+            public void onResponse(Call<ResponseContent> call, Response<ResponseContent> response) {//obtener datos
+
+                ResponseContent data = response.body();
+
+                boolean answer = ReturnValidateResponse( data );
+
+                if( answer ){
+
+                    try{
+                        JSONArray arrayResult = data.getResults();
+                        JSONObject index = data.getIndex();
+
+                        int idCircleAdmin = Integer.parseInt(
+                                            arrayResult.getJSONObject(0)
+                                                    .getString( index.getString("0") )
+                                        );
+
+                        idCirculo = idCircleAdmin;
+
+                        PrepareAdapter();
+
+                    }catch (Exception e){
+                        new ServicesPeticion().SaveError(e,
+                                new Exception().getStackTrace()[0].getMethodName().toString(),
+                                this.getClass().getName());
+                    }
+
+                }else{
+                    Log.i( mss.TAG1, data.getBody().toString() );
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
+
+                Log.e( mss.TAG1, "error "+ t.toString());
+
+            }
+        });
+
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="Una ves obtenido el codigo del circulo/actividad lleno el adaptador con los itinerarios de este">
+    private void PrepareAdapter( ){
+
+        //adapter.notifyDataSetChanged();
+        try {
+
+            CasthConentAdapter( idCirculo );//lleno el adaptador
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }catch (Exception e){
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
+        }
+
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="procesa la respuesta enviada del server">
     private void ValidateResponse(ResponseContent data) {
-        //procesa la respuesta enviada del server
 
         try {
 
@@ -201,31 +311,36 @@ public class Show_itinerario_circle extends Fragment {
         }
 
     }
+    //</editor-fold>
 
-    private void ShowCards( JSONArray ItinerariosResult, JSONObject indexCircles){
-        //Agregar las cartas de los resultados
+    //<editor-fold desc="procesa la respuesta enviada del server y retorna un booleam">
+    private boolean ReturnValidateResponse(ResponseContent data) {
 
-        if( ItinerariosResult != null ){
+        try {
 
-            itinerarios = new ArrayList<>();
+            if( data.getBody().getString(0).toString().equals("msm") ){//verifico si es un mensaje
 
-            for (int i=0; i < ItinerariosResult.length(); i++){
+                Toast.makeText(getActivity().getApplicationContext(),
+                        mss.msmServices.getString(data.getBody().getString(1).toString()),
+                        Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
 
-                try {
-                    itinerarios.add(new ItinerarioList(ItinerariosResult.getString(i), indexCircles));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    new ServicesPeticion().SaveError(e,
-                            new Exception().getStackTrace()[0].getMethodName().toString(),
-                            this.getClass().getName());//Envio la informacion de la excepcion al server
-                }
+                return false;
+
+            }else{
+
+                return true;
 
             }
 
-            adapter.AddAll( itinerarios );
-
+        } catch (JSONException e) {
+            e.printStackTrace();
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
         }
 
-    }
+        return false;
 
+    }
+    //</editor-fold>
 }

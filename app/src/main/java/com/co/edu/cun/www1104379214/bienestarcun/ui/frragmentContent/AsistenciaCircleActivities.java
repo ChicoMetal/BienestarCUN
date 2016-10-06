@@ -20,13 +20,11 @@ public class AsistenciaCircleActivities extends Fragment {
 
     IconManager icon = new IconManager();
     private static ItinerariosManager manager;
-
     private static int CIRCLE;
     public static int ITINERARIO;
 
 
     private OnFragmentInteractionListener mListener;
-
 
 
     public static AsistenciaCircleActivities newInstance(int circle1, int itinerario1) {
@@ -70,7 +68,6 @@ public class AsistenciaCircleActivities extends Fragment {
         return root;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -91,7 +88,6 @@ public class AsistenciaCircleActivities extends Fragment {
 
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
 

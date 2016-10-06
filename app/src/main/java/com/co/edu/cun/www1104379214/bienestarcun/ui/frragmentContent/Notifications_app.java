@@ -1,6 +1,7 @@
 package com.co.edu.cun.www1104379214.bienestarcun.ui.frragmentContent;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -24,6 +25,8 @@ import com.co.edu.cun.www1104379214.bienestarcun.WebServices.NotificationsList;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServerUri;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
 import com.co.edu.cun.www1104379214.bienestarcun.ui.ItemOffsetDecoration;
+import com.co.edu.cun.www1104379214.bienestarcun.ui.MainActivity;
+import com.co.edu.cun.www1104379214.bienestarcun.ui.Splash;
 import com.co.edu.cun.www1104379214.bienestarcun.ui.adapter.HypedNotificationsAdapter;
 
 import org.json.JSONArray;
@@ -44,15 +47,11 @@ public class Notifications_app extends Fragment {
     Notification notificaciones;
     private static DBManager DB;
     ArrayList<NotificationsList> listNotificaciones;
-
-    public static final int NUM_COLUMNS = 1;
-
     private RecyclerView mHyperdNotificationsList;
     private HypedNotificationsAdapter adapter;
-
     Constantes mss = new Constantes();
-
     private OnFragmentInteractionListener mListener;
+    Splash PDialog = new Splash();
 
 
     public static Notifications_app newInstance(DBManager db, String param2) {
@@ -103,7 +102,6 @@ public class Notifications_app extends Fragment {
         return root;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -132,7 +130,7 @@ public class Notifications_app extends Fragment {
 
         mHyperdNotificationsList.setLayoutManager(
                 new GridLayoutManager(getActivity(),
-                        NUM_COLUMNS));
+                        MainActivity.NUM_COLUMNS));
 
 
 
@@ -143,6 +141,8 @@ public class Notifications_app extends Fragment {
     //<editor-fold desc="Peticion al server">
     private void CasthConentAdapter() throws JSONException {
 
+        final ProgressDialog pDialog= PDialog.getpDialog(getActivity());
+        pDialog.show();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(ServerUri.Server+"notifications/")
@@ -161,12 +161,16 @@ public class Notifications_app extends Fragment {
 
                 ValidateResponse( data );
 
+                pDialog.dismiss();
+
             }
 
             @Override
             public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
                 Log.e( mss.TAG1, "error "+ t.toString());
+
+                pDialog.dismiss();
 
             }
         });
@@ -185,7 +189,7 @@ public class Notifications_app extends Fragment {
                         Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
 
             }else{
-                Log.i(mss.TAG1, data.getBody().toString() );
+
                 ResponseContent showNotifications = notificaciones.ShowNotificationsNew(
                                                         data.getBody() );
                                                         //filtro las notificaciones con las ocultadas

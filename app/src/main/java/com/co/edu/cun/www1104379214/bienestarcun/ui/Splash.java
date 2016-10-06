@@ -12,7 +12,7 @@ public class Splash {
 
         pDialog = new ProgressDialog( contexto );
         pDialog.setMessage("Un momento...");
-        pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         pDialog.setCancelable(false);
         pDialog.setIndeterminate(true);
         pDialog.setProgress(0);

@@ -5,7 +5,6 @@
     tools:context=".ui.frragmentContent.HistoryLaboral_app"
     android:id="@+id/contentHistoryLaboral">
 
-    <!-- TODO: Update blank fragment layout -->
 
     <LinearLayout
         android:orientation="vertical"

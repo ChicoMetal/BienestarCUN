@@ -25,7 +25,6 @@ public class LaboralStatus extends Fragment implements View.OnClickListener{
     ImageButton btn;
     RadioGroup radioBtn;
 
-    // TODO: Rename and change types and number of parameters
     public static LaboralStatus newInstance(DBManager db) {
         DB = db;
         LaboralStatus fragment = new LaboralStatus();
@@ -86,7 +85,6 @@ public class LaboralStatus extends Fragment implements View.OnClickListener{
 
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
 

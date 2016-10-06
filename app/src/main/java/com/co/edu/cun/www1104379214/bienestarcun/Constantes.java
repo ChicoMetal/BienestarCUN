@@ -1,7 +1,7 @@
 package com.co.edu.cun.www1104379214.bienestarcun;
 
 
-import org.json.JSONArray;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -28,8 +28,6 @@ public class Constantes {
     public static final int TiempoEsperaTask = 2000;
 
     //datos usuario por default
-
-    //TODO: agregar una identificacion para que el usuario la elija y asi pertenezca a la sede que seleccione (las sedes deben ingresarse manualmente)
 
     private static final String sedeSincelejo = "Sincelejo",
                                 sedeBogota = "Bogota",
@@ -134,7 +132,9 @@ public class Constantes {
     //************************************
     //************************************Variables globales
     //************************************
-
+    public static final int LIMIT_DISPLAY_CATEGORY = 5;
+    public static final int NUM_COLUMNS_SMALL = 1;
+    public static final int NUM_COLUMNS_LARGE = 2;
     public static final String TitleMenuHome = "Inicio";
     public static final String hintListFacultades = "Seleccione una facultad";
     public final static String EVENT_SEND_IDSOCKET = "saveIdSocket";

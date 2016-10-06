@@ -1,6 +1,7 @@
 package com.co.edu.cun.www1104379214.bienestarcun.ui.frragmentContent;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,6 +23,8 @@ import com.co.edu.cun.www1104379214.bienestarcun.WebServices.Interface.ChatPsico
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServerUri;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
 import com.co.edu.cun.www1104379214.bienestarcun.ui.ItemOffsetDecoration;
+import com.co.edu.cun.www1104379214.bienestarcun.ui.MainActivity;
+import com.co.edu.cun.www1104379214.bienestarcun.ui.Splash;
 import com.co.edu.cun.www1104379214.bienestarcun.ui.adapter.HypedChatAdapter;
 
 import org.json.JSONArray;
@@ -37,28 +40,17 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ChatPendientes.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ChatPendientes#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class ChatPendientes extends Fragment {
 
     private static DBManager DB;
     ArrayList<ChatList> chats;
-
-    public static final int NUM_COLUMNS = 1;
-
     private RecyclerView mHyperdChatList;
     private HypedChatAdapter adapter;
     private Constantes mss = new Constantes();
-
     public static FragmentManager fragmentManager;
-
     private OnFragmentInteractionListener mListener;
+    Splash PDialog = new Splash();
 
 
     public static ChatPendientes newInstance(DBManager db, FragmentManager fragmentManager1) {
@@ -107,7 +99,6 @@ public class ChatPendientes extends Fragment {
         return root;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -127,7 +118,6 @@ public class ChatPendientes extends Fragment {
     }
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
 
@@ -135,7 +125,7 @@ public class ChatPendientes extends Fragment {
 
         mHyperdChatList.setLayoutManager(
                 new GridLayoutManager(getActivity(),
-                        NUM_COLUMNS));
+                        MainActivity.NUM_COLUMNS));
 
 
 
@@ -144,7 +134,11 @@ public class ChatPendientes extends Fragment {
         mHyperdChatList.addItemDecoration( new ItemOffsetDecoration( getActivity().getApplicationContext(), R.integer.offset ) );
     }
 
+    //<editor-fold desc="Llenar las card">
     private void CasthConentAdapter() throws JSONException {
+
+        final ProgressDialog pDialog= PDialog.getpDialog(getActivity());
+        pDialog.show();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(ServerUri.Server+"chatPsicologia/")
@@ -163,6 +157,8 @@ public class ChatPendientes extends Fragment {
 
                 ValidateResponse( data );
 
+                pDialog.dismiss();
+
             }
 
             @Override
@@ -170,13 +166,16 @@ public class ChatPendientes extends Fragment {
 
                 Log.e( mss.TAG1, "Error "+ t.toString());
 
+                pDialog.dismiss();
+
             }
 
         });
     }
+    //</editor-fold>
 
+    //<editor-fold desc="procesa la respuesta enviada del server">
     private void ValidateResponse(ResponseContent data) {
-        //procesa la respuesta enviada del server
 
         try {
 
@@ -203,9 +202,10 @@ public class ChatPendientes extends Fragment {
         }
 
     }
+    //</editor-fold>
 
+    //<editor-fold desc="Agregar las cartas de los resultados">
     private void ShowCards( JSONArray ChatPendientesResult, JSONObject indexChats){
-        //Agregar las cartas de los resultados
 
         if( ChatPendientesResult != null ){
 
@@ -229,6 +229,7 @@ public class ChatPendientes extends Fragment {
         }
 
     }
+    //</editor-fold>
 
 
 }

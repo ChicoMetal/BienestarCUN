@@ -92,7 +92,6 @@ public class Desertion_app extends Fragment implements View.OnClickListener{
         return root;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -137,7 +136,6 @@ public class Desertion_app extends Fragment implements View.OnClickListener{
 
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
 

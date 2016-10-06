@@ -1,6 +1,7 @@
 package com.co.edu.cun.www1104379214.bienestarcun.ui.frragmentContent;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -25,6 +26,8 @@ import com.co.edu.cun.www1104379214.bienestarcun.WebServices.Interface.CirclesAp
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServerUri;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
 import com.co.edu.cun.www1104379214.bienestarcun.ui.ItemOffsetDecoration;
+import com.co.edu.cun.www1104379214.bienestarcun.ui.MainActivity;
+import com.co.edu.cun.www1104379214.bienestarcun.ui.Splash;
 import com.co.edu.cun.www1104379214.bienestarcun.ui.adapter.HypedActivitiesAdapter;
 
 import org.json.JSONArray;
@@ -46,13 +49,11 @@ public class Itinerarios_app extends Fragment {
     private static DBManager DB;
     ArrayList<CircleList> activities;
     public static FragmentManager fragmentManager;
-
-    public static final int NUM_COLUMNS = 1;
-
     private RecyclerView mHyperdActivitiesList;
     private HypedActivitiesAdapter adapter;
     private Constantes mss = new Constantes();
     CirclesManager getCircles;
+    Splash PDialog = new Splash();
 
     private OnFragmentInteractionListener mListener;
 
@@ -107,7 +108,6 @@ public class Itinerarios_app extends Fragment {
         return root;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -128,7 +128,6 @@ public class Itinerarios_app extends Fragment {
 
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
 
@@ -136,7 +135,7 @@ public class Itinerarios_app extends Fragment {
 
         mHyperdActivitiesList.setLayoutManager(
                 new GridLayoutManager(getActivity(),
-                        NUM_COLUMNS) );
+                        MainActivity.NUM_COLUMNS) );
 
         mHyperdActivitiesList.setAdapter(adapter);
         mHyperdActivitiesList.addItemDecoration( new ItemOffsetDecoration(
@@ -145,6 +144,9 @@ public class Itinerarios_app extends Fragment {
     }
 
     private void CasthConentAdapter() throws JSONException {
+
+        final ProgressDialog pDialog= PDialog.getpDialog(getActivity());
+        pDialog.show();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(ServerUri.Server+"circles/")
@@ -163,6 +165,7 @@ public class Itinerarios_app extends Fragment {
 
                 ValidateResponse( data );
 
+                pDialog.dismiss();
 
             }
 
@@ -170,6 +173,8 @@ public class Itinerarios_app extends Fragment {
             public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
                 Log.e( mss.TAG1, "error "+ t.toString());
+
+                pDialog.dismiss();
 
             }
         });

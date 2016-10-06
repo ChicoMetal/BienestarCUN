@@ -102,33 +102,37 @@ public class GeneralCode {
 
         final String idUser = getIdUser();
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ServerUri.Server+"user/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        if( idUser != null ){
 
-        Users user = retrofit.create(Users.class);
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(ServerUri.Server+"user/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
 
-        Call<ResponseContent> call = user.getUserName( idUser );
+            Users user = retrofit.create(Users.class);
 
-        call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
-            @Override
-            public void onResponse(Call<ResponseContent> call, Response<ResponseContent> response) {//obtener datos
+            Call<ResponseContent> call = user.getUserName( idUser );
 
-                ResponseContent data = response.body();
+            call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
+                @Override
+                public void onResponse(Call<ResponseContent> call, Response<ResponseContent> response) {//obtener datos
 
-                ValidateResponse( data, ContentNameUser, idUser );
+                    ResponseContent data = response.body();
+
+                    ValidateResponse( data, ContentNameUser, idUser );
 
 
-            }
+                }
 
-            @Override
-            public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
+                @Override
+                public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
-                Log.e( mss.TAG1, "error "+ t.toString());
+                    Log.e( mss.TAG1, "error "+ t.toString());
 
-            }
-        });
+                }
+            });
+        }
+
 
     }
     //</editor-fold>

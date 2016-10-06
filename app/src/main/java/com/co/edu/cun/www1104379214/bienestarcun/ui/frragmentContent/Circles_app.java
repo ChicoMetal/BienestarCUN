@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.co.edu.cun.www1104379214.bienestarcun.Constantes;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.CirclesManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
+import com.co.edu.cun.www1104379214.bienestarcun.ui.MainActivity;
 import com.co.edu.cun.www1104379214.bienestarcun.ui.Splash;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
@@ -45,9 +46,6 @@ public class Circles_app extends Fragment {
 
     private static DBManager DB;
     ArrayList<CircleList> activities;
-
-    public static final int NUM_COLUMNS = 1;
-
     private RecyclerView mHyperdActivitiesList;
     private HypedActivitiesAdapter adapter;
     private Constantes mss = new Constantes();
@@ -107,7 +105,6 @@ public class Circles_app extends Fragment {
 
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
 
@@ -116,7 +113,7 @@ public class Circles_app extends Fragment {
 
         mHyperdActivitiesList.setLayoutManager(
                 new GridLayoutManager(getActivity(),
-                        NUM_COLUMNS) );
+                        MainActivity.NUM_COLUMNS) );
 
 
 

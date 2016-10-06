@@ -4,7 +4,6 @@ package com.co.edu.cun.www1104379214.bienestarcun.ui;
 
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -23,13 +22,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.DatePicker;
-import android.widget.EditText;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -42,7 +39,6 @@ import com.co.edu.cun.www1104379214.bienestarcun.Funciones.GeneralCode;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.AdapterUserMenu;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.ItinerariosManager;
-import com.co.edu.cun.www1104379214.bienestarcun.Funciones.LaboralAdd;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServerUri;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
@@ -106,16 +102,12 @@ public class MainActivity extends AppCompatActivity {
     IconManager icon;
     GeneralCode code = null;
     DBManager db;
-    ChatPsicologiaManager ChatCode;
 
+    public static int NUM_COLUMNS;
 
 
     NavigationView navigationView;
     private DrawerLayout drawerLayout;
-
-
-
-
 
 
     @Override
@@ -169,6 +161,12 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+    @Override
+    public WindowManager getWindowManager() {
+        return super.getWindowManager();
+    }
+
 
     //********************************************
     //********************************************DrawerLayouts
@@ -292,11 +290,11 @@ public class MainActivity extends AppCompatActivity {
         Bundle args = new Bundle();
         args.putString("", "");
 
-        fragment =  Home_app.newInstance("", "");
+        fragment =  Home_app.newInstance();
 
         switch ( id ){
             case R.id.nav_home:
-                fragment =  Home_app.newInstance("", "");
+                fragment =  Home_app.newInstance();
                 break;
 
             case R.id.nav_add_activities:
@@ -400,9 +398,32 @@ public class MainActivity extends AppCompatActivity {
 
         setnameUserHead();
 
+        DatosDisplay();
+
         code.ChoseUserDefault(this);//mostrar lista para seleccionar la sede para los usuarios sin loguear
 
     }
+
+    //<editor-fold desc="Funcion para obtener dimensiones del display">
+    public void DatosDisplay(){
+
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        int width=dm.widthPixels;
+        int height=dm.heightPixels;
+        int dens=dm.densityDpi;
+        double Ancho_inches =(double)width/(double)dens;
+        double Altura_inches =(double)height/(double)dens;
+        double x = Math.pow(Ancho_inches,2);
+        double y = Math.pow(Altura_inches,2);
+        double screenInches = Math.sqrt(x+y);
+
+        if( Ancho_inches > mss.LIMIT_DISPLAY_CATEGORY )//si la pantalla es grande dos columnas
+            NUM_COLUMNS = mss.NUM_COLUMNS_LARGE;
+        else//si la pantalla es pequeña, una columna
+            NUM_COLUMNS = mss.NUM_COLUMNS_SMALL;
+    }
+    //</editor-fold>
 
 
     //<editor-fold desc="cambiar el nombre del usuario (si es posible) y mostrarlo en el menu lateral">
@@ -535,8 +556,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-    private void UploapFoto( String imag ) throws IOException {
+    private void UploapFoto(String imag ) throws IOException {
 
         String url = ServerUri.Server;
         String service = "adminCircle/SaveEvidencia.php";

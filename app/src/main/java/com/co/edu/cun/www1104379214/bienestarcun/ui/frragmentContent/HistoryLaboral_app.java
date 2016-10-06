@@ -111,7 +111,6 @@ public class HistoryLaboral_app extends Fragment implements View.OnClickListener
     }
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
 

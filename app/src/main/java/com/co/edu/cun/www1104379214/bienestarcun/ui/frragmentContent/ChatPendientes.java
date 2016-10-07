@@ -32,7 +32,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -51,6 +53,7 @@ public class ChatPendientes extends Fragment {
     public static FragmentManager fragmentManager;
     private OnFragmentInteractionListener mListener;
     Splash PDialog = new Splash();
+    OkHttpClient okHttpClient;
 
 
     public static ChatPendientes newInstance(DBManager db, FragmentManager fragmentManager1) {
@@ -71,6 +74,12 @@ public class ChatPendientes extends Fragment {
         super.onCreate(savedInstanceState);
 
         adapter = new HypedChatAdapter(getActivity(),DB,fragmentManager);
+
+        okHttpClient = new OkHttpClient.Builder()
+                .readTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
+                .connectTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
+                .build();//asisgnar tiempo de espera a la peticion
+
     }
 
     @Override
@@ -141,8 +150,9 @@ public class ChatPendientes extends Fragment {
         pDialog.show();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ServerUri.Server+"chatPsicologia/")
+                .baseUrl( ServerUri.SERVICE_CHAT )
                 .addConverterFactory(GsonConverterFactory.create())
+                .client( okHttpClient )
                 .build();
 
         ChatPsicologia chatsPsicologia = retrofit.create( ChatPsicologia.class );

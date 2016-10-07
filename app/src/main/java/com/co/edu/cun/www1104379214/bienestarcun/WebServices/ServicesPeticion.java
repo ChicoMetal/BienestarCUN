@@ -14,6 +14,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,7 +32,16 @@ public class ServicesPeticion {
 
     Constantes mss = new Constantes();
     DBManager DB;
+    OkHttpClient okHttpClient;
 
+    public ServicesPeticion() {
+
+        okHttpClient = new OkHttpClient.Builder()
+                .readTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
+                .connectTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
+                .build();//asisgnar tiempo de espera a la peticion
+
+    }
 
     //<editor-fold desc="Obtiene los datos del usuario que se loguea">
     public String[][] GenerateUserLoginValue(JSONArray arrayResponse,
@@ -79,8 +91,9 @@ public class ServicesPeticion {
             throws JSONException, InterruptedException {
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ServerUri.Server+"user/")
+                .baseUrl( ServerUri.SERVICE_USER )
                 .addConverterFactory(GsonConverterFactory.create())
+                .client( okHttpClient )
                 .build();
 
         Users users = retrofit.create(Users.class);
@@ -117,8 +130,9 @@ public class ServicesPeticion {
         JSONObject loginSave = valuesJSON.getJSONObject("ROW0");
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ServerUri.Server+"user/")
+                .baseUrl( ServerUri.SERVICE_USER )
                 .addConverterFactory(GsonConverterFactory.create())
+                .client( okHttpClient )
                 .build();
 
         Users users = retrofit.create(Users.class);
@@ -176,8 +190,9 @@ public class ServicesPeticion {
         contenido += e.getMessage();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ServerUri.Server)
+                .baseUrl(ServerUri.SERVER)
                 .addConverterFactory(GsonConverterFactory.create())
+                .client( okHttpClient )
                 .build();
 
         SendError enviarError = retrofit.create(SendError.class);

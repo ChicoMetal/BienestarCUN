@@ -36,7 +36,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -55,6 +57,7 @@ public class Show_itinerario_circle extends Fragment {
     private static int INSTANCE;
     private Constantes mss = new Constantes();
     static int idCirculo;
+    OkHttpClient okHttpClient;
     Splash PDialog = new Splash();
 
     private OnFragmentInteractionListener mListener;
@@ -84,6 +87,11 @@ public class Show_itinerario_circle extends Fragment {
 
         adapter = new HypedItinerarioAdapter( getActivity(), DB, INSTANCE, fragmentManager );
         code = new GeneralCode(DB, getActivity() );
+
+        okHttpClient = new OkHttpClient.Builder()
+            .readTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
+            .connectTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
+            .build();//asisgnar tiempo de espera a la peticion
 
         if( idCirculo == 0)//si es 0 debo obtener el id del circulo
             SearchCircleOfAdmin();
@@ -151,8 +159,9 @@ public class Show_itinerario_circle extends Fragment {
         pDialog.show();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ServerUri.Server+"circles/")
+                .baseUrl( ServerUri.SERVICE_CIRCLES )
                 .addConverterFactory(GsonConverterFactory.create())
+                .client( okHttpClient )
                 .build();
 
         CirclesApp actividades = retrofit.create(CirclesApp.class);
@@ -217,8 +226,9 @@ public class Show_itinerario_circle extends Fragment {
 
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ServerUri.Server+"adminCircle/")
+                .baseUrl( ServerUri.SERVICE_ADMIN_CIRCLE )
                 .addConverterFactory(GsonConverterFactory.create())
+                .client( okHttpClient )
                 .build();
 
         AdminCircles circle = retrofit.create(AdminCircles.class);

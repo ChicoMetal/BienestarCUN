@@ -26,7 +26,7 @@ public interface CirclesApp {
     Call<ResponseContent> SaveActivityUser(@Field("user") String user, @Field("circle") int circle);
 
     @FormUrlEncoded
-    @POST("DeleteActivityUser")//desvincular actividad
+    @POST("DeleteCircleUser")//desvincular actividad
     Call<ResponseContent> DeleteActivityUser(@Field("user") String user, @Field("circle") int circle);
 
     @FormUrlEncoded

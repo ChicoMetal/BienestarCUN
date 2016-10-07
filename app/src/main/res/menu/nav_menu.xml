@@ -13,13 +13,13 @@
             <menu>
                 <item
                     android:id="@+id/nav_add_activities"
-                    android:title="+ actividades"/>
+                    android:title="@string/title_nav_add_activities"/>
                 <item
                     android:id="@+id/nav_del_activities"
-                    android:title="- actividades"/>
+                    android:title="@string/title_nav_del_activities"/>
                 <item
                     android:id="@+id/nav_itinerarios"
-                    android:title="Ver itinerarios"/>
+                    android:title="@string/title_nav_itinerarios"/>
 
             </menu>
 
@@ -31,7 +31,7 @@
             <menu>
                 <item
                     android:id="@+id/nav_add_desertion"
-                    android:title="Desercion"/>
+                    android:title="@string/title_nav_add_desertion"/>
 
             </menu>
 
@@ -43,10 +43,10 @@
             <menu>
                 <item
                     android:id="@+id/nav_add_laboral"
-                    android:title="Agregar experiencia"/>
+                    android:title="@string/title_nav_add_laboral"/>
                 <item
                     android:id="@+id/nav_update_laboral_state"
-                    android:title="Actualizar estado laboral"/>
+                    android:title="@string/title_nav_update_laboral_state"/>
 
             </menu>
 
@@ -58,11 +58,10 @@
             <menu>
                 <item
                     android:id="@+id/nav_show_notifications"
-                    android:title=" Ver notificaciones"/>
+                    android:title="@string/title_nav_show_notifications"/>
 
             </menu>
         </item>
-
         <item
             android:id="@+id/nav_group_chat"
             android:title="@string/item_chat">
@@ -70,12 +69,11 @@
             <menu>
                 <item
                     android:id="@+id/nav_new_chat"
-                    android:title="Psicologia"/>
+                    android:title="@string/title_nav_new_chat"/>
 
             </menu>
 
         </item>
-
         <item
             android:id="@+id/nav_group_circle"
             android:title="@string/item_circle_administration">
@@ -83,13 +81,16 @@
             <menu>
                 <item
                     android:id="@+id/nav_new_itinerario"
-                    android:title="+ itinerario"/>
+                    android:title="@string/title_nav_new_itinerario"/>
+                <item
+                    android:id="@+id/nav_del_itinerario"
+                    android:title="@string/title_nav_del_itinerario"/>
                 <item
                     android:id="@+id/nav_asistencia"
-                    android:title="Asistencia"/>
+                    android:title="@string/title_nav_asistencia"/>
                 <item
                     android:id="@+id/nav_evidencias"
-                    android:title="Evidencias"/>
+                    android:title="@string/title_nav_evidencias"/>
 
             </menu>
 

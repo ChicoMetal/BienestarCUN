@@ -35,7 +35,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -100,9 +102,15 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
         btn = (ImageButton) root.findViewById(R.id.btn_sendMsm);
         mensaje = (EditText) root.findViewById(R.id.etMensajePsicologia);
 
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .readTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
+                .connectTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
+                .build();//asisgnar tiempo de espera a la peticion
+
         retrofit = new Retrofit.Builder()
-                .baseUrl(ServerUri.Server+"chatPsicologia/")
+                .baseUrl( ServerUri.SERVICE_CHAT )
                 .addConverterFactory(GsonConverterFactory.create())
+                .client( okHttpClient )
                 .build();
 
         chatsPsicologia = retrofit.create( ChatPsicologia.class );

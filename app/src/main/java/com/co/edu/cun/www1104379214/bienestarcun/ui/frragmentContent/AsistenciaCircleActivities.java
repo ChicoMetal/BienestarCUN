@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.ItinerariosManager;
 import com.co.edu.cun.www1104379214.bienestarcun.R;

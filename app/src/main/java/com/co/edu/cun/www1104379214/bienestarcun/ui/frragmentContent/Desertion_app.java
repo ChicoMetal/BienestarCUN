@@ -30,6 +30,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -115,21 +118,23 @@ public class Desertion_app extends Fragment implements View.OnClickListener{
 
         String facultad = null;
 
-        try {
-            facultad = idFacultades.getString( ListFacultades.getSelectedItem().toString() );//busco el codigo de la facultad elejida
-        } catch (JSONException e) {
-            e.printStackTrace();
-            new ServicesPeticion().SaveError(e,
-                    new Exception().getStackTrace()[0].getMethodName().toString(),
-                    this.getClass().getName());//Envio la informacion de la excepcion al server
-        }
+        if( ListFacultades != null ){
+            try {
+                facultad = idFacultades.getString( ListFacultades.getSelectedItem().toString() );//busco el codigo de la facultad elejida
+            } catch (JSONException e) {
+                e.printStackTrace();
+                new ServicesPeticion().SaveError(e,
+                        new Exception().getStackTrace()[0].getMethodName().toString(),
+                        this.getClass().getName());//Envio la informacion de la excepcion al server
+            }
 
-        if( facultad != null ){//valido la eleccion de una facultad
-            DesertionManager desertion = new DesertionManager(DB, getActivity().getApplicationContext() );
-            desertion.SendReportDesertion(idEstudiante, facultad, Description, horario);
-        }else{
-            Toast.makeText(getActivity().getApplicationContext(),
-                    "Debe seleccionar una facultad", Toast.LENGTH_SHORT).show();
+            if( facultad != null ){//valido la eleccion de una facultad
+                DesertionManager desertion = new DesertionManager(DB, getActivity().getApplicationContext() );
+                desertion.SendReportDesertion(idEstudiante, facultad, Description, horario);
+            }else{
+                Toast.makeText(getActivity().getApplicationContext(),
+                        "Debe seleccionar una facultad", Toast.LENGTH_SHORT).show();
+            }
         }
 
     }
@@ -142,10 +147,15 @@ public class Desertion_app extends Fragment implements View.OnClickListener{
     //<editor-fold desc="Buscar las facultades para mostrar en la lista">
     private void SearchFacultades() {
 
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .readTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
+                .connectTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
+                .build();//asisgnar tiempo de espera a la peticion
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ServerUri.Server+"desertion/")
+                .baseUrl( ServerUri.SERVICE_DESERTION )
                 .addConverterFactory(GsonConverterFactory.create())
+                .client( okHttpClient )
                 .build();
 
         ReporteDesercion facultades = retrofit.create(ReporteDesercion.class);

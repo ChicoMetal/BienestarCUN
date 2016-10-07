@@ -98,7 +98,8 @@ public class Notification {
 
             Cursor result = sqliteSearch.execute().get();
 
-            jsonNotifications = new AdapterUserMenu(CONTEXTO, DB).CreateObjectResultSQL(result, camposSeacrh);
+            jsonNotifications = new AdapterUserMenu(CONTEXTO, DB)
+                                    .CreateObjectResultSQL(result, camposSeacrh);
 
 
         } catch (InterruptedException e) {

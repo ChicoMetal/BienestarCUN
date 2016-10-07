@@ -16,6 +16,9 @@ import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
 
 import org.json.JSONException;
 
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,14 +32,19 @@ public class NewItinerarioManager {
 
     DBManager DB;
     Context CONTEXTO;
-
-
     Constantes mss = new Constantes();
+
+    OkHttpClient okHttpClient;
 
     public NewItinerarioManager(DBManager db, Context contexto) {
 
         this.DB = db;
         this.CONTEXTO = contexto;
+
+        okHttpClient = new OkHttpClient.Builder()
+                .readTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
+                .connectTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
+                .build();//asisgnar tiempo de espera a la peticion
 
     }
 
@@ -52,10 +60,12 @@ public class NewItinerarioManager {
         String idDocente = code.getIdUser();
         String name = contentNameActivitie.getText().toString();
         String detail = contentDetailActivitie.getText().toString();
-        String fecha = contentFecha.getYear()+"-"+( contentFecha.getMonth() + 1 ) +"-"+contentFecha.getDayOfMonth();
+        String fecha = contentFecha.getYear()+"-"+( contentFecha.getMonth() + 1 )
+                                                            +"-"+contentFecha.getDayOfMonth();
         String hora = contentHora.getCurrentHour()+":"+contentHora.getCurrentMinute()+":00";
 
-        if( !idDocente.equals("") && !name.equals("") && !detail.equals("") && !fecha.equals("") && !hora.equals("") )
+        if( !idDocente.equals("") && !name.equals("") && !detail.equals("")
+                                                    && !fecha.equals("") && !hora.equals("") )
             SendServerItinerario( idDocente, name, detail, fecha, hora);
         else
             Toast.makeText(CONTEXTO, mss.FormError, Toast.LENGTH_SHORT).show();
@@ -74,8 +84,9 @@ public class NewItinerarioManager {
 
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ServerUri.Server+"adminCircle/")
+                .baseUrl( ServerUri.SERVICE_ADMIN_CIRCLE )
                 .addConverterFactory(GsonConverterFactory.create())
+                .client( okHttpClient )
                 .build();
 
         Itinerarios NewItinerario = retrofit.create(Itinerarios.class);

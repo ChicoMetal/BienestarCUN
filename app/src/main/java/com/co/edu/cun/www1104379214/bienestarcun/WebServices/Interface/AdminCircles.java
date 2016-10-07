@@ -25,4 +25,8 @@ public interface AdminCircles {
     @POST("saveListAsitencia")//Guardar la asistencia tomada
     Call<ResponseContent> saveAsistenciaItinerario(@Field("listObject") String listObject);
 
+    @FormUrlEncoded
+    @POST("delItinerario")//Guardar la asistencia tomada
+    Call<ResponseContent> delItinerario(@Field("idItinerario") int idItinerario );
+
 }

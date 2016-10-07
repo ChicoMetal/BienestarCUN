@@ -16,6 +16,10 @@ import com.co.edu.cun.www1104379214.bienestarcun.WebServices.Interface.Laboral;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServerUri;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
 import org.json.JSONException;
+
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -31,10 +35,17 @@ public class LaboralAdd {
     Context CONTEXTO;
     Constantes mss = new Constantes();
 
+    OkHttpClient okHttpClient;
+
     public LaboralAdd(DBManager db, Context contexto) {
 
         this.DB = db;
         this.CONTEXTO = contexto;
+
+        okHttpClient = new OkHttpClient.Builder()
+                .readTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
+                .connectTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
+                .build();//asisgnar tiempo de espera a la peticion
 
     }
 
@@ -52,13 +63,16 @@ public class LaboralAdd {
         String idDocente = code.getIdUser();
         String nameEmpresa = contentNameActivitie.getText().toString();
         String cargoEmpresa = contentDetailActivitie.getText().toString();
-        String fechaStart = contentFechaStart.getYear()+"-"+( contentFechaStart.getMonth() + 1 ) +"-"+contentFechaStart.getDayOfMonth();
+        String fechaStart = contentFechaStart.getYear()+"-"
+                    +( contentFechaStart.getMonth() + 1 ) +"-"+contentFechaStart.getDayOfMonth();
         String fechaEnd = "";
 
         if( !working.isChecked() )
-            fechaEnd = contentFechaEnd.getYear() + "-"+( contentFechaEnd.getMonth() + 1 ) +"-"+contentFechaEnd.getDayOfMonth();
+            fechaEnd = contentFechaEnd.getYear() + "-"+( contentFechaEnd.getMonth() + 1 )
+                                                        +"-"+contentFechaEnd.getDayOfMonth();
 
-        if( !idDocente.equals("") && !nameEmpresa.equals("") && !cargoEmpresa.equals("") && !fechaStart.equals("")  )
+        if( !idDocente.equals("") && !nameEmpresa.equals("")
+                            && !cargoEmpresa.equals("") && !fechaStart.equals("")  )
             SendServerNewLaboral(idDocente, nameEmpresa, cargoEmpresa, fechaStart, fechaEnd);
         else
             Toast.makeText(CONTEXTO, mss.FormError, Toast.LENGTH_SHORT).show();
@@ -76,8 +90,9 @@ public class LaboralAdd {
 
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ServerUri.Server+"laboral/")
+                .baseUrl( ServerUri.SERVICE_LABORAL )
                 .addConverterFactory(GsonConverterFactory.create())
+                .client( okHttpClient )
                 .build();
 
         Laboral laboral = retrofit.create(Laboral.class);
@@ -139,8 +154,9 @@ public class LaboralAdd {
     private void SendServerNewLaboralStatus(String idEgresado, String status) {
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ServerUri.Server+"laboral/")
+                .baseUrl( ServerUri.SERVICE_LABORAL )
                 .addConverterFactory(GsonConverterFactory.create())
+                .client( okHttpClient )
                 .build();
 
         Laboral laboral = retrofit.create(Laboral.class);

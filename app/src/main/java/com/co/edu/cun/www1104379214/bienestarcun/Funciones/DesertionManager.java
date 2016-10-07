@@ -16,6 +16,9 @@ import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
 
 import org.json.JSONException;
 
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -77,15 +80,21 @@ public class DesertionManager {
     private void SendServerDesertion( String idDocente, String facultad,
                                       String idUser, String descripcion, String horario) {
 
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .readTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
+                .connectTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
+                .build();//asisgnar tiempo de espera a la peticion
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ServerUri.Server+"desertion/")
+                .baseUrl( ServerUri.SERVICE_DESERTION )
                 .addConverterFactory(GsonConverterFactory.create())
+                .client( okHttpClient )
                 .build();
 
         ReporteDesercion NewReporte = retrofit.create(ReporteDesercion.class);
 
-        Call<ResponseContent> call = NewReporte.SendReporte(idDocente, facultad, idUser, descripcion, horario);
+        Call<ResponseContent> call = NewReporte
+                .SendReporte(idDocente, facultad, idUser, descripcion, horario);
 
         call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
             @Override

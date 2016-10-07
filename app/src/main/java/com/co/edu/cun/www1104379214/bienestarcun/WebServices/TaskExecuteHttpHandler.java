@@ -33,7 +33,7 @@ public class TaskExecuteHttpHandler extends AsyncTask<Void, Void, String> {
 
     Constantes messajes = new Constantes();
 
-    private final String Server = ServerUri.Server;
+    private final String Server = ServerUri.SERVER;
     private String SERVICE;
     private String[][] CAMPOS;
     private String result;

@@ -1,6 +1,5 @@
 package com.co.edu.cun.www1104379214.bienestarcun.Funciones;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -21,6 +20,10 @@ import com.co.edu.cun.www1104379214.bienestarcun.ui.frragmentContent.EvidenciasA
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -35,8 +38,15 @@ public class ItinerariosManager {
     Constantes mss = new Constantes();
     Context CONTEXTO;
 
+    OkHttpClient okHttpClient;
+
     public ItinerariosManager(Context contexto) {
         this.CONTEXTO = contexto;
+
+        okHttpClient = new OkHttpClient.Builder()
+                .readTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
+                .connectTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
+                .build();//asisgnar tiempo de espera a la peticion
 
     }
 
@@ -48,20 +58,23 @@ public class ItinerariosManager {
         Bundle args = new Bundle();
         args.putString("", "");
 
-        Fragment fragment;
+        Fragment fragment = null;
 
         if( INSTANCE == 1)
             fragment =  AsistenciaCircleActivities.newInstance(idCircle, idItinerario);
-        else
+        else if( INSTANCE == 2)
             fragment =  EvidenciasActivities.newInstance(idCircle, idItinerario);
 
 
-        fragment.setArguments(args);
+        if ( fragment != null ) {
 
-        fragmentManager
-                .beginTransaction()
-                .replace(R.id.main_content, fragment)
-                .commit();
+            fragment.setArguments(args);
+
+            fragmentManager
+                    .beginTransaction()
+                    .replace(R.id.main_content, fragment)
+                    .commit();
+        }
 
 
     }
@@ -71,8 +84,9 @@ public class ItinerariosManager {
     public void SearchListInscritos(final LinearLayout contentList, int idCircle1 ){
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ServerUri.Server+"adminCircle/")
+                .baseUrl( ServerUri.SERVICE_ADMIN_CIRCLE )
                 .addConverterFactory(GsonConverterFactory.create())
+                .client( okHttpClient )
                 .build();
 
         AdminCircles adminCircle = retrofit.create(AdminCircles.class);
@@ -96,8 +110,10 @@ public class ItinerariosManager {
 
                         for( int c = arrayResult.length() -1; c >= 0; c-- ){
 
-                            String id = arrayResult.getJSONObject(c).getString( index.getString("0") );
-                            String name = arrayResult.getJSONObject(c).getString( index.getString("1") );
+                            String id = arrayResult.getJSONObject(c)
+                                                .getString( index.getString("0") );
+                            String name = arrayResult.getJSONObject(c)
+                                                .getString( index.getString("1") );
 
                             contentList.addView( GenerateComponentsList(c, name, id) );
 
@@ -192,12 +208,75 @@ public class ItinerariosManager {
     }
     //</editor-fold>
 
+    //<editor-fold desc="elimino el usuario del circulo">
+    public void DeleteItinerario( int idItinerario ) {
+
+
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl( ServerUri.SERVICE_ADMIN_CIRCLE )
+                .addConverterFactory(GsonConverterFactory.create())
+                .client( okHttpClient )
+                .build();
+
+        AdminCircles adminCircle = retrofit.create(AdminCircles.class);
+
+        Call<ResponseContent> call = adminCircle.delItinerario( idItinerario );
+
+        call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
+            @Override
+            public void onResponse(Call<ResponseContent> call, Response<ResponseContent> response) {//obtener datos
+
+                try {
+                    ResponseContent data = response.body();
+
+                    boolean answer = ValidateResponse( data  );
+
+                    if( answer ){
+
+                        if( data.getBody().getString(0).toString().equals("msm") ){//verifico si es un mensaje
+
+                            Toast.makeText(CONTEXTO.getApplicationContext(),
+                                    mss.msmServices.getString(data.getBody().getString(1).toString()),
+                                    Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
+
+                        }else{
+
+                            Log.i( mss.TAG1, data.getBody().toString() );
+
+                        }
+
+                    }else{
+                        Log.i( mss.TAG1, data.getBody().toString() );
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    new ServicesPeticion().SaveError(e,
+                            new Exception().getStackTrace()[0].getMethodName().toString(),
+                            this.getClass().getName());//Envio la informacion de la excepcion al server
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
+
+                Log.e( mss.TAG1, "error "+ t.toString());
+
+            }
+        });
+
+    }
+    //</editor-fold>
+
     //<editor-fold desc="guardar la asistencia tomada del itinerario">
     public void SendAsistenciaServer( JSONArray listObject ){
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ServerUri.Server+"adminCircle/")
+                .baseUrl( ServerUri.SERVICE_ADMIN_CIRCLE )
                 .addConverterFactory(GsonConverterFactory.create())
+                .client( okHttpClient )
                 .build();
 
         AdminCircles adminCircle = retrofit.create(AdminCircles.class);

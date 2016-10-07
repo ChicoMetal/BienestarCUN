@@ -81,12 +81,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
 
 public class MainActivity extends AppCompatActivity {
 
-    Fragment fragment;
     FragmentManager fragmentManager = getSupportFragmentManager();
-
+    Fragment fragment;
     ImageButton camara;
     ImageView imagen;
     ImageButton upload;
@@ -298,41 +300,22 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.nav_add_activities:
-                fragment =  Circles_app.newInstance(db, "");
+                fragment =  Circles_app.newInstance( db );
+                break;
+            case R.id.nav_del_activities:
+                fragment =  DelActivities_app.newInstance(db, "");
+                break;
+            case R.id.nav_itinerarios:
+                fragment =  Itinerarios_app.newInstance(db, getSupportFragmentManager());
                 break;
 
             case R.id.nav_add_desertion:
                 fragment =  Desertion_app.newInstance(db);
                 break;
 
-            case R.id.nav_del_activities:
-                fragment =  DelActivities_app.newInstance(db, "");
-                break;
-
-            case R.id.nav_itinerarios:
-                fragment =  Itinerarios_app.newInstance(db, getSupportFragmentManager());
-                break;
-
-            case R.id.nav_asistencia:
-
-                fragment = Show_itinerario_circle.newInstance(mss.INSTANCE_ITINERARIOS_ADMIN_CIRCLE,
-                                                                db,
-                                                                mss.SHOW_ITINERARIO_ASISTENCIA,
-                                                                getSupportFragmentManager());
-                break;
-
-            case R.id.nav_evidencias:
-
-                fragment = Show_itinerario_circle.newInstance(mss.INSTANCE_ITINERARIOS_ADMIN_CIRCLE,
-                                                                db,
-                                                                mss.SHOW_ITINERARIO_EVIDENCIAS,
-                                                                getSupportFragmentManager());
-                break;
-
             case R.id.nav_add_laboral:
                 fragment =  HistoryLaboral_app.newInstance( db );
                 break;
-
             case R.id.nav_update_laboral_state:
                 fragment =  LaboralStatus.newInstance(db);
                 break;
@@ -342,10 +325,8 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.nav_new_chat:
-
-
                 ChatPsicologiaManager ChatCodeInflateNull = new ChatPsicologiaManager(
-                                                                getApplicationContext(), db );
+                        getApplicationContext(), db );
 
                 if( ChatCodeInflateNull.ComproveUser() ){//dependiendo si el usuario es psicologo o no
 
@@ -356,11 +337,28 @@ public class MainActivity extends AppCompatActivity {
 
                     fragment =  ChatPsicologa_app.newInstance( db, null );//se le envia 0 dado que aun no tengo el destinatario
                 }
-
                 break;
 
             case R.id.nav_new_itinerario:
                 fragment =  CircleAdministration_app.newInstance( db );
+                break;
+            case R.id.nav_del_itinerario:
+                fragment = Show_itinerario_circle.newInstance(mss.INSTANCE_ITINERARIOS_ADMIN_CIRCLE,
+                        db,
+                        mss.SHOW_ITINERARIO_CANCEL,
+                        getSupportFragmentManager());
+                break;
+            case R.id.nav_asistencia:
+                fragment = Show_itinerario_circle.newInstance(mss.INSTANCE_ITINERARIOS_ADMIN_CIRCLE,
+                                                                db,
+                                                                mss.SHOW_ITINERARIO_ASISTENCIA,
+                                                                getSupportFragmentManager());
+                break;
+            case R.id.nav_evidencias:
+                fragment = Show_itinerario_circle.newInstance(mss.INSTANCE_ITINERARIOS_ADMIN_CIRCLE,
+                                                                db,
+                                                                mss.SHOW_ITINERARIO_EVIDENCIAS,
+                                                                getSupportFragmentManager());
                 break;
 
             case R.id.nav_login:
@@ -401,6 +399,11 @@ public class MainActivity extends AppCompatActivity {
         DatosDisplay();
 
         code.ChoseUserDefault(this);//mostrar lista para seleccionar la sede para los usuarios sin loguear
+
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .readTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
+                .connectTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
+                .build();
 
     }
 
@@ -558,12 +561,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void UploapFoto(String imag ) throws IOException {
 
-        String url = ServerUri.Server;
-        String service = "adminCircle/SaveEvidencia.php";
-
         HttpClient httpclient = new DefaultHttpClient();
         httpclient.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
-        HttpPost httppost = new HttpPost(url+service);
+        HttpPost httppost = new HttpPost( ServerUri.SERVICE_SAVE_EVIDENCIA );
         MultipartEntity mpEntity = new MultipartEntity();
         ContentBody foto = new FileBody( file , "image/jpeg");//tipo de contenido q se envia
         mpEntity.addPart("fotoUp", foto);//nombre con que se recibe en el server
@@ -575,14 +575,11 @@ public class MainActivity extends AppCompatActivity {
 
     private  boolean OnInsert(){
 
-        String url = ServerUri.Server;
-        String service = "adminCircle/imgSaveDB.php";
-
         HttpClient httpclient;
         List<NameValuePair> nameValuesPairs;
         HttpPost httppost;
         httpclient = new DefaultHttpClient();
-        httppost = new HttpPost(url+service);
+        httppost = new HttpPost( ServerUri.SERVICE_CHARGE_IMG );
         nameValuesPairs = new ArrayList<NameValuePair>(1);
         nameValuesPairs.add(new BasicNameValuePair("evidencia", nameFileImagen));
         nameValuesPairs.add(new BasicNameValuePair("itinerario", idItinerario.getText().toString()));

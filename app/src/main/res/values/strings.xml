@@ -5,7 +5,7 @@
     <string name="name_navDrawer">CUN</string>
     <string name="web_direction">www.cun.edu.co</string>
 
-    <!-- Menu text-->
+    <!-- Menu group text-->
     <string name="item_home">Inicio</string>
     <string name="item_activities">Actividades</string>
     <string name="item_desertion"> Desercion</string>
@@ -14,6 +14,20 @@
     <string name="item_chat"> Chat Psicologia</string>
     <string name="item_circle_administration"> Administrar </string>
     <string name="item_section_login"> Usuario </string>
+
+    <!-- item menu -->
+    <string name="title_nav_add_activities">+ actividades</string>
+    <string name="title_nav_del_activities">- actividades</string>
+    <string name="title_nav_itinerarios">Ver itinerarios</string>
+    <string name="title_nav_add_desertion">Desercion</string>
+    <string name="title_nav_add_laboral">Agregar experiencia</string>
+    <string name="title_nav_update_laboral_state">Actualizar estado laboral</string>
+    <string name="title_nav_show_notifications">Ver notificaciones</string>
+    <string name="title_nav_new_chat">Psicologia</string>
+    <string name="title_nav_new_itinerario">+ itinerario</string>
+    <string name="title_nav_del_itinerario">- itinerario</string>
+    <string name="title_nav_asistencia">Asistencia</string>
+    <string name="title_nav_evidencias">Evidencias</string>
     <string name="item_login"> Ingresar </string>
     <string name="item_logout"> Salir </string>
 
@@ -46,8 +60,8 @@
     <string name="ejemAddEvidencias">+</string>
     <string name="home_text">Bienestar!</string>
     <string name="lb_bienvenida_home">Hola, bienvenido</string>
-    <string name="lb_startLaboral">Cuando iniciastes?</string>
-    <string name="lb_endLaboral">Cuando finalizastes?</string>
+    <string name="lb_startLaboral">Cuando iniciaste?</string>
+    <string name="lb_endLaboral">Cuando finalizaste?</string>
     <string name="lb_dateItinerario">Fecha</string>
     <string name="lb_hourItinerario">Hora</string>
     <string name="cam_btn">btn_cam</string>
@@ -72,5 +86,8 @@
     <string name="item_ebaut">Sobre esta app</string>
     <string name="hint_descripcion_desercion">Detalles del reporte</string>
     <string name="lb_chk_aun_continua">Aun continua?</string>
+
+
+
 
 </resources>

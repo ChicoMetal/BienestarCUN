@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.widget.Toast;
-
 import com.co.edu.cun.www1104379214.bienestarcun.Constantes;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
@@ -18,12 +17,11 @@ import com.co.edu.cun.www1104379214.bienestarcun.WebServices.Interface.CirclesAp
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServerUri;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
 import com.co.edu.cun.www1104379214.bienestarcun.ui.frragmentContent.Show_itinerario_circle;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.concurrent.ExecutionException;
-
+import java.util.concurrent.TimeUnit;
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -38,10 +36,16 @@ public class CirclesManager {
     TaskExecuteSQLSearch userSearch;
     DBManager DB;
     private int SHOW_ITINERARIO_OFF = 0;
+    OkHttpClient okHttpClient;
 
     public CirclesManager(Context contexto, DBManager db) {
         this.CONTEXTO = contexto;
         this.DB = db;
+
+        okHttpClient = new OkHttpClient.Builder()
+                .readTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
+                .connectTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
+                .build();//asisgnar tiempo de espera a la peticion
 
     }
 
@@ -64,7 +68,8 @@ public class CirclesManager {
 
             Cursor result = userSearch.execute().get();
 
-            JSONObject jsonUser = new AdapterUserMenu(CONTEXTO, DB).CreateObjectResultSQL(result, camposSeacrh);
+            JSONObject jsonUser = new AdapterUserMenu(CONTEXTO, DB)
+                                .CreateObjectResultSQL(result, camposSeacrh);
 
             if ( jsonUser.length() > 0 ){
 
@@ -95,8 +100,9 @@ public class CirclesManager {
         String idUser = getIdUser();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ServerUri.Server+"circles/")
+                .baseUrl( ServerUri.SERVICE_CIRCLES )
                 .addConverterFactory(GsonConverterFactory.create())
+                .client( okHttpClient )
                 .build();
 
         CirclesApp actividades = retrofit.create(CirclesApp.class);
@@ -131,8 +137,9 @@ public class CirclesManager {
         String idUser = getIdUser();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ServerUri.Server+"circles/")
+                .baseUrl( ServerUri.SERVICE_CIRCLES )
                 .addConverterFactory(GsonConverterFactory.create())
+                .client( okHttpClient )
                 .build();
 
         CirclesApp actividades = retrofit.create(CirclesApp.class);

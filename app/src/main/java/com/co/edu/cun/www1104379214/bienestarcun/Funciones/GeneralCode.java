@@ -24,6 +24,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,11 +48,16 @@ public class GeneralCode {
     ImageButton BtnChoseSede;
     String[][] UserDefault;
     TaskExecuteSQLInsert sqliteInsert;
+    OkHttpClient okHttpClient;
 
     public GeneralCode(DBManager db, Context contexto) {
 
         this.DB = db;
         this.CONTEXTO = contexto;
+        okHttpClient = new OkHttpClient.Builder()
+            .readTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
+            .connectTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
+            .build();//asisgnar tiempo de espera a la peticion
 
     }
 
@@ -72,7 +80,8 @@ public class GeneralCode {
 
             Cursor result = userSearch.execute().get();
 
-            JSONObject jsonUser = new AdapterUserMenu(CONTEXTO, DB).CreateObjectResultSQL(result, camposSeacrh);
+            JSONObject jsonUser = new AdapterUserMenu(CONTEXTO, DB)
+                                    .CreateObjectResultSQL(result, camposSeacrh);
 
             if ( jsonUser.length() > 0 ){
 
@@ -105,8 +114,9 @@ public class GeneralCode {
         if( idUser != null ){
 
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(ServerUri.Server+"user/")
+                    .baseUrl( ServerUri.SERVICE_USER )
                     .addConverterFactory(GsonConverterFactory.create())
+                    .client( okHttpClient )
                     .build();
 
             Users user = retrofit.create(Users.class);
@@ -189,7 +199,8 @@ public class GeneralCode {
             lista = (Spinner) dialog.findViewById(R.id.lista_sedes);
             BtnChoseSede = (ImageButton) dialog.findViewById(R.id.btn_send_sede);
 
-            ArrayAdapter<String> adaptador = new ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, mss.DftUsrNameSedes);
+            ArrayAdapter<String> adaptador = new ArrayAdapter<String>(activity, android.R.layout
+                                                        .simple_spinner_item, mss.DftUsrNameSedes);
             lista.setAdapter(adaptador);
 
 
@@ -200,7 +211,8 @@ public class GeneralCode {
                     try {
 
                         UserDefault = new String[][]{
-                                {DBManager.CN_ID_USER_BD, mss.DftUsrId.getString( lista.getSelectedItem().toString() ) },
+                                {DBManager.CN_ID_USER_BD, mss.DftUsrId
+                                        .getString( lista.getSelectedItem().toString() ) },
                                 {DBManager.CN_USER, mss.DftUsrName},
                                 {DBManager.CN_PASSWORD, mss.DftUsrPass },
                                 {DBManager.CN_TIPE_USER, mss.UsrLoginOff },

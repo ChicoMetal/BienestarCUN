@@ -22,6 +22,9 @@ import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -44,6 +47,7 @@ public class AdapterUserMenu {
     TaskExecuteSQLDelete sqliteDelete;
     Constantes mss = new Constantes();
     GeneralCode code;
+    OkHttpClient okHttpClient;
 
 
 
@@ -57,11 +61,17 @@ public class AdapterUserMenu {
 
         services = new ServicesPeticion();
 
+        okHttpClient = new OkHttpClient.Builder()
+            .readTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
+            .connectTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
+            .build();//asisgnar tiempo de espera a la peticion
+
     }
     //</editor-fold>
 
     //<editor-fold desc="Login">
-    public  boolean ProcessLogin(MainActivity main, EditText user, EditText pass, NavigationView menu ){
+    public  boolean ProcessLogin(MainActivity main, EditText user,
+                                            EditText pass, NavigationView menu ){
         boolean status = false;
 
         this.MAIN = main;
@@ -92,8 +102,9 @@ public class AdapterUserMenu {
             throws InterruptedException {
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ServerUri.Server+"user/")
+                .baseUrl( ServerUri.SERVICE_USER )
                 .addConverterFactory(GsonConverterFactory.create())
+                .client( okHttpClient )
                 .build();
 
         Users users = retrofit.create(Users.class);

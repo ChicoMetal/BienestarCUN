@@ -30,6 +30,7 @@ public class IconManager {
         menu.getMenu().findItem(R.id.nav_show_notifications).setIcon(R.drawable.icon_notificaciones);
         menu.getMenu().findItem(R.id.nav_new_chat).setIcon(R.drawable.icon_chat);
         menu.getMenu().findItem(R.id.nav_new_itinerario).setIcon(R.drawable.icon_newitinerario);
+        menu.getMenu().findItem(R.id.nav_del_itinerario).setIcon(R.drawable.icon_del_itinerarios);
         menu.getMenu().findItem(R.id.nav_asistencia).setIcon(R.drawable.icon_asistencia);
         menu.getMenu().findItem(R.id.nav_evidencias).setIcon(R.drawable.icon_evidencias);
         menu.getMenu().findItem(R.id.nav_login).setIcon(R.drawable.icon_login);

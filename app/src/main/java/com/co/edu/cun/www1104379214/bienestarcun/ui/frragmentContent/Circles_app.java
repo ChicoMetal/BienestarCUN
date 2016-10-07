@@ -33,7 +33,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -53,7 +55,7 @@ public class Circles_app extends Fragment {
     Splash PDialog = new Splash();
 
 
-    public static Circles_app newInstance(DBManager db, String param2) {
+    public static Circles_app newInstance( DBManager db ) {
         Circles_app fragment = new Circles_app();
         Bundle args = new Bundle();
         DB = db;
@@ -128,9 +130,15 @@ public class Circles_app extends Fragment {
         final ProgressDialog pDialog= PDialog.getpDialog(getActivity());
         pDialog.show();
 
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .readTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
+                .connectTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
+                .build();
+
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ServerUri.Server+"circles/")
+                .baseUrl( ServerUri.SERVICE_CIRCLES )
                 .addConverterFactory(GsonConverterFactory.create())
+                .client( okHttpClient )
                 .build();
 
         CirclesApp actividades = retrofit.create(CirclesApp.class);

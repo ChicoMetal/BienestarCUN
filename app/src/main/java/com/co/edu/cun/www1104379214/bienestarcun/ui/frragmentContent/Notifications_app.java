@@ -34,7 +34,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -144,9 +146,15 @@ public class Notifications_app extends Fragment {
         final ProgressDialog pDialog= PDialog.getpDialog(getActivity());
         pDialog.show();
 
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .readTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
+                .connectTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
+                .build();//asisgnar tiempo de espera a la peticion
+
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ServerUri.Server+"notifications/")
+                .baseUrl( ServerUri.SERVICE_NOTIFICATION )
                 .addConverterFactory(GsonConverterFactory.create())
+                .client( okHttpClient )
                 .build();
 
         Notifications notificationsResponse = retrofit.create(Notifications.class);
@@ -222,7 +230,8 @@ public class Notifications_app extends Fragment {
             for (int i=0; i < notificationsResult.length(); i++){
 
                 try {
-                    listNotificaciones.add(new NotificationsList(notificationsResult.getString(i), indexNotification));
+                    listNotificaciones.add(new NotificationsList(notificationsResult.getString(i),
+                                                                                indexNotification));
                 } catch (JSONException e) {
                     e.printStackTrace();
                     new ServicesPeticion().SaveError(e,

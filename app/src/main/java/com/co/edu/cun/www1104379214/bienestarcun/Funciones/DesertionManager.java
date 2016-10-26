@@ -51,6 +51,7 @@ public class DesertionManager {
         GeneralCode code = new GeneralCode( DB, CONTEXTO );
 
         String idDocente = code.getIdUser();
+        String token = code.getToken();
         String idUser = contentIdDesertor.getText().toString();
         String Descripcion = contentDescription.getText().toString();
         String horario = null;
@@ -68,7 +69,7 @@ public class DesertionManager {
         }
 
         if( horario != null && !idUser.equals("") && !Descripcion.equals("") && facultad != null )
-            SendServerDesertion(idDocente, facultad, idUser, Descripcion, horario);
+            SendServerDesertion(idDocente, token, facultad, idUser, Descripcion, horario);
         else
             Toast.makeText(CONTEXTO, mss.FormError, Toast.LENGTH_SHORT).show();
 
@@ -77,7 +78,7 @@ public class DesertionManager {
     //</editor-fold>
 
     //<editor-fold desc="Envia los datos del reporte de la desercion">
-    private void SendServerDesertion( String idDocente, String facultad,
+    private void SendServerDesertion( String idDocente, String token, String facultad,
                                       String idUser, String descripcion, String horario) {
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
@@ -94,7 +95,7 @@ public class DesertionManager {
         ReporteDesercion NewReporte = retrofit.create(ReporteDesercion.class);
 
         Call<ResponseContent> call = NewReporte
-                .SendReporte(idDocente, facultad, idUser, descripcion, horario);
+                .SendReporte(idDocente, token,  facultad, idUser, descripcion, horario);
 
         call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
             @Override

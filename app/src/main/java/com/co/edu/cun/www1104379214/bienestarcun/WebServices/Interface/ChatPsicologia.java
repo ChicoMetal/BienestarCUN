@@ -15,20 +15,25 @@ public interface ChatPsicologia {
 
     @FormUrlEncoded
     @POST("getChatPendientes")//Buscar chats pendientes
-    Call<ResponseContent> getChatsPendientes(@Field("tipuser") String tipuser);
+    Call<ResponseContent> getChatsPendientes(@Field("user") String user,
+                                            @Field("token") String token,
+                                            @Field("tipuser") String tipuser);
 
     @FormUrlEncoded
     @POST("getMensajes")//Buscar chats pendientes
     Call<ResponseContent> getMensajesPendientes( @Field("remitente") String remitente,
+                                                 @Field("token") String token,
                                                  @Field("receptor") String receptor );
 
     @FormUrlEncoded
     @POST("getUserPsicologo")//Buscar chats pendientes
-    Call<ResponseContent> getPsicologiaUser( @Field("usuario") Long usuario  );
+    Call<ResponseContent> getPsicologiaUser( @Field("usuario") Long usuario,
+                                             @Field("token") String token);
 
     @FormUrlEncoded
     @POST("UpdateStatusMessage")//Buscar chats pendientes
     Call<ResponseContent> setMensajesPendientes( @Field("remitente") Long remitente,
+                                                 @Field("token") String token,
                                                  @Field("receptor") Long receptor );
 
 }

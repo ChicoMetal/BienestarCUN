@@ -16,6 +16,7 @@ public interface Laboral {
     @FormUrlEncoded
     @POST("saveNewLaboralHistory")//Guardar un nuevo historial laboral del egresado
     Call<ResponseContent> saveNewLaboral(@Field("user") String user,
+                                        @Field("token") String token,
                                         @Field("empresa") String empresa,
                                         @Field("cargo") String cargo,
                                         @Field("dateStart") String dateStart,
@@ -24,6 +25,7 @@ public interface Laboral {
     @FormUrlEncoded
     @POST("updateStatusLaboral")//Actualizar el estado laboral del egresado
     Call<ResponseContent> UpdateStatusLaboral(@Field("user") String user,
-                                                @Field("status") String status);
+                                              @Field("token") String token,
+                                              @Field("status") String status);
 
 }

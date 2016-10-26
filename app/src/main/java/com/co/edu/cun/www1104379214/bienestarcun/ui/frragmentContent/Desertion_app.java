@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.Constantes;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.DesertionManager;
+import com.co.edu.cun.www1104379214.bienestarcun.Funciones.GeneralCode;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
@@ -147,6 +148,11 @@ public class Desertion_app extends Fragment implements View.OnClickListener{
     //<editor-fold desc="Buscar las facultades para mostrar en la lista">
     private void SearchFacultades() {
 
+        GeneralCode code = new GeneralCode( DB, getActivity().getApplicationContext() );
+
+        String token = code.getToken();
+        String user = code.getIdUser();
+
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .readTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
                 .connectTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
@@ -160,7 +166,7 @@ public class Desertion_app extends Fragment implements View.OnClickListener{
 
         ReporteDesercion facultades = retrofit.create(ReporteDesercion.class);
 
-        Call<ResponseContent> call = facultades.getFacultades();
+        Call<ResponseContent> call = facultades.getFacultades( user, token );
 
         call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
             @Override
@@ -179,6 +185,7 @@ public class Desertion_app extends Fragment implements View.OnClickListener{
 
             }
         });
+
 
     }
     //</editor-fold>

@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.Constantes;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
+import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ContentResults.ResponseContent;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.Interface.AdminCircles;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServerUri;
@@ -37,17 +38,20 @@ public class ItinerariosManager {
 
     Constantes mss = new Constantes();
     Context CONTEXTO;
-
+    DBManager DB;
     OkHttpClient okHttpClient;
+    GeneralCode code;
 
-    public ItinerariosManager(Context contexto) {
+    public ItinerariosManager(DBManager db, Context contexto) {
         this.CONTEXTO = contexto;
+        this.DB = db;
 
         okHttpClient = new OkHttpClient.Builder()
                 .readTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
                 .connectTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
                 .build();//asisgnar tiempo de espera a la peticion
 
+        code = new GeneralCode(DB, CONTEXTO );
     }
 
 
@@ -61,7 +65,7 @@ public class ItinerariosManager {
         Fragment fragment = null;
 
         if( INSTANCE == 1)
-            fragment =  AsistenciaCircleActivities.newInstance(idCircle, idItinerario);
+            fragment =  AsistenciaCircleActivities.newInstance(DB, idCircle, idItinerario);
         else if( INSTANCE == 2)
             fragment =  EvidenciasActivities.newInstance(idCircle, idItinerario);
 
@@ -83,6 +87,9 @@ public class ItinerariosManager {
     //<editor-fold desc="buscar listado de inscritos en el circulo">
     public void SearchListInscritos(final LinearLayout contentList, int idCircle1 ){
 
+        String user = code.getIdUser();
+        String token = code.getToken();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl( ServerUri.SERVICE_ADMIN_CIRCLE )
                 .addConverterFactory(GsonConverterFactory.create())
@@ -91,7 +98,7 @@ public class ItinerariosManager {
 
         AdminCircles adminCircle = retrofit.create(AdminCircles.class);
 
-        Call<ResponseContent> call = adminCircle.GetUsuariosCircle( idCircle1 );
+        Call<ResponseContent> call = adminCircle.GetUsuariosCircle(user, token, idCircle1 );
 
         call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
             @Override
@@ -211,7 +218,8 @@ public class ItinerariosManager {
     //<editor-fold desc="elimino el usuario del circulo">
     public void DeleteItinerario( int idItinerario ) {
 
-
+        String user = code.getIdUser();
+        String token = code.getToken();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl( ServerUri.SERVICE_ADMIN_CIRCLE )
@@ -221,7 +229,7 @@ public class ItinerariosManager {
 
         AdminCircles adminCircle = retrofit.create(AdminCircles.class);
 
-        Call<ResponseContent> call = adminCircle.delItinerario( idItinerario );
+        Call<ResponseContent> call = adminCircle.delItinerario( user, token, idItinerario );
 
         call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
             @Override
@@ -273,6 +281,9 @@ public class ItinerariosManager {
     //<editor-fold desc="guardar la asistencia tomada del itinerario">
     public void SendAsistenciaServer( JSONArray listObject ){
 
+        String user = code.getIdUser();
+        String token = code.getToken();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl( ServerUri.SERVICE_ADMIN_CIRCLE )
                 .addConverterFactory(GsonConverterFactory.create())
@@ -281,7 +292,8 @@ public class ItinerariosManager {
 
         AdminCircles adminCircle = retrofit.create(AdminCircles.class);
 
-        Call<ResponseContent> call = adminCircle.saveAsistenciaItinerario( listObject.toString() );
+        Call<ResponseContent> call = adminCircle.saveAsistenciaItinerario(user, token,
+                                                                        listObject.toString() );
 
         call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
             @Override

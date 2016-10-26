@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.Constantes;
+import com.co.edu.cun.www1104379214.bienestarcun.Funciones.GeneralCode;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ChatList;
@@ -54,6 +55,7 @@ public class ChatPendientes extends Fragment {
     private OnFragmentInteractionListener mListener;
     Splash PDialog = new Splash();
     OkHttpClient okHttpClient;
+    GeneralCode code;
 
 
     public static ChatPendientes newInstance(DBManager db, FragmentManager fragmentManager1) {
@@ -89,6 +91,7 @@ public class ChatPendientes extends Fragment {
         View root = inflater.inflate(R.layout.fragment_chat_pendientes, container, false);
 
         mHyperdChatList = (RecyclerView) root.findViewById(R.id.hyper_chat_list);
+        code = new GeneralCode(DB, getActivity().getApplicationContext() );
 
         SetudActivitiesList();
 
@@ -148,6 +151,8 @@ public class ChatPendientes extends Fragment {
 
         final ProgressDialog pDialog= PDialog.getpDialog(getActivity());
         pDialog.show();
+        String user = code.getIdUser();
+        String token = code.getToken();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl( ServerUri.SERVICE_CHAT )
@@ -157,7 +162,8 @@ public class ChatPendientes extends Fragment {
 
         ChatPsicologia chatsPsicologia = retrofit.create( ChatPsicologia.class );
 
-        Call<ResponseContent> call = chatsPsicologia.getChatsPendientes( Constantes.UsrPsicologa );
+        Call<ResponseContent> call = chatsPsicologia.getChatsPendientes( user, token,
+                                                                    Constantes.UsrPsicologa );
 
         call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
             @Override

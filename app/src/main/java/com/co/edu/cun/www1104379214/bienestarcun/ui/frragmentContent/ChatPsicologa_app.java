@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.Constantes;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.ChatPsicologiaManager;
+import com.co.edu.cun.www1104379214.bienestarcun.Funciones.GeneralCode;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
@@ -64,6 +65,7 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
     private Handler mUiHandler = new Handler();
     private MyWorkerThread mWorkerThread;
     JSONObject MensajeEntrante;
+    GeneralCode code;
 
     Socket socket;
 
@@ -95,6 +97,7 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_chat_psicologa_app, container, false);
+        code = new GeneralCode(DB, getActivity().getApplicationContext() );
 
         TVReceptor = (TextView) root.findViewById(R.id.TVRReceptor);
         TVRemitente = (TextView) root.findViewById(R.id.TVRemitente);
@@ -177,7 +180,9 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
     //<editor-fold desc="busco el id del usuario encargado del area de psicologia">
     public void getIdPsicologiaUser() {
 
-        Call<ResponseContent> call = chatsPsicologia.getPsicologiaUser( mRemitente );
+        String token = code.getToken();
+
+        Call<ResponseContent> call = chatsPsicologia.getPsicologiaUser( mRemitente, token );
 
         call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
             @Override
@@ -290,7 +295,9 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
     //<editor-fold desc="obtengo el array de objeto con los mensajes">
     public void GetMensajesPendientesExists( String remitente, String receptor) throws InterruptedException {
 
-        Call<ResponseContent> call = chatsPsicologia.getMensajesPendientes( remitente, receptor );
+        String token = code.getToken();
+
+        Call<ResponseContent> call = chatsPsicologia.getMensajesPendientes( remitente, token, receptor );
 
         call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
             @Override
@@ -367,7 +374,10 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
 
     //<editor-fold desc="Actualizar el estado de los mensajes pendientes ya entregados">
     private void UpdateStatusMsmPendientes(){
-        Call<ResponseContent> call = chatsPsicologia.setMensajesPendientes( mRemitente, mReceptor );
+
+        String token = code.getToken();
+
+        Call<ResponseContent> call = chatsPsicologia.setMensajesPendientes( mRemitente, token, mReceptor );
 
         call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
             @Override

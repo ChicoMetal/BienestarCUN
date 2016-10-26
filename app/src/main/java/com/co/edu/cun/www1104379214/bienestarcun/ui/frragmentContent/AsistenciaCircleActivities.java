@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.ItinerariosManager;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
+import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 
 
 public class AsistenciaCircleActivities extends Fragment {
@@ -21,15 +22,16 @@ public class AsistenciaCircleActivities extends Fragment {
     private static ItinerariosManager manager;
     private static int CIRCLE;
     public static int ITINERARIO;
+    static DBManager DB;
 
 
     private OnFragmentInteractionListener mListener;
 
 
-    public static AsistenciaCircleActivities newInstance(int circle1, int itinerario1) {
+    public static AsistenciaCircleActivities newInstance(DBManager db, int circle1, int itinerario1) {
         AsistenciaCircleActivities fragment = new AsistenciaCircleActivities();
         Bundle args = new Bundle();
-
+        DB = db;
         CIRCLE = circle1;
         ITINERARIO = itinerario1;
 
@@ -53,7 +55,7 @@ public class AsistenciaCircleActivities extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_asistencia_circle_activities, container, false);
 
-        manager = new ItinerariosManager(getActivity().getApplicationContext());
+        manager = new ItinerariosManager(DB, getActivity().getApplicationContext());
 
         icon.setBackgroundApp((FrameLayout) root.findViewById(R.id.ContentAsistencias));
 

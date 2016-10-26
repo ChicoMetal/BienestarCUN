@@ -101,10 +101,53 @@ public class GeneralCode {
                     this.getClass().getName());//Envio la informacion de la excepcion al server
         }
 
-        return null;
+        return idUser;
     }
     //</editor-fold>
 
+    //<editor-fold desc="obtengo el token de la sesion">
+    public String getToken() {
+
+        String token = "";
+
+        String[] camposSeacrh = new String[]{
+                DB.CN_TOKEN_LOGIN,
+        };
+
+        userSearch = new TaskExecuteSQLSearch(DB.TABLE_NAME_USER,
+                camposSeacrh,
+                CONTEXTO,
+                DB
+        ); //busqueda
+
+        try {
+
+            Cursor result = userSearch.execute().get();
+
+            JSONObject jsonUser = new AdapterUserMenu(CONTEXTO, DB)
+                    .CreateObjectResultSQL(result, camposSeacrh);
+
+            if ( jsonUser.length() > 0 ){
+
+                token = (String) jsonUser.getJSONObject( "ROW0").get(DB.CN_TOKEN_LOGIN);
+
+                return token;
+
+            }
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }catch (Exception e){
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
+        }
+
+        return token;
+    }
+    //</editor-fold>
 
     //<editor-fold desc="obtener el nombre del usuario">
     public void getNameUser(final TextView ContentNameUser){
@@ -190,7 +233,7 @@ public class GeneralCode {
 
         String user = getIdUser();
 
-        if( user == null ){//si no existe ningun usuario
+        if( user == null || user.equals("") ){//si no existe ningun usuario
 
             final Dialog dialog = new Dialog(activity);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);

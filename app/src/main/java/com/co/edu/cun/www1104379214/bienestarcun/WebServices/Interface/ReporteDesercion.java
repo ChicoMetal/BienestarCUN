@@ -16,12 +16,15 @@ public interface ReporteDesercion {
     @FormUrlEncoded
     @POST("saveDesertion")//Guardar el reporte de posible desercion
     Call<ResponseContent> SendReporte(@Field("user") String user,
+                                      @Field("token") String token,
                                       @Field("facultad") String facultad,
                                       @Field("desertor") String desertor,
                                       @Field("descripcion") String descripcion,
                                       @Field("horario") String horario);
 
+    @FormUrlEncoded
     @POST("getFacultades")//Obtener facultades
-    Call<ResponseContent> getFacultades();
+    Call<ResponseContent> getFacultades( @Field("user") String user,
+                                         @Field("token") String token );
 
 }

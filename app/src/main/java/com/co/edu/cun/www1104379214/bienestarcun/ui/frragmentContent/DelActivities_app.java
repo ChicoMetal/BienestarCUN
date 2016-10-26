@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.Constantes;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.CirclesManager;
+import com.co.edu.cun.www1104379214.bienestarcun.Funciones.GeneralCode;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
@@ -54,6 +55,7 @@ public class DelActivities_app extends Fragment {
     private Constantes mss = new Constantes();
     CirclesManager getCircles;
     Splash PDialog = new Splash();
+    GeneralCode code;
 
     private OnFragmentInteractionListener mListener;
 
@@ -85,6 +87,7 @@ public class DelActivities_app extends Fragment {
 
         mHyperdActivitiesList = (RecyclerView) root.findViewById(R.id.hyper_delactivities);
         getCircles = new CirclesManager( getActivity().getApplicationContext(), DB );
+        code = new GeneralCode( DB, getActivity().getApplicationContext() );
 
         IconManager icon = new IconManager();
         icon.setBackgroundApp((LinearLayout)root.findViewById(R.id.contentActivitiesListDel));
@@ -159,7 +162,7 @@ public class DelActivities_app extends Fragment {
 
         CirclesApp actividades = retrofit.create(CirclesApp.class);
 
-        Call<ResponseContent> call = actividades.getActivitiesAdd(getCircles.getIdUser());
+        Call<ResponseContent> call = actividades.getActivitiesAdd(code.getIdUser(), code.getToken());
 
         call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
             @Override

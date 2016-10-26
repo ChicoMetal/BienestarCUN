@@ -158,6 +158,8 @@ public class Show_itinerario_circle extends Fragment {
         final ProgressDialog pDialog= PDialog.getpDialog(getActivity());
         pDialog.show();
 
+        String user = code.getIdUser();
+        String token = code.getToken();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl( ServerUri.SERVICE_CIRCLES )
                 .addConverterFactory(GsonConverterFactory.create())
@@ -166,7 +168,7 @@ public class Show_itinerario_circle extends Fragment {
 
         CirclesApp actividades = retrofit.create(CirclesApp.class);
 
-        Call<ResponseContent> call = actividades.getItinerariosActivity( idCircle );
+        Call<ResponseContent> call = actividades.getItinerariosActivity( user, token, idCircle );
 
         call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
             @Override
@@ -223,7 +225,7 @@ public class Show_itinerario_circle extends Fragment {
     public void SearchCircleOfAdmin( ){
 
         final String user = code.getIdUser();
-
+        String token = code.getToken();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl( ServerUri.SERVICE_ADMIN_CIRCLE )
@@ -233,7 +235,7 @@ public class Show_itinerario_circle extends Fragment {
 
         AdminCircles circle = retrofit.create(AdminCircles.class);
 
-        Call<ResponseContent> call = circle.getCircleDocente( user );
+        Call<ResponseContent> call = circle.getCircleDocente( user, token );
 
         call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
             @Override

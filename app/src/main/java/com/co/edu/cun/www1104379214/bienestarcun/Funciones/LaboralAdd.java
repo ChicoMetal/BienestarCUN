@@ -34,6 +34,7 @@ public class LaboralAdd {
     DBManager DB;
     Context CONTEXTO;
     Constantes mss = new Constantes();
+    GeneralCode code;
 
     OkHttpClient okHttpClient;
 
@@ -47,6 +48,8 @@ public class LaboralAdd {
                 .connectTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
                 .build();//asisgnar tiempo de espera a la peticion
 
+        code = new GeneralCode( DB, CONTEXTO );
+
     }
 
 
@@ -58,9 +61,9 @@ public class LaboralAdd {
                                    DatePicker contentFechaEnd
     ){
 
-        GeneralCode code = new GeneralCode( DB, CONTEXTO );
 
         String idDocente = code.getIdUser();
+        String token = code.getToken();
         String nameEmpresa = contentNameActivitie.getText().toString();
         String cargoEmpresa = contentDetailActivitie.getText().toString();
         String fechaStart = contentFechaStart.getYear()+"-"
@@ -73,7 +76,7 @@ public class LaboralAdd {
 
         if( !idDocente.equals("") && !nameEmpresa.equals("")
                             && !cargoEmpresa.equals("") && !fechaStart.equals("")  )
-            SendServerNewLaboral(idDocente, nameEmpresa, cargoEmpresa, fechaStart, fechaEnd);
+            SendServerNewLaboral(idDocente, token, nameEmpresa, cargoEmpresa, fechaStart, fechaEnd);
         else
             Toast.makeText(CONTEXTO, mss.FormError, Toast.LENGTH_SHORT).show();
 
@@ -83,6 +86,7 @@ public class LaboralAdd {
 
     //<editor-fold desc="Enviar datos al server del historial laboral">
     private void SendServerNewLaboral(String idDocente,
+                                      String token,
                                       String empresa,
                                       String cargo,
                                       String dateStart,
@@ -97,7 +101,7 @@ public class LaboralAdd {
 
         Laboral laboral = retrofit.create(Laboral.class);
 
-        Call<ResponseContent> call = laboral.saveNewLaboral( idDocente,
+        Call<ResponseContent> call = laboral.saveNewLaboral( idDocente, token,
                                                         empresa, cargo, dateStart, dateEnd);
 
         call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
@@ -125,10 +129,11 @@ public class LaboralAdd {
     //<editor-fold desc="guardar en la BD los datos del nuevo historial laboral">
     public void SaveNewHistoryLabora( RadioGroup ContentStatus){
 
-        GeneralCode code = new GeneralCode( DB, CONTEXTO );
         String status = "";
 
         String idDocente = code.getIdUser();
+        String token = code.getToken();
+
         switch ( ContentStatus.getCheckedRadioButtonId() ){//obtengo el radiobutton seleccionado
 
             case R.id.rbStatusYes:
@@ -142,7 +147,7 @@ public class LaboralAdd {
         }
 
         if( !status.equals("") )
-            SendServerNewLaboralStatus(idDocente, status);
+            SendServerNewLaboralStatus(idDocente, token, status);
         else
             Toast.makeText(CONTEXTO, mss.FormError, Toast.LENGTH_SHORT).show();
 
@@ -151,7 +156,7 @@ public class LaboralAdd {
     //</editor-fold>
 
     //<editor-fold desc="Enviar datos al server">
-    private void SendServerNewLaboralStatus(String idEgresado, String status) {
+    private void SendServerNewLaboralStatus(String idEgresado, String token, String status) {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl( ServerUri.SERVICE_LABORAL )
@@ -161,7 +166,7 @@ public class LaboralAdd {
 
         Laboral laboral = retrofit.create(Laboral.class);
 
-        Call<ResponseContent> call = laboral.UpdateStatusLaboral( idEgresado, status);
+        Call<ResponseContent> call = laboral.UpdateStatusLaboral( idEgresado, token, status);
 
         call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
             @Override

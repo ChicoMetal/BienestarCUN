@@ -15,22 +15,30 @@ public interface CirclesApp {
 
     @FormUrlEncoded
     @POST("GetCirclesExists")//buscar actividades sin vincular
-    Call<ResponseContent> getActivities(@Field("user") String user);
+    Call<ResponseContent> getActivities(@Field("user") String user,
+                                        @Field("token") String token);
 
     @FormUrlEncoded
     @POST("SearchCircleAdd")//buscar actividades vinculadas
-    Call<ResponseContent> getActivitiesAdd(@Field("user") String user);
+    Call<ResponseContent> getActivitiesAdd(@Field("user") String user,
+                                           @Field("token") String token);
 
     @FormUrlEncoded
     @POST("saveAddCircle")//vincular actividad
-    Call<ResponseContent> SaveActivityUser(@Field("user") String user, @Field("circle") int circle);
+    Call<ResponseContent> SaveActivityUser(@Field("user") String user,
+                                           @Field("token") String token,
+                                           @Field("circle") int circle);
 
     @FormUrlEncoded
     @POST("DeleteCircleUser")//desvincular actividad
-    Call<ResponseContent> DeleteActivityUser(@Field("user") String user, @Field("circle") int circle);
+    Call<ResponseContent> DeleteActivityUser(@Field("user") String user,
+                                             @Field("token") String token,
+                                             @Field("circle") int circle);
 
     @FormUrlEncoded
     @POST("GetItinerariosCircle")//buscar actividades vinculadas
-    Call<ResponseContent> getItinerariosActivity(@Field("circle") int circle);
+    Call<ResponseContent> getItinerariosActivity(@Field("user") String user,
+                                                 @Field("token") String token,
+                                                 @Field("circle") int circle);
 
 }

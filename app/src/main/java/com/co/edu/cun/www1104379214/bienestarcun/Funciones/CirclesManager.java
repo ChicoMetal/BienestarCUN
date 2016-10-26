@@ -37,6 +37,7 @@ public class CirclesManager {
     DBManager DB;
     private int SHOW_ITINERARIO_OFF = 0;
     OkHttpClient okHttpClient;
+    GeneralCode code;
 
     public CirclesManager(Context contexto, DBManager db) {
         this.CONTEXTO = contexto;
@@ -47,57 +48,16 @@ public class CirclesManager {
                 .connectTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
                 .build();//asisgnar tiempo de espera a la peticion
 
+        code = new GeneralCode(DB, CONTEXTO );
+
     }
-
-    //<editor-fold desc="obtengo el id del usuario logueado">
-    public String getIdUser() {
-
-        String idUser="";
-
-        String[] camposSeacrh = new String[]{
-                DB.CN_ID_USER_BD,
-        };
-
-        userSearch = new TaskExecuteSQLSearch(DB.TABLE_NAME_USER,
-                camposSeacrh,
-                CONTEXTO,
-                DB
-        ); //busqueda
-
-        try {
-
-            Cursor result = userSearch.execute().get();
-
-            JSONObject jsonUser = new AdapterUserMenu(CONTEXTO, DB)
-                                .CreateObjectResultSQL(result, camposSeacrh);
-
-            if ( jsonUser.length() > 0 ){
-
-                idUser = (String) jsonUser.getJSONObject( "ROW0").get(DB.CN_ID_USER_BD);
-
-                return idUser;
-
-            }
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }catch (Exception e){
-            new ServicesPeticion().SaveError(e,
-                    new Exception().getStackTrace()[0].getMethodName().toString(),
-                    this.getClass().getName());//Envio la informacion de la excepcion al server
-        }
-
-        return null;
-    }
-    //</editor-fold>
 
     //<editor-fold desc="agrego el usuario al circulo">
     public void SaveCircleUser( int idCircle) {
 
 
-        String idUser = getIdUser();
+        String idUser = code.getIdUser();
+        String token = code.getToken();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl( ServerUri.SERVICE_CIRCLES )
@@ -107,7 +67,7 @@ public class CirclesManager {
 
         CirclesApp actividades = retrofit.create(CirclesApp.class);
 
-        Call<ResponseContent> call = actividades.SaveActivityUser(idUser, idCircle);
+        Call<ResponseContent> call = actividades.SaveActivityUser(idUser, token, idCircle);
 
         call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
             @Override
@@ -134,7 +94,8 @@ public class CirclesManager {
     public void DeleteCircleUser( int idCircle) {
 
 
-        String idUser = getIdUser();
+        String idUser = code.getIdUser();
+        String token = code.getToken();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl( ServerUri.SERVICE_CIRCLES )
@@ -144,7 +105,7 @@ public class CirclesManager {
 
         CirclesApp actividades = retrofit.create(CirclesApp.class);
 
-        Call<ResponseContent> call = actividades.DeleteActivityUser(idUser, idCircle);
+        Call<ResponseContent> call = actividades.DeleteActivityUser(idUser, token, idCircle);
 
         call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor
             @Override

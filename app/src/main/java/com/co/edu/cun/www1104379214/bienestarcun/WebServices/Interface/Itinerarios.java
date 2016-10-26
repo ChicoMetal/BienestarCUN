@@ -16,6 +16,7 @@ public interface Itinerarios {
     @FormUrlEncoded
     @POST("saveNewItinerario")//Guardar un nuevo itinerario
     Call<ResponseContent> SaveNewItinerario(@Field("user") String user,
+                                            @Field("token") String token,
                                             @Field("nameActiviti") String nameActiviti,
                                             @Field("detailActivitie") String detailActivitie,
                                             @Field("date") String date,

@@ -15,18 +15,25 @@ public interface AdminCircles {
 
     @FormUrlEncoded
     @POST("getInscritosCircle")//Buscar usuarios inscritos a la actividad
-    Call<ResponseContent> GetUsuariosCircle(@Field("circle") int circle);
+    Call<ResponseContent> GetUsuariosCircle(@Field("user") String user,
+                                            @Field("token") String token,
+                                            @Field("circle") int circle);
 
     @FormUrlEncoded
     @POST("getCircle")//Buscar circulo al cual esta acargo el docente
-    Call<ResponseContent> getCircleDocente(@Field("user") String user);
+    Call<ResponseContent> getCircleDocente(@Field("user") String user,
+                                           @Field("token") String token);
 
     @FormUrlEncoded
     @POST("saveListAsitencia")//Guardar la asistencia tomada
-    Call<ResponseContent> saveAsistenciaItinerario(@Field("listObject") String listObject);
+    Call<ResponseContent> saveAsistenciaItinerario(@Field("user") String user,
+                                                   @Field("token") String token,
+                                                   @Field("listObject") String listObject);
 
     @FormUrlEncoded
     @POST("delItinerario")//Guardar la asistencia tomada
-    Call<ResponseContent> delItinerario(@Field("idItinerario") int idItinerario );
+    Call<ResponseContent> delItinerario(@Field("user") String user,
+                                        @Field("token") String token,
+                                        @Field("idItinerario") int idItinerario );
 
 }

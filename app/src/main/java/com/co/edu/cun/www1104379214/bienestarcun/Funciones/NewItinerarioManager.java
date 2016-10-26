@@ -33,6 +33,7 @@ public class NewItinerarioManager {
     DBManager DB;
     Context CONTEXTO;
     Constantes mss = new Constantes();
+    GeneralCode code;
 
     OkHttpClient okHttpClient;
 
@@ -46,6 +47,8 @@ public class NewItinerarioManager {
                 .connectTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
                 .build();//asisgnar tiempo de espera a la peticion
 
+        code = new GeneralCode( DB, CONTEXTO );
+
     }
 
 
@@ -55,9 +58,8 @@ public class NewItinerarioManager {
                                    DatePicker contentFecha,
                                    TimePicker contentHora ){
 
-        GeneralCode code = new GeneralCode( DB, CONTEXTO );
-
         String idDocente = code.getIdUser();
+        String token = code.getToken();
         String name = contentNameActivitie.getText().toString();
         String detail = contentDetailActivitie.getText().toString();
         String fecha = contentFecha.getYear()+"-"+( contentFecha.getMonth() + 1 )
@@ -66,7 +68,7 @@ public class NewItinerarioManager {
 
         if( !idDocente.equals("") && !name.equals("") && !detail.equals("")
                                                     && !fecha.equals("") && !hora.equals("") )
-            SendServerItinerario( idDocente, name, detail, fecha, hora);
+            SendServerItinerario( idDocente, token, name, detail, fecha, hora);
         else
             Toast.makeText(CONTEXTO, mss.FormError, Toast.LENGTH_SHORT).show();
 
@@ -76,6 +78,7 @@ public class NewItinerarioManager {
 
     //<editor-fold desc="Enviar datos al server">
     private void SendServerItinerario( String idDocente,
+                                       String token,
                                        String name,
                                        String details,
                                        String fecha,
@@ -91,7 +94,7 @@ public class NewItinerarioManager {
 
         Itinerarios NewItinerario = retrofit.create(Itinerarios.class);
 
-        Call<ResponseContent> call = NewItinerario.SaveNewItinerario( idDocente,
+        Call<ResponseContent> call = NewItinerario.SaveNewItinerario( idDocente, token,
                                                                         name, details, fecha, hora);
 
         call.enqueue(new Callback<ResponseContent>() {//escuchador para obtener la respuesta del servidor

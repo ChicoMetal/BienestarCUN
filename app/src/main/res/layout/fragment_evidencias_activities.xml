@@ -23,7 +23,6 @@
                 android:src="@drawable/ic_cam_start"
                 android:background="@color/backgroundBotton"
                 android:contentDescription="@string/cam_btn"
-                android:onClick="getCamara"
                 android:layout_weight="1"
                 android:layout_marginRight="2dp" />
 
@@ -33,7 +32,6 @@
                 android:id="@+id/send_evidencia"
                 android:background="@color/backgroundBotton"
                 android:contentDescription="@string/send_evidencia"
-                android:onClick="Uploader"
                 android:layout_weight="1"
                 android:layout_marginLeft="2dp"
                 android:src="@mipmap/ic_btn_send"

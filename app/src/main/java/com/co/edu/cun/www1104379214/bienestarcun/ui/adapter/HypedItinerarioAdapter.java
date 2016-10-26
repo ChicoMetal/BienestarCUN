@@ -108,10 +108,10 @@ public class HypedItinerarioAdapter extends RecyclerView.Adapter<HypedItinerario
 
                     if ( fragmentManager != null && INSTANCE != 3) {//pregunto quien invoca el adaptador para saber que accion realizar al touch de las card
 
-                        new ItinerariosManager( context ).ShowAsistenciaItinerarios(v.getId(), CIRCLE, INSTANCE, fragmentManager);
+                        new ItinerariosManager( DB, context ).ShowAsistenciaItinerarios(v.getId(), CIRCLE, INSTANCE, fragmentManager);
 
                     }else if( INSTANCE == 3 ){
-                        new ItinerariosManager( context ).DeleteItinerario(v.getId());
+                        new ItinerariosManager( DB, context ).DeleteItinerario(v.getId());
                         itinerario.remove(getAdapterPosition()); // remover un itemview
                         notifyItemRemoved(getAdapterPosition()); //remover un itemview
                     }

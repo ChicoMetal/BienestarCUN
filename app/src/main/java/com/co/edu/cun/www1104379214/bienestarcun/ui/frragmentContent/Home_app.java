@@ -4,16 +4,11 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
-import com.co.edu.cun.www1104379214.bienestarcun.ui.MainActivity;
-
-import static com.co.edu.cun.www1104379214.bienestarcun.Constantes.TAG1;
 
 
 public class Home_app extends Fragment {

@@ -2,10 +2,17 @@ package com.co.edu.cun.www1104379214.bienestarcun.WebServices.Interface;
 
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ContentResults.ResponseContent;
 
+import org.apache.http.entity.mime.content.ContentBody;
+
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 
 /**
  * Created by Satellite on 4/10/2016.
@@ -35,5 +42,12 @@ public interface AdminCircles {
     Call<ResponseContent> delItinerario(@Field("user") String user,
                                         @Field("token") String token,
                                         @Field("idItinerario") int idItinerario );
+
+    @Multipart
+    @POST("SaveEvidencia")//Subir imagen al servidor
+    Call<ResponseContent> SaveEvidencia( @Part("itinerario") RequestBody itinerario,
+                                         @Part("user") RequestBody user,
+                                         @Part("token") RequestBody token,
+                                         @Part MultipartBody.Part file );
 
 }

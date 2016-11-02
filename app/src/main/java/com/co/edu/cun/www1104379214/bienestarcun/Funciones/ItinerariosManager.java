@@ -67,7 +67,7 @@ public class ItinerariosManager {
         if( INSTANCE == 1)
             fragment =  AsistenciaCircleActivities.newInstance(DB, idCircle, idItinerario);
         else if( INSTANCE == 2)
-            fragment =  EvidenciasActivities.newInstance(idCircle, idItinerario);
+            fragment =  EvidenciasActivities.newInstance(DB, idCircle, idItinerario);
 
 
         if ( fragment != null ) {
@@ -132,7 +132,7 @@ public class ItinerariosManager {
                     }
 
                 }else{
-                    Log.i( mss.TAG1, data.getBody().toString() );
+                    Log.i( mss.TAG, data.getBody().toString() );
                 }
 
 
@@ -141,7 +141,7 @@ public class ItinerariosManager {
             @Override
             public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
-                Log.e( mss.TAG1, "error "+ t.toString());
+                Log.e( mss.TAG, "error "+ t.toString());
 
             }
         });
@@ -250,12 +250,12 @@ public class ItinerariosManager {
 
                         }else{
 
-                            Log.i( mss.TAG1, data.getBody().toString() );
+                            Log.i( mss.TAG, data.getBody().toString() );
 
                         }
 
                     }else{
-                        Log.i( mss.TAG1, data.getBody().toString() );
+                        Log.i( mss.TAG, data.getBody().toString() );
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -270,7 +270,7 @@ public class ItinerariosManager {
             @Override
             public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
-                Log.e( mss.TAG1, "error "+ t.toString());
+                Log.e( mss.TAG, "error "+ t.toString());
 
             }
         });
@@ -312,7 +312,7 @@ public class ItinerariosManager {
                                 Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
 
                     }else{
-                        Log.i( mss.TAG1, data.getBody().toString() );
+                        Log.i( mss.TAG, data.getBody().toString() );
                     }
 
                 } catch (JSONException e) {
@@ -328,7 +328,7 @@ public class ItinerariosManager {
             @Override
             public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
-                Log.e( mss.TAG1, "error "+ t.toString());
+                Log.e( mss.TAG, "error "+ t.toString());
 
             }
         });

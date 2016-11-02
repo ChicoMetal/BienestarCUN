@@ -107,14 +107,14 @@ public class ServicesPeticion {
 
                 ResponseContent data = response.body();
 
-                Log.i( mss.TAG1, "error "+ data.getBody().toString() );
+                Log.i( mss.TAG, "error "+ data.getBody().toString() );
 
             }
 
             @Override
             public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
-                Log.e( mss.TAG1, "error "+ t.toString());
+                Log.e( mss.TAG, "error "+ t.toString());
 
             }
         });
@@ -156,7 +156,7 @@ public class ServicesPeticion {
 
                     }else{
 
-                        Log.i( mss.TAG1, data.getBody().toString() );
+                        Log.i( mss.TAG, data.getBody().toString() );
                     }
 
                 } catch (JSONException e) {
@@ -171,7 +171,7 @@ public class ServicesPeticion {
             @Override
             public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
-                Log.e( mss.TAG1, "error "+ t.toString());
+                Log.e( mss.TAG, "error "+ t.toString());
 
             }
         });
@@ -213,7 +213,7 @@ public class ServicesPeticion {
 
                     if( msm.getString(0).toString().equals("msm") )
 
-                        Log.e( mss.TAG1, "Respuesta al guardar debug: "+
+                        Log.e( mss.TAG, "Respuesta al guardar debug: "+
                                 mss.msmServices.getString( msm.getString(1).toString() ) );
 
                 } catch (JSONException e1) {
@@ -226,7 +226,7 @@ public class ServicesPeticion {
             @Override
             public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
-                Log.e( mss.TAG1, "Error en la peticion al hacer debug "+ t.toString());
+                Log.e( mss.TAG, "Error en la peticion al hacer debug "+ t.toString());
 
             }
         });

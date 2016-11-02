@@ -110,7 +110,7 @@ public class NewItinerarioManager {
             @Override
             public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
-                Log.e( mss.TAG1, "error "+ t.toString());
+                Log.e( mss.TAG, "error "+ t.toString());
 
             }
         });
@@ -133,7 +133,7 @@ public class NewItinerarioManager {
 
             }else{
 
-                Log.i( mss.TAG1,data.getBody().toString() );
+                Log.i( mss.TAG,data.getBody().toString() );
 
             }
 

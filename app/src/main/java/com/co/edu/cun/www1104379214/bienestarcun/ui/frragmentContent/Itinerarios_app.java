@@ -183,7 +183,7 @@ public class Itinerarios_app extends Fragment {
             @Override
             public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
-                Log.e( mss.TAG1, "error "+ t.toString());
+                Log.e( mss.TAG, "error "+ t.toString());
 
                 pDialog.dismiss();
 

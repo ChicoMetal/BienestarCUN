@@ -180,7 +180,7 @@ public class ChatPendientes extends Fragment {
             @Override
             public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
-                Log.e( mss.TAG1, "Error "+ t.toString());
+                Log.e( mss.TAG, "Error "+ t.toString());
 
                 pDialog.dismiss();
 

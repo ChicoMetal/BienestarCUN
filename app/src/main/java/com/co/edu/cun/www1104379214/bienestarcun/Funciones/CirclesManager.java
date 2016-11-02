@@ -2,7 +2,6 @@ package com.co.edu.cun.www1104379214.bienestarcun.Funciones;
 
 
 import android.content.Context;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,8 +17,7 @@ import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServerUri;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
 import com.co.edu.cun.www1104379214.bienestarcun.ui.frragmentContent.Show_itinerario_circle;
 import org.json.JSONException;
-import org.json.JSONObject;
-import java.util.concurrent.ExecutionException;
+
 import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
@@ -82,7 +80,7 @@ public class CirclesManager {
             @Override
             public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
-                Log.e( mss.TAG1, "error "+ t.toString());
+                Log.e( mss.TAG, "error "+ t.toString());
 
             }
         });
@@ -120,7 +118,7 @@ public class CirclesManager {
             @Override
             public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
-                Log.e( mss.TAG1, "error "+ t.toString());
+                Log.e( mss.TAG, "error "+ t.toString());
 
             }
         });
@@ -159,7 +157,7 @@ public class CirclesManager {
 
             }else{
 
-                Log.i( mss.TAG1, data.getBody().toString() );
+                Log.i( mss.TAG, data.getBody().toString() );
 
             }
 

@@ -185,7 +185,7 @@ public class Show_itinerario_circle extends Fragment {
             @Override
             public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
-                Log.e( mss.TAG1, "error "+ t.toString());
+                Log.e( mss.TAG, "error "+ t.toString());
 
                 pDialog.dismiss();
 
@@ -267,7 +267,7 @@ public class Show_itinerario_circle extends Fragment {
                     }
 
                 }else{
-                    Log.i( mss.TAG1, data.getBody().toString() );
+                    Log.i( mss.TAG, data.getBody().toString() );
                 }
 
 
@@ -276,7 +276,7 @@ public class Show_itinerario_circle extends Fragment {
             @Override
             public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
-                Log.e( mss.TAG1, "error "+ t.toString());
+                Log.e( mss.TAG, "error "+ t.toString());
 
             }
         });

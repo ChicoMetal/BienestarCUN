@@ -13,7 +13,7 @@ public class Constantes {
     //*************************************Constantes
     //*************************************
 
-    public static final String TAG1 = "CONTROL";
+    public static final String TAG = "CONTROL";
 
     public static final String UsrSuperAd = "1111";
     public static final String UsrAd = "1110";
@@ -148,6 +148,7 @@ public class Constantes {
     public final static String ITINERARIO_ASISTENCIA_TRUE = "111";
     public final static String ITINERARIO_ASISTENCIA_FALSE = "000";
     public static final int TIME_LIMIT_WAIT_SERVER = 10;
+    public static final int TIME_LIMIT_WAIT_SERVER_LONG = 50;
 
 
 

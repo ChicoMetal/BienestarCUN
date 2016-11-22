@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
                 title = getResources().getString(R.string.item_desarrolladores);
                 break;
             case R.id.action_help:
-                fragment =  Help.newInstance();
+                fragment =  Help.newInstance( code );
                 title = getResources().getString(R.string.item_ayuda);
                 break;
         }

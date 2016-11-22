@@ -1,14 +1,354 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     tools:context=".ui.frragmentContent.Help"
-    android:id="@+id/content_information_help">
+    android:id="@+id/content_information_help"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="ayuda"
-        android:textSize="50sp" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/help_general">
 
-</FrameLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text01_ayuda"
+                android:textSize="20sp"
+                android:padding="15dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text1_ayuda"
+                android:textSize="20sp"
+                android:padding="15dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text2_ayuda"
+                android:textSize="20sp"
+                android:padding="15dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text3_title_ayuda"
+                android:textSize="20sp"
+                android:textStyle="normal|bold"
+                android:elevation="1dp"
+                android:layout_marginTop="20dp"
+                android:paddingLeft="15dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text3_ayuda"
+                android:textSize="20sp"
+                android:padding="15dp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/help_activities"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text4_title_ayuda"
+                android:textSize="20sp"
+                android:textStyle="normal|bold"
+                android:elevation="1dp"
+                android:layout_marginTop="20dp"
+                android:paddingLeft="15dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text4_ayuda"
+                android:textSize="20sp"
+                android:padding="15dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text5_title_ayuda"
+                android:textSize="20sp"
+                android:textStyle="normal|bold"
+                android:elevation="1dp"
+                android:layout_marginTop="20dp"
+                android:paddingLeft="15dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text5_ayuda"
+                android:textSize="20sp"
+                android:padding="15dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text6_title_ayuda"
+                android:textSize="20sp"
+                android:textStyle="normal|bold"
+                android:elevation="1dp"
+                android:layout_marginTop="20dp"
+                android:paddingLeft="15dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text6_ayuda"
+                android:textSize="20sp"
+                android:padding="15dp" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/help_desertion"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text7_title_ayuda"
+                android:textSize="20sp"
+                android:textStyle="normal|bold"
+                android:elevation="1dp"
+                android:layout_marginTop="20dp"
+                android:paddingLeft="15dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text7_ayuda"
+                android:textSize="20sp"
+                android:padding="15dp" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/help_laboral"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text8_title_ayuda"
+                android:textSize="20sp"
+                android:textStyle="normal|bold"
+                android:elevation="1dp"
+                android:layout_marginTop="20dp"
+                android:paddingLeft="15dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text8_ayuda"
+                android:textSize="20sp"
+                android:padding="15dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text9_title_ayuda"
+                android:textSize="20sp"
+                android:textStyle="normal|bold"
+                android:elevation="1dp"
+                android:layout_marginTop="20dp"
+                android:paddingLeft="15dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text9_ayuda"
+                android:textSize="20sp"
+                android:padding="15dp" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/help_notification"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text10_title_ayuda"
+                android:textSize="20sp"
+                android:textStyle="normal|bold"
+                android:elevation="1dp"
+                android:layout_marginTop="20dp"
+                android:paddingLeft="15dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text10_ayuda"
+                android:textSize="20sp"
+                android:padding="15dp" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/help_psicologia"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text11_title_ayuda"
+                android:textSize="20sp"
+                android:textStyle="normal|bold"
+                android:elevation="1dp"
+                android:layout_marginTop="20dp"
+                android:paddingLeft="15dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text11_ayuda"
+                android:textSize="20sp"
+                android:padding="15dp" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/help_psicologia_complement"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text11_complement_ayuda"
+                android:textSize="20sp"
+                android:padding="15dp" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/help_admin_circle"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text12_title_ayuda"
+                android:textSize="20sp"
+                android:textStyle="normal|bold"
+                android:elevation="1dp"
+                android:layout_marginTop="20dp"
+                android:paddingLeft="15dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text12_ayuda"
+                android:textSize="20sp"
+                android:padding="15dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text13_title_ayuda"
+                android:textSize="20sp"
+                android:textStyle="normal|bold"
+                android:elevation="1dp"
+                android:layout_marginTop="20dp"
+                android:paddingLeft="15dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text13_ayuda"
+                android:textSize="20sp"
+                android:padding="15dp" />
+
+            <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/text14_title_ayuda"
+            android:textSize="20sp"
+            android:textStyle="normal|bold"
+            android:elevation="1dp"
+            android:layout_marginTop="20dp"
+            android:paddingLeft="15dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text14_ayuda"
+                android:textSize="20sp"
+                android:padding="15dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text15_title_ayuda"
+                android:textSize="20sp"
+                android:textStyle="normal|bold"
+                android:elevation="1dp"
+                android:layout_marginTop="20dp"
+                android:paddingLeft="15dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text15_ayuda"
+                android:textSize="20sp"
+                android:padding="15dp" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/help_session">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text16_title_ayuda"
+                android:textSize="20sp"
+                android:textStyle="normal|bold"
+                android:elevation="1dp"
+                android:layout_marginTop="20dp"
+                android:paddingLeft="15dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text16_ayuda"
+                android:textSize="20sp"
+                android:padding="15dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text17_title_ayuda"
+                android:textSize="20sp"
+                android:textStyle="normal|bold"
+                android:elevation="1dp"
+                android:layout_marginTop="20dp"
+                android:paddingLeft="15dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text17_ayuda"
+                android:textSize="20sp"
+                android:padding="15dp" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>
+

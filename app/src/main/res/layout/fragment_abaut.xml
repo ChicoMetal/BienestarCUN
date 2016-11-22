@@ -5,10 +5,26 @@
     tools:context=".ui.frragmentContent.Abaut"
     android:id="@+id/content_information_about">
 
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="sobre esta app"
-        android:textSize="50sp" />
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text_content_ebaut"
+                android:textSize="25sp"
+                android:textAlignment="textStart"
+                android:padding="15dp"
+                android:layout_gravity="center_vertical" />
+        </LinearLayout>
+    </ScrollView>
 
 </FrameLayout>

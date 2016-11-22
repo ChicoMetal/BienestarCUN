@@ -1,14 +1,105 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.frragmentContent.Developers"
     android:id="@+id/content_information_developers">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Developers"
-        android:textSize="50sp" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="clip_horizontal"
+        android:layout_marginTop="50dp"
+        android:weightSum="1">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:gravity="clip_horizontal"
+            android:layout_marginTop="20dp"
+            android:weightSum="1">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/image_develop"
+                android:layout_width="@dimen/profile_image_develop"
+                android:layout_height="@dimen/profile_image_develop"
+                android:layout_marginBottom="16dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/perfil_develop"
+                app:border_color="@android:color/white"
+                app:border_width="1dp"
+                android:layout_gravity="center_horizontal" />
+
+            <TextView
+                android:layout_width="363dp"
+                android:layout_height="wrap_content"
+                android:text="@string/lb_develop"
+                android:textSize="20sp"
+                android:layout_weight="0.80"
+                android:gravity="center_horizontal" />
+            <TextView
+                android:layout_width="363dp"
+                android:layout_height="wrap_content"
+                android:text="@string/lb_tarea_develop"
+                android:textSize="15sp"
+                android:layout_weight="0.80"
+                android:gravity="center_horizontal" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:gravity="clip_horizontal"
+            android:layout_marginTop="20dp"
+            android:weightSum="1">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/image_accesor"
+                android:layout_width="@dimen/profile_image_develop"
+                android:layout_height="@dimen/profile_image_develop"
+                android:layout_marginBottom="16dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/perfil_accesor"
+                app:border_color="@android:color/white"
+                app:border_width="1dp"
+                android:layout_gravity="center_horizontal" />
+
+            <TextView
+                android:layout_width="363dp"
+                android:layout_height="wrap_content"
+                android:text="@string/lb_acesores"
+                android:layout_weight="0.80"
+                android:gravity="center_horizontal"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="363dp"
+                android:layout_height="wrap_content"
+                android:text="@string/lb_tarea_accesor"
+                android:layout_weight="0.80"
+                android:gravity="center_horizontal"
+                android:textSize="15sp" />
+            <TextView
+                android:layout_width="363dp"
+                android:layout_height="wrap_content"
+                android:text="@string/lb_tarea_accesor2"
+                android:layout_weight="0.80"
+                android:gravity="center_horizontal"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+
 
 </FrameLayout>

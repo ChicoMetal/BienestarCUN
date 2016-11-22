@@ -81,12 +81,103 @@
     <string name="atr_img_cun_home">img_cun_home</string>
     <string name="lb_title_chose_sede">Elije una de las sedes</string>
     <string name="btn_send_sede">btn_send_sede</string>
-    <string name="item_desarrolladores">Desarrolladores</string>
-    <string name="item_ayuda">Ayuda</string>
-    <string name="item_ebaut">Sobre esta app</string>
     <string name="hint_descripcion_desercion">Detalles del reporte</string>
     <string name="lb_chk_aun_continua">Aun continua?</string>
 
+
+    <string name="item_desarrolladores">Desarrolladores </string>
+    <string name="lb_develop">Carlos Andres Guzman A.</string>
+    <string name="lb_acesores">Wilson David Florez B.</string>
+    <string name="lb_tarea_develop">Desarrollador</string>
+    <string name="lb_tarea_accesor">Accesor de desarrollo</string>
+    <string name="lb_tarea_accesor2">Co-creador del proyecto</string>
+
+
+    <string name="item_ayuda"><p>
+        Ayuda
+    </p></string>
+    <string name="text01_ayuda"><p>
+        Esta app dado su estructura de desarrollo no emplea la opción “atrás” usada en los Smartphone, por lo que la navegación será a través del menú lateral izquierdo que estará disponible siempre que lo requiera, si usa la opción “atrás” mientras esta dentro de la aplicación, esta se cerrara.
+    </p></string>
+    <string name="text1_ayuda"><p>
+        La conectividad a internet es necesaria para el funcionamiento de la aplicación.
+    </p></string>
+    <string name="text2_ayuda"><p>
+        La versión recomendada de Android para el correcto funcionamiento de la aplicación es Android 4.5 o superior.
+    </p></string>
+    <string name="text3_title_ayuda">Actividades</string>
+    <string name="text3_ayuda"><p>
+        Corresponde a los talleres dictados por bienestar, entre los cuales esta música, danza, teatro etc.
+    </p></string>
+    <string name="text4_title_ayuda">+ Actividades</string>
+    <string name="text4_ayuda"><p>
+        Aquí podrá vincularse a las actividades que ofrece bienestar, de una forma sencilla, cuando ingrese se le mostraran un listado de opciones, de las cuales cada una corresponde a una de las actividades, solo debe tocar la que desee y una vez lo haga ya quedara inscrito, por lo que recibirá notificaciones privadas de esta en la sección notificaciones y estará incluido en el control de asistencia que se lleva a cabo en la misma y en cada evento que realicen como clases, presentaciones etc. Una vez elija la opción en la aplicación esta desaparecerá, ya que en este listado solo se muestran las actividades en las que no está inscrito aun.
+    </p></string>
+    <string name="text5_title_ayuda">- Actividades</string>
+    <string name="text5_ayuda"><p>
+        Aquí podrá desvincularse de las actividades a las que ha vinculado con anterioridad, de esta manera será excluido del control de asistencia y solo recibirá notificaciones de esta que estén abiertas al público, solo debe tocar en el listado la actividad de la que desee desvincularse; en esta sección aparecerán solo las actividades a las que se ha vinculado con anterioridad.
+    </p></string>
+    <string name="text6_title_ayuda">Ver itinerarios</string>
+    <string name="text6_ayuda"><p>
+        Aquí podrá ver itinerarios de las actividades a las que esté vinculado los cuales son encuentros propios de la actividad y a los que le corresponde asistir, una vez seleccione esta opción le aparecerá un listado con las diferentes actividades a las que esté vinculado, aquí deberá seleccionar una de las actividades solo con tocarla, cuando escoja la actividad que desee, le aparecerá otro listado donde cada una de los ítems corresponden a un itinerario y podrá observar la información pertinente.
+    </p></string>
+    <string name="text7_title_ayuda">Reportar deserción</string>
+    <string name="text7_ayuda"><p>
+        Esta sección es un pequeño formulario que está habilitada para los docentes, en esta podrá realizar reportes de estudiantes que no se estén presentando a clases y que posiblemente estén desertando de la universidad, esto se realiza para un posterior seguimiento realizado por bienestar y de esta manera tratar de evitar la deserción del estudiante, para la institución es muy importante reducir los índices de deserción.
+    </p></string>
+    <string name="text8_title_ayuda">Agregar experiencia</string>
+    <string name="text8_ayuda"><p>
+        Esta sección es un pequeño formulario en que podrá ingresar la información de una experiencia laboral, para la institución es muy importante conocer la situación laboral de sus egresados, solo debe ingresar el nombre de la empresa, el cargo ocupado, fecha de inicio y fin, en caso de aun continuar, solo seleccionar la opción “aun continua”; puede agregar tantas experiencias como desee.
+    </p></string>
+    <string name="text9_title_ayuda">Actualizar estado laboral</string>
+    <string name="text9_ayuda"><p>
+        Aquí podrá actualizar el estado laboral que tiene actualmente, solo debe escoger una de las dos opciones y es todo, puede cambiarlo siempre que desee.
+    </p></string>
+    <string name="text10_title_ayuda">Ver notificaciones </string>
+    <string name="text10_ayuda"><p>
+        Esta sección está habilitada para ver información sobre eventos de interés o cualquier información que bienestar quiera comunicar al público en general o especifico; también recibirá notificaciones de itinerarios creados para las actividades a las que esté vinculado; si lo desea podrá tocar una de estas notificaciones presentadas en listado para ocultarlas.
+    </p></string>
+    <string name="text11_title_ayuda">Psicología</string>
+    <string name="text11_ayuda"><p>
+        En esta sección se mostraran las personas que enviaron sus mensajes y que aún no han sido leídos, solo debe tocar un ítem que representa a una conversación y así se mostrara otra sección.
+    </p></string>
+    <string name="text11_complement_ayuda"><p>
+        Esta sección permite entablar una conversación momentánea entre la comunidad de la institución y la persona encargada del área de psicología, el funcionamiento es parecido a un sistema de mensajería, solo se escribe el mensaje, se envía y las respuestas se mostraran aquí mismo, cabe recalcar que no se mostrara historial de conversaciones y que se maneja un anonimato.
+    </p></string>
+    <string name="text12_title_ayuda">+ Itinerario</string>
+    <string name="text12_ayuda"><p>
+        Esta sección está disponible para crear cada uno de los itinerarios que se llevan a cabo dentro de la actividad que tiene a cargo en bienestar tales como clases, presentaciones, reuniones etc. Solo debe llenar los datos en el formulario, así el día de la fecha estipulada podrá tomar asistencia y subir las evidencias del itinerario creado; una vez creado el itinerario se les mostrara la notificación de este a los usuarios vinculados a la actividad.
+    </p></string>
+    <string name="text13_title_ayuda">- Itinerario</string>
+    <string name="text13_ayuda"><p>
+        Aquí podrá realizar la cancelación de un itinerario, al seleccionar la opción aparecerá un listado, que corresponde a cada uno de los itinerarios creados anteriormente y que están pendientes, solo debe tocar el que desee cancelar y listo; una vez cancelado el itinerario se le mostrara una notificación a los usuarios vinculados a la actividad.
+    </p></string>
+    <string name="text14_title_ayuda">Asistencia</string>
+    <string name="text14_ayuda"><p>
+        En esta sección podrá llevar a cabo el control de asistencia de los itinerario pendientes, una vez seleccione la opción se le mostrar un listado con los datos de los itinerarios pendientes para la fecha actual, solo debe tocar al que desee tomar asistencia, de esta forma aparecerá otra sección en la que se mostraran los usuarios que están vinculados a la actividad y que les corresponde asistir, solo debe tocar los nombres de los que están presente, dar enviar y es todo, podrá reenviar la asistencia las veces que sea necesario pero solo podrá hacerlo el día correspondiente al itinerario.
+    </p></string>
+    <string name="text15_title_ayuda">Evidencias</string>
+    <string name="text15_ayuda"><p>
+        Aquí podrá subir las imágenes tomadas como evidencia de los itinerarios que estén pendientes, una vez seleccione la opción se le mostrara un listado con los datos de los itinerarios pendientes para la fecha actual, solo debe tocar al que desee subir las evidencia, de esta forma aparecerá otra sección en la que se muestra una opción con la cámara para tomar la foto, cuando se realice esto la imagen se mostrara dentro de la aplicación y podrá enviarla, puede enviar las imágenes que desee pero debe hacerse una, además solo podrá hacerlo el día correspondiente al itinerario.
+    </p></string>
+    <string name="text16_title_ayuda">Ingresar</string>
+    <string name="text16_ayuda"><p>
+        Aquí podrá ingresar su usuario y contraseña para acceder a más funcionalidades de la aplicación, para activar su usuario debe registrar sus datos en un formulario y esperar la aprobación y activación del encargado de bienestar, para conocer la ubicación de dicho formulario, solicitarla en bienestar; los usuario solo serán asignados a personas vinculadas directamente a la institución, estudiantes, egresados, docentes etc.
+    </p></string>
+    <string name="text17_title_ayuda">Salir</string>
+    <string name="text17_ayuda"><p>
+        Cierra la sesión del usuario, también borrara los datos registrados en el teléfono.
+    </p></string>
+
+
+
+
+    <string name="item_ebaut"><p>
+        Sobre esta app
+    </p></string>
+    <string name="text_content_ebaut"><p>
+        Esta aplicación esta diseña para contribuir en el mejoramiento de los procesos del área de bienestar universitario, elaborada en una plataforma móvil para una mayor versatilidad en su implementación y uso, facilitando el flujo de información dentro de esta área, con un diseño simple que permite un manejo fácil y rápido, integrando los procesos llevados a cabo para su complementación, la implementación de esta herramienta ayudara al fortalecimiento de aspectos claves que en la actualidad no se les da la atención que requieren realmente y también para una mayor comodidad para aquellas personas vinculadas de una u otra manera a la institución.
+    </p></string>
 
 
 

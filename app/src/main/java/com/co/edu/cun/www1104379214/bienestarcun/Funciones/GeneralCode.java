@@ -190,6 +190,50 @@ public class GeneralCode {
     }
     //</editor-fold>
 
+    //<editor-fold desc="Obtener el tipo de usuario">
+    public  String GetTipeUser(){
+
+        String TipeUser="";
+
+        String[] camposSeacrh = new String[]{
+                DB.CN_TIPE_USER,
+        };
+
+        userSearch = new TaskExecuteSQLSearch(DB.TABLE_NAME_USER,
+                camposSeacrh,
+                CONTEXTO,
+                DB
+        ); //busqueda
+
+        try {
+
+            Cursor result = userSearch.execute().get();
+
+            JSONObject jsonUser = new AdapterUserMenu(CONTEXTO, DB)
+                    .CreateObjectResultSQL(result, camposSeacrh);
+
+            if ( jsonUser.length() > 0 ){
+
+                TipeUser = (String) jsonUser.getJSONObject( "ROW0").get(DB.CN_TIPE_USER);
+
+                return TipeUser;
+
+            }
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }catch (Exception e){
+            new ServicesPeticion().SaveError(e,
+                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                    this.getClass().getName());//Envio la informacion de la excepcion al server
+        }
+
+        return TipeUser;
+    }
+    //</editor-fold>
+
     //<editor-fold desc="procesa la respuesta enviada del server">
     private void ValidateResponse(ResponseContent data, TextView ContentNameUser, String idUser) {
 

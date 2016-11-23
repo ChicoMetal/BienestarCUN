@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.Notification;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 public class HypedNotificationsAdapter extends RecyclerView.Adapter<HypedNotificationsAdapter.HypedNotificationsViewHolder> {
 
     ArrayList<NotificationsList> notifications;
-
+    IconManager icons = new IconManager();
     Context context;
     DBManager DB;
 
@@ -106,7 +107,7 @@ public class HypedNotificationsAdapter extends RecyclerView.Adapter<HypedNotific
 
             //instancio componentes de las card
             vistaItem = (CardView) itemView;
-            imgcard = (ImageView) itemView.findViewById( R.id.img_activities);
+            imgcard = (ImageView) itemView.findViewById( R.id.img_notifications);
             dateNotification = (TextView) itemView.findViewById(R.id.txt_date_notification);
             circleNotification = (TextView) itemView.findViewById(R.id.txt_circle_notification);
             statusNotification = (TextView) itemView.findViewById(R.id.txt_status_notification);
@@ -121,6 +122,7 @@ public class HypedNotificationsAdapter extends RecyclerView.Adapter<HypedNotific
                                           String detailNotification1) {
 
             //asigno los valores a los compnentes de las card
+            icons.SetBackgroundCards(imgcard);
             vistaItem.setId(Integer.parseInt(idNotification1));
             dateNotification.setText(dateNotification1);
             circleNotification.setText(circleNotification1);

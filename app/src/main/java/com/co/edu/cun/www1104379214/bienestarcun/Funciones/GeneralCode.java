@@ -282,6 +282,7 @@ public class GeneralCode {
             final Dialog dialog = new Dialog(activity);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(R.layout.activity_chose_sede);
+            dialog.setCancelable(false);
 
             lista = (Spinner) dialog.findViewById(R.id.lista_sedes);
             BtnChoseSede = (ImageButton) dialog.findViewById(R.id.btn_send_sede);

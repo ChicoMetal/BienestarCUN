@@ -1,0 +1,56 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.frragmentContent.LaboralStatus"
+    android:id="@+id/contentStatusLaboral">
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:padding="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/lb_cuestion_laboralEstatus"
+            android:id="@+id/textView"
+            android:textSize="30sp" />
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/rbg_statusLaboral"
+            android:layout_marginTop="5dp">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rb_yes"
+                android:id="@+id/rbStatusYes"
+                android:layout_marginRight="5dp"
+                android:textSize="30sp" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rb_not"
+                android:id="@+id/rbStatusNot"
+                android:textSize="30sp" />
+        </RadioGroup>
+
+        <ImageButton
+            android:layout_width="400dp"
+            android:layout_height="35dp"
+            android:id="@+id/btnUpdateStatusLaboral"
+            android:background="@color/backgroundBotton"
+            android:layout_marginTop="5dp"
+            android:contentDescription="@string/btn_status_laboral_update"
+            android:src="@mipmap/ic_btn_send"
+            android:scaleType="fitCenter" />
+    </LinearLayout>
+
+</FrameLayout>

@@ -203,7 +203,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:id="@+id/help_psicologia"
+            android:id="@+id/help_psicologia_title"
             android:visibility="gone">
 
             <TextView
@@ -215,6 +215,15 @@
                 android:elevation="1dp"
                 android:layout_marginTop="20dp"
                 android:paddingLeft="15dp" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/help_psicologia"
+            android:visibility="gone">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -325,6 +334,7 @@
                 android:elevation="1dp"
                 android:layout_marginTop="20dp"
                 android:paddingLeft="15dp" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

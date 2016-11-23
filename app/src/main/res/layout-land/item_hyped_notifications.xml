@@ -5,11 +5,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
     app:cardBackgroundColor="@color/colorPrimaryDark"
     app:cardCornerRadius="4dp"
     app:cardElevation="4dp"
-    android:padding="2dp">
+    android:padding="2dp"
+    android:layout_height="240dp">
 
     <ImageView
         android:id="@+id/img_notifications"
@@ -27,7 +27,7 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="6"
             android:layout_column="0"
             android:layout_marginRight="1dp">
 
@@ -74,7 +74,7 @@
             android:textColor="@color/textWhite"
             android:gravity="center"
             android:layout_column="1"
-            android:layout_weight="1"
+            android:layout_weight="4"
             android:padding="5dp" />
 
 

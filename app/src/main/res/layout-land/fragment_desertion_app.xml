@@ -1,0 +1,97 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.frragmentContent.Desertion_app"
+    android:id="@+id/contentDesertion">
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="top"
+        android:layout_marginTop="30dp"
+        android:padding="5dp">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:id="@+id/et_idDesertor"
+                android:hint="@string/desertion_txt_id"
+                android:layout_marginTop="10dp"
+                android:background="@color/BackgroundEDText" />
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/BackgroundEDText"
+                android:id="@+id/listFacultades" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginLeft="10dp">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:ems="10"
+                android:id="@+id/edt_description_desertioen"
+                android:hint="@string/hint_descripcion_desercion"
+                android:background="@color/BackgroundEDText"
+                android:layout_marginTop="5dp"
+                android:lines="5"
+                android:gravity="start"
+                android:layout_weight="1" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:id="@+id/rbg_horario"
+                android:layout_weight="2"
+                android:gravity="top|center">
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/desertion_rb_txtnocturne"
+                    android:id="@+id/rb_nocturne"
+                    android:layout_marginRight="10dp" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/desertion_rb_txtdiurno"
+                    android:id="@+id/rb_Diurno" />
+            </RadioGroup>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ImageButton
+        android:layout_width="400dp"
+        android:layout_height="35dp"
+        android:id="@+id/btn_sendDesertion"
+        android:background="@color/backgroundBotton"
+        android:contentDescription="@string/ibt_sendDesertion"
+        android:layout_marginTop="10dp"
+        android:src="@mipmap/ic_btn_send"
+        android:scaleType="fitCenter"
+        android:layout_gravity="bottom|center_horizontal" />
+
+</FrameLayout>

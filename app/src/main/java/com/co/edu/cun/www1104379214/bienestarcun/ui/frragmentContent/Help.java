@@ -21,7 +21,7 @@ public class Help extends Fragment {
     static GeneralCode CODE;
 
     LinearLayout activities, desertion, laboral,
-            notification, psicologia, psicologia_complement, admin_activities;
+            notification, psicologia_title, psicologia, psicologia_complement, admin_activities;
 
     public Help() {
         // Required empty public constructor
@@ -53,6 +53,7 @@ public class Help extends Fragment {
         desertion = (LinearLayout) root.findViewById( R.id.help_desertion );
         laboral = (LinearLayout) root.findViewById( R.id.help_laboral );
         notification = (LinearLayout) root.findViewById( R.id.help_notification );
+        psicologia_title = (LinearLayout) root.findViewById( R.id.help_psicologia_title );
         psicologia = (LinearLayout) root.findViewById( R.id.help_psicologia );
         psicologia_complement = (LinearLayout) root.findViewById( R.id.help_psicologia_complement );
         admin_activities = (LinearLayout) root.findViewById( R.id.help_admin_circle );
@@ -116,6 +117,7 @@ public class Help extends Fragment {
         desertion.setVisibility(getView().VISIBLE );
         laboral.setVisibility(getView().VISIBLE );
         notification.setVisibility(getView().VISIBLE );
+        psicologia_title.setVisibility(getView().VISIBLE );
         psicologia.setVisibility(getView().VISIBLE );
         psicologia_complement.setVisibility(getView().VISIBLE );
         admin_activities.setVisibility(getView().VISIBLE );
@@ -126,8 +128,9 @@ public class Help extends Fragment {
         desertion.setVisibility(getView().GONE );
         laboral.setVisibility(getView().GONE );
         notification.setVisibility(getView().VISIBLE );
+        psicologia_title.setVisibility(getView().VISIBLE );
         psicologia.setVisibility(getView().GONE );
-        psicologia_complement.setVisibility(getView().GONE );
+        psicologia_complement.setVisibility(getView().VISIBLE );
         admin_activities.setVisibility(getView().VISIBLE );
     }
 
@@ -136,6 +139,7 @@ public class Help extends Fragment {
         desertion.setVisibility(getView().VISIBLE );
         laboral.setVisibility(getView().GONE );
         notification.setVisibility(getView().VISIBLE );
+        psicologia_title.setVisibility(getView().VISIBLE );
         psicologia.setVisibility(getView().GONE );
         psicologia_complement.setVisibility(getView().VISIBLE );
         admin_activities.setVisibility(getView().GONE );
@@ -146,6 +150,7 @@ public class Help extends Fragment {
         desertion.setVisibility(getView().GONE );
         laboral.setVisibility(getView().GONE );
         notification.setVisibility(getView().VISIBLE );
+        psicologia_title.setVisibility(getView().VISIBLE );
         psicologia.setVisibility(getView().VISIBLE );
         psicologia_complement.setVisibility(getView().VISIBLE );
         admin_activities.setVisibility(getView().GONE );
@@ -156,6 +161,7 @@ public class Help extends Fragment {
         desertion.setVisibility(getView().GONE );
         laboral.setVisibility(getView().VISIBLE);
         notification.setVisibility(getView().VISIBLE);
+        psicologia_title.setVisibility(getView().VISIBLE );
         psicologia.setVisibility(getView().GONE );
         psicologia_complement.setVisibility(getView().VISIBLE );
         admin_activities.setVisibility(getView().GONE );
@@ -166,6 +172,7 @@ public class Help extends Fragment {
         desertion.setVisibility(getView().GONE );
         laboral.setVisibility(getView().GONE );
         notification.setVisibility(getView().VISIBLE );
+        psicologia_title.setVisibility(getView().VISIBLE );
         psicologia.setVisibility(getView().GONE );
         psicologia_complement.setVisibility(getView().VISIBLE );
         admin_activities.setVisibility(getView().GONE );
@@ -177,6 +184,7 @@ public class Help extends Fragment {
         desertion.setVisibility(getView().GONE );
         laboral.setVisibility(getView().GONE );
         notification.setVisibility(getView().VISIBLE );
+        psicologia_title.setVisibility(getView().GONE );
         psicologia.setVisibility(getView().GONE );
         psicologia_complement.setVisibility(getView().GONE );
         admin_activities.setVisibility(getView().GONE );

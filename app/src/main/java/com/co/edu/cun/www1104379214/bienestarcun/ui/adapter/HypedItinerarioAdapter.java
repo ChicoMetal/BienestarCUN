@@ -135,7 +135,7 @@ public class HypedItinerarioAdapter extends RecyclerView.Adapter<HypedItinerario
                                         String details) {
 
             //asigno los valores a los compnentes de las card
-            icons.SetIconCardsItinerarios(imgcard);
+            icons.SetBackgroundCards(imgcard);
             vistaItem.setId(Integer.parseInt(idItinerario));
             itinerarioName.setText(name);
             itinerarioDate.setText(date);

@@ -1,0 +1,109 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.frragmentContent.CircleAdministration_app"
+    android:id="@+id/contentCircleAdmin">
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:layout_gravity="top">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:layout_weight="1"
+            android:gravity="bottom">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:id="@+id/txtNameActivitieNew"
+                android:hint="@string/txt_name_itinerario"
+                android:background="@color/BackgroundEDText"
+                android:layout_marginTop="3dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:id="@+id/textView4"
+                android:text="@string/lb_dateItinerario"
+                android:layout_marginTop="10dp" />
+
+            <TimePicker
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/pickerHoraNewItinerario"
+                android:timePickerMode="spinner" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginLeft="10dp"
+            android:gravity="center_vertical">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:inputType="textMultiLine"
+                android:scrollbars="vertical"
+                android:lines="4"
+                android:ems="10"
+                android:id="@+id/txtDetailNewActiviti"
+                android:hint="@string/txt_details_itinerario"
+                android:background="@color/BackgroundEDText"
+                android:layout_marginTop="3dp"
+                android:gravity="start"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:id="@+id/textView5"
+                android:text="@string/lb_hourItinerario"
+                android:layout_marginTop="20dp" />
+
+            <DatePicker
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/pickerFechaNewItinerario"
+                android:layout_gravity="center_horizontal"
+                android:datePickerMode="spinner"
+                android:calendarViewShown="false" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal">
+
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:text="@string/txt_btn_additinerario"
+            android:id="@+id/btnAddNewItinerario"
+            android:layout_gravity="bottom|center_horizontal"
+            android:background="@color/backgroundBotton"
+            android:layout_marginBottom="3dp"
+            android:src="@mipmap/ic_btn_send"
+            android:contentDescription="@string/atr_send_itinerario_activitie"
+            android:scaleType="fitCenter"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+
+</FrameLayout>

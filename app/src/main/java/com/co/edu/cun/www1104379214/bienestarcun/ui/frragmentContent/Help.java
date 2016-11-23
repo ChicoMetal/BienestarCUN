@@ -60,7 +60,8 @@ public class Help extends Fragment {
         AdapterHelpView();
         
         IconManager icon = new IconManager();
-        icon.setBackgroundApp((FrameLayout)root.findViewById(R.id.content_information_help));
+        icon.setBackgroundApp(getActivity().getResources(),
+                (FrameLayout)root.findViewById(R.id.content_information_help));
         return root;
 
         

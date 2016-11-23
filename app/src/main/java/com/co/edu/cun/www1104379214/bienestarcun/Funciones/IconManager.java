@@ -1,5 +1,7 @@
 package com.co.edu.cun.www1104379214.bienestarcun.Funciones;
 
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.support.design.widget.NavigationView;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -52,16 +54,29 @@ public class IconManager {
     }
 
 
-    public void setBackgroundApp(FrameLayout main_content) {
-        main_content.setBackgroundResource(R.drawable.background);
+    public void setBackgroundApp(Resources recurso, FrameLayout main_content) {
+        if (recurso.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            main_content.setBackgroundResource(R.drawable.fondonew_landascape);
+        }else{
+            main_content.setBackgroundResource(R.drawable.background);
+        }
     }
 
-    public void setBackgroundApp(RelativeLayout main_content) {
-        main_content.setBackgroundResource(R.drawable.background);
+    public void setBackgroundApp(Resources recurso,RelativeLayout main_content) {
+        if (recurso.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            main_content.setBackgroundResource(R.drawable.fondonew_landascape);
+        }else{
+            main_content.setBackgroundResource(R.drawable.background);
+        }
+
     }
 
-    public void setBackgroundApp(LinearLayout main_content) {
-        main_content.setBackgroundResource(R.drawable.background);
+    public void setBackgroundApp(Resources recurso,LinearLayout main_content) {
+        if (recurso.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            main_content.setBackgroundResource(R.drawable.fondonew_landascape);
+        }else{
+            main_content.setBackgroundResource(R.drawable.background);
+        }
     }
 
 

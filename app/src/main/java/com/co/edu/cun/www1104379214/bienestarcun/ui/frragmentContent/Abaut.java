@@ -1,5 +1,6 @@
 package com.co.edu.cun.www1104379214.bienestarcun.ui.frragmentContent;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,7 +15,6 @@ import com.co.edu.cun.www1104379214.bienestarcun.R;
 public class Abaut extends Fragment {
 
     private OnFragmentInteractionListener mListener;
-
     public Abaut() {
         // Required empty public constructor
     }
@@ -23,7 +23,6 @@ public class Abaut extends Fragment {
     public static Abaut newInstance() {
         Abaut fragment = new Abaut();
         Bundle args = new Bundle();
-
         fragment.setArguments(args);
         return fragment;
     }
@@ -41,7 +40,8 @@ public class Abaut extends Fragment {
         View root = inflater.inflate(R.layout.fragment_abaut, container, false);
 
         IconManager icon = new IconManager();
-        icon.setBackgroundApp((FrameLayout)root.findViewById(R.id.content_information_about));
+        icon.setBackgroundApp(getActivity().getResources(),
+                (FrameLayout)root.findViewById(R.id.content_information_about));
         return root;
     }
 

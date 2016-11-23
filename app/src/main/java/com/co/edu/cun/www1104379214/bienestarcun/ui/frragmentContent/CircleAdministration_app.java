@@ -66,7 +66,8 @@ public class CircleAdministration_app extends Fragment implements View.OnClickLi
         btn.setOnClickListener(this);
 
         IconManager icon = new IconManager();
-        icon.setBackgroundApp((FrameLayout)root.findViewById(R.id.contentCircleAdmin));
+        icon.setBackgroundApp(getActivity().getResources(),
+                (FrameLayout)root.findViewById(R.id.contentCircleAdmin));
 
 
         return root;

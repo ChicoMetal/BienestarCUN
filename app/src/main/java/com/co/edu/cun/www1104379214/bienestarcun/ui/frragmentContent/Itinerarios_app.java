@@ -94,7 +94,8 @@ public class Itinerarios_app extends Fragment {
         code = new GeneralCode(DB, getActivity().getApplicationContext() );
 
         IconManager icon = new IconManager();
-        icon.setBackgroundApp((LinearLayout)root.findViewById(R.id.contentItinerarios));
+        icon.setBackgroundApp(getActivity().getResources(),
+                (LinearLayout)root.findViewById(R.id.contentItinerarios));
 
         SetudActivitiesList();
 

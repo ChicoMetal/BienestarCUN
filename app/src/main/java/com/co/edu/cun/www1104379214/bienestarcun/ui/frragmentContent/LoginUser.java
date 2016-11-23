@@ -62,7 +62,8 @@ public class LoginUser extends Fragment implements View.OnClickListener{
         btn.setOnClickListener(this);
 
         IconManager icon = new IconManager();
-        icon.setBackgroundApp((RelativeLayout) root.findViewById(R.id.contentLogin));
+        icon.setBackgroundApp(getActivity().getResources(),
+                (RelativeLayout) root.findViewById(R.id.contentLogin));
         return root;
     }
 

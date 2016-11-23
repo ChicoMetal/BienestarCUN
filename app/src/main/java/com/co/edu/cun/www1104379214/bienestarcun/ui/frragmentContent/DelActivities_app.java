@@ -90,7 +90,8 @@ public class DelActivities_app extends Fragment {
         code = new GeneralCode( DB, getActivity().getApplicationContext() );
 
         IconManager icon = new IconManager();
-        icon.setBackgroundApp((LinearLayout)root.findViewById(R.id.contentActivitiesListDel));
+        icon.setBackgroundApp(getActivity().getResources(),
+                (LinearLayout)root.findViewById(R.id.contentActivitiesListDel));
 
         SetudActivitiesList();
 

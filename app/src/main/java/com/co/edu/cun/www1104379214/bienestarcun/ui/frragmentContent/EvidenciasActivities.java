@@ -117,7 +117,8 @@ public class EvidenciasActivities extends Fragment implements View.OnClickListen
         camara.setOnClickListener(this);
 
         IconManager icon = new IconManager();
-        icon.setBackgroundApp((FrameLayout)root.findViewById(R.id.contentEvidencias));
+        icon.setBackgroundApp(getActivity().getResources(),
+                (FrameLayout)root.findViewById(R.id.contentEvidencias));
 
         TextView contentId = (TextView) root.findViewById(R.id.ItinerarioId);
         contentId.setText( ITINERARIO+"" );

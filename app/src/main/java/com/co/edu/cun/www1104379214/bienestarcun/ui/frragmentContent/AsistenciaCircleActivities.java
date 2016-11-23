@@ -57,7 +57,8 @@ public class AsistenciaCircleActivities extends Fragment {
 
         manager = new ItinerariosManager(DB, getActivity().getApplicationContext());
 
-        icon.setBackgroundApp((FrameLayout) root.findViewById(R.id.ContentAsistencias));
+        icon.setBackgroundApp(getActivity().getResources(),
+                (FrameLayout) root.findViewById(R.id.ContentAsistencias));
 
         manager.SearchListInscritos(
                 (LinearLayout) root.findViewById(R.id.contentListAsistentes),

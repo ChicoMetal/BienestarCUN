@@ -1,9 +1,10 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.frragmentContent.Help"
-    android:id="@+id/content_information_help"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:id="@+id/content_information_help">
+
 
     <LinearLayout
         android:layout_width="match_parent"

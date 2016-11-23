@@ -85,7 +85,8 @@ public class Notifications_app extends Fragment {
         notificaciones = new Notification( getActivity().getApplicationContext(), DB );
 
         IconManager icon = new IconManager();
-        icon.setBackgroundApp((LinearLayout)root.findViewById(R.id.contentNotifications));
+        icon.setBackgroundApp(getActivity().getResources(),
+                (LinearLayout)root.findViewById(R.id.contentNotifications));
 
         SetudNotificationList();
 

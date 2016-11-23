@@ -55,7 +55,8 @@ public class LaboralStatus extends Fragment implements View.OnClickListener{
         btn.setOnClickListener( this );
 
         IconManager icon = new IconManager();
-        icon.setBackgroundApp((FrameLayout)root.findViewById(R.id.contentStatusLaboral));
+        icon.setBackgroundApp(getActivity().getResources(),
+                (FrameLayout)root.findViewById(R.id.contentStatusLaboral));
 
         return root;
     }

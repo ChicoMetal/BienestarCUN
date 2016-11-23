@@ -42,7 +42,8 @@ public class Developers extends Fragment {
         View root = inflater.inflate(R.layout.fragment_developers, container, false);
 
         IconManager icon = new IconManager();
-        icon.setBackgroundApp((FrameLayout)root.findViewById(R.id.content_information_developers));
+        icon.setBackgroundApp(getActivity().getResources(),
+                (FrameLayout)root.findViewById(R.id.content_information_developers));
         return root;
 
     }

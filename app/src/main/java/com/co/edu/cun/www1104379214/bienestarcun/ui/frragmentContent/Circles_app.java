@@ -89,7 +89,8 @@ public class Circles_app extends Fragment {
 
         mHyperdActivitiesList = (RecyclerView) root.findViewById(R.id.hyper_activities_list);
         IconManager icon = new IconManager();
-        icon.setBackgroundApp((LinearLayout)root.findViewById(R.id.contentActivitiesList));
+        icon.setBackgroundApp(getActivity().getResources(),
+                (LinearLayout)root.findViewById(R.id.contentActivitiesList));
 
         SetudActivitiesList();
 

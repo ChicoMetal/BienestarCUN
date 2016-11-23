@@ -80,7 +80,8 @@ public class HistoryLaboral_app extends Fragment implements View.OnClickListener
         });//evento del checkbox
 
         IconManager icon = new IconManager();
-        icon.setBackgroundApp((FrameLayout)root.findViewById(R.id.contentHistoryLaboral));
+        icon.setBackgroundApp(getActivity().getResources(),
+                (FrameLayout)root.findViewById(R.id.contentHistoryLaboral));
         return root;
     }
 

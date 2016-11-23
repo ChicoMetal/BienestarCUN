@@ -1,8 +1,6 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.frragmentContent.Abaut"
     android:id="@+id/content_information_about">
 
     <ScrollView
@@ -10,21 +8,21 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="center_vertical"
-            android:layout_marginTop="20dp">
-
-            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/text_content_ebaut"
-                android:textSize="25sp"
-                android:textAlignment="textStart"
-                android:padding="15dp"
-                android:layout_gravity="center_vertical" />
-        </LinearLayout>
+                android:orientation="vertical"
+            android:layout_marginTop="5dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_content_ebaut"
+                    android:textSize="25sp"
+                    android:layout_gravity="center_vertical" />
+            </LinearLayout>
+
+
     </ScrollView>
+
 
 </FrameLayout>

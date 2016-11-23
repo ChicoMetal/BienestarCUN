@@ -107,7 +107,8 @@ public class Show_itinerario_circle extends Fragment {
         mHypedItinerarioAdapter = (RecyclerView) root.findViewById(R.id.hyper_show_itinerario_circle);
 
         IconManager icon = new IconManager();
-        icon.setBackgroundApp((LinearLayout)root.findViewById(R.id.contentShowItinerarios));
+        icon.setBackgroundApp(getActivity().getResources(),
+                (LinearLayout)root.findViewById(R.id.contentShowItinerarios));
 
         SetudItinerariosList();
 

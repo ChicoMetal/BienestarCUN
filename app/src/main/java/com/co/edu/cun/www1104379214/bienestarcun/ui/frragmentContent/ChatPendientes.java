@@ -56,12 +56,14 @@ public class ChatPendientes extends Fragment {
     Splash PDialog = new Splash();
     OkHttpClient okHttpClient;
     GeneralCode code;
+    ServicesPeticion servicios;
 
 
     public static ChatPendientes newInstance(DBManager db, FragmentManager fragmentManager1) {
         ChatPendientes fragment = new ChatPendientes();
         Bundle args = new Bundle();
         DB = db;
+
         fragmentManager = fragmentManager1;
         fragment.setArguments(args);
         return fragment;
@@ -76,7 +78,7 @@ public class ChatPendientes extends Fragment {
         super.onCreate(savedInstanceState);
 
         adapter = new HypedChatAdapter(getActivity(),DB,fragmentManager);
-
+        servicios  =new ServicesPeticion();
         okHttpClient = new OkHttpClient.Builder()
                 .readTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
                 .connectTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
@@ -102,7 +104,7 @@ public class ChatPendientes extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }catch (Exception e){
-            new ServicesPeticion().SaveError(e,
+            servicios.SaveError(e,
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());
         }
@@ -171,7 +173,8 @@ public class ChatPendientes extends Fragment {
 
                 ResponseContent data = response.body();
 
-                ValidateResponse( data );
+                if( code.ValidateStatusResponse( response.code() ) )
+                    ValidateResponse( data );
 
                 pDialog.dismiss();
 
@@ -180,6 +183,7 @@ public class ChatPendientes extends Fragment {
             @Override
             public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
+                code.ManageFailurePetition(t);
                 Log.e( mss.TAG, "Error "+ t.toString());
 
                 pDialog.dismiss();
@@ -212,7 +216,7 @@ public class ChatPendientes extends Fragment {
 
         } catch (JSONException e) {
             e.printStackTrace();
-            new ServicesPeticion().SaveError(e,
+            servicios.SaveError(e,
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());//Envio la informacion de la excepcion al server
         }
@@ -233,7 +237,7 @@ public class ChatPendientes extends Fragment {
                     chats.add(new ChatList( ChatPendientesResult.getString(i), indexChats) );
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    new ServicesPeticion().SaveError(e,
+                    servicios.SaveError(e,
                             new Exception().getStackTrace()[0].getMethodName().toString(),
                             this.getClass().getName());//Envio la informacion de la excepcion al server
                 }

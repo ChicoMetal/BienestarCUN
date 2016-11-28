@@ -68,6 +68,5 @@ dependencies {
     compile 'com.github.nkzawa:socket.io-client:0.4.0'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
-
 }
 

@@ -45,6 +45,8 @@ public class Desertion_app extends Fragment implements View.OnClickListener{
 
     static DBManager DB;
     Constantes mss = new Constantes();
+    GeneralCode code;
+    ServicesPeticion servicios;
 
     private OnFragmentInteractionListener mListener;
     EditText idEstudiante;
@@ -83,6 +85,9 @@ public class Desertion_app extends Fragment implements View.OnClickListener{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_desertion_app, container, false);
+        code = new GeneralCode(DB, getActivity().getApplicationContext() );
+        servicios =  new ServicesPeticion();
+
         SearchFacultades();
         ListFacultades = (Spinner) root.findViewById(R.id.listFacultades);
         idEstudiante = (EditText) root.findViewById( R.id.et_idDesertor);
@@ -125,7 +130,7 @@ public class Desertion_app extends Fragment implements View.OnClickListener{
                 facultad = idFacultades.getString( ListFacultades.getSelectedItem().toString() );//busco el codigo de la facultad elejida
             } catch (JSONException e) {
                 e.printStackTrace();
-                new ServicesPeticion().SaveError(e,
+                servicios.SaveError(e,
                         new Exception().getStackTrace()[0].getMethodName().toString(),
                         this.getClass().getName());//Envio la informacion de la excepcion al server
             }
@@ -149,7 +154,7 @@ public class Desertion_app extends Fragment implements View.OnClickListener{
     //<editor-fold desc="Buscar las facultades para mostrar en la lista">
     private void SearchFacultades() {
 
-        GeneralCode code = new GeneralCode( DB, getActivity().getApplicationContext() );
+        final GeneralCode code = new GeneralCode( DB, getActivity().getApplicationContext() );
 
         String token = code.getToken();
         String user = code.getIdUser();
@@ -175,13 +180,15 @@ public class Desertion_app extends Fragment implements View.OnClickListener{
 
                 ResponseContent data = response.body();
 
-                ValidateResponse( data );
+                if( code.ValidateStatusResponse( response.code() ) )
+                    ValidateResponse( data );
 
             }
 
             @Override
             public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
+                code.ManageFailurePetition(t);
                 Log.e( mss.TAG, "error "+ t.toString());
 
             }
@@ -232,7 +239,7 @@ public class Desertion_app extends Fragment implements View.OnClickListener{
 
         } catch (JSONException e) {
             e.printStackTrace();
-            new ServicesPeticion().SaveError(e,
+            servicios.SaveError(e,
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());//Envio la informacion de la excepcion al server
         }

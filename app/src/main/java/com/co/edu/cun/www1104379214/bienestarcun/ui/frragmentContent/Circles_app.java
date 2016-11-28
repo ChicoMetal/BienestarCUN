@@ -33,6 +33,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -55,6 +56,7 @@ public class Circles_app extends Fragment {
     CirclesManager getCircles;
     Splash PDialog = new Splash();
     GeneralCode code;
+    ServicesPeticion servicios;
 
 
     public static Circles_app newInstance( DBManager db ) {
@@ -86,6 +88,7 @@ public class Circles_app extends Fragment {
 
         getCircles = new CirclesManager( getActivity().getApplicationContext(), DB );
         code = new GeneralCode(DB, getActivity().getApplicationContext() );
+        servicios = new ServicesPeticion();
 
         mHyperdActivitiesList = (RecyclerView) root.findViewById(R.id.hyper_activities_list);
         IconManager icon = new IconManager();
@@ -101,7 +104,7 @@ public class Circles_app extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }catch (Exception e){
-            new ServicesPeticion().SaveError(e,
+            servicios.SaveError(e,
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());
         }
@@ -139,7 +142,7 @@ public class Circles_app extends Fragment {
                 .connectTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
                 .build();
 
-        Retrofit retrofit = new Retrofit.Builder()
+        final Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl( ServerUri.SERVICE_CIRCLES )
                 .addConverterFactory(GsonConverterFactory.create())
                 .client( okHttpClient )
@@ -155,7 +158,8 @@ public class Circles_app extends Fragment {
 
                 ResponseContent data = response.body();
 
-                ValidateResponse( data );
+                if( code.ValidateStatusResponse( response.code() ) )
+                    ValidateResponse( data );
 
                 pDialog.dismiss();
 
@@ -164,6 +168,7 @@ public class Circles_app extends Fragment {
             @Override
             public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
+                code.ManageFailurePetition(t);
                 Log.e( mss.TAG, "error "+ t.toString());
 
                 pDialog.dismiss();
@@ -194,7 +199,7 @@ public class Circles_app extends Fragment {
 
         } catch (JSONException e) {
             e.printStackTrace();
-            new ServicesPeticion().SaveError(e,
+            servicios.SaveError(e,
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());//Envio la informacion de la excepcion al server
         }
@@ -215,7 +220,7 @@ public class Circles_app extends Fragment {
                     activities.add( new CircleList( circlesResult.getString(i), indexCircles ) );
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    new ServicesPeticion().SaveError(e,
+                    servicios.SaveError(e,
                             new Exception().getStackTrace()[0].getMethodName().toString(),
                             this.getClass().getName());//Envio la informacion de la excepcion al server
                 }

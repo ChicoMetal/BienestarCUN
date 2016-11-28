@@ -44,12 +44,12 @@ import com.co.edu.cun.www1104379214.bienestarcun.ui.frragmentContent.Notificatio
 import com.co.edu.cun.www1104379214.bienestarcun.ui.frragmentContent.Show_itinerario_circle;
 
 public class MainActivity extends AppCompatActivity {
-
+    
     FragmentManager fragmentManager = getSupportFragmentManager();
     Fragment fragment;
     AdapterUserMenu adapterMenu;//clase con adapterMenu para usar
     Constantes mss = new Constantes();
-    ServicesPeticion services;
+    ServicesPeticion servicios;
     IconManager icon;
     GeneralCode code = null;
     DBManager db;
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setToolbar(); // Setear Toolbar como action bar
 
-        services = new ServicesPeticion();
+        servicios = new ServicesPeticion();
 
         BDManager();//crear/instanciar la BD local
 
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }catch (Exception e){
-            new ServicesPeticion().SaveError(e,
+            servicios.SaveError(e,
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());//Envio la informacion de la excepcion al server
         }

@@ -110,7 +110,8 @@ public class LaboralAdd {
 
                 ResponseContent data = response.body();
 
-                ValidateResponse( data );
+                if( code.ValidateStatusResponse( response.code() ) )
+                    ValidateResponse( data );
 
 
             }
@@ -118,6 +119,7 @@ public class LaboralAdd {
             @Override
             public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
+                code.ManageFailurePetition(t);
                 Log.e( mss.TAG, "error "+ t.toString());
 
             }
@@ -174,7 +176,8 @@ public class LaboralAdd {
 
                 ResponseContent data = response.body();
 
-                ValidateResponse( data );
+                if( code.ValidateStatusResponse( response.code() ) )
+                    ValidateResponse( data );
 
 
             }
@@ -182,6 +185,7 @@ public class LaboralAdd {
             @Override
             public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
+                code.ManageFailurePetition(t);
                 Log.e( mss.TAG, "error "+ t.toString());
 
             }

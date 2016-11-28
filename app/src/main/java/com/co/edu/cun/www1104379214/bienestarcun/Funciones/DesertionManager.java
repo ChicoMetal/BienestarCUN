@@ -32,12 +32,14 @@ public class DesertionManager {
 
     DBManager DB;
     Context CONTEXTO;
+    GeneralCode code;
 
     Constantes mss = new Constantes();
 
     public DesertionManager(DBManager db, Context contexto) {
         this.DB = db;
         this.CONTEXTO = contexto;
+        code = new GeneralCode(DB, CONTEXTO );
 
     }
 
@@ -103,13 +105,15 @@ public class DesertionManager {
 
                 ResponseContent data = response.body();
 
-                ValidateResponse( data );
+                if( code.ValidateStatusResponse( response.code() ) )
+                    ValidateResponse( data );
 
             }
 
             @Override
             public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
+                code.ManageFailurePetition(t);
                 Log.e( mss.TAG, "error "+ t.toString());
 
             }

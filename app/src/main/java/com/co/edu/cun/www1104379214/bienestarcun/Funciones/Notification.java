@@ -24,6 +24,7 @@ public class Notification {
 
     DBManager DB;
     Context CONTEXTO;
+    ServicesPeticion services;
 
     TaskExecuteSQLSearch sqliteSearch;
     TaskExecuteSQLInsert sqliteInsert;
@@ -36,6 +37,7 @@ public class Notification {
     public Notification(Context contexto, DBManager db){
         this.DB = db;
         this.CONTEXTO = contexto;
+        services = new ServicesPeticion();
     }
 
     public String getIdUser() {//obtengo el id del usuario logueado
@@ -71,7 +73,7 @@ public class Notification {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }catch (Exception e){
-            new ServicesPeticion().SaveError(e,
+            services.SaveError(e,
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());//Envio la informacion de la excepcion al server
         }
@@ -107,7 +109,7 @@ public class Notification {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }catch (Exception e){
-            new ServicesPeticion().SaveError(e,
+            services.SaveError(e,
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());//Envio la informacion de la excepcion al server
         }
@@ -158,7 +160,7 @@ public class Notification {
             return response;
 
         } catch (JSONException e) {
-            new ServicesPeticion().SaveError(e,
+            services.SaveError(e,
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());//Envio la informacion de la excepcion al server
         }
@@ -195,7 +197,7 @@ public class Notification {
 
         } catch (JSONException e) {
             e.printStackTrace();
-            new ServicesPeticion().SaveError(e,
+            services.SaveError(e,
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());//Envio la informacion de la excepcion al server
         }
@@ -229,7 +231,7 @@ public class Notification {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
-            new ServicesPeticion().SaveError(e,
+            services.SaveError(e,
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());//Envio la informacion de la excepcion al server
         }

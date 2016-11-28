@@ -83,7 +83,7 @@ public class Constantes {
             msmServices.put("0011", "Error en la instruccion");
             msmServices.put("1100", "Instruccion ejecutada correctamente");
             msmServices.put("1101", "Peticion indeterminada");
-            msmServices.put("0000000000", "Error en el servidor x_x, trabajaremos en ello");
+            msmServices.put("000000000", "Error en el servidor x_x, trabajaremos en ello");
 
             //mensajes de login
             msmServices.put("11111", "Usuario activo");
@@ -105,6 +105,88 @@ public class Constantes {
         }
     }
 
+    //****************************************
+    //****************************************Status code response
+    //****************************************
+
+    public static final JSONObject StatusServices = new JSONObject();
+
+    static{
+        try {
+            //status 1xx Respuestas informativas
+            StatusServices.put("100", "Continue");
+            StatusServices.put("101", "Switching Protocols");
+            StatusServices.put("102", "Processing ");
+            StatusServices.put("103", "Checkpoint");
+            //status 2xx Peticiones correctas
+            StatusServices.put("200", "OK");
+            StatusServices.put("201", "Created");
+            StatusServices.put("202", "Accepted");
+            StatusServices.put("203", "Non-Authoritative Information (desde HTTP/1.1)");
+            StatusServices.put("204", "No Content");
+            StatusServices.put("205", "Reset Content");
+            StatusServices.put("206", "Partial Content");
+            StatusServices.put("207", "Multi-Status (Multi-Status, WebDAV)");
+            //status 3xx Redirecciones
+            StatusServices.put("208", "Already Reported (WebDAV)");
+            StatusServices.put("300", "Multiple Choices");
+            StatusServices.put("301", "Found");
+            StatusServices.put("302", "See Other (desde HTTP/1.1)");
+            StatusServices.put("303", "Not Modified");
+            StatusServices.put("304", "Use Proxy (desde HTTP/1.1)");
+            StatusServices.put("305", "Switch Proxy");
+            StatusServices.put("306", "Temporary Redirect (desde HTTP/1.1)");
+            StatusServices.put("307", "Permanent Redirect");
+            StatusServices.put("308", "Bad Request");
+            //status 4xx Errores del cliente
+            StatusServices.put("401", "Unauthorized");
+            StatusServices.put("402", "Payment Required");
+            StatusServices.put("403", "Forbidden");
+            StatusServices.put("404", "Not Found");
+            StatusServices.put("405", "Method Not Allowed");
+            StatusServices.put("406", "Not Acceptable");
+            StatusServices.put("407", "Proxy Authentication Required");
+            StatusServices.put("408", "Request Timeout");
+            StatusServices.put("409", "Conflict");
+            StatusServices.put("410", "Gone");
+            StatusServices.put("411", "Length Required");
+            StatusServices.put("412", "Precondition Failed");
+            StatusServices.put("413", "Request Entity Too Large");
+            StatusServices.put("414", "Request-URI Too Long");
+            StatusServices.put("415", "Unsupported Media Type");
+            StatusServices.put("416", "Requested Range Not Satisfiable");
+            StatusServices.put("417", "Expectation Failed");
+            StatusServices.put("418", "I'm a teapot");
+            StatusServices.put("422", "Unprocessable Entity ");
+            StatusServices.put("423", "Locked ");
+            StatusServices.put("424", "Failed Dependency");
+            StatusServices.put("425", "Unassigned");
+            StatusServices.put("426", "Upgrade Required");
+            StatusServices.put("428", "Precondition Required");
+            StatusServices.put("429", "Too Many Requests");
+            StatusServices.put("431", "Request Header Fileds Too Large");
+            StatusServices.put("449", "Microsoft");
+            StatusServices.put("451", "Unavailable for Legal Reasons");
+            //status 5xx Errores de servidor
+            StatusServices.put("500", "Internal Server Error");
+            StatusServices.put("501", "Not Implemented");
+            StatusServices.put("502", "Bad Gateway");
+            StatusServices.put("503", "Service Unavailable");
+            StatusServices.put("504", "Gateway Timeout");
+            StatusServices.put("505", "HTTP Version Not Supported");
+            StatusServices.put("506", "Variant Also Negotiates ");
+            StatusServices.put("507", "Insufficient Storage ");
+            StatusServices.put("508", "Loop Detected (WebDAV)");
+            StatusServices.put("509", "Bandwidth Limit Exceeded");
+            StatusServices.put("510", "Not Extended ");
+            StatusServices.put("511", "Network Authentication Required");
+
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     //*****************************************

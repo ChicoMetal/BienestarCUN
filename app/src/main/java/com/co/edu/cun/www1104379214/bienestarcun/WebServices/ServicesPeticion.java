@@ -5,6 +5,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.Constantes;
+import com.co.edu.cun.www1104379214.bienestarcun.Funciones.GeneralCode;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ContentResults.ResponseContent;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.Interface.Users;
@@ -33,8 +34,10 @@ public class ServicesPeticion {
     Constantes mss = new Constantes();
     DBManager DB;
     OkHttpClient okHttpClient;
+    GeneralCode code;
 
     public ServicesPeticion() {
+
 
         okHttpClient = new OkHttpClient.Builder()
                 .readTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
@@ -90,6 +93,9 @@ public class ServicesPeticion {
     public void SaveLog(JSONObject valuesJSON, final Context contexto)
             throws JSONException, InterruptedException {
 
+        if( code == null )
+            code = new GeneralCode(DB, contexto);
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl( ServerUri.SERVICE_USER )
                 .addConverterFactory(GsonConverterFactory.create())
@@ -107,13 +113,15 @@ public class ServicesPeticion {
 
                 ResponseContent data = response.body();
 
-                Log.i( mss.TAG, "error "+ data.getBody().toString() );
+                if( code.ValidateStatusResponse( response.code() ) )
+                    Log.i( mss.TAG, "error "+ data.getBody().toString() );
 
             }
 
             @Override
             public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
+                code.ManageFailurePetition(t);
                 Log.e( mss.TAG, "error "+ t.toString());
 
             }
@@ -126,6 +134,9 @@ public class ServicesPeticion {
     //<editor-fold desc="Cerrar la sesion del usuario">
     public void LogoutUser(JSONObject valuesJSON, final Context contexto)
             throws JSONException, InterruptedException {
+
+        if( code == null )
+            code = new GeneralCode(DB, contexto);
 
         JSONObject loginSave = valuesJSON.getJSONObject("ROW0");
 
@@ -146,24 +157,26 @@ public class ServicesPeticion {
 
                 ResponseContent data = response.body();
 
-                try {
+                if( code.ValidateStatusResponse( response.code() ) ){
+                    try {
 
-                    if( data.getBody().getString(0).toString().equals("msm") ){//verifico si es un mensaje
+                        if( data.getBody().getString(0).toString().equals("msm") ){//verifico si es un mensaje
 
-                        Toast.makeText(contexto.getApplicationContext(),
-                                mss.msmServices.getString(data.getBody().getString(1).toString()),
-                                Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
+                            Toast.makeText(contexto.getApplicationContext(),
+                                    mss.msmServices.getString(data.getBody().getString(1).toString()),
+                                    Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
 
-                    }else{
+                        }else{
 
-                        Log.i( mss.TAG, data.getBody().toString() );
+                            Log.i( mss.TAG, data.getBody().toString() );
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        new ServicesPeticion().SaveError(e,
+                                new Exception().getStackTrace()[0].getMethodName().toString(),
+                                this.getClass().getName());//Envio la informacion de la excepcion al server
                     }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    new ServicesPeticion().SaveError(e,
-                            new Exception().getStackTrace()[0].getMethodName().toString(),
-                            this.getClass().getName());//Envio la informacion de la excepcion al server
                 }
 
             }
@@ -171,6 +184,7 @@ public class ServicesPeticion {
             @Override
             public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
+                code.ManageFailurePetition(t);
                 Log.e( mss.TAG, "error "+ t.toString());
 
             }
@@ -207,17 +221,21 @@ public class ServicesPeticion {
             public void onResponse(Call<ResponseContent> call, Response<ResponseContent> response) {//obtener datos
                 ResponseContent data = response.body();
 
-                JSONArray msm = data.getBody();
 
-                try {
+                if( response.code() >= 300 ){
 
-                    if( msm.getString(0).toString().equals("msm") )
+                    JSONArray msm = data.getBody();
 
-                        Log.e( mss.TAG, "Respuesta al guardar debug: "+
-                                mss.msmServices.getString( msm.getString(1).toString() ) );
+                    try {
 
-                } catch (JSONException e1) {
-                    e1.printStackTrace();
+                        if( msm.getString(0).toString().equals("msm") )
+
+                            Log.e( mss.TAG, "Respuesta al guardar debug: "+
+                                    mss.msmServices.getString( msm.getString(1).toString() ) );
+
+                    } catch (JSONException e1) {
+                        e1.printStackTrace();
+                    }
                 }
 
 
@@ -226,6 +244,7 @@ public class ServicesPeticion {
             @Override
             public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
+                code.ManageFailurePetition(t);
                 Log.e( mss.TAG, "Error en la peticion al hacer debug "+ t.toString());
 
             }

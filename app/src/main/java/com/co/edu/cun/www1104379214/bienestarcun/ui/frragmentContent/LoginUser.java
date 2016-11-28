@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.AdapterUserMenu;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
@@ -89,8 +90,16 @@ public class LoginUser extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View v) {
 
-        if( adapterMenu != null)
-            adapterMenu.ProcessLogin(MAIN, user, pass, NAVIGATIONVIEW );
+        String usuario = user.getText().toString();
+        String password = pass.getText().toString();
+        if( adapterMenu != null){
+            if( usuario.equals("") || password.equals("") ){
+                Toast.makeText(getActivity().getApplicationContext(),
+                        "Datos incompletos", Toast.LENGTH_SHORT).show();
+            }else{
+                adapterMenu.ProcessLogin(MAIN, user, pass, NAVIGATIONVIEW );
+            }
+        }
 
     }
 

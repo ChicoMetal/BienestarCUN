@@ -56,6 +56,7 @@ public class DelActivities_app extends Fragment {
     CirclesManager getCircles;
     Splash PDialog = new Splash();
     GeneralCode code;
+    ServicesPeticion servicios;
 
     private OnFragmentInteractionListener mListener;
 
@@ -88,6 +89,7 @@ public class DelActivities_app extends Fragment {
         mHyperdActivitiesList = (RecyclerView) root.findViewById(R.id.hyper_delactivities);
         getCircles = new CirclesManager( getActivity().getApplicationContext(), DB );
         code = new GeneralCode( DB, getActivity().getApplicationContext() );
+        servicios = new ServicesPeticion();
 
         IconManager icon = new IconManager();
         icon.setBackgroundApp(getActivity().getResources(),
@@ -102,7 +104,7 @@ public class DelActivities_app extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }catch (Exception e){
-            new ServicesPeticion().SaveError(e,
+            servicios.SaveError(e,
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());//Envio la informacion de la excepcion al server
         }
@@ -171,7 +173,8 @@ public class DelActivities_app extends Fragment {
 
                 ResponseContent data = response.body();
 
-                ValidateResponse( data );
+                if( code.ValidateStatusResponse( response.code() ) )
+                    ValidateResponse( data );
 
                 pDialog.dismiss();
 
@@ -180,6 +183,7 @@ public class DelActivities_app extends Fragment {
             @Override
             public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
+                code.ManageFailurePetition(t);
                 Log.e( mss.TAG, "error "+ t.toString());
 
                 pDialog.dismiss();
@@ -210,7 +214,7 @@ public class DelActivities_app extends Fragment {
 
         } catch (JSONException e) {
             e.printStackTrace();
-            new ServicesPeticion().SaveError(e,
+            servicios.SaveError(e,
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());//Envio la informacion de la excepcion al server
         }
@@ -230,7 +234,7 @@ public class DelActivities_app extends Fragment {
                     activities.add( new CircleList( circlesResult.getString(i), indexCircles ) );
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    new ServicesPeticion().SaveError(e,
+                    servicios.SaveError(e,
                             new Exception().getStackTrace()[0].getMethodName().toString(),
                             this.getClass().getName());//Envio la informacion de la excepcion al server
                 }

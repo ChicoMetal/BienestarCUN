@@ -59,6 +59,7 @@ public class Show_itinerario_circle extends Fragment {
     static int idCirculo;
     OkHttpClient okHttpClient;
     Splash PDialog = new Splash();
+    ServicesPeticion servicios;
 
     private OnFragmentInteractionListener mListener;
 
@@ -87,6 +88,7 @@ public class Show_itinerario_circle extends Fragment {
 
         adapter = new HypedItinerarioAdapter( getActivity(), DB, INSTANCE, fragmentManager );
         code = new GeneralCode(DB, getActivity() );
+        servicios = new ServicesPeticion();
 
         okHttpClient = new OkHttpClient.Builder()
             .readTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
@@ -177,7 +179,8 @@ public class Show_itinerario_circle extends Fragment {
 
                 ResponseContent data = response.body();
 
-                ValidateResponse( data );
+                if( code.ValidateStatusResponse( response.code() ) )
+                    ValidateResponse( data );
 
                 pDialog.dismiss();
 
@@ -186,6 +189,7 @@ public class Show_itinerario_circle extends Fragment {
             @Override
             public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
+                code.ManageFailurePetition(t);
                 Log.e( mss.TAG, "error "+ t.toString());
 
                 pDialog.dismiss();
@@ -208,7 +212,7 @@ public class Show_itinerario_circle extends Fragment {
                     itinerarios.add(new ItinerarioList(ItinerariosResult.getString(i), indexCircles));
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    new ServicesPeticion().SaveError(e,
+                    servicios.SaveError(e,
                             new Exception().getStackTrace()[0].getMethodName().toString(),
                             this.getClass().getName());//Envio la informacion de la excepcion al server
                 }
@@ -244,31 +248,34 @@ public class Show_itinerario_circle extends Fragment {
 
                 ResponseContent data = response.body();
 
-                boolean answer = ReturnValidateResponse( data );
+                if( code.ValidateStatusResponse( response.code() ) ){
 
-                if( answer ){
+                    boolean answer = ReturnValidateResponse( data );
 
-                    try{
-                        JSONArray arrayResult = data.getResults();
-                        JSONObject index = data.getIndex();
+                    if( answer ){
 
-                        int idCircleAdmin = Integer.parseInt(
-                                            arrayResult.getJSONObject(0)
-                                                    .getString( index.getString("0") )
-                                        );
+                        try{
+                            JSONArray arrayResult = data.getResults();
+                            JSONObject index = data.getIndex();
 
-                        idCirculo = idCircleAdmin;
+                            int idCircleAdmin = Integer.parseInt(
+                                                arrayResult.getJSONObject(0)
+                                                        .getString( index.getString("0") )
+                                            );
 
-                        PrepareAdapter();
+                            idCirculo = idCircleAdmin;
 
-                    }catch (Exception e){
-                        new ServicesPeticion().SaveError(e,
-                                new Exception().getStackTrace()[0].getMethodName().toString(),
-                                this.getClass().getName());
+                            PrepareAdapter();
+
+                        }catch (Exception e){
+                            servicios.SaveError(e,
+                                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                                    this.getClass().getName());
+                        }
+
+                    }else{
+                        Log.i( mss.TAG, data.getBody().toString() );
                     }
-
-                }else{
-                    Log.i( mss.TAG, data.getBody().toString() );
                 }
 
 
@@ -277,6 +284,7 @@ public class Show_itinerario_circle extends Fragment {
             @Override
             public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
+                code.ManageFailurePetition(t);
                 Log.e( mss.TAG, "error "+ t.toString());
 
             }
@@ -296,7 +304,7 @@ public class Show_itinerario_circle extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }catch (Exception e){
-            new ServicesPeticion().SaveError(e,
+            servicios.SaveError(e,
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());//Envio la informacion de la excepcion al server
         }
@@ -326,7 +334,7 @@ public class Show_itinerario_circle extends Fragment {
 
         } catch (JSONException e) {
             e.printStackTrace();
-            new ServicesPeticion().SaveError(e,
+            servicios.SaveError(e,
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());//Envio la informacion de la excepcion al server
         }
@@ -355,7 +363,7 @@ public class Show_itinerario_circle extends Fragment {
 
         } catch (JSONException e) {
             e.printStackTrace();
-            new ServicesPeticion().SaveError(e,
+            servicios.SaveError(e,
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());//Envio la informacion de la excepcion al server
         }

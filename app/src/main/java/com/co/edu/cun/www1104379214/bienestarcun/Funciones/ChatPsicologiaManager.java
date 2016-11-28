@@ -25,12 +25,14 @@ public class ChatPsicologiaManager {
     Context CONTEXTO;
     DBManager DB;
     TaskExecuteSQLSearch sqliteSearch;
+    ServicesPeticion services;
 
 
     public ChatPsicologiaManager(Context contexto, DBManager db  ) {//constructor para instanciar metodos que no necesiten de la interfaz
 
         this.CONTEXTO = contexto;
         this.DB = db;
+        services = new ServicesPeticion();
 
     }
 
@@ -71,7 +73,7 @@ public class ChatPsicologiaManager {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }catch (Exception e){
-            new ServicesPeticion().SaveError(e,
+            services.SaveError(e,
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());//Envio la informacion de la excepcion al server
         }
@@ -115,7 +117,7 @@ public class ChatPsicologiaManager {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }catch (Exception e){
-            new ServicesPeticion().SaveError(e,
+            services.SaveError(e,
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());//Envio la informacion de la excepcion al server
         }

@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -11,6 +13,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.co.edu.cun.www1104379214.bienestarcun.Constantes;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
@@ -43,6 +47,7 @@ public class GeneralCode {
     Context CONTEXTO;
     TaskExecuteSQLSearch userSearch;
     Constantes mss = new Constantes();
+    ServicesPeticion services;
 
     Spinner lista;
     ImageButton BtnChoseSede;
@@ -54,6 +59,8 @@ public class GeneralCode {
 
         this.DB = db;
         this.CONTEXTO = contexto;
+        services = new ServicesPeticion();
+
         okHttpClient = new OkHttpClient.Builder()
             .readTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
             .connectTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
@@ -96,7 +103,7 @@ public class GeneralCode {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }catch (Exception e){
-            new ServicesPeticion().SaveError(e,
+            services.SaveError(e,
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());//Envio la informacion de la excepcion al server
         }
@@ -140,7 +147,7 @@ public class GeneralCode {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }catch (Exception e){
-            new ServicesPeticion().SaveError(e,
+            services.SaveError(e,
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());//Envio la informacion de la excepcion al server
         }
@@ -172,7 +179,8 @@ public class GeneralCode {
 
                     ResponseContent data = response.body();
 
-                    ValidateResponse( data, ContentNameUser, idUser );
+                    if( ValidateStatusResponse( response.code() ) )
+                        ValidateResponse( data, ContentNameUser, idUser );
 
 
                 }
@@ -180,6 +188,7 @@ public class GeneralCode {
                 @Override
                 public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
+                    ManageFailurePetition(t);
                     Log.e( mss.TAG, "error "+ t.toString());
 
                 }
@@ -225,7 +234,7 @@ public class GeneralCode {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }catch (Exception e){
-            new ServicesPeticion().SaveError(e,
+            services.SaveError(e,
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());//Envio la informacion de la excepcion al server
         }
@@ -250,13 +259,13 @@ public class GeneralCode {
 
             }else{
 
-                JSONArray nameUser = data.getResults();
+                JSONArray nameUser =  data.getResults();
                 JSONObject index = data.getIndex();
 
-                ContentNameUser.setText(
-                        nameUser.getJSONObject(0).getString( index.getString("0")  )+" "+
-                                nameUser.getJSONObject(0).getString( index.getString("1")  )
-                );
+                String firtname = ( nameUser != null) ? nameUser.getJSONObject(0).getString( index.getString("0")  ) : "ddd";
+                String lastname = (nameUser != null )? nameUser.getJSONObject(0).getString( index.getString("1")  ): "dddd";
+
+                ContentNameUser.setText( firtname+" "+lastname  );
 
 
 
@@ -264,7 +273,7 @@ public class GeneralCode {
 
         } catch (JSONException e) {
             e.printStackTrace();
-            new ServicesPeticion().SaveError(e,
+            services.SaveError(e,
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());//Envio la informacion de la excepcion al server
         }
@@ -322,7 +331,7 @@ public class GeneralCode {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     } catch (ExecutionException e) {
-                        new ServicesPeticion().SaveError(e,
+                        services.SaveError(e,
                                 new Exception().getStackTrace()[0].getMethodName().toString(),
                                 this.getClass().getName());//Envio la informacion de la excepcion al server
                     } catch (JSONException e) {
@@ -341,5 +350,80 @@ public class GeneralCode {
     }
     //</editor-fold>
 
+    //<editor-fold desc="Metodo para validar los estados enviados por el server">
+    public boolean ValidateStatusResponse( int code ) {
 
+
+        Log.i(mss.TAG, "Status code response: "+code);
+
+        if( code >= 300 ) {//validar el rango del estado para saber si es exitosa o erronea la peticion
+            try {
+                Toast.makeText(CONTEXTO.getApplicationContext(),
+                        mss.StatusServices.getString( String.valueOf( code ) ),
+                        Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
+            } catch (JSONException e) {
+                e.printStackTrace();
+                services.SaveError(e,
+                        new Exception().getStackTrace()[0].getMethodName().toString(),
+                        this.getClass().getName());//Envio la informacion de la excepcion al server
+            }
+
+            return false;
+        }else
+            return true;
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="Manejo de fallos al realizar peticiones con retrofit">
+    public void ManageFailurePetition( Throwable t ){
+
+        if( isOnlineNet() )
+            Toast.makeText(CONTEXTO, t.getMessage(), Toast.LENGTH_SHORT).show();
+
+        else {
+            try {
+
+                Toast.makeText(CONTEXTO, mss.msmServices.getString("0"),
+                        Toast.LENGTH_SHORT).show();
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                services.SaveError(e,
+                        new Exception().getStackTrace()[0].getMethodName().toString(),
+                        this.getClass().getName());//Envio la informacion de la excepcion al server
+            }
+        }
+
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="Verificar si esta activa la net">
+    private boolean isNetDisponible() {
+
+        ConnectivityManager connectivityManager = (ConnectivityManager)
+                CONTEXTO.getSystemService(CONTEXTO.CONNECTIVITY_SERVICE);
+
+        NetworkInfo actNetInfo = connectivityManager.getActiveNetworkInfo();
+
+        return (actNetInfo != null && actNetInfo.isConnected());
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="Verificar conexion a internet">
+    public Boolean isOnlineNet() {
+
+        try {
+            Process p = java.lang.Runtime.getRuntime().exec("ping -c 1 www.google.es");
+
+            int val           = p.waitFor();
+            boolean reachable = (val == 0);
+            return reachable;
+
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return false;
+    }
+    //</editor-fold>
 }

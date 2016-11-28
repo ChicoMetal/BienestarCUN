@@ -58,7 +58,7 @@ public class AdapterUserMenu {
 
         this.CONTEXTO = contexto;
         this.DB = db;
-
+        code = new GeneralCode(DB, CONTEXTO);
         services = new ServicesPeticion();
 
         okHttpClient = new OkHttpClient.Builder()
@@ -85,7 +85,7 @@ public class AdapterUserMenu {
 
         }catch (Exception e){
             e.printStackTrace();
-            new ServicesPeticion().SaveError(e,
+            services.SaveError(e,
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());//Envio la informacion de la excepcion al server
         }
@@ -97,9 +97,7 @@ public class AdapterUserMenu {
     //<editor-fold desc="Verificar el usuario en la BD remota">
     public void ConfirmarUser(final NavigationView menu,
                               String user,
-                              final String pass)
-
-            throws InterruptedException {
+                              String pass){
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl( ServerUri.SERVICE_USER )
@@ -117,13 +115,15 @@ public class AdapterUserMenu {
 
                 ResponseContent data = response.body();
 
-                ValidateResponseLogin( data, menu );//continua login
+                if( code.ValidateStatusResponse( response.code() ) )
+                    ValidateResponseLogin( data, menu );//continua login
 
             }
 
             @Override
             public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
+                code.ManageFailurePetition(t);
                 Log.e( mss.TAG, "error "+ t.toString());
 
             }
@@ -141,7 +141,7 @@ public class AdapterUserMenu {
             if( data.getBody().getString(0).toString().equals("msm")   ){
 
                 Toast.makeText(CONTEXTO.getApplicationContext(),
-                        mss.msmServices.getString(data.getBody().getString(1).toString()),
+                        mss.msmServices.getString( data.getBody().getString(1).toString() ),
                         Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
 
 
@@ -158,7 +158,7 @@ public class AdapterUserMenu {
 
         }catch (Exception e){
             e.printStackTrace();
-            new ServicesPeticion().SaveError(e,
+            services.SaveError(e,
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());
         }
@@ -200,7 +200,7 @@ public class AdapterUserMenu {
                 }
             }catch (Exception e){
                 e.printStackTrace();
-                new ServicesPeticion().SaveError(e,
+                services.SaveError(e,
                         new Exception().getStackTrace()[0].getMethodName().toString(),
                         this.getClass().getName());
             }
@@ -248,8 +248,6 @@ public class AdapterUserMenu {
     //<editor-fold desc="Logout">
     public void ProcessLogout(NavigationView menu, Context activity){
 
-        code = new GeneralCode(DB, CONTEXTO);
-
         String[] camposSeacrh = new String[]{
                 DB.CN_ID_USER_BD,
                 DB.CN_TOKEN_LOGIN
@@ -286,7 +284,7 @@ public class AdapterUserMenu {
         } catch (JSONException e) {
             e.printStackTrace();
 
-            new ServicesPeticion().SaveError(e,
+            services.SaveError(e,
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());//Envio la informacion de la excepcion al server
 
@@ -326,7 +324,7 @@ public class AdapterUserMenu {
             } catch (JSONException e) {
                 e.printStackTrace();
 
-                new ServicesPeticion().SaveError(e,
+                services.SaveError(e,
                         new Exception().getStackTrace()[0].getMethodName().toString(),
                         this.getClass().getName());//Envio la informacion de la excepcion al server
 
@@ -359,7 +357,7 @@ public class AdapterUserMenu {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }catch (Exception e){
-            new ServicesPeticion().SaveError(e,
+            services.SaveError(e,
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());//Envio la informacion de la excepcion al server
         }
@@ -404,7 +402,7 @@ public class AdapterUserMenu {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }catch (Exception e){
-            new ServicesPeticion().SaveError(e,
+            services.SaveError(e,
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());//Envio la informacion de la excepcion al server
         }

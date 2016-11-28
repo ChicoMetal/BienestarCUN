@@ -41,10 +41,12 @@ public class ItinerariosManager {
     DBManager DB;
     OkHttpClient okHttpClient;
     GeneralCode code;
+    ServicesPeticion services;
 
     public ItinerariosManager(DBManager db, Context contexto) {
         this.CONTEXTO = contexto;
         this.DB = db;
+        services = new ServicesPeticion();
 
         okHttpClient = new OkHttpClient.Builder()
                 .readTimeout(mss.TIME_LIMIT_WAIT_SERVER, TimeUnit.SECONDS)
@@ -106,33 +108,35 @@ public class ItinerariosManager {
 
                 ResponseContent data = response.body();
 
-                boolean answer = ValidateResponse( data  );
+                if( code.ValidateStatusResponse( response.code() ) ){
+                    boolean answer = ValidateResponse( data  );
 
-                if( answer ){
+                    if( answer ){
 
-                    try{
+                        try{
 
-                        JSONArray arrayResult = data.getResults();
-                        JSONObject index = data.getIndex();
+                            JSONArray arrayResult = data.getResults();
+                            JSONObject index = data.getIndex();
 
-                        for( int c = arrayResult.length() -1; c >= 0; c-- ){
+                            for( int c = arrayResult.length() -1; c >= 0; c-- ){
 
-                            String id = arrayResult.getJSONObject(c)
-                                                .getString( index.getString("0") );
-                            String name = arrayResult.getJSONObject(c)
-                                                .getString( index.getString("1") );
+                                String id = arrayResult.getJSONObject(c)
+                                                    .getString( index.getString("0") );
+                                String name = arrayResult.getJSONObject(c)
+                                                    .getString( index.getString("1") );
 
-                            contentList.addView( GenerateComponentsList(c, name, id) );
+                                contentList.addView( GenerateComponentsList(c, name, id) );
 
+                            }
+                        }catch (Exception e){
+                            services.SaveError(e,
+                                    new Exception().getStackTrace()[0].getMethodName().toString(),
+                                    this.getClass().getName());
                         }
-                    }catch (Exception e){
-                        new ServicesPeticion().SaveError(e,
-                                new Exception().getStackTrace()[0].getMethodName().toString(),
-                                this.getClass().getName());
-                    }
 
-                }else{
-                    Log.i( mss.TAG, data.getBody().toString() );
+                    }else{
+                        Log.i( mss.TAG, data.getBody().toString() );
+                    }
                 }
 
 
@@ -141,6 +145,7 @@ public class ItinerariosManager {
             @Override
             public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
+                code.ManageFailurePetition(t);
                 Log.e( mss.TAG, "error "+ t.toString());
 
             }
@@ -207,7 +212,7 @@ public class ItinerariosManager {
         } catch (JSONException e) {
             e.printStackTrace();
         }catch (Exception e){
-            new ServicesPeticion().SaveError(e,
+            services.SaveError(e,
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());
         }
@@ -238,28 +243,31 @@ public class ItinerariosManager {
                 try {
                     ResponseContent data = response.body();
 
-                    boolean answer = ValidateResponse( data  );
+                    if( code.ValidateStatusResponse( response.code() ) ){
+                        boolean answer = ValidateResponse( data  );
 
-                    if( answer ){
+                        if( answer ){
 
-                        if( data.getBody().getString(0).toString().equals("msm") ){//verifico si es un mensaje
+                            if( data.getBody().getString(0).toString().equals("msm") ){//verifico si es un mensaje
 
-                            Toast.makeText(CONTEXTO.getApplicationContext(),
-                                    mss.msmServices.getString(data.getBody().getString(1).toString()),
-                                    Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
+                                Toast.makeText(CONTEXTO.getApplicationContext(),
+                                        mss.msmServices.getString(data.getBody().getString(1).toString()),
+                                        Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
+
+                            }else{
+
+                                Log.i( mss.TAG, data.getBody().toString() );
+
+                            }
 
                         }else{
-
                             Log.i( mss.TAG, data.getBody().toString() );
-
                         }
-
-                    }else{
-                        Log.i( mss.TAG, data.getBody().toString() );
                     }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    new ServicesPeticion().SaveError(e,
+                    services.SaveError(e,
                             new Exception().getStackTrace()[0].getMethodName().toString(),
                             this.getClass().getName());//Envio la informacion de la excepcion al server
                 }
@@ -270,6 +278,7 @@ public class ItinerariosManager {
             @Override
             public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
+                code.ManageFailurePetition(t);
                 Log.e( mss.TAG, "error "+ t.toString());
 
             }
@@ -303,21 +312,23 @@ public class ItinerariosManager {
 
                     ResponseContent data = response.body();
 
-                    boolean answer = ValidateResponse( data  );
+                    if( code.ValidateStatusResponse( response.code() ) ){
+                        boolean answer = ValidateResponse( data  );
 
-                    if( answer ){
+                        if( answer ){
 
-                        Toast.makeText(CONTEXTO.getApplicationContext(),
-                                mss.msmServices.getString(data.getBody().getString(1).toString()),
-                                Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
+                            Toast.makeText(CONTEXTO.getApplicationContext(),
+                                    mss.msmServices.getString(data.getBody().getString(1).toString()),
+                                    Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
 
-                    }else{
-                        Log.i( mss.TAG, data.getBody().toString() );
+                        }else{
+                            Log.i( mss.TAG, data.getBody().toString() );
+                        }
                     }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    new ServicesPeticion().SaveError(e,
+                    services.SaveError(e,
                             new Exception().getStackTrace()[0].getMethodName().toString(),
                             this.getClass().getName());//Envio la informacion de la excepcion al server
                 }
@@ -328,6 +339,7 @@ public class ItinerariosManager {
             @Override
             public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
+                code.ManageFailurePetition(t);
                 Log.e( mss.TAG, "error "+ t.toString());
 
             }
@@ -357,7 +369,7 @@ public class ItinerariosManager {
 
         } catch (JSONException e) {
             e.printStackTrace();
-            new ServicesPeticion().SaveError(e,
+            services.SaveError(e,
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());//Envio la informacion de la excepcion al server
         }

@@ -66,6 +66,7 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
     private MyWorkerThread mWorkerThread;
     JSONObject MensajeEntrante;
     GeneralCode code;
+    ServicesPeticion servicios;
 
     Socket socket;
 
@@ -98,6 +99,7 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_chat_psicologa_app, container, false);
         code = new GeneralCode(DB, getActivity().getApplicationContext() );
+        servicios = new ServicesPeticion();
 
         TVReceptor = (TextView) root.findViewById(R.id.TVRReceptor);
         TVRemitente = (TextView) root.findViewById(R.id.TVRemitente);
@@ -191,30 +193,33 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
 
                 ResponseContent data = response.body();
 
-                try {
 
-                    if( data.getBody().getString(0).toString().equals("msm") ){//verifico si es un mensaje
+                if( code.ValidateStatusResponse( response.code() ) ) {
+                    try {
 
-                        Toast.makeText(getActivity().getApplicationContext(),
-                                mss.msmServices.getString(data.getBody().getString(1).toString()),
-                                Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
+                        if( data.getBody().getString(0).toString().equals("msm") ){//verifico si es un mensaje
 
-                    }else{
+                            Toast.makeText(getActivity().getApplicationContext(),
+                                    mss.msmServices.getString(data.getBody().getString(1).toString()),
+                                    Toast.LENGTH_SHORT).show(); // muestro mensaje enviado desde el servidor
 
-                        JSONObject results = data.getResults().getJSONObject(0);
-                        JSONObject index = data.getIndex();
+                        }else{
 
-                        mReceptor = results.getLong( index.getString("0") );
+                            JSONObject results = data.getResults().getJSONObject(0);
+                            JSONObject index = data.getIndex();
 
-                        StartListenNode();
+                            mReceptor = results.getLong( index.getString("0") );
 
+                            StartListenNode();
+
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        servicios.SaveError(e,
+                                new Exception().getStackTrace()[0].getMethodName().toString(),
+                                this.getClass().getName());//Envio la informacion de la excepcion al server
                     }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    new ServicesPeticion().SaveError(e,
-                            new Exception().getStackTrace()[0].getMethodName().toString(),
-                            this.getClass().getName());//Envio la informacion de la excepcion al server
                 }
 
             }
@@ -222,6 +227,7 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
             @Override
             public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
+                code.ManageFailurePetition(t);
                 Log.e( mss.TAG, "Error "+ t.toString());
 
             }
@@ -306,13 +312,15 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
 
                 ResponseContent data = response.body();
 
-                ValidateResponse( data );
+                if( code.ValidateStatusResponse( response.code() ) )
+                    ValidateResponse( data );
 
             }
 
             @Override
             public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
+                code.ManageFailurePetition(t);
                 Log.e( mss.TAG, "Error "+ t.toString());
 
             }
@@ -365,7 +373,7 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
 
         } catch (JSONException e) {
             e.printStackTrace();
-            new ServicesPeticion().SaveError(e,
+            servicios.SaveError(e,
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());//Envio la informacion de la excepcion al server
         }
@@ -386,13 +394,15 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
 
                 ResponseContent data = response.body();
 
-                Log.i(  mss.TAG, data.getBody().toString() );
+                if( code.ValidateStatusResponse( response.code() ) )
+                    Log.i(  mss.TAG, data.getBody().toString() );
 
             }
 
             @Override
             public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
+                code.ManageFailurePetition(t);
                 Log.e( mss.TAG, "Error "+ t.toString());
 
             }
@@ -424,7 +434,7 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
         }catch (URISyntaxException e){
             e.printStackTrace();
         }catch (Exception e){
-            new ServicesPeticion().SaveError(e,
+            servicios.SaveError(e,
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());//Envio la informacion de la excepcion al server
         }
@@ -452,7 +462,7 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }catch (Exception e){
-                    new ServicesPeticion().SaveError(e,
+                    servicios.SaveError(e,
                             new Exception().getStackTrace()[0].getMethodName().toString(),
                             this.getClass().getName());//Envio la informacion de la excepcion al server
                 }
@@ -492,7 +502,7 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
                     socket.emit(Constantes.EVENT_SEND_IDSOCKET, newConversasion);//envio la informasion al server para guardar el socket
 
                 }catch(Exception e){
-                    new ServicesPeticion().SaveError(e,
+                   servicios.SaveError(e,
                             new Exception().getStackTrace()[0].getMethodName().toString(),
                             this.getClass().getName());//Envio la informacion de la excepcion al server
                 }

@@ -74,6 +74,7 @@ public class EvidenciasActivities extends Fragment implements View.OnClickListen
     Splash PDialog = new Splash();
     OkHttpClient okHttpClient;
     GeneralCode code;
+    ServicesPeticion servicios;
 
     private OnFragmentInteractionListener mListener;
 
@@ -108,6 +109,7 @@ public class EvidenciasActivities extends Fragment implements View.OnClickListen
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_evidencias_activities, container, false);
         code = new GeneralCode(DB, getActivity().getApplicationContext() );
+        servicios = new ServicesPeticion();
 
         imagen = (ImageView) root.findViewById( R.id.imgEvidencia);
         idItinerario = (TextView) root.findViewById( R.id.ItinerarioId);
@@ -238,7 +240,7 @@ public class EvidenciasActivities extends Fragment implements View.OnClickListen
                                             mss.ProcesImgError +e.getMessage(),
                                             Toast.LENGTH_SHORT).show();
 
-                    new ServicesPeticion().SaveError(e,
+                    servicios.SaveError(e,
                             new Exception().getStackTrace()[0].getMethodName().toString(),
                             this.getClass().getName());//Envio la informacion de la excepcion al server
 
@@ -262,7 +264,7 @@ public class EvidenciasActivities extends Fragment implements View.OnClickListen
 
             Toast.makeText(getActivity().getApplicationContext(),
                     mss.CarryImageError+e.getMessage(), Toast.LENGTH_SHORT).show();
-            new ServicesPeticion().SaveError(e,
+            servicios.SaveError(e,
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());//Envio la informacion de la excepcion al server
 
@@ -271,7 +273,7 @@ public class EvidenciasActivities extends Fragment implements View.OnClickListen
 
             Toast.makeText(getActivity().getApplicationContext(),
                             mss.CarryImageError+e.getMessage(), Toast.LENGTH_SHORT).show();
-            new ServicesPeticion().SaveError(e,
+            servicios.SaveError(e,
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());//Envio la informacion de la excepcion al server
 
@@ -329,7 +331,10 @@ public class EvidenciasActivities extends Fragment implements View.OnClickListen
             public void onResponse(Call<ResponseContent> call, Response<ResponseContent> response) {//obtener datos
 
                 ResponseContent data = response.body();
-                ValidateResponse( data );
+
+                if( code.ValidateStatusResponse( response.code() ) )
+                    ValidateResponse( data );
+
                 pDialog.dismiss();
 
             }
@@ -337,6 +342,7 @@ public class EvidenciasActivities extends Fragment implements View.OnClickListen
             @Override
             public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
+                code.ManageFailurePetition(t);
                 Log.e( mss.TAG, "error "+ t.toString());
 
                 pDialog.dismiss();
@@ -368,7 +374,7 @@ public class EvidenciasActivities extends Fragment implements View.OnClickListen
 
         } catch (JSONException e) {
             e.printStackTrace();
-            new ServicesPeticion().SaveError(e,
+            servicios.SaveError(e,
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());//Envio la informacion de la excepcion al server
         }

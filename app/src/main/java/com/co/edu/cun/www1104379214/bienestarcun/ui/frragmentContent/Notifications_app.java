@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.co.edu.cun.www1104379214.bienestarcun.Constantes;
+import com.co.edu.cun.www1104379214.bienestarcun.Funciones.GeneralCode;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.Notification;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
@@ -54,6 +55,8 @@ public class Notifications_app extends Fragment {
     Constantes mss = new Constantes();
     private OnFragmentInteractionListener mListener;
     Splash PDialog = new Splash();
+    GeneralCode code;
+    ServicesPeticion servicios;
 
 
     public static Notifications_app newInstance(DBManager db, String param2) {
@@ -83,6 +86,8 @@ public class Notifications_app extends Fragment {
 
         mHyperdNotificationsList = (RecyclerView) root.findViewById(R.id.hyper_notifications_list);
         notificaciones = new Notification( getActivity().getApplicationContext(), DB );
+        code = new GeneralCode(DB, getActivity().getApplicationContext() );
+        servicios = new ServicesPeticion();
 
         IconManager icon = new IconManager();
         icon.setBackgroundApp(getActivity().getResources(),
@@ -97,7 +102,7 @@ public class Notifications_app extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }catch (Exception e){
-            new ServicesPeticion().SaveError(e,
+            servicios.SaveError(e,
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());//Envio la informacion de la excepcion al server
         }
@@ -168,7 +173,8 @@ public class Notifications_app extends Fragment {
 
                 ResponseContent data = response.body();
 
-                ValidateResponse( data );
+                if( code.ValidateStatusResponse( response.code() ) )
+                    ValidateResponse( data );
 
                 pDialog.dismiss();
 
@@ -177,6 +183,7 @@ public class Notifications_app extends Fragment {
             @Override
             public void onFailure(Call<ResponseContent> call, Throwable t) { //si la peticion falla
 
+                code.ManageFailurePetition(t);
                 Log.e( mss.TAG, "error "+ t.toString());
 
                 pDialog.dismiss();
@@ -212,7 +219,7 @@ public class Notifications_app extends Fragment {
 
         } catch (JSONException e) {
             e.printStackTrace();
-            new ServicesPeticion().SaveError(e,
+            servicios.SaveError(e,
                     new Exception().getStackTrace()[0].getMethodName().toString(),
                     this.getClass().getName());//Envio la informacion de la excepcion al server
         }
@@ -235,7 +242,7 @@ public class Notifications_app extends Fragment {
                                                                                 indexNotification));
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    new ServicesPeticion().SaveError(e,
+                    servicios.SaveError(e,
                             new Exception().getStackTrace()[0].getMethodName().toString(),
                             this.getClass().getName());//Envio la informacion de la excepcion al server
                 }

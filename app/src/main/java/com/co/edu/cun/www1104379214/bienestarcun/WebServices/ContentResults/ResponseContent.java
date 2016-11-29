@@ -1,9 +1,9 @@
 package com.co.edu.cun.www1104379214.bienestarcun.WebServices.ContentResults;
 
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -25,7 +25,14 @@ public class ResponseContent {
 
             JSONArray arrayResponse = new JSONArray( result );
 
-            return arrayResponse.getJSONArray(0);
+            //<editor-fold desc="Conversion para android < API 19 ">
+            Object results = arrayResponse.get(0); //obtiene una lista de los resultados
+            Gson gson = new Gson();
+            String json = gson.toJson( results ); // obtiene un string formato json
+            JSONArray array = new JSONArray( json );//obtener un JsonArray
+            //</editor-fold>
+
+            return array;
 
         }catch ( Exception e){
             new ServicesPeticion().SaveError(e,
@@ -42,7 +49,14 @@ public class ResponseContent {
 
             JSONArray arrayResponse = new JSONArray( result );
 
-            return arrayResponse.getJSONObject(1);
+            //<editor-fold desc="Conversion para android < API 19 ">
+            Object results = arrayResponse.get(1);//obtener una lista de los indices
+            Gson gson = new Gson();
+            String json = gson.toJson(results);// obtiene un string formato json
+            JSONObject objectJson = new JSONObject( json );//obtener un JsonArray
+            //</editor-fold>
+
+            return objectJson;
 
         }catch ( Exception e){
             new ServicesPeticion().SaveError(e,

@@ -173,7 +173,7 @@ public class ChatPendientes extends Fragment {
 
                 ResponseContent data = response.body();
 
-                if( code.ValidateStatusResponse( response.code() ) )
+                if( data != null && code.ValidateStatusResponse( response.code() ) )
                     ValidateResponse( data );
 
                 pDialog.dismiss();

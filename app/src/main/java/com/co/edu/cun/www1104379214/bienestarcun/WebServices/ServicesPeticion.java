@@ -1,6 +1,7 @@
 package com.co.edu.cun.www1104379214.bienestarcun.WebServices;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -113,7 +114,7 @@ public class ServicesPeticion {
 
                 ResponseContent data = response.body();
 
-                if( code.ValidateStatusResponse( response.code() ) )
+                if( data != null && code.ValidateStatusResponse( response.code() ) )
                     Log.i( mss.TAG, "error "+ data.getBody().toString() );
 
             }
@@ -157,7 +158,7 @@ public class ServicesPeticion {
 
                 ResponseContent data = response.body();
 
-                if( code.ValidateStatusResponse( response.code() ) ){
+                if( data != null && code.ValidateStatusResponse( response.code() ) ){
                     try {
 
                         if( data.getBody().getString(0).toString().equals("msm") ){//verifico si es un mensaje
@@ -201,6 +202,7 @@ public class ServicesPeticion {
         String contenido = "Error desde android #!#";
         contenido += " Funcion: "+function+" #!#";
         contenido += "Clase : "+clase+".java #!#";
+        contenido += "Dispositivo :( "+getInfoDispositivo()+") #!#";
         contenido += e.getMessage();
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -222,7 +224,7 @@ public class ServicesPeticion {
                 ResponseContent data = response.body();
 
 
-                if( response.code() >= 300 ){
+                if( data != null && response.code() >= 300 ){
 
                     JSONArray msm = data.getBody();
 
@@ -256,6 +258,25 @@ public class ServicesPeticion {
     //</editor-fold>
 
 
+    //<editor-fold desc="Obtener informacion del dispositivo que ejecuta la aplicacion">
+    private String getInfoDispositivo(){
+
+        String info = "";
+        info += "BOARD: "+Build.BOARD+" #!#";
+        info += "BOOTLOADER: "+Build.BOOTLOADER+" #!#";
+        info += "BRAND: "+Build.BRAND+" #!#";
+        info += "DEVICE: "+Build.DEVICE+" #!#";
+        info += "DISPLAY: "+Build.DISPLAY+" #!#";
+        info += "FINGERPRINT: "+Build.FINGERPRINT+" #!#";
+        info += "HARDWARE: "+Build.HARDWARE+" #!#";
+        info += "HOST: "+Build.HOST+" #!#";
+        info += "MODEL: "+Build.MODEL+" #!#";
+        info += "PRODUCT: "+Build.PRODUCT+" #!#";
+        info += "SERIAL: "+Build.SERIAL+" #!#";
+
+        return info;
+    }
+    //</editor-fold>
 
     /* causar excepciones
         try {

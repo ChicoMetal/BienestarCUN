@@ -179,7 +179,7 @@ public class GeneralCode {
 
                     ResponseContent data = response.body();
 
-                    if( ValidateStatusResponse( response.code() ) )
+                    if( data != null && ValidateStatusResponse( response.code() ) )
                         ValidateResponse( data, ContentNameUser, idUser );
 
 

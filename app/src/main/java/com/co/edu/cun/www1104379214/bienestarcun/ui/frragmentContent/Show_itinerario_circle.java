@@ -179,7 +179,7 @@ public class Show_itinerario_circle extends Fragment {
 
                 ResponseContent data = response.body();
 
-                if( code.ValidateStatusResponse( response.code() ) )
+                if( data != null && code.ValidateStatusResponse( response.code() ) )
                     ValidateResponse( data );
 
                 pDialog.dismiss();
@@ -248,7 +248,7 @@ public class Show_itinerario_circle extends Fragment {
 
                 ResponseContent data = response.body();
 
-                if( code.ValidateStatusResponse( response.code() ) ){
+                if( data != null && code.ValidateStatusResponse( response.code() ) ){
 
                     boolean answer = ReturnValidateResponse( data );
 

@@ -1,9 +1,6 @@
 package com.co.edu.cun.www1104379214.bienestarcun.WebServices.Interface;
 
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ContentResults.ResponseContent;
-
-import org.apache.http.entity.mime.content.ContentBody;
-
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;

@@ -73,7 +73,7 @@ public class CirclesManager {
 
                 ResponseContent data = response.body();
 
-                if( code.ValidateStatusResponse( response.code() ) )
+                if( data != null && code.ValidateStatusResponse( response.code() ) )
                     ValidateResponse( data );
 
             }
@@ -113,7 +113,7 @@ public class CirclesManager {
 
                 ResponseContent data = response.body();
 
-                if( code.ValidateStatusResponse( response.code() ) )
+                if( data != null && code.ValidateStatusResponse( response.code() ) )
                     ValidateResponse( data );
 
             }

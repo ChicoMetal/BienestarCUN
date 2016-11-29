@@ -110,7 +110,7 @@ public class LaboralAdd {
 
                 ResponseContent data = response.body();
 
-                if( code.ValidateStatusResponse( response.code() ) )
+                if( data != null && code.ValidateStatusResponse( response.code() ) )
                     ValidateResponse( data );
 
 
@@ -176,7 +176,7 @@ public class LaboralAdd {
 
                 ResponseContent data = response.body();
 
-                if( code.ValidateStatusResponse( response.code() ) )
+                if( data != null && code.ValidateStatusResponse( response.code() ) )
                     ValidateResponse( data );
 
 

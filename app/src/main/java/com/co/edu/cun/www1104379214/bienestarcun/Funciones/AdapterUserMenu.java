@@ -115,7 +115,7 @@ public class AdapterUserMenu {
 
                 ResponseContent data = response.body();
 
-                if( code.ValidateStatusResponse( response.code() ) )
+                if( data != null && code.ValidateStatusResponse( response.code() ) )
                     ValidateResponseLogin( data, menu );//continua login
 
             }

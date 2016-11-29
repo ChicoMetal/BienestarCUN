@@ -108,7 +108,7 @@ public class ItinerariosManager {
 
                 ResponseContent data = response.body();
 
-                if( code.ValidateStatusResponse( response.code() ) ){
+                if( data != null && code.ValidateStatusResponse( response.code() ) ){
                     boolean answer = ValidateResponse( data  );
 
                     if( answer ){
@@ -243,7 +243,7 @@ public class ItinerariosManager {
                 try {
                     ResponseContent data = response.body();
 
-                    if( code.ValidateStatusResponse( response.code() ) ){
+                    if( data != null && code.ValidateStatusResponse( response.code() ) ){
                         boolean answer = ValidateResponse( data  );
 
                         if( answer ){
@@ -312,7 +312,7 @@ public class ItinerariosManager {
 
                     ResponseContent data = response.body();
 
-                    if( code.ValidateStatusResponse( response.code() ) ){
+                    if( data != null && code.ValidateStatusResponse( response.code() ) ){
                         boolean answer = ValidateResponse( data  );
 
                         if( answer ){

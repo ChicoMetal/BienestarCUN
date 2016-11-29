@@ -194,7 +194,7 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
                 ResponseContent data = response.body();
 
 
-                if( code.ValidateStatusResponse( response.code() ) ) {
+                if( data != null && code.ValidateStatusResponse( response.code() ) ) {
                     try {
 
                         if( data.getBody().getString(0).toString().equals("msm") ){//verifico si es un mensaje
@@ -312,7 +312,7 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
 
                 ResponseContent data = response.body();
 
-                if( code.ValidateStatusResponse( response.code() ) )
+                if( data != null && code.ValidateStatusResponse( response.code() ) )
                     ValidateResponse( data );
 
             }
@@ -394,7 +394,7 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
 
                 ResponseContent data = response.body();
 
-                if( code.ValidateStatusResponse( response.code() ) )
+                if( data != null && code.ValidateStatusResponse( response.code() ) )
                     Log.i(  mss.TAG, data.getBody().toString() );
 
             }

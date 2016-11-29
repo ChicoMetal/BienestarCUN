@@ -1,6 +1,7 @@
 package com.co.edu.cun.www1104379214.bienestarcun.ui.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.CardView;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.co.edu.cun.www1104379214.bienestarcun.Constantes;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.ChatPsicologiaManager;
@@ -79,6 +81,7 @@ public class HypedChatAdapter extends RecyclerView.Adapter<HypedChatAdapter.Hype
         CardView vistaItem;
         ImageView imgAdmin;
         ImageView imgcard;
+        TextView contentCC;
 
         public HypedChatViewHolder(final View itemView) {
             super(itemView);
@@ -89,9 +92,12 @@ public class HypedChatAdapter extends RecyclerView.Adapter<HypedChatAdapter.Hype
                 @Override
                 public void onClick(View v) {//evento de touch para agregar usuario a circulo
 
-                // item clicked
-                new ChatPsicologiaManager(context, DB).OpenChatPsicologia(Long.parseLong(String.valueOf(v.getId())),
-                                                                            fragmentManager);
+                    TextView contentcc = (TextView) v.findViewById( R.id.ContentCC );//ontener cedula
+
+                    // item clicked
+                    new ChatPsicologiaManager(context, DB).
+                            OpenChatPsicologia(Long.parseLong( contentcc.getText().toString() ),
+                                    fragmentManager);
 
                 }
             });
@@ -100,18 +106,39 @@ public class HypedChatAdapter extends RecyclerView.Adapter<HypedChatAdapter.Hype
             vistaItem = (CardView) itemView;
             imgAdmin = (ImageView) itemView.findViewById( R.id.img_pacientPsicologia);
             imgcard = (ImageView) itemView.findViewById( R.id.img_chatPendientes);
+            contentCC = (TextView) itemView.findViewById( R.id.ContentCC);
 
 
         }
 
         public void setCircleSource(String idActiviti) {
 
+            String hexColor = String.format("#%06X",
+                    (0xFFFFFF & Long.parseLong(idActiviti) ));//generar color a partir de cc
+            int color = Color.parseColor( hexColor );//generar recurso de color
+
             //asigno los valores a los compnentes de las card
             icons.SetIconCards(imgcard, imgAdmin);
-            //TODO: cambiar la forma en la que se entrega el ID del remitente, ya que no se debe dejar un int sino un Long por el largo de las cedulas
-            vistaItem.setId(Integer.parseInt(idActiviti));
+            imgAdmin.setBackgroundColor( color );//asignar color
+
+            contentCC.setText( idActiviti );//guardar la cedula en la carta, para evitar problemas con cedulas largas
+            vistaItem.setId( getIntCC(  idActiviti ) );//aseguro que el id sea un entero
         }
 
+        //<editor-fold desc="Devolver un id valido para la card a partir de la identificacion">
+        private int getIntCC( String cc ){
+            String intCc;
+
+            if( cc.length() > 10 )
+                intCc = cc.substring(0,9);
+            else
+                intCc = cc;
+
+            int ccInt = Integer.parseInt( intCc );
+
+            return ccInt;
+        }
+        //</editor-fold>
 
 
     }

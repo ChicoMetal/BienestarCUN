@@ -43,7 +43,7 @@ public class IconManager {
     public void SetIconCards( ImageView fondo, ImageView admin){
     //cambiar fondo cards y image de la foto del admin del circulo
         fondo.setBackgroundResource( R.drawable.cardfondocircles);
-        admin.setBackgroundResource( R.drawable.admincircle);
+        admin.setImageResource(R.drawable.admincircle);
     }
 
     public void SetBackgroundCards(ImageView fondo ){

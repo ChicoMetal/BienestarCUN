@@ -10,6 +10,13 @@
     android:padding="2dp"
     android:layout_height="240dp">
 
+    <TextView
+        android:id="@+id/ContentCC"
+        android:layout_width="0dp"
+        android:background="@color/accent_transparency"
+        android:layout_height="0dp"
+        android:visibility="gone" />
+
     <ImageView
         android:id="@+id/img_chatPendientes"
         android:layout_width="match_parent"
@@ -31,7 +38,7 @@
                 android:id="@+id/img_pacientPsicologia"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop"
+                android:scaleType="fitXY"
                 android:contentDescription="@string/admin_circle_name" />
 
 

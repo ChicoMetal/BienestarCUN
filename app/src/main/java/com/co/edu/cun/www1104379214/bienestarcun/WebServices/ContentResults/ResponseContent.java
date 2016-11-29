@@ -31,7 +31,7 @@ public class ResponseContent {
             String json = gson.toJson( results ); // obtiene un string formato json
             JSONArray array = new JSONArray( json );//obtener un JsonArray
             //</editor-fold>
-
+            //TODO: arreglar incompatibilidad del manejo del json entre las versiones de andriod
             return array;
 
         }catch ( Exception e){
@@ -55,7 +55,7 @@ public class ResponseContent {
             String json = gson.toJson(results);// obtiene un string formato json
             JSONObject objectJson = new JSONObject( json );//obtener un JsonArray
             //</editor-fold>
-
+            //TODO: arreglar incompatibilidad del manejo del json entre las versiones de andriod
             return objectJson;
 
         }catch ( Exception e){

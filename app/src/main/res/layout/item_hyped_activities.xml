@@ -37,7 +37,7 @@
                     android:id="@+id/img_admin"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitXY"
                     android:contentDescription="@string/admin_circle_name" />
 
 

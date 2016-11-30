@@ -7,6 +7,7 @@ import android.database.Cursor;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLInsert;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.TaskExecuteSQLSearch;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ContentResults.NewNotificationsContent;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ContentResults.ResponseContent;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ServicesPeticion;
 
@@ -119,9 +120,9 @@ public class Notification {
     //</editor-fold>
 
 
-    public ResponseContent ShowNotificationsNew(JSONArray arrayResponse) {
+    public NewNotificationsContent ShowNotificationsNew(JSONArray arrayResponse) {
 
-        ResponseContent response = new ResponseContent();
+        NewNotificationsContent response;
 
         newresultNotifications = new JSONArray();
 
@@ -151,11 +152,11 @@ public class Notification {
 
             }
 
-            ArrayList array = new ArrayList(); //nuevo array
-            array.add(newresultNotifications);
-            array.add(indexNotifications);
+            JSONArray array = new JSONArray(); //nuevo array
+            array.put(newresultNotifications);
+            array.put(indexNotifications);
 
-            response.setContent( array );
+            response = new NewNotificationsContent( array );
 
             return response;
 

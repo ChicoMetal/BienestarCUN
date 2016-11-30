@@ -20,6 +20,7 @@ import com.co.edu.cun.www1104379214.bienestarcun.Funciones.IconManager;
 import com.co.edu.cun.www1104379214.bienestarcun.Funciones.Notification;
 import com.co.edu.cun.www1104379214.bienestarcun.R;
 import com.co.edu.cun.www1104379214.bienestarcun.SqliteBD.DBManager;
+import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ContentResults.NewNotificationsContent;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.ContentResults.ResponseContent;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.Interface.Notifications;
 import com.co.edu.cun.www1104379214.bienestarcun.WebServices.NotificationsList;
@@ -206,7 +207,7 @@ public class Notifications_app extends Fragment {
 
             }else{
 
-                ResponseContent showNotifications = notificaciones.ShowNotificationsNew(
+                NewNotificationsContent showNotifications = notificaciones.ShowNotificationsNew(
                                                         data.getBody() );
                                                         //filtro las notificaciones con las ocultadas
 

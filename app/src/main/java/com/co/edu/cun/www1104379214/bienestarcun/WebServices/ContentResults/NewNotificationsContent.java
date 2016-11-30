@@ -5,24 +5,26 @@ import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import java.util.ArrayList;
-import java.util.List;
+
+/**
+ * Created by Satellite on 29/11/2016.
+ */
+
+public class NewNotificationsContent {
+    //clase para almacenar y manipular la informacion de las notificaciones nuevas
+
+    private JSONArray notifications;
+
+    public NewNotificationsContent(JSONArray notifications) {
+        this.notifications = notifications;
+    }
 
 
-public class ResponseContent {
-
-    private List result = new ArrayList();
-
-    Gson gson = new Gson();
-
-    //<editor-fold desc="Obtener el array de objetos correspondientes a los registros">
     public JSONArray getResults() {
 
         try{
 
-            String json = gson.toJson( result );// obtiene un string formato json
-            JSONArray arrayResponse = new JSONArray( json );
-            JSONArray array = arrayResponse.getJSONArray(0);//obtener un JsonArray
+            JSONArray array = notifications.getJSONArray(0);//obtener un JsonArray
 
             return array;
 
@@ -35,15 +37,12 @@ public class ResponseContent {
 
 
     }
-    //</editor-fold>
 
-    //<editor-fold desc="Obtener los indices de los datos">
     public JSONObject getIndex(){
         try{
 
-            String json = gson.toJson( result );// obtiene un string formato json
-            JSONArray arrayResponse = new JSONArray(  json );
-            JSONObject objectJson = arrayResponse.getJSONObject(1);//obtener un JsonArray
+
+            JSONObject objectJson = notifications.getJSONObject(1);//obtener un JsonArray
 
             return objectJson;
 
@@ -54,17 +53,12 @@ public class ResponseContent {
             return null;
         }
     }
-    //</editor-fold>
 
-    //<editor-fold desc="Obtener el array completo de resultados e indices">
     public JSONArray getBody(){
 
         try{
 
-            String json = gson.toJson( result );// obtiene un string formato json
-            JSONArray arrayResponse = new JSONArray( json );
-
-            return arrayResponse;
+            return notifications;
 
         }catch ( Exception e){
             new ServicesPeticion().SaveError(e,
@@ -74,17 +68,14 @@ public class ResponseContent {
         }
 
     }
-    //</editor-fold>
 
-    //<editor-fold desc="Obtener el tamaño del array de los resultados">
     public int getCount(){
 
         try{
 
-            String json = gson.toJson( result );// obtiene un string formato json
-            JSONArray arrayResponse = new JSONArray(  json ).getJSONArray(0);
+            JSONArray array = notifications.getJSONArray(0);//obtener un JsonArray
 
-            return arrayResponse.length();
+            return array.length();
 
         }catch ( Exception e){
             new ServicesPeticion().SaveError(e,
@@ -94,7 +85,4 @@ public class ResponseContent {
         }
 
     }
-    //</editor-fold>
-
-
 }

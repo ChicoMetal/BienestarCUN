@@ -526,7 +526,8 @@ public class ChatPsicologa_app extends Fragment implements View.OnClickListener 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        socket.disconnect();
+        if(socket != null && socket.connected() )
+            socket.disconnect();
     }
 
 

@@ -13,12 +13,14 @@ public class ResponseContent {
 
     private List result = new ArrayList();
 
-    Gson gson = new Gson();
+
 
     //<editor-fold desc="Obtener el array de objetos correspondientes a los registros">
     public JSONArray getResults() {
 
         try{
+
+            Gson gson = new Gson();
 
             String json = gson.toJson( result );// obtiene un string formato json
             JSONArray arrayResponse = new JSONArray( json );
@@ -41,6 +43,8 @@ public class ResponseContent {
     public JSONObject getIndex(){
         try{
 
+            Gson gson = new Gson();
+
             String json = gson.toJson( result );// obtiene un string formato json
             JSONArray arrayResponse = new JSONArray(  json );
             JSONObject objectJson = arrayResponse.getJSONObject(1);//obtener un JsonArray
@@ -61,6 +65,8 @@ public class ResponseContent {
 
         try{
 
+            Gson gson = new Gson();
+
             String json = gson.toJson( result );// obtiene un string formato json
             JSONArray arrayResponse = new JSONArray( json );
 
@@ -80,6 +86,8 @@ public class ResponseContent {
     public int getCount(){
 
         try{
+
+            Gson gson = new Gson();
 
             String json = gson.toJson( result );// obtiene un string formato json
             JSONArray arrayResponse = new JSONArray(  json ).getJSONArray(0);

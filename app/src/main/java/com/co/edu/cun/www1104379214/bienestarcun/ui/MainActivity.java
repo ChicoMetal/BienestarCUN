@@ -1,6 +1,8 @@
 package com.co.edu.cun.www1104379214.bienestarcun.ui;
 
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -8,9 +10,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -400,5 +404,34 @@ public class MainActivity extends AppCompatActivity {
         new ItinerariosManager( db, getApplicationContext() ).SaveAsistenciasItinerario(layout, idItinerario);
     }
 
+    //<editor-fold desc="Confirmar salir de la aplicacion">
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+            new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("Salir")
+                    .setMessage("Estás seguro?")
+                    .setNegativeButton(android.R.string.cancel, null)// sin listener
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {// un listener que al pulsar, cierre la aplicacion
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Salir
+                            Intent intent = new Intent(Intent.ACTION_MAIN);
+                            intent.addCategory(Intent.CATEGORY_HOME);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                        }
+                    })
+                    .show();
+
+// Si el listener devuelve true, significa que el evento esta procesado, y nadie debe hacer nada mas
+            return true;
+        }
+// para las demas cosas, se reenvia el evento al listener habitual
+        return super.onKeyDown(keyCode, event);
+    }
+    //</editor-fold>
 
 }

@@ -394,6 +394,7 @@ public class MainActivity extends AppCompatActivity {
     }
     //</editor-fold>
 
+    //<editor-fold desc="Guardar asistencia de los itinerarios">
     public void SaveAsistenciaItinerario( View v ){//guarda la lista de asistencia del itinerario
 
         LinearLayout layout = (LinearLayout)findViewById( R.id.contentListAsistentes);
@@ -403,6 +404,7 @@ public class MainActivity extends AppCompatActivity {
 
         new ItinerariosManager( db, getApplicationContext() ).SaveAsistenciasItinerario(layout, idItinerario);
     }
+    //</editor-fold>
 
     //<editor-fold desc="Confirmar salir de la aplicacion">
     public boolean onKeyDown(int keyCode, KeyEvent event) {
